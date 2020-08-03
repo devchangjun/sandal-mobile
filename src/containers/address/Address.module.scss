@@ -1,0 +1,71 @@
+@import '../../styels//Root.scss';
+
+.addr{
+    max-width: $max-width;
+    min-width: $min-width;
+    margin: 0 auto;
+    .addr-input{
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        .input-box{
+                width: 100%;
+        }
+    }
+    .addr-list{
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0 20px 0;
+    }
+}  
+
+.modal-input-box{
+    display: flex;
+    width: auto;
+
+    .modal-input{
+        width: 100%;
+        height: 50px;
+    }
+}
+
+
+.addrs-box{
+    display: flex;
+    flex-direction: column;
+
+    .addrs-list{
+        width: auto;
+        height: 500px;
+        border: 1px solid black;
+    }
+    .modal-input{
+        width: 100%;
+        height: 50px;
+        margin-top: 10px;
+    }
+    
+}
+
+.search-btn{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    height:auto;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.setting-btn{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 40px;
+    border: 1px solid black;
+    padding: 2px;
+}
+

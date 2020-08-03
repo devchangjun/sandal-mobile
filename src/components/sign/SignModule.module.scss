@@ -1,0 +1,28 @@
+.sign-input {
+    input {
+        font-family: Ubuntu-Bold;
+        color: #403866;
+        line-height: 1.2;
+        font-size: 18px;
+        background: #fff;
+        height: 62px;
+        outline: none;
+        box-sizing: border-box;
+        margin :0 0 20px 0;
+    
+        &.normal{
+            width: 100%;
+        }
+        
+        &.auth{
+            width: 70%;
+        }
+    }
+
+    .auth-btn{
+        height: 62px;
+        width: 25%;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+}

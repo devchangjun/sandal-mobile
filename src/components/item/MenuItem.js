@@ -9,10 +9,7 @@ import logo from 'logo.svg';
 const MenuDetailLink = styled(NavLink)`
     text-decoration:none;
     color:black;
-    margin-top :10px;
-    & + & {
-        margin-left: 10px
-    }
+    margin:10px;
 `;
 
 const NewButton = styled.button`
@@ -27,10 +24,12 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
         <MenuDetailLink to={`${Paths.ajoonamu.reserve}/menu/detail/${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />
+                <div className={styles['pd-box']}>
                 <div className={styles['menu-info']}>
                     <MenuTitle menuTitle={menuTitle} />
                     <MenuText menuText={menuText} />
                     <MenuPrice menuPrice={menuPrice} />
+                </div>
                 </div>
             </div>
         </MenuDetailLink>

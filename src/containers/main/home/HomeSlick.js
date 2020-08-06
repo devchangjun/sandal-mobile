@@ -16,8 +16,6 @@ class HomeSlick extends React.Component {
 		};
 		return (
 			<div className={styles['container']}>
-				<link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-				<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
 				<Slider {...settings}>
 					<div className={styles['item']}>
 						1

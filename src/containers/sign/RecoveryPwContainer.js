@@ -12,9 +12,10 @@ const RecoveryPwContainer = () => {
     const [userPhone, setUserPhone] = useState('');
 
     return (
+        <>
+        <TitleBar title="비밀번호 찾기" src={logo} alt="비밀번호 찾기"></TitleBar>
         <div className="sign-main">
             <div className="sign-content">
-                <TitleBar title="비밀번호 찾기" src={logo} alt="비밀번호 찾기"></TitleBar>
                 <label>이름</label>
                 <SignNormalInput/>
                 <label>아이디(이메일)</label>
@@ -25,8 +26,8 @@ const RecoveryPwContainer = () => {
                 <Button title={"확인"}></Button>
 
             </div>
-
         </div>
+        </>
     )
 }
 

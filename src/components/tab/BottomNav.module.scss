@@ -1,0 +1,42 @@
+.bottom-nav{
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    z-index: 1000;
+    background-color:rgb(245, 245, 245);
+    border-top: 1px solid rgb(240, 240, 240);
+    .pd-box{
+        padding: 5px 10px;
+    }
+    .nav-list{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+    .nav-item{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 60px;
+        height: 45px;
+
+        .menu{
+            font-size: 11px;
+            font-weight: 700;
+            color: rgb(128, 129, 130);
+            line-height: 1.1;
+            letter-spacing: -0.16px;
+            margin-top: 2px;
+
+        }
+    }
+    .order{
+        border: 1px solid black;
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+    }
+    }    
+}

@@ -1,10 +1,11 @@
 import React from 'react';
 import './Button.scss';
 
+//fixed button
 
 const Button =({title, onClick})=>{
     return(
-        <div className="sign-btn" onClick ={onClick}>{title}</div>
+        <div className="btn" onClick ={onClick}>{title}</div>
     )
 }
 

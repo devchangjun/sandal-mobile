@@ -8,7 +8,7 @@ const SignAuthInput = ({ inputType, onChange, initValue ,buttonTitle ,placeholde
     return (
         <div className={styles['sign-input']}>
             <input className={styles['auth']} type={inputType} value={initValue}  placeholder={placeholder} onChange={onChange} ></input>
-            <button className={styles['auth-btn']}>{buttonTitle}</button>
+            <div className={styles['auth-btn']}>{buttonTitle}</div>
         </div>
     )
 }

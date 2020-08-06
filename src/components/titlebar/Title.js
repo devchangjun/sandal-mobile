@@ -7,7 +7,7 @@ import { useHistory } from 'react-router';
 // 헤더 밑 서브 헤더 컴포넌트
 // 헤더 폴더로 이동시켜야할지 말지 고민중
 
-const Title = ({ mainTitle,subTitle,addr }) => {
+const Title = ({addr }) => {
 
     const history = useHistory();
     /* 
@@ -23,17 +23,9 @@ const Title = ({ mainTitle,subTitle,addr }) => {
         <div className="app-title">
             <div className="app-title-main">
                 <div className="app-title-content">
-                    <div className="app-title-maintitle">
-                        {mainTitle}
-                </div>
                     <div className="app-title-location" onClick={goToAddress}>
                      {addr ? addr :"배달지를 설정해주세요"} 
                 </div>
-                </div>
-            </div>
-            <div className="app-title-sub">
-                <div className="subtitle">
-                  {subTitle}
                 </div>
             </div>
         </div>

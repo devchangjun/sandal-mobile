@@ -1,60 +1,26 @@
 @import '../../styels//Root.scss';
 .app-title{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-width: $min-width;
-
     .app-title-main{
         display: flex;
         align-items: center;
-        justify-content: center;
+
         width: 100%;
-        height: 50px;
-        background-color: gray;
-    
+        height: 30px;
+        background-color:rgb(161, 161, 161); ;
+        border: 1px solid rgb(161, 161, 161);
         .app-title-content{
-            display: flex;
-            justify-content: space-between;
+
             max-width: $max-width;
             min-width:$min-width;
-            width: 100%;
-            height: 50px;
-            border: 0px solid red;
-            color:white;
-            font-size:22px;
-            .app-title-maintitle{
-                display: flex;
-                align-items: center;
-                width: 100%;
-                height: 100%;
-            }
+            color:black;
+            font-size:14px;
+            
             .app-title-location{
-                display: flex;
-                align-items: center;
-                width: 100%;
-                height: auto;
+                padding: 0px 20px;
                 cursor: pointer;
             }
     
         }
     }
-
-    .app-title-sub{
-        display: flex;
-        align-items: center;
-        max-width: $max-width;
-        min-width:$min-width;
-        width: 100%;
-        height: 80px;
-        border: 0px solid red;
-        .subtitle{
-            font-size: 25px;
-            font-weight: bold;
-        }
-    }
-    
-
 }
 

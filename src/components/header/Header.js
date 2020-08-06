@@ -20,36 +20,12 @@ const Header =()=>{
     },[user])
 
     const goToHome =()=> history.push(Paths.index);
-    const goToReserve =() =>history.push(`${Paths.ajoonamu.reserve}/custom`);
 
     return(
         <div className={styles['header']}>
-            <div className ={styles['header-nav']}>
                 <div className={styles['header-logo']} onClick={goToHome}>
                     <img className ={styles['header-logoimg']} src={logo}></img>
                 </div>
-                <div className={styles['header-menu']}>
-                    <ui>
-                        <li onClick={goToHome}>브랜드홈</li>
-                        <li onClick={goToReserve}>예약주문</li>
-                        <li>택배배송</li>
-                        <li>이벤트</li>
-                        <li>고객센터</li>
-                    </ui>
-                </div>
-                <div className={styles['header-user']}>
-                        {user ? 
-                        <TabLink  exact to={Paths.ajoonamu.account}>
-                        <>{user.name}님 반갑습니다</> 
-                        </TabLink>
-                        : 
-                        <TabLink  exact to={Paths.ajoonamu.signin}>
-                        <>로그인</> 
-                        </TabLink>
-                        }
-                        
-                </div>
-            </div>
         </div>
     )
 }

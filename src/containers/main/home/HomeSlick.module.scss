@@ -1,5 +1,7 @@
 .container{
     width:90%;
+    height: 130px;
+    overflow: hidden;
 }
 .item{
     display:flex;
@@ -8,5 +10,5 @@
     background: #e4e4e4;
     color: #fff;
     font-size: 36px;
-    height:500px;
+    height: 100px;
 }

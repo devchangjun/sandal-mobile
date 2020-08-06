@@ -4,7 +4,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+    border: 1px solid black;
 
     .app-sign-logo{
         width: 100%;
@@ -16,11 +17,12 @@
         flex-direction: row;
         align-items: center;
         width: 100%;
+        height: 40px;
         justify-content: center;
 
         .app-sign-title{
             font-family: Ubuntu-Bold;
-            font-size: 30px;
+            font-size: 1rem;
             line-height: 1.2;
             text-align: center;
             width: 100%;
@@ -30,15 +32,13 @@
         .app-sign-back{
             display: flex;
             align-items: center;
-            width: 50px;
-            height: 50px;
+            width: 30px;
             cursor: pointer;
             // border: 1px solid red;
         }
 
         .app-sign-empty{
             width: 50px;
-            height: 50px;
         }
         
     }

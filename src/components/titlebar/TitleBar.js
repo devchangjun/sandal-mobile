@@ -10,9 +10,7 @@ import logo from 'logo.svg';
 const TitleBar = ({ title, src, alt }) => {
     return (
         <div className="app-sign-titlebar">
-            <div>
-                <Logo src={src} alt={title} />
-            </div>
+      
             <div className="app-sign-item">
                 <BackButton />
                 <Title title={title} />

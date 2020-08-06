@@ -5,7 +5,7 @@ import Counter from 'components/counter/Counter';
 import logo from 'logo.svg';
 
 
-// 메뉴이름, 추가옵션 , 수량 ,가격 ,이미지 ,구매확정
+// 메뉴이름, 추가옵션
 
 const CartItem = props => {
 

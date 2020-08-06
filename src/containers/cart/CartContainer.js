@@ -145,7 +145,7 @@ const CartContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={"주문하기"}></Button>
+            <Button title={"주문하기"} onClick={goToOrder}></Button>
         </>
     )
 }

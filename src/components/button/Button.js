@@ -1,11 +1,11 @@
 import React from 'react';
-import './Button.scss';
+import styles from './Button.module.scss';
 
 //fixed button
 
 const Button =({title, onClick})=>{
     return(
-        <div className="btn" onClick ={onClick}>{title}</div>
+        <div className={styles['btn']} onClick ={onClick}>{title}</div>
     )
 }
 

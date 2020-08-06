@@ -1,17 +1,12 @@
-.app-sign-titlebar{
+.title-bar{
     align-items: center;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 20px;
-    border: 1px solid black;
+    border-bottom: 1px solid rgb(214, 214, 214);
 
-    .app-sign-logo{
-        width: 100%;
-    }
-
-    .app-sign-item{
+    .item{
         
         display: flex;
         flex-direction: row;
@@ -20,7 +15,7 @@
         height: 40px;
         justify-content: center;
 
-        .app-sign-title{
+        .title{
             font-family: Ubuntu-Bold;
             font-size: 1rem;
             line-height: 1.2;
@@ -29,7 +24,7 @@
             // display: flex;
             
         }
-        .app-sign-back{
+        .back{
             display: flex;
             align-items: center;
             width: 30px;
@@ -37,7 +32,7 @@
             // border: 1px solid red;
         }
 
-        .app-sign-empty{
+        .empty{
             width: 50px;
         }
         

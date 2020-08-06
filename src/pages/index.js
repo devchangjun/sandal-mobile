@@ -9,8 +9,9 @@ export {default as Account} from './account/Account';
 export {default as Home} from './main/Home';
 export {default as Address} from './address/Address';
 
-export {default as Reserve} from './reserve/Reserve';
-export {default as DetailMenu} from './reserve/DetailMenu'; 
+export {default as Reserve} from './shop/Reserve';
+export {default as Prefer} from './shop/Prefer';
+export {default as DetailMenu} from './shop/DetailMenu'; 
 export {default as Cart} from './cart/Cart';
 export {default as Order} from './order/Order';
 export {default as OrderList} from './order/OrderList';

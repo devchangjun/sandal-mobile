@@ -40,7 +40,7 @@ const CoustomItem = ({datas}) => {
 
     return (
         <div className={styles['custom-item']}>
-            <CustomImgList datas={datas}/>
+            {/* <CustomImgList datas={datas}/> */}
             <CustomTitleList datas={datas}/>
             <div className={styles['custom-info']}>
                 <CustomCount count={"2"}/>
@@ -111,7 +111,7 @@ function CustomCount({ count }) {
 function CustomPrice({ price }) {
     return (
         <div className={styles['custom-price']}>
-            {"20000원"}
+            총 {"20000원"}
         </div>
     )
 }

@@ -4,7 +4,7 @@ import {get_user_info} from './store/auth/auth';
 
 import {Paths} from 'paths';
 import {Signin,SignUp,SignupComplete,Recovery,RecoveryId,RecoveryPw} from 'pages';
-import {Home,Account,Address,Reserve,DetailMenu} from 'pages';
+import {Home,Account,Address,Reserve,DetailMenu,Prefer} from 'pages';
 import {Cart,Order,OrderList,Coupon} from 'pages';
 import {Route,Switch} from 'react-router-dom';
 
@@ -35,11 +35,12 @@ function App() {
       <Route path={Paths.ajoonamu.account}component={Account}></Route>
       <Route path={Paths.ajoonamu.address} component={Address} ></Route>
       <Switch>
-      <Route path={`${Paths.ajoonamu.reserve}/:tab/:value/:data?`} exact component={DetailMenu}></Route>
-      <Route path={`${Paths.ajoonamu.reserve}/:tab?`} component={Reserve}></Route>
+      <Route path={`${Paths.ajoonamu.shop}/:tab/:value/:data?`} exact component={DetailMenu}></Route>
+      <Route path={`${Paths.ajoonamu.shop}/:tab?`} component={Reserve}></Route>
       </Switch>
       <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
       <Route path={Paths.ajoonamu.order} component={Order}></Route>
+      <Route path={Paths.ajoonamu.prefer} component={Prefer}></Route>
       <Route path={`${Paths.ajoonamu.order_list}/:tab`} component={OrderList}></Route>
       <Route path ={`${Paths.ajoonamu.coupon}/:tab`} component={Coupon}></Route>
     </div>

@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import ReserveContainer from 'containers/reserve/ReserveContainer';
+import ReserveContainer from 'containers/shop/ReserveContainer';
 
 function Reserve({match}){
     console.log(match.params);

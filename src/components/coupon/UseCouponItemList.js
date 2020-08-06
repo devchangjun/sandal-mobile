@@ -8,7 +8,7 @@ const UseCouponItemList=()=>{
 
 
         <div className={styles['use-coupon-table']}>
-            <div className={styles['tr']}>
+            {/* <div className={styles['tr']}>
                 <div className={styles['event-name']}>
                      쿠폰이름
                 </div>
@@ -21,7 +21,8 @@ const UseCouponItemList=()=>{
                 <div className={styles['use-date']}>
                 사용날짜
                 </div>
-            </div>
+            </div> */}
+            <UseCouponItem/>
             <UseCouponItem/>
             <UseCouponItem/>
             <UseCouponItem/>

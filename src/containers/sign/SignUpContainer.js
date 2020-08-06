@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths'
 import styles from './Sign.module.scss';
@@ -120,8 +121,8 @@ const SignUpContainer = () => {
     return (
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
-            <div className="sign-main">
-                <div className="sign-content">
+            <div className={styles['sign-main']}>
+                   <div className={styles['sign-content']}>
                     <label>이름</label>
                     <SignNormalInput inputType={"text"} initValue={user.name} onChange={updateName} />
                     <label>이메일</label>
@@ -150,42 +151,44 @@ function AcceptContainer() {
         console.log(allCheck);
     }
     return (
-        <div className={styles.agree}>
-            <div className={styles.item}>
-                <div className={styles.sub}>
+        <div className={styles['agree']}>
+            <div className={styles['item']}>
+                <div className={styles['sub']}>
                     <input type="checkbox" checked={allCheck} onClick={onChangeCheck} />
                     <label>모두 동의합니다</label>
                 </div>
             </div>
-            <div className={styles.item}>
-                <div className={styles.subtitle}>
+            <div className={styles['item']}>
+                <div className={styles['sub-text']}>
                     <input type="checkbox" />
                     <label>개인정보처리방침 필수 동의</label>
                 </div>
-                <div className={styles.subtitle}>
+                <div className={styles['sub-text']}>
+
                     <label>보기 </label>
                 </div>
             </div>
-            <div className={styles.item}>
-                <div className={styles.subtitle}>
+            <div className={styles['item']}>
+                <div className={styles['sub-text']}>
                     <input type="checkbox" />
                     <label>이용약관 필수 동의</label>
                 </div>
-                <div className={styles.subtitle}>
+                <div className={styles['sub-text']}>
+
                     <label>보기 </label>
                 </div>
             </div>
-            <div className={styles.item}>
-                <div className={styles.subtitle}>
+            <div className={styles['item']}>
+                <div className={styles['sub-text']}>
                     <input type="checkbox" />
                     <label>이벤트알림 선택 동의</label>
                 </div>
-                <div className={styles.subtitle}>
+                <div className={styles['sub-text']}>
                     <label>보기 </label>
                 </div>
             </div>
-            <div className={styles.box}>
-                <div className={styles.grayText}>
+            <div className={styles['box']}>
+                <div className={styles['sub-text']}>
                     <label>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 </label><br></br>
                     <label>받아보실 수 있습니다. </label>
                 </div>

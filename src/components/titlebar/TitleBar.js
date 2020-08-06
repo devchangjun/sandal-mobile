@@ -1,7 +1,7 @@
 import React from 'react';
 import {Paths} from 'paths';
 import { useHistory } from 'react-router-dom';
-import './TitleBar.scss';
+import styles from './TitleBar.module.scss';
 import {IoIosArrowRoundBack} from 'react-icons/io';
 import logo from 'logo.svg';
 
@@ -9,12 +9,12 @@ import logo from 'logo.svg';
 
 const TitleBar = ({ title, src, alt }) => {
     return (
-        <div className="app-sign-titlebar">
+        <div className={styles['title-bar']}>
       
-            <div className="app-sign-item">
+            <div className={styles['item']}>
                 <BackButton />
                 <Title title={title} />
-                <div className="app-sign-empty" />
+                <div className={styles['empty']} />
             </div>
         </div>
 
@@ -23,27 +23,19 @@ const TitleBar = ({ title, src, alt }) => {
 
 function Title({ title }) {
     return (
-        <div className="app-sign-title">
+        <div className={styles['title']}>
             <span>{title}</span>
         </div>
     )
 }
-function Logo({ src, alt }) {
-    const history = useHistory();
-    const goToHome =()=>{
-        history.push(Paths.index);
-    }
-    return (
-        <img className="app-sign-logo" src={logo} alt={alt} onClick={goToHome}></img>
-    )
-}
+
 function BackButton(onClick) {
     const history = useHistory();
     const goToBack = () => {
         history.goBack();
     }
     return (
-        <div className="app-sign-back" onClick={goToBack}>
+        <div className ={styles['back'] }onClick={goToBack}>
             <IoIosArrowRoundBack size="50"/>
         </div>
     )

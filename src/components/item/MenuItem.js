@@ -21,7 +21,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 
     return (
         // item_id 로 경로 줘야함
-        <MenuDetailLink to={`${Paths.ajoonamu.reserve}/menu/detail/${menuTitle}`}>
+        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail/${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />
                 <div className={styles['pd-box']}>

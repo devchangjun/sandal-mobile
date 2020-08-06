@@ -1,13 +1,14 @@
 .reserve-custom-order{
     width: 100%;
-    border: 1px solid black;
+    border: 0px solid black;
     height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     .title-msg{
-        font-size: 25px;
+        text-align: center;
+        font-size: 14px;
         font-weight: bold;
         margin: 20px 0 20px 0;
     }

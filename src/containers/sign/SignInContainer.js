@@ -76,8 +76,8 @@ const SignInContainer = () => {
     return (
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
-            <div className="sign-main">
-                <div className="sign-content">
+            <div className={styles['sign-main']}>
+                   <div className={styles['sign-content']}>
 
                     <label>이메일</label>
                     <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} />

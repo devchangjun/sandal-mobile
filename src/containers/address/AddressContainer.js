@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {BsSearch} from 'react-icons/bs';
+import { BsSearch } from 'react-icons/bs';
 import styles from './Address.module.scss';
-import Header from 'components/header/Header';
+import TitleBar from 'components/titlebar/TitleBar';
 import AddrItemList from 'components/address/AddrItemList';
 import DeliveryItemList from 'components/address/DeliveryItemList';
-
-
+import { AiOutlineSearch } from 'react-icons/ai';
+import AddressModal from 'components/asset/AddressModal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const key = "devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE";
 const AddressContainer = () => {
-  const [userAddr, setUserAddr] = useState(""); //검색
+  const [searchAddr, setSearchAddr] = useState(""); //검색
   const [selectAddr, setSelectAddr] = useState(""); //선택
   const [detailAddr, setDetailAddr] = useState(""); //상세주소
   const [addrs, setAddrs] = useState(''); // 검색 리스트
@@ -56,7 +56,7 @@ const AddressContainer = () => {
   ])
 
   const handleClickOpen = () => {
-    if (userAddr == "") {
+    if (searchAddr == "") {
       alert("검색어를 입력해주세요.");
       return;
     }
@@ -94,14 +94,14 @@ const AddressContainer = () => {
     setSelectAddr(data);
   }
   const onChangeAddr = e => {
-    setUserAddr(e.target.value);
+    setSearchAddr(e.target.value);
   };
   const onChangeDetail = e => {
     setDetailAddr(e.target.value);
   }
 
   const onSearch = async () => {
-    if (userAddr == "") {
+    if (searchAddr == "") {
       alert("검색어를 입력해주세요.");
       return;
     }
@@ -111,10 +111,12 @@ const AddressContainer = () => {
       console.log(result);
     }
 
+
+
   }
 
   const callApi = () => {
-    return fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${userAddr}&confmKey=${key}=&resultType=json`)
+    return fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currrentPage=1&countPerPage=100&keyword=${searchAddr}&confmKey=${key}=&resultType=json`)
       .then(res => res.json())
       .then(json => json.results.juso)
       .catch(err => console.log(err));
@@ -128,19 +130,39 @@ const AddressContainer = () => {
 
   return (
     <>
-      <Header />
+      <TitleBar />
       <div className={styles['addr']}>
-        <h1>배달지 검색</h1>
+        <div className={styles['title']}>배달 받으실 장소를 입력하세요</div>
         <div className={styles['addr-input']}>
-          <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={userAddr} onChange={onChangeAddr} onKeyPress={handleKeyPress} />
-          <div className={styles['search-btn']} onClick={handleClickOpen} >주소검색</div>
+          <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={searchAddr} onChange={onChangeAddr} onKeyPress={handleKeyPress} />
+          <div className={styles['search-btn']} onClick={handleClickOpen} ><AiOutlineSearch /></div>
         </div>
+        <div className={styles['location-btn']}>
+            현위치로 주소 설정
+          </div>
         <div className={styles['addr-list']}>
-          <h3>최근 배달 주소</h3>
+          <div className={styles['title']}>최근 배달 주소</div>
           <DeliveryItemList addrs={latestAddrs} />
         </div>
       </div>
-      <div className={styles['modal']}>
+      <AddressModal 
+      open ={open}
+      handleClose={handleClose}
+      searchAddr = {searchAddr}
+      onChangeAddr={onChangeAddr}
+      handleKeyPress={handleKeyPress}
+      onSearch ={onSearch}
+      addrs={addrs}
+      onClickAddrItem={onClickAddrItem}
+      selectAddr={selectAddr}
+      detailAddr={detailAddr}
+      onChangeDetail={onChangeDetail}
+      onInsertAddr={onInsertAddr}
+
+
+
+      />
+      {/* <div className={styles['modal']}>
         <Dialog
           fullWidth={fullWidth}
           maxWidth={maxWidth}
@@ -154,7 +176,7 @@ const AddressContainer = () => {
           <DialogContent>
             <div className={styles['modal-input-box']}>
               <input className={styles['modal-input']} type="text" value={userAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={onChangeAddr} onKeyPress={handleKeyPress}></input>
-              <div className={styles['search-btn']} onClick={onSearch} ><BsSearch/></div>
+              <div className={styles['search-btn']} onClick={onSearch} ><BsSearch /></div>
             </div>
           </DialogContent>
           <DialogContent>
@@ -173,7 +195,7 @@ const AddressContainer = () => {
           </div>
           </DialogContent>
         </Dialog>
-      </div>
+      </div> */}
 
     </>
   );

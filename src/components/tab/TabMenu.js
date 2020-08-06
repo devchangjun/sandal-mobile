@@ -10,6 +10,7 @@ const TabLink = styled(NavLink)`
     text-decoration:none;
     color:black;
     display: table-cell; /* 핵심! */
+    width :100px;
     vertical-align: middle; 
     text-align: center;
     padding : 10px;

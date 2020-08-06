@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -27,8 +28,8 @@ const RecoveryIdContainer = () => {
         <>
             <TitleBar title="아이디 찾기" src={logo} alt="아이디 찾기"></TitleBar>
 
-            <div className="sign-main">
-                <div className="sign-content">
+            <div className={styles['sign-main']}>
+                <div className={styles['sign-content']}>
                     <label>이름</label>
                     <SignNormalInput inputType={"text"} initValue={userName} onChange={onChangeId} />
                     <label>휴대폰 인증</label>

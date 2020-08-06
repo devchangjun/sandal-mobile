@@ -1,11 +1,12 @@
 import React from 'react';
 import { Paths } from 'paths';
 import stlyes from './Coupon.module.scss';
-import Header from 'components/header/Header';
+import TitleBar from 'components/titlebar/TitleBar';
 import Title from 'components/titlebar/Title';
 import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
+import BottomNav from 'components/tab/BottomNav';
 
 const tabInit = [
     {
@@ -26,8 +27,8 @@ const tabInit = [
 const CouponConatiner = ({ tab = 'mycoupon' }) => {
     return (
         <>
-            <Header />
-            <Title mainTitle={"쿠폰함>내쿠폰"} subTitle={"쿠폰함"} />
+            <TitleBar title={"쿠폰함"} />
+            <Title/>
             <div className={stlyes['coupon-tab']}>
                 <TabMenu tabs={tabInit} />
                 {tab === 'mycoupon' &&
@@ -38,6 +39,7 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
                     <UseCouponItemList/>
                 }
             </div>
+            <BottomNav/>
         </>
     )
 }

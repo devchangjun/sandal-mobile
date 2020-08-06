@@ -4,14 +4,11 @@
     position: fixed; bottom:0px; left: 0;
     width: 100%;
     cursor: pointer;
-    border: 1px solid black;
+    border-top: 1px solid rgb(190, 190, 190);
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(226, 226, 226);
-    &:hover{
-        background-color: rgb(226, 226, 226);
-    }
 }
 .bottom-btn{
     position:absolute; bottom:0px;

@@ -15,11 +15,11 @@ import BottomNav from 'components/tab/BottomNav';
 
 const tabInit = [
     {
-        url: `${Paths.ajoonamu.reserve}/custom?`,
+        url: `${Paths.ajoonamu.shop}/custom?`,
         name: '예약주문'
     },
     {
-        url: `${Paths.ajoonamu.reserve}/menu1`,
+        url: `${Paths.ajoonamu.shop}/menu1`,
         name: '택배주문'
     },
 

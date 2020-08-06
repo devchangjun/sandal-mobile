@@ -4,10 +4,10 @@ import { useHistory } from 'react-router';
 import {getCartList} from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
-import Header from 'components/header/Header';
-import Title from 'components/titlebar/Title';
+import TitleBar from 'components/titlebar/TitleBar';
 import CartItemList from 'components/cart/CartItemList';
-import CartModal from 'components/asset/CartModal';
+import CartItem from 'components/cart/CartItem';
+import Button from 'components/button/Button';
 import produce from 'immer';
 
 
@@ -15,7 +15,6 @@ import produce from 'immer';
 const CartContainer = () => {
     const history = useHistory();
 
-    const [open, setOpen] = React.useState(false);
     const [allChecked ,setAllChecked] = React.useState(false); //전체선택
     const [esitChcked ,setEsitChcked] = React.useState(true); //견적서 발송
     const [cartList ,setCartList] = React.useState([]); //장바구니
@@ -63,16 +62,6 @@ const CartContainer = () => {
         setTotal(total);
     })
 
-    // 주문 설정하기 버튼 클릭
-    const onClickOrder = () => {
-        setOpen(true);
-    }
-
-    // 모달창 닫기
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const handleAllChecked = useCallback((e)=>{
         const newState = cartList.map(cart => {
             return {...cart ,isChecked : e.target.checked};
@@ -111,20 +100,20 @@ const CartContainer = () => {
 
     return (
         <>
-            <Header />
-            <Title mainTitle={"장바구니"} subTitle={"장바구니"} />
+            <TitleBar title={"장바구니"} />
             <div className={styles['cart-page']}>
-                <button onClick={test}>test</button>
-                <div className={styles['bar']}>
+                {/* <div className={styles['bar']}>
                     <div className={styles['all-check']}>
                     <input type="checkbox" checked={allChecked} onClick={handleAllChecked} value="checkedall"></input><label>전체선택</label>
                     </div>
                     <div className={styles['select']}>
                         선택삭제
                     </div>
-                </div>
+                </div> */}
                 <div className={styles['cart-list']}>
-                  <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/>
+                        <CartItem/>
+                        <CartItem/>
+                  {/* <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/> */}
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
@@ -148,27 +137,15 @@ const CartContainer = () => {
                             * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
                         </div>
                         <div className={styles['estm']}>
-                            <div className={styles['title']}>
-                                견적서 발송 여부
-                           </div>
                             <div className={styles['check']}>
-                                <input type="checkbox" checked={esitChcked}></input> 견적서 받음
-                                <input type="checkbox" checked={!esitChcked}></input> 견적서 안받음
-                            </div>
-                        </div>
-                        <div className={styles['btn']}>
-                            <div className={styles['btn-name']} onClick={onClickOrder}>
-                                주문하기
+                                <input type="checkbox" checked={esitChcked}></input> <span>견적서 받음</span>
+                                <input type="checkbox" checked={!esitChcked}></input> <span>견적서 안받음</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-                <CartModal
-                    open={open}
-                    handleClose={handleClose}
-                    order={goToOrder}
-                />
+            <Button title={"주문하기"}></Button>
         </>
     )
 }

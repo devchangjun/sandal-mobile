@@ -7,6 +7,7 @@ import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
 import BottomNav from 'components/tab/BottomNav';
+import SignAuthInput from 'components/sign/SignAuthInput';
 
 const tabInit = [
     {
@@ -31,13 +32,24 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
             <Title/>
             <div className={stlyes['coupon-tab']}>
                 <TabMenu tabs={tabInit} />
+                <div className={stlyes['container']}>
                 {tab === 'mycoupon' &&
-                    <CouponItemList check= {false} />}
+                    <>
+                    <div>
+                        쿠폰 코드 입력
+                    </div>
+                    <SignAuthInput placeholder={"쿠폰 코드를 입력하세요"} buttonTitle={"쿠폰등록"}/>
+                    <div>
+                        내 쿠폰
+                    </div>
+                    <CouponItemList check= {false} />
+                    </>}
                 {tab === 'download_cp' &&
                     <CouponItemList check={true}/>}
                 {tab === 'list_use' &&
                     <UseCouponItemList/>
                 }
+                </div>
             </div>
             <BottomNav/>
         </>

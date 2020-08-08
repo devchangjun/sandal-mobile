@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import classNames from 'classnames/bind';
 
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths'
@@ -7,7 +8,10 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-// import {userSignup} from '../../api/sign';
+import produce from 'immer';
+import Check from 'components/svg/sign/Check';
+
+const cx = classNames.bind(styles);
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -20,6 +24,13 @@ const initialUserState = {
     authNumber: '',
     agree_marketing: 0
 
+}
+
+const initCheck = {
+    allCheck: false,
+    check1: false,
+    check2: false,
+    check3: false,
 }
 
 const userReducer = (state, action) => {
@@ -60,13 +71,116 @@ const userReducer = (state, action) => {
     }
 }
 
+const checkReducer = (state, action) => {
+
+    switch (action.type) {
+        case 'ALL_CHECK':
+            return {
+                ...state,
+                allCheck:action.check,
+            }
+        case 'CHECK1':
+            return {
+                ...state,
+                check1: action.check
+            }
+        case 'CHECK2':
+            return {
+                ...state,
+                check2: action.check
+            }
+        case 'CHECK3':
+            return {
+                ...state,
+                check3: action.check
+            }
+        default:
+            return state;
+    }
+}
+
 const SignUpContainer = () => {
 
     const history = useHistory();
 
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
-    const [check, setCheck] = useState(false);
+    const [compare, setCompare] = useState(false);
+    const [toggle,setToggle] = useState(false);
 
+
+    const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
+    const { allCheck, check1, check2, check3 } = check;
+
+    useEffect(()=>{
+        console.log("이메일 재렌더");
+        updateToggle();
+    },[user.email])
+
+    useEffect(()=>{
+        console.log("비번 재렌더");
+        matchPassword();
+    },[user.password,user.password_confirm])
+    useEffect(()=>{
+        console.log("컴페어 렌더");
+        updateToggle();
+    },[compare]);
+
+    useEffect(() => {
+        onToggleAllCheck();
+        updateToggle();
+        console.log("체크 제렌더");
+    }, [check1, check2, check3]);
+
+    useEffect(()=>{
+        onToggleCheck();
+        updateToggle();
+        console.log("올체크 제렌더");
+    },[allCheck])
+
+    const updateToggle= ()=>{
+        const {email,password,password_confirm} = user;
+        let checkbox = (check1&& check2) ? true : false;
+        let userinfo =(email.length!=0 && compare) ? true : false;
+        console.log(email.length);
+        let result =(checkbox && userinfo) ? true : false;
+        setToggle(result);
+    };
+
+
+    const updateAllCheck = useCallback((e) => {
+        dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
+    })
+    const onChangeCheck1 = useCallback((e) => {
+        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
+    })
+    const onChangeCheck2 = useCallback((e) => {
+        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
+    })
+    const onChangeCheck3 = useCallback((e) => {
+        dispatchCheck({ type: 'CHECK3', check: e.target.checked });
+    })
+
+    const onToggleAllCheck = () => {
+        if (check1 && check2 && check3) {
+            dispatchCheck({ type: 'ALL_CHECK', check: true });
+            dispatchCheck({ type: 'CHECK1', check: true });
+            dispatchCheck({ type: 'CHECK2', check: true });
+            dispatchCheck({ type: 'CHECK3', check: true });
+        }
+        else if(!check1 || !check2 ||!check3){
+            dispatchCheck({ type: 'ALL_CHECK', check: false });
+        }
+    }
+    const onToggleCheck=()=>{
+        if(allCheck){
+            dispatchCheck({ type: 'CHECK1', check: true });
+            dispatchCheck({ type: 'CHECK2', check: true });
+            dispatchCheck({ type: 'CHECK3', check: true });
+        }
+        else if(!check1 || !check2 || !check3){
+            dispatchCheck({ type: 'ALL_CHECK', check: false });
+        }
+    }
     const updateName = useCallback((e) => {
         dispatchUser({ type: 'UPDATE_USER_NAME', name: e.target.value });
     })
@@ -78,9 +192,8 @@ const SignUpContainer = () => {
         dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
 
     })
-    const updateCompare = useCallback((e) => {
+    const updateConfirm = useCallback((e) => {
         dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
-        setCheck(user.password === e.target.value);
     })
     const updatePhoneNumber = useCallback((e) => {
         dispatchUser({ type: 'UPDATE_USER_PHONENUMBER', phoneNumber: e.target.value });
@@ -92,106 +205,94 @@ const SignUpContainer = () => {
     })
 
     const matchPassword = () => {
-        if (check) return user.password === user.password_confirm;
-        else return false;
+        if(user.password.length!=0 && user.password_confirm.length!=0){
+            console.log("0이 아님");
+            setCompare(user.password === user.password_confirm);
+        }
+        else{
+            console.log("0임");
+            setCompare(false);
+        }
     }
 
-    const renderCompaere = () => {
-        if (matchPassword()) {
-            return (
-                <label>비밀번호가 일치합니다.</label>
-            )
-        }
-        else {
-            return (
-                <label>비밀번호가 일치하지 않습니다.</label>
-            )
+    const confirm = () => {
+        const { password, password_confirm } = user;
+        if (password.length != 0 || password_confirm.length != 0) {
+            if (compare) {
+                return (
+                    "비밀번호가 일치합니다."
+                )
+            }
+            else {
+                return (
+                    "비밀번호가 일치하지 않습니다."
+                )
+            }
         }
     }
     const onSignup = () => {
-        history.push(`${Paths.ajoonamu.complete}/${user.name}` );
+        history.push(`${Paths.ajoonamu.complete}/${user.name}`);
         // const { name, email, password, password_confirm } = user;
         // const result = userSignup(email,password,password_confirm);
     }
-
-    useEffect(() => {
-
-    }, [user.password, user.password_confirm])
 
     return (
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
             <div className={styles['sign-main']}>
-                   <div className={styles['sign-content']}>
-                    <label>이름</label>
-                    <SignNormalInput inputType={"text"} initValue={user.name} onChange={updateName} />
-                    <label>이메일</label>
-                    <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} buttonTitle={"중복검사"} />
-                    <label>비밀번호</label>
-                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} />
-                    <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateCompare} />
-                    <div className={(check) ? styles.compare : styles.compare_fail}>
-                        {renderCompaere()}
+                <div className={styles['sign-content']}>
+                    <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={"중복검사"} />
+                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
+                    <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
+                    <div className={cx('compare', { on: compare, not_view: user.password.length == 0 && user.password_confirm.length == 0 })}>
+                        <label>{confirm()}</label>
                     </div>
-                    <label>휴대폰 인증</label>
+                    {/* <label>휴대폰 인증</label>
                     <SignAuthInput inputType={"text"} initValue={user.phoneNumber} onChange={updatePhoneNumber} buttonTitle={"인증번호 발송"} />
-                    <SignAuthInput inputType={"text"} initValue={user.authNumber} onChange={updateAuthNumber} buttonTitle={"인증하기"} />
-                    <AcceptContainer></AcceptContainer>
+                    <SignAuthInput inputType={"text"} initValue={user.authNumber} onChange={updateAuthNumber} buttonTitle={"인증하기"} /> */}
+                    <AcceptContainer
+                        {...check}
+                        updateAllCheck={updateAllCheck}
+                        onChangeCheck1={onChangeCheck1}
+                        onChangeCheck2={onChangeCheck2}
+                        onChangeCheck3={onChangeCheck3}
+                    />
                 </div>
             </div>
-            <Button title={"회원가입"} onClick={onSignup} ></Button>
+            <Button title={"가입완료"} onClick={onSignup} toggle={toggle} ></Button>
         </>
     )
 }
 
-function AcceptContainer() {
-    const [allCheck, setAllCheck] = useState(false);
-    const onChangeCheck = (e) => {
-        setAllCheck(!allCheck);
-        console.log(allCheck);
-    }
+const AcceptContainer =(props) => {
     return (
         <div className={styles['agree']}>
-            <div className={styles['item']}>
-                <div className={styles['sub']}>
-                    <input type="checkbox" checked={allCheck} onClick={onChangeCheck} />
-                    <label>모두 동의합니다</label>
-                </div>
-            </div>
-            <div className={styles['item']}>
-                <div className={styles['sub-text']}>
-                    <input type="checkbox" />
-                    <label>개인정보처리방침 필수 동의</label>
-                </div>
-                <div className={styles['sub-text']}>
-
-                    <label>보기 </label>
-                </div>
-            </div>
-            <div className={styles['item']}>
-                <div className={styles['sub-text']}>
-                    <input type="checkbox" />
-                    <label>이용약관 필수 동의</label>
-                </div>
-                <div className={styles['sub-text']}>
-
-                    <label>보기 </label>
-                </div>
-            </div>
-            <div className={styles['item']}>
-                <div className={styles['sub-text']}>
-                    <input type="checkbox" />
-                    <label>이벤트알림 선택 동의</label>
-                </div>
-                <div className={styles['sub-text']}>
-                    <label>보기 </label>
-                </div>
-            </div>
+            <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
+            <CheckBox id={"check1"} text={"개인정보처리방침 필수동의"} check={props.check1} onChange={props.onChangeCheck1} />
+            <CheckBox id={"check2"} text={"이용약관 필수"} check={props.check2} onChange={props.onChangeCheck2} />
+            <CheckBox id={"check3"} text={"이벤트알림 선택동의"} check={props.check3} onChange={props.onChangeCheck3} />
             <div className={styles['box']}>
                 <div className={styles['sub-text']}>
                     <label>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 </label><br></br>
                     <label>받아보실 수 있습니다. </label>
                 </div>
+            </div>
+        </div>
+    )
+}
+
+
+function CheckBox({ id, text, check, onChange, url, }) {
+    return (
+        <div className={cx('check', 'item')}>
+            <div className={cx('sub-text')}>
+                <input type="checkbox" id={id} checked={check} onClick={onChange} />
+                <label for={id}>
+                    <Check on={check}/>{text}
+                </label>
+            </div>
+            <div className={styles['sub-text']}>
+                <label>보기 </label>
             </div>
         </div>
     )

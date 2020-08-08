@@ -4,4 +4,8 @@
     max-width:$max-width;
     min-width:$min-width;
     margin: 0 auto;
+    .container{
+        padding:$padding-side;
+        background-color: #F9F9F9;
+    }
 }

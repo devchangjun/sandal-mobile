@@ -1,16 +1,19 @@
 @import '../../styels/Root.scss';
 .btn{
-    height: 50px;
+    box-sizing: border-box;
+    height: 60px;
     overflow: hidden;
     position: fixed; bottom:0px; left: 0;
     width: 100%;
     cursor: pointer;
-    border-top: 1px solid rgb(190, 190, 190);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(226, 226, 226);
+    background-color:$normal-color;
+    color:white;
+    padding-bottom: 13px;
+    transition: background-color .15s ease-in-out;
 }
-.bottom-btn{
-    position:absolute; bottom:0px;
+.on{
+    background-color: $main-color;
 }

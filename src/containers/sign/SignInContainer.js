@@ -6,6 +6,8 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
+import classNames from 'classnames/bind'
+const cx = classNames.bind(styles);
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -39,9 +41,22 @@ const SignInContainer = () => {
     const history = useHistory();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const [checked, setChecked] = useState(false);
+    const [toggle,setToggle] = useState(false);
     useEffect(() => {
         console.log("로그인 렌더");
     }, [])
+
+    useEffect(()=>{
+        const{email,password}  =user;
+        if(email.length !=0 && password.length !=0){
+            console.log("토글 완성");
+            setToggle(true);
+        } 
+        else{
+            setToggle(false);
+        }
+    
+    },[user])
 
     const updateEmail = useCallback((e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -53,9 +68,9 @@ const SignInContainer = () => {
         setChecked(!checked);
         console.log(checked);
     })
-    const goToSignup = useCallback(() => {
+    const goToSignup = () => {
         history.push(Paths.ajoonamu.signup);
-    })
+    };
     const onLogin = useCallback(async () => {
 
         const { email, password } = user;
@@ -78,21 +93,28 @@ const SignInContainer = () => {
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
             <div className={styles['sign-main']}>
                    <div className={styles['sign-content']}>
-
-                    <label>이메일</label>
-                    <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} />
-                    <label>비밀번호</label>
-                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} />
-
-                    <div className={styles['sub']}>
-                        <div onClick={goToRecovery}>
-                            <label className={styles['sub-text']}>아이디/비밀번호 찾기</label>
-                        </div>
-                    </div>
+                    <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true}/>
+                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"}/>
                     <div className={styles['btn-box']}>
-                    <LinkButton title={"로그인"} onClick={onLogin}></LinkButton>
-                    <LinkButton title={"회원가입"} onClick={goToSignup}></LinkButton>
+                    <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
                     </div>
+                <div className={styles['recovery-table']}>
+                        <div className={styles['table-cell']} onClick={goToSignup} >
+                            <div className={styles['sub-text']}>회원가입</div>
+                        </div>
+                        {/* <div className={cx('table-cell','line')}>
+                            <div className={styles['vertical-line']}/>
+                        </div> */}
+                        <div className={styles['table-cell']} onClick={goToRecovery}>
+                            <div className={styles['sub-text']}>아이디찾기</div>
+                        </div>
+                        {/* <div className={cx('table-cell','line')}>
+                            <div className={styles['vertical-line']}/>
+                        </div> */}
+                        <div className={styles['table-cell']} onClick={goToRecovery}>
+                            <div className={styles['sub-text']}>비밀번호찾기</div>
+                        </div>
+                </div>
                     {/* 이부분 컴포넌트 만들어야함 */}
                     <div className={styles.social}>
                         <div className={styles.sns}>

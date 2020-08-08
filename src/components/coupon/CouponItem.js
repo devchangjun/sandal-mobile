@@ -9,6 +9,7 @@ const CouponItem = (props) => {
             <div className={styles['pd-box']}>
                 <div className={styles['coupon']}>
                     <div className={styles['pd-box']}>
+                        <div className={styles['pd-side']}>
                         <div className={styles['item']}>
                             <div className={styles['info']}>
                                 <CouponEventName event_name={props.item.event_name} />
@@ -21,7 +22,7 @@ const CouponItem = (props) => {
 
                             </div>
                         </div>
-
+                        </div>
                     </div>
                 </div>
             </div>

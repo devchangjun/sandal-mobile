@@ -24,11 +24,11 @@ const RecoveryContainer = () => {
             <div className={styles['sign-main']}>
                 <div className={styles['sign-content']}>
                     <div className={styles['recovery-box']}>
-                        <div className={styles.linkitem} onClick={onClickIdLink}>
-                            <SignComplete className={styles.linkitem} mainTitle={"아이디찾기"} text={"인증을 통해 아이디 찾기"} />
+                        <div className={styles['link']} onClick={onClickIdLink}>
+                            <SignComplete className={styles['linkitem']} mainTitle={"아이디찾기"} text={"휴대폰 인증을 통해 아이디를 찾습니다."} onBorder={true}/>
                         </div>
-                        <div className={styles.linkitem} onClick={onClickPwLink}>
-                            <SignComplete className={styles.linkitem} mainTitle={"비밀번호 찾기"} text={"인증을 통해 아이디 찾기"} />
+                        <div className={styles['link']} onClick={onClickPwLink}>
+                            <SignComplete className={styles['linkitem']} mainTitle={"비밀번호 찾기"} text={"자신의 아이디와 휴대폰 인증을 통해 비밀번호를 찾습니다."} onBorder={true}/>
                         </div>
                     </div>
                 </div>

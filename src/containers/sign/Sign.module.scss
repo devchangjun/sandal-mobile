@@ -7,17 +7,64 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: $padding;
     .sign-content{
         width: 485px;
         background: #fff;
         border-radius: 10px;
         position: relative;
-        .sub{
+        .recovery-table{
+            display: table; 
+            width: 100%;
+
+            .table-cell{
+                display: table-cell;
+                position: relative;
+                width :100px;
+                vertical-align: middle; 
+                text-align: center;
+                padding:3px 0;
+
+                & + div::after{
+                    border-right: 1px solid #dbdbdb;
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    content: "";
+                    height: 12px;
+                }
+            }
+        .line{
+            width: 1px;
+            height: 1px;
+            .vertical-line{
+                box-sizing: border-box;
+                height: 12px;
+                background-color:#DBDBDB;
+               
+            }
+        }
+      }
+        .btn-box{
+            margin: 35px 0;
+        }
+        .img{
+            border: 0px solid red;
             display: flex;
-            justify-content:flex-end;
-            padding-bottom: 24px;
-            padding-top:3px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .auth-box{
+        overflow: hidden;
+        transition:opacity .3s ease-in-out;
+        height: 135px;
+        opacity: 1;
+        &.not_view {
+        opacity: 0;
+            // height: 0px;
         }
     }
 }
@@ -54,6 +101,7 @@
 
 //회원가입 창 동의서
 .agree{
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -69,6 +117,9 @@
             justify-content: space-between;
             padding-bottom: 24px;
             padding-top:3px; 
+            input{
+
+            }
         }
     }
 
@@ -79,22 +130,26 @@
         text-align: center;
         margin-top: 20px;
     }
-    
 }
 
 
 //회원가입창 비밀번호 일치 불일치
 .compare{
-    font-size: 14px;
-    color:blue;
+    font-size: 12px;
+    color:#A61332;
     margin-bottom:30px;
+    overflow: hidden;
+    transition:all .15s ease-in-out;
+    height: 20px;
+    &.on{
+        font-size: 12px;
+        color:$main-color ;
+        margin-bottom:30px;
+    }
+    &.not_view {
+        height: 0px;
+    }
 }
-.compare_fail{
-    font-size: 14px;
-    color:red;
-    margin-bottom:30px;
-}
-
 // 회원정보 찾기 링크
 
 .recovery-box{
@@ -106,10 +161,24 @@
 
 
 }
-.linkitem{
+.link{
     width: 100%;
     height: auto;
     cursor: pointer;
-    // border: 1px solid black;
 }
 
+
+.check input[type="checkbox"] {
+	display:none;
+}
+
+.check label{
+	width:100%;
+}
+
+.check input[type="checkbox"] + label svg {
+    margin-right: 17px;
+
+}
+.check input[type="checkbox"]:checked + label .chk_img {
+}

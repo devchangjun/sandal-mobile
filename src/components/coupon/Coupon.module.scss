@@ -1,5 +1,8 @@
 @import '../../styels/Root.scss';
 .pd-box{
+    padding: 10px 0px;
+}
+.pd-side{
     padding: 10px;
 }
 
@@ -10,9 +13,9 @@
     margin-bottom: 70px;
     .coupon-item{
         width: 100%;
-        height: 150px;
         position: relative;
-        border: 0px solid black;
+        border: 0px solid red;
+
         .item{
             display: flex;
             flex-direction: row;
@@ -22,9 +25,10 @@
             }
         }
         .coupon{
-         border: 1px solid black;
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+         border-radius: 10px;
          width: 100%;
-         height: 130px;
+         height: 160px;
          .event-name{
              font-size: 20px;
              margin-bottom: 20px;
@@ -45,7 +49,15 @@
 .use-coupon-item{
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid rgb(187, 187, 187);
+
+    .coupon-item{
+        width: 100%;
+        height: 160px;
+        border: 1px solid red;
+        position: relative;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+    }
 
     .td{
         width: 100%;
@@ -63,31 +75,6 @@
     }
 
 }
-.use-coupon-table{
-    display: flex;
-    flex-direction: column;
-    font-size: $font-size;
-    margin-bottom: 70px;
-    .tr{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        text-align: center;
-        border-top :3px solid gray;
-        padding : 10px 0;
-        border-bottom:  1px solid gray;
-        margin: 10px 0;
-        .event-name{
-            width: 100%;
-        }
-        .order-number{
-            width: 100%;
-        }
-        .sale{
-            width: 100%;
-        }
-        .use-date{
-            width: 100%;
-        }
-    }
+.use-coupon-list{
+
 }

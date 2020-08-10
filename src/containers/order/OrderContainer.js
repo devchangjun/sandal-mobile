@@ -34,155 +34,150 @@ const OrderContainer = () => {
         <>
             <TitleBar title={"주문하기"} />
             <div className={styles['order']}>
-                <div className={styles['pd-box']}>
-                    <div className={styles['title']}>
-                        배달정보
+                <div className={cx('title', 'mg-top', 'pd-box')}>
+                    배달정보
                      </div>
-                    <div className={styles['table']}>
-                        <div className={styles['text-info']}>
-                            <div className={styles['info']}>
-                                서울특별시 구로구 구로동 557
+                <div className={styles['table']}>
+                    <div className={cx('text-info', 'pd-box')}>
+                        <div className={styles['info']}>
+                            서울특별시 구로구 구로동 557
                        </div>
+                    </div>
+                    <div className={cx('text-info', 'pd-box')}>
+                        <div className={styles['info']}>
+                            <input type="text" className={cx('input', 'normal')} />
                         </div>
-                        <div className={styles['text-info']}>
+                    </div>
+                    <div className={cx('text-info', 'mg-top', 'pd-box')}>
+                        <div className={cx('info', 'row')}>
+                            <input type="text" placeholder="핸드폰번호" className={cx('input', 'auth')} />
+                            <div className={styles['auth-btn']}>인증번호 발송</div>
+                        </div>
+                    </div>
+                    <div className={cx('text-info', 'mg-top', 'pd-box')}>
+                        <div className={cx('info', 'row')}>
+                            <input type="text" placeholder="인증번호" className={cx('input', 'auth')} />
+                            <div className={styles['auth-btn']}>인증하기</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={cx('title', 'pd-box')}>
+                    요청사항
+                        </div>
+                <div className={cx('table', 'pd-box')}>
+                    <div className={styles['input-save']}>
+                        <div className={styles['input-title']}>
+                            주문 요청사항
+                            </div>
+                        <div className={styles['save']}>
+                            <input type="checkbox"></input> 자동저장
+                            </div>
+                    </div>
+                    <div className={styles['value']}>
+                        <input className={styles['input']}></input>
+                    </div>
+                    <div className={styles['input-save']}>
+                        <div className={styles['input-title']}>
+                            배달 요청사항
+                            </div>
+                        <div className={styles['save']}>
+                            <input type="checkbox"></input> 자동저장
+                            </div>
+                    </div>
+                    <div className={styles['value']}>
+                        <input className={styles['input']}></input>
+                    </div>
+                </div>
+                <div className={cx('title', 'pd-box')}>
+                    결제방법
+                </div>
+                <div className={cx('table', 'pd-box')}>
+                    <div className={styles['value']}>
+                        <div className={styles['payment']}>
+                            만나서 직접 결제
+                            </div>
+                    </div>
+                    <div className={styles['order-info']}>
+                        <div className={styles['box']}>
+                            <div className={styles['label']}>
+                                할인 쿠폰
+                                </div>
                             <div className={styles['info']}>
-                                <input type="text" className={cx('input', 'normal')} />
-                            </div>
+                                1개보유
+                                </div>
                         </div>
-                        <div className={cx('text-info', 'mg-top')}>
-                            <div className={cx('info', 'row')}>
-                                <input type="text" placeholder="핸드폰번호" className={cx('input', 'auth')} />
-                                <div className={styles['auth-btn']}>인증번호 발송</div>
-                            </div>
+                        <div className={styles['box']}>
+                            <div className={styles['label']}>
+                                포인트 사용
+                                </div>
+                            <div className={styles['info']}>
+                                1000원
+                                </div>
                         </div>
-                        <div className={cx('text-info', 'mg-top')}>
-                            <div className={cx('info', 'row')}>
-                                <input type="text" placeholder="인증번호" className={cx('input', 'auth')} />
-                                <div className={styles['auth-btn']}>인증하기</div>
+                    </div>
+                </div>
+                <div className={cx('table', 'pd-box','bg-color','pd-top')}>
+                    <div className={cx('total-order')}>
+                        <div className={cx('item')}>
+                            <div className={cx('text-cost', 'title')}>
+                                <div className={cx('pd-box', 'text-cost')}>
+                                    <div className={cx('text')}>
+                                        총 결제금액
+                                             </div>
+                                    <div className={cx('cost')}>
+                                        50000원
+                                           </div>
+                                </div>
+                            </div>
+                            <div className={styles['total-table']}>
+                                <div className={cx('text-cost', 'info')}>
+                                    <div className={cx('pd-in', 'text-cost')}>
+                                        <div className={cx('text')}>
+                                            주문 금액
+                                              </div>
+                                        <div className={cx('cost')}>
+                                            50000원
+                                              </div>
+                                    </div>
+                                </div>
+                                <div className={cx('text-cost', 'info')}>
+                                    <div className={cx('pd-in', 'text-cost')}>
+                                        <div className={cx('text')}>
+                                            배달비용
+                                                </div>
+                                        <div className={cx('cost')}>
+                                            50000원
+                                                 </div>
+                                    </div>
+                                </div>
+                                <div className={cx('text-cost', 'info')}>
+                                    <div className={cx('pd-in', 'text-cost')}>
+                                        <div className={cx('text')}>
+                                            쿠폰 할인
+                                               </div>
+                                        <div className={cx('cost')}>
+                                            50000원
+                                              </div>
+                                    </div>
+                                </div>
+                                <div className={cx('text-cost', 'info')}>
+                                    <div className={cx('pd-in', 'text-cost')}>
+                                        <div className={cx('text')}>
+                                            포인트 할인
+                                               </div>
+                                        <div className={cx('cost')}>
+                                            50000원
+                                                </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div className={styles['title']}>
-                        요청사항
-                        </div>
-                    <div className={styles['table']}>
-                        <div className={styles['input-save']}>
-                            <div className={styles['input-title']}>
-                                주문 요청사항
-                            </div>
-                            <div className={styles['save']}>
-                                <input type="checkbox"></input> 자동저장
-                            </div>
-                        </div>
-                        <div className={styles['value']}>
-                            <input className={styles['input']}></input>
-                        </div>
-                        <div className={styles['input-save']}>
-                            <div className={styles['input-title']}>
-                                배달 요청사항
-                            </div>
-                            <div className={styles['save']}>
-                                <input type="checkbox"></input> 자동저장
-                            </div>
-                        </div>
-                        <div className={styles['value']}>
-                            <input className={styles['input']}></input>
-                        </div>
-                        <div className={styles['input-save']}>
-                            <div className={styles['input-title']}>
-                                결제 방법
-                            </div>
-                            <div className={styles['save']}>
-                            </div>
-                        </div>
-                        <div className={styles['value']}>
-                            <input className={styles['input']}></input>
-                        </div>
-                        <div className={styles['order-info']}>
-                            <div className={styles['box']}>
-                                <div className={styles['label']}>
-                                    할인 쿠폰
+                    <div className={cx('box', 'bt-mg')}>
+                        <div className={cx('label')}>
+                            <input type="checkbox" /> 구매에 동의하시겠습니까?
                                 </div>
-                                <div className={styles['info']}>
-                                    1개보유
-                                </div>
-                            </div>
-                            <div className={styles['box']}>
-                                <div className={styles['label']}>
-                                    포인트 사용
-                                </div>
-                                <div className={styles['info']}>
-                                    1000원
-                                </div>
-                            </div>
-                            <div className={cx('total-order')}>
-                                <div className={cx('item')}>
-                                    <div className={cx('text-cost', 'title')}>
-                                        <div className={cx('pd-box', 'text-cost')}>
-                                            <div className={cx('text')}>
-                                                총 결제금액
-                                        </div>
-                                            <div className={cx('cost')}>
-                                                50000원
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className={styles['total-table']}>
-
-                                        <div className={cx('text-cost', 'info')}>
-                                            <div className={cx('pd-in', 'text-cost')}>
-                                                <div className={cx('text')}>
-                                                    주문 금액
-                                        </div>
-                                                <div className={cx('cost')}>
-                                                    50000원
-                                        </div>
-                                            </div>
-                                        </div>
-                                        <div className={cx('text-cost', 'info')}>
-                                            <div className={cx('pd-in', 'text-cost')}>
-                                                <div className={cx('text')}>
-                                                    주문 금액
-                                        </div>
-                                                <div className={cx('cost')}>
-                                                    50000원
-                                        </div>
-                                            </div>
-                                        </div>
-                                        <div className={cx('text-cost', 'info')}>
-                                            <div className={cx('pd-in', 'text-cost')}>
-                                                <div className={cx('text')}>
-                                                    주문 금액
-                                        </div>
-                                                <div className={cx('cost')}>
-                                                    50000원
-                                        </div>
-                                            </div>
-                                        </div>
-                                        <div className={cx('text-cost', 'info')}>
-                                            <div className={cx('pd-in', 'text-cost')}>
-                                                <div className={cx('text')}>
-                                                    주문 금액
-                                        </div>
-                                                <div className={cx('cost')}>
-                                                    50000원
-                                        </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-                            <div className={cx('box', 'bt-mg')}>
-                                <div className={cx('label')}>
-                                    <input type="checkbox" /> 구매에 동의하시겠습니까?
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

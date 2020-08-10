@@ -9,7 +9,13 @@
     flex-direction: column;
     font-size: 30px;
     .title{
-        font-size: $font-size;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #F9F9F9;
+        display: flex;
+        align-items: center;
+
+        height: 56px;
     }
     .table{
         display: flex;
@@ -21,9 +27,7 @@
             flex-direction: row;
             margin: 10px 0;
             border: 0px solid red;
-            &.mg-top{
-                margin: 2px 0;
-            }
+           
             .text{
                 width: 450px;
                 border: 0px solid black;
@@ -86,25 +90,17 @@
                 margin: 0;
                 padding-left: 15px;
             }
-        }
-    }
-
-    .order-info{
-        display: flex;
-        flex-direction: column;
-        border: 0px solid black;
-        width: 100%;
-
-        .box{
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;      
-            font-size: 14px;      
-            .sub-title{
-                font-size: 16px;
-                margin: 20px 0 10px 0;
+            .payment{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 56px;
+                width: 100%;
+                border: 1px solid $main-color;
+                color :$main-color;
             }
         }
+
         .total-order{
             margin: 20vpx 0;
             .item{
@@ -139,19 +135,48 @@
             }
         
         }
+    }
+
+    .order-info{
+        display: flex;
+        flex-direction: column;
+        border: 0px solid black;
+        width: 100%;
+
+        .box{
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;      
+            font-size: 14px;      
+            .sub-title{
+                font-size: 16px;
+                margin: 20px 0 10px 0;
+            }
+        }
         .line{
             border-bottom: 1px solid rgb(199, 199, 199);
         }
-        .bt-mg{
-            margin-bottom: 70px;
-        }
+ 
     }
 }
 .pd-box{
-    padding:$padding-side;
+    padding: 0 24px;
     box-sizing: border-box;
 }
 .pd-in{
     width: 100%;
     padding: 5px 30px;
+}
+.mg-top{
+    margin: 2px 0;
+}
+.pd-top{
+    padding-top:30px;
+}
+.bt-mg{
+    margin-top: 10px;
+    margin-bottom: 70px;
+}
+.bg-color{
+    background-color: #F9F9F9;
 }

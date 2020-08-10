@@ -13,7 +13,7 @@ const Message = ({ msg,onClick, isButton }) => {
             </div>
             {isButton ? (
                 <div className={styles['custom-btn']} onClick={onClick}>
-                    맞춤 주문 설정하기
+                    맞춤 주문 설정
                 </div>
             ) : null}
 

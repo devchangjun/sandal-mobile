@@ -4,4 +4,6 @@
     display: table; /* 핵심! */
     width: 100%;
     font-size: $font-size;
+    max-width: $max-width;
+    margin: 0 auto;
 }

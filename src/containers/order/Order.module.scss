@@ -21,6 +21,9 @@
             flex-direction: row;
             margin: 10px 0;
             border: 0px solid red;
+            &.mg-top{
+                margin: 2px 0;
+            }
             .text{
                 width: 450px;
                 border: 0px solid black;
@@ -30,8 +33,37 @@
             .info{
                 width: 100%;
                 border: 0px solid black;
-                
+
                 font-size: $font-size;
+                &.row{
+                    display: flex;
+                    flex-direction: row;
+                    .auth-btn{
+                        width: 100px;
+                        height: 56;
+                        border: 1px solid $main-color;
+                        display: flex;
+                        color :$main-color;
+                        font-size: 11px;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+                .input{
+                    width: 100%;
+                    border: 1px solid #EBEBEB;
+                    box-sizing: border-box;
+                    background-color: white;
+                    height: 56px;
+                    margin: 0;
+                    padding-left: 15px;
+                    &.normal{
+
+                    }
+                    &.auth{
+
+                    }
+                }
             }
         }
         .date-picker{
@@ -42,12 +74,17 @@
             display: flex;
             justify-content: space-between;
         }
-        .input{
+        .value{
             width: 100%;
-            margin: 30px 0;
-            input{
+            margin: 10px 0;
+            .input{
                 width: 100%;
-                height: 30px;
+                border: 1px solid #EBEBEB;
+                box-sizing: border-box;
+                background-color: white;
+                height: 56px;
+                margin: 0;
+                padding-left: 15px;
             }
         }
     }
@@ -61,12 +98,46 @@
         .box{
             display: flex;
             justify-content: space-between;
-            border: 0px solid red;
-            margin: 5px 0;            
+            margin: 5px 0;      
+            font-size: 14px;      
             .sub-title{
                 font-size: 16px;
                 margin: 20px 0 10px 0;
             }
+        }
+        .total-order{
+            margin: 20vpx 0;
+            .item{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .total-table{
+                    width: 100%;
+                    border: 1px  solid #DBDBDB;
+                    box-sizing: border-box;
+                }
+                .text-cost{
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                    align-items: center;
+                    &.title{
+                        background-color: $main-color; 
+                        border: 1px  solid $main-color;
+                        box-sizing: border-box;
+                        width: 328px;
+                        height: 56px;
+                        color: white;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                    &.info{
+                        font-size: 14px;
+                    }
+                }
+            }
+        
         }
         .line{
             border-bottom: 1px solid rgb(199, 199, 199);
@@ -77,5 +148,10 @@
     }
 }
 .pd-box{
-    padding:10px 30px
+    padding:$padding-side;
+    box-sizing: border-box;
+}
+.pd-in{
+    width: 100%;
+    padding: 5px 30px;
 }

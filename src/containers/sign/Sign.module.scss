@@ -81,6 +81,7 @@
 .social{
     margin-top: 50px;
     display: flex;
+    
     flex-direction: row;
     justify-content: center;
     margin-bottom: 50px;
@@ -103,26 +104,8 @@
 .agree{
     position: relative;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     margin-bottom: 50px;
-    .item{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        .sub{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            padding-bottom: 24px;
-            padding-top:3px; 
-            input{
-
-            }
-        }
-    }
-
     .box{
         width: 100%;
         display: flex;
@@ -168,17 +151,3 @@
 }
 
 
-.check input[type="checkbox"] {
-	display:none;
-}
-
-.check label{
-	width:100%;
-}
-
-.check input[type="checkbox"] + label svg {
-    margin-right: 17px;
-
-}
-.check input[type="checkbox"]:checked + label .chk_img {
-}

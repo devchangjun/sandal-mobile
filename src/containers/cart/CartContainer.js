@@ -10,6 +10,8 @@ import CartItem from 'components/cart/CartItem';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';
+import Check from 'components/svg/sign/Check';
+import CheckBox from 'components/checkbox/CheckBox';
 
 const cx = classNames.bind(styles);
 
@@ -106,15 +108,15 @@ const CartContainer = () => {
         <>
             <TitleBar title={"장바구니"} />
             <div className={styles['cart-page']}>
-                {/* <div className={styles['bar']}>
-                    <div className={styles['all-check']}>
-                    <input type="checkbox" checked={allChecked} onClick={handleAllChecked} value="checkedall"></input><label>전체선택</label>
+                <div className={styles['bar']}>
+                    <div className={styles['pd-box']}>
+                    <div className={styles['delete']}>
+                        전체 삭제
                     </div>
-                    <div className={styles['select']}>
-                        선택삭제
                     </div>
-                </div> */}
+                </div>
                 <div className={styles['cart-list']}>
+                        <CartItem/>
                         <CartItem/>
                         <CartItem/>
                   {/* <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/> */}
@@ -140,10 +142,14 @@ const CartContainer = () => {
                         {/* <div className={styles['order-text']}>
                             * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
                         </div> */}
+
+                        {/* 이거 그냥 다시 만드는게 나을듯 */}
                         <div className={styles['estm']}>
-                            <div className={styles['check']}>
-                                <input type="checkbox" checked={esitChcked}></input> <span>견적서 받음</span>
-                                <input type="checkbox" checked={!esitChcked}></input> <span>견적서 안받음</span>
+                            <div className={styles['estm-check']}>
+                            <CheckBox id={"check1"} text={"견적서 미발송"} />
+                            </div>
+                            <div className={styles['estm-check']}>
+                            <CheckBox id={"check1"} text={"견적서 발송"} />
                             </div>
                         </div>
                     </div>
@@ -153,4 +159,8 @@ const CartContainer = () => {
         </>
     )
 }
+
+
+
+
 export default CartContainer;

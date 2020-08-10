@@ -7,7 +7,10 @@ import MenuItem from 'components/item/MenuItem';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
 import { useHistory } from 'react-router';
+import Test from 'components/svg/cart/test.png';
+import classNames from 'classnames/bind'
 
+const cx = classNames.bind(styles);
 const initMenu = {
     item_id: 1,
     title: "과일도시락1",
@@ -24,34 +27,37 @@ const DetailContainer = ({ match }) => {
     }
     return (
         <>
-            <TitleBar title={match.params.data} />
+            <div className={styles['menu-img']}>
+                <img className={styles['img']} src= {Test}/>
+
+            </div>
             <div className={styles['detail-view']}>
-                <div className={styles['menu-view']}>
-                    <MenuItem menuTitle={initMenu.title} menuText={initMenu.text} src={initMenu.img} menuPrice={initMenu.price}></MenuItem>
-                </div>
                 <div className={styles['item-info']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['item-text']}>
+                            과일 도시락
+                         </div>
+                         <div className={styles['item-text']}>
+                         싱싱한 과일들로 구성된 알찬 도시락입니다.
+                         </div>
+                        <div className={styles['cost-count']}>
+                            <div className={styles['cost']}>
+                                    5000원
+                            </div>
+                            <div className={styles['count']}>
+                                <Counter value={1}/>
+                            </div>
+                        </div>
+                        <div className={cx('item-text','mg-top')}>
                             추가 선택
-                    </div>
-                        <div className={styles['item-additional-list']}>
-                            <AdditionalList />
-                        </div>
-                        <div className={styles['item-space']}>
-                            희망수량 <Counter value={10} />
-                        </div>
-                        <div className={styles['item-space']}>
-                            <div className={styles['text']}>
-                                주문금액
-                        </div>
-                            <div className={styles['price']}>
-                                30000원
-                        </div>
-                        </div>
+                         </div>
+                         <div className={styles['item-text']}>
+                            <AdditionalList/>
+                         </div>
                     </div>
                 </div>
             </div>
-            <Button title={"10개담기(30000원)"} onClick ={getCart}/>
+            <Button title={"1개 담기(5,000원)"} onClick ={getCart} toggle={true}/>
         </>
     )
 }

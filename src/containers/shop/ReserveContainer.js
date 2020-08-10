@@ -9,6 +9,8 @@ import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
+import BottomNav from 'components/tab/BottomNav';
+
 
 
 
@@ -86,39 +88,43 @@ const ReserveContainer = ({ tab = 'custom' }) => {
         <>
             <TitleBar title={tab} /> {/*분류명 넣어야함 */}
             <div className={styles['reserve-tab']}>
-                <TabMenu tabs={tabInit} />
-                {/* 이부분 바꿔야함 */}
-                {(tab === 'custom' && result) ? <CustomItemList /> :
-                    (tab === 'custom' && !result) &&
-                    <Message
-                        msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
-                        isButton={true}
-                        onClick={onClickCustomOrder}
-                    />
-                }
 
-                {tab === 'menu1' &&
-                    <MenuItemList />}
-                {tab === 'menu2' &&
-                    <Message
-                        msg={"추천메뉴가 없습니다."}
-                        isButton={false}
-                    />}
-                {tab === 'menu3' &&
-                    <Message
-                        msg={"메뉴가 없습니다."}
-                        isButton={false}
-                    />}
+                <TabMenu tabs={tabInit} />
+                <div className={styles['container']}>
+                    {/* 이부분 바꿔야함 */}
+                    {(tab === 'custom' && result) ? <CustomItemList /> :
+                        (tab === 'custom' && !result) &&
+                        <Message
+                            msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
+                            isButton={true}
+                            onClick={onClickCustomOrder}
+                        />
+                    }
+                    {tab === 'menu1' &&
+                        <MenuItemList />}
+                    {tab === 'menu2' &&
+                        <Message
+                            msg={"추천메뉴가 없습니다."}
+                            isButton={false}
+                        />}
+                    {tab === 'menu3' &&
+                        <Message
+                            msg={"메뉴가 없습니다."}
+                            isButton={false}
+                        />}
+                </div>
             </div>
+            <BottomNav></BottomNav>
+
             <PreferModal
-             open={open}
-             handleClose={handleClose}
-             itemType={itemType}
-             onChangeType={onChangeType}
-             budget={budget}
-             onChangeBudget={onChangeBudget}
-             desireQuan={desireQuan}
-             onCustomOrder={onCustomOrder}
+                open={open}
+                handleClose={handleClose}
+                itemType={itemType}
+                onChangeType={onChangeType}
+                budget={budget}
+                onChangeBudget={onChangeBudget}
+                desireQuan={desireQuan}
+                onCustomOrder={onCustomOrder}
             />
         </>
     )

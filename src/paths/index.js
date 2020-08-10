@@ -9,6 +9,7 @@ export const Paths ={
         complete :"/ajoonamu/complete",
         shop : "/ajoonamu/shop",
         prefer :"/ajoonamu/prefer",
+        mypage:"/ajoonamu/mypage",
         account :"/ajoonamu/account",
         address :"/ajoonamu/address",
         cart :"/ajoonamu/cart",

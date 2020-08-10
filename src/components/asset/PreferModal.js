@@ -18,19 +18,31 @@ import Counter from 'components/counter/Counter';
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: 'relative',
-        textAlign:'center',
-        backgroundColor:'white',
-        color:'black'
+        textAlign: 'center',
+        backgroundColor: 'white',
+        color: 'black',
+        boxShadow: 'none',
+        fontSize: 10
     },
     title: {
-        textAlign:'center',
-        width:'100%',
+        textAlign: 'center',
+        width: '100%',
+        fontSize:14
     },
-    toolbar:{
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center'
+    toolbar: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    } ,
+    content : {
+        padding :0,
+        paddingLeft :24,
+        paddingRight : 24,
+        flex : "0 0 auto"
+    },
+    sub:{
+        fontSize:10
     }
 }));
 
@@ -53,16 +65,16 @@ const FullScreenDialog = (props) => {
                         <Typography variant="h6" className={classes.title}>
                             맞춤주문
                          </Typography>
-                         <div className={styles['empty']}>
+                        <div className={styles['empty']}>
 
-                         </div>
+                        </div>
                     </Toolbar>
                 </AppBar>
                 <div className={styles['title']}>
                     <DialogTitle id="form-dialog-title">맞춤 주문 설정</DialogTitle>
                 </div>
-                <DialogTitle id="form-dialog-title">주문 종류</DialogTitle>
-                <DialogContent>
+                <DialogTitle className={classes.sub} id="form-dialog-title">주문 종류</DialogTitle>
+                <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
                         <form>
                             <select value={props.itemType} onChange={props.onChangeType}>
@@ -71,7 +83,9 @@ const FullScreenDialog = (props) => {
                             </select>
                         </form>
                     </div>
-                    <DialogTitle id="form-dialog-title">전체 예산</DialogTitle>
+                </DialogContent>
+                <DialogTitle id="form-dialog-title">전체 예산</DialogTitle>
+                <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
                         <input value={props.budget} onChange={props.onChangeBudget} ></input>
                     </div>
@@ -81,7 +95,7 @@ const FullScreenDialog = (props) => {
                        </div>
                         <Counter value={props.desireQuan} />
                     </div>
-                    <FixButton title={"설정"} onClick={props.onCustomOrder}/>
+                    <FixButton title={"확인"} onClick={props.onCustomOrder} toggle={true}/>
                 </DialogContent>
             </Dialog>
         </div>

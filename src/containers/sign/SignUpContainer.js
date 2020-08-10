@@ -10,6 +10,7 @@ import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import Check from 'components/svg/sign/Check';
+import CheckBox from 'components/checkbox/CheckBox';
 
 const cx = classNames.bind(styles);
 
@@ -282,20 +283,5 @@ const AcceptContainer =(props) => {
 }
 
 
-function CheckBox({ id, text, check, onChange, url, }) {
-    return (
-        <div className={cx('check', 'item')}>
-            <div className={cx('sub-text')}>
-                <input type="checkbox" id={id} checked={check} onClick={onChange} />
-                <label for={id}>
-                    <Check on={check}/>{text}
-                </label>
-            </div>
-            <div className={styles['sub-text']}>
-                <label>보기 </label>
-            </div>
-        </div>
-    )
-}
 
 export default SignUpContainer;

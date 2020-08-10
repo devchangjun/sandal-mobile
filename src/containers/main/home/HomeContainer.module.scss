@@ -10,6 +10,8 @@
     border: 1px solid black;
     display: flex;
     justify-content: center;
+    max-width: $max-width;
+    margin: 0 auto;
 }
 .banner{
     width: 100%;

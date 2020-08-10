@@ -1,3 +1,23 @@
 .counter{
-    // border: 0px solid red;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    .box{
+        border: 1px solid #DBDBDB;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+         align-items: center;
+        width: 32px;
+        height: 32px;
+    }
+    .value{
+        border: 1px solid #DBDBDB;
+        box-sizing: border-box;
+        display: flex;
+         align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 32px;
+    }
 }

@@ -5,17 +5,30 @@
     min-width: $min-width;
     margin :0 auto;
     width: 100%;
+
     background-color: #F9F9F9;
     .bar{
         width: 100%;
-        height: 50px;
         display: flex;
-        justify-content: space-between;
-        border: 0px solid red;
+        justify-content: flex-end;
+        height: 60px;
+        .pd-box{
+            padding: 24px;
+        }
+        .delete{
+            border :1px solid #DBDBDB;
+            background-color: white;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 32px;
+            font-size: 10px;
+            
+        }
     }
-    .cart-list{
-
-    }
+  
 
     .finally{
         margin-bottom: 50px;
@@ -47,7 +60,19 @@
             margin: 20px 0;
         }
         .estm{
+            display: flex;
+            justify-content: space-between;
             margin: 10px 0;
+            .estm-check{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid $main-color;
+                box-sizing: border-box;
+                border-radius: 2px;
+                width: 156px;
+                height: 56px;
+            }
             .title{
                 margin-bottom: 20px;
             }

@@ -1,5 +1,7 @@
 @import '../../styels//Root.scss';
 .app-title{
+    max-width: $max-width;
+    margin: 0 auto;
     .app-title-main{
         display: flex;
         align-items: center;

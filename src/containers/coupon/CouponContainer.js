@@ -29,7 +29,6 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
     return (
         <>
             <TitleBar title={"쿠폰함"} />
-            <Title />
             <div className={styles['coupon-tab']}>
                 <TabMenu tabs={tabInit} />
                 <div className={styles['container']}>

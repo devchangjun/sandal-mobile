@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Custom.module.scss';
+import Menu from 'components/svg/menu/menu.png';
 const logo = "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg";
 
 const initMenu = [
@@ -39,15 +40,16 @@ const initMenu = [
 const CoustomItem = ({datas}) => {
 
     return (
+        <>
         <div className={styles['custom-item']}>
-            {/* <CustomImgList datas={datas}/> */}
+           <CustomImg src={Menu}/>
             <CustomTitleList datas={datas}/>
-            <div className={styles['custom-info']}>
-                <CustomCount count={"2"}/>
-                <CustomPrice/>
-            </div>
-
+            <CustomPrice/>
+            <div className={styles['dim']}/>
         </div>
+   
+ 
+        </>
     )
 }
 
@@ -55,7 +57,7 @@ const CoustomItem = ({datas}) => {
 function CustomImg({ src }) {
     return (
         <div className={styles['custom-img']}>
-            <img src={logo}></img>
+            <img src={src}></img>
         </div>
     )
 }

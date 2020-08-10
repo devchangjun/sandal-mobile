@@ -1,3 +1,4 @@
+@import '../../styels/Root.scss';
 .reserve-custom-order{
     width: 100%;
     border: 0px solid black;
@@ -9,7 +10,7 @@
     .title-msg{
         text-align: center;
         font-size: 14px;
-        font-weight: bold;
+        color: #555555;
         margin: 20px 0 20px 0;
     }
     .custom-btn{
@@ -17,9 +18,11 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 200px;
-        height: 50px;
-        border: 1px solid black;
+        width: 240px;
+        height: 56px;
+        background-color: $main-color;
+        border-radius: 28px;
+        color:white;
         margin: 20px 0 20px 0;
         cursor: pointer;
 

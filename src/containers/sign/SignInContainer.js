@@ -42,6 +42,7 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const [checked, setChecked] = useState(false);
     const [toggle,setToggle] = useState(false);
+
     useEffect(() => {
         console.log("로그인 렌더");
     }, [])

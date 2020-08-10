@@ -6,24 +6,15 @@ const CouponItem = (props) => {
     console.log(props);
     return (
         <div className={styles['coupon-item']}>
-            <div className={styles['pd-box']}>
-                <div className={styles['coupon']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['pd-side']}>
-                        <div className={styles['item']}>
-                            <div className={styles['info']}>
-                                <CouponEventName event_name={props.item.event_name} />
-                                <CouponSale sale={props.item.sale} />
-                                <CouponEventSub sub_name={props.item.sub_name} />
-                                <CouponDate date={props.item.date} />
-                            </div>
-                            <div className={styles['down']}>
-                                {props.check ? <CouponDown /> : ""}
-
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+            <div className={styles['down']}>
+                {props.check ? <CouponDown /> : ""}
+            </div>
+            <div className={styles['info']}>
+                <div className={styles['pd-box']}>
+                <CouponEventName event_name={props.item.event_name} />
+                <CouponSale sale={props.item.sale} />
+                <CouponEventSub sub_name={props.item.sub_name} />
+                <CouponDate date={props.item.date} />
                 </div>
             </div>
         </div>
@@ -60,7 +51,7 @@ function CouponDate({ date }) {
 }
 function CouponDown({ check }) {
     return (
-        <div className={styles['down']}>
+        <div>
             <FaArrowDown />
         </div>
     )

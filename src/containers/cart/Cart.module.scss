@@ -5,7 +5,7 @@
     min-width: $min-width;
     margin :0 auto;
     width: 100%;
-    border: 0px solid black;
+    background-color: #F9F9F9;
     .bar{
         width: 100%;
         height: 50px;
@@ -23,11 +23,17 @@
         height: auto;
         display: flex;
         flex-direction: column;
-        border: 1px solid black;
-        font-size:$font-size;
+        font-size: 16px;
+        color: $normal-color;
+        .title{
+            &.total{
+                color:black;
+                font-weight: bold;
+            }
+        }
 
         .pd-box{
-            padding: 50px;
+            padding: $padding-side;
 
         .finally-price{
             display: flex;
@@ -36,7 +42,7 @@
         }
         .order-text{
             text-align: center;
-            font-size: 1em;
+            font-size: $font-size;
             color :#999999;
             margin: 20px 0;
         }

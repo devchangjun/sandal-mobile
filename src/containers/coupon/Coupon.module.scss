@@ -7,5 +7,29 @@
     .container{
         padding:$padding-side;
         background-color: #F9F9F9;
+        .code-input{
+            width: 100%;
+            border: 1px solid #999999;
+            box-sizing: border-box;
+            color : #999999;
+            border-radius: 10px;
+            height: 56px;
+            padding-left: 10px;
+            margin: 20px 0;
+        }   
+        .submit-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border: 1px solid $main-color;
+            box-sizing: border-box;
+            border-radius: 10px;
+            width: 100%;
+            height: 56px;
+            color: $main-color;
+            font-size: $font-size;
+            margin-bottom: 20px;
+        }
     }
 }

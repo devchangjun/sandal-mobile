@@ -7,7 +7,7 @@ const UseCouponItemList=()=>{
     return(
 
 
-        <div className={styles['use-coupon-list']}>
+        <div className={styles['coupon-list']}>
             <UseCouponItem/>
             <UseCouponItem/>
             <UseCouponItem/>

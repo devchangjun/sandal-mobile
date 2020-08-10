@@ -9,6 +9,10 @@ import CartItemList from 'components/cart/CartItemList';
 import CartItem from 'components/cart/CartItem';
 import Button from 'components/button/Button';
 import produce from 'immer';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
+
 
 
 
@@ -118,10 +122,10 @@ const CartContainer = () => {
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['finally-price']}>
-                            <div className={styles['title']}>
+                            <div className={cx('title','total')}>
                                 총 주문금액
                         </div>
-                            <div className={styles['price']}>
+                            <div className={cx('title','total')}>
                                {total}원
                         </div>
                         </div>
@@ -129,13 +133,13 @@ const CartContainer = () => {
                             <div className={styles['title']}>
                                 배달비
                         </div>
-                            <div className={styles['price']}>
+                            <div className={styles['title']}>
                                {delivery_cost}원
                         </div>
                         </div>
-                        <div className={styles['order-text']}>
+                        {/* <div className={styles['order-text']}>
                             * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
-                        </div>
+                        </div> */}
                         <div className={styles['estm']}>
                             <div className={styles['check']}>
                                 <input type="checkbox" checked={esitChcked}></input> <span>견적서 받음</span>
@@ -145,7 +149,7 @@ const CartContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={"주문하기"} onClick={goToOrder}></Button>
+            <Button title={"주문하기"} onClick={goToOrder} toggle={true}></Button>
         </>
     )
 }

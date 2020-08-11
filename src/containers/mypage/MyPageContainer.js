@@ -20,13 +20,29 @@ const MyPageContainer = () => {
                     </div>
                 </div>
                 <div className={styles['link']}>
-                        {">"}
+                    {">"}
                 </div>
-        
 
             </div>
-            <div className={styles['container']}>
-
+            <div className={styles['tab']}>
+                <div className={styles['item']}>
+                    공지사항
+                </div>
+                <div className={styles['item']}>
+                    이벤트
+                </div>
+                <div className={styles['item']}>
+                    자주 묻는 질문
+                </div>
+                <div className={styles['item']}>
+                    1:1 문의
+                </div>
+                <div className={styles['item']}>
+                    알림설정
+                </div>
+                <div className={styles['item']}>
+                    버전정보
+                </div>
             </div>
         </>
     )

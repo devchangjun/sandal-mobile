@@ -95,8 +95,8 @@ const FullScreenDialog = (props) => {
                        </div>
                         <Counter value={props.desireQuan} />
                     </div>
-                    <FixButton title={"확인"} onClick={props.onCustomOrder} toggle={true}/>
                 </DialogContent>
+                <FixButton title={"확인"} onClick={props.onCustomOrder} toggle={true}/>
             </Dialog>
         </div>
     );

@@ -87,9 +87,9 @@ const CartModal = (props) => {
                         <div className={styles['estm']}>
 
                         </div>
-                        <LinkButton on={true} onClick={props.onClick}/>
                     {/* <FixButton title={"확인"} onClick={props.handleOpen} toggle={true} /> */}
                 </DialogContent>
+                <LinkButton on={true} onClick={props.onClick}/>
             </Dialog>
         </div>
     );
@@ -99,7 +99,7 @@ function LinkButton({on,onClick}){
     return(
         <div className={styles['btn']}>
             <div className={cx('item',{on:on})} onClick={onClick}>
-                    건너뛰기
+                    건너뛰기!
             </div>
             <div className={cx('item',{on:!on})} onClick={onClick}>
                     견적서 발송

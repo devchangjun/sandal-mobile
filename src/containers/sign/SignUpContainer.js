@@ -78,7 +78,7 @@ const checkReducer = (state, action) => {
         case 'ALL_CHECK':
             return {
                 ...state,
-                allCheck:action.check,
+                allCheck: action.check,
             }
         case 'CHECK1':
             return {
@@ -106,25 +106,25 @@ const SignUpContainer = () => {
 
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const [compare, setCompare] = useState(false);
-    const [toggle,setToggle] = useState(false);
+    const [toggle, setToggle] = useState(false);
 
 
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { allCheck, check1, check2, check3 } = check;
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("이메일 재렌더");
         updateToggle();
-    },[user.email])
+    }, [user.email])
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("비번 재렌더");
         matchPassword();
-    },[user.password,user.password_confirm])
-    useEffect(()=>{
+    }, [user.password, user.password_confirm])
+    useEffect(() => {
         console.log("컴페어 렌더");
         updateToggle();
-    },[compare]);
+    }, [compare]);
 
     useEffect(() => {
         onToggleAllCheck();
@@ -132,18 +132,18 @@ const SignUpContainer = () => {
         console.log("체크 제렌더");
     }, [check1, check2, check3]);
 
-    useEffect(()=>{
+    useEffect(() => {
         onToggleCheck();
         updateToggle();
         console.log("올체크 제렌더");
-    },[allCheck])
+    }, [allCheck])
 
-    const updateToggle= ()=>{
-        const {email,password,password_confirm} = user;
-        let checkbox = (check1&& check2) ? true : false;
-        let userinfo =(email.length!=0 && compare) ? true : false;
+    const updateToggle = () => {
+        const { email, password, password_confirm } = user;
+        let checkbox = (check1 && check2) ? true : false;
+        let userinfo = (email.length != 0 && compare) ? true : false;
         console.log(email.length);
-        let result =(checkbox && userinfo) ? true : false;
+        let result = (checkbox && userinfo) ? true : false;
         setToggle(result);
     };
 
@@ -168,17 +168,17 @@ const SignUpContainer = () => {
             dispatchCheck({ type: 'CHECK2', check: true });
             dispatchCheck({ type: 'CHECK3', check: true });
         }
-        else if(!check1 || !check2 ||!check3){
+        else if (!check1 || !check2 || !check3) {
             dispatchCheck({ type: 'ALL_CHECK', check: false });
         }
     }
-    const onToggleCheck=()=>{
-        if(allCheck){
+    const onToggleCheck = () => {
+        if (allCheck) {
             dispatchCheck({ type: 'CHECK1', check: true });
             dispatchCheck({ type: 'CHECK2', check: true });
             dispatchCheck({ type: 'CHECK3', check: true });
         }
-        else if(!check1 || !check2 || !check3){
+        else if (!check1 || !check2 || !check3) {
             dispatchCheck({ type: 'ALL_CHECK', check: false });
         }
     }
@@ -206,11 +206,11 @@ const SignUpContainer = () => {
     })
 
     const matchPassword = () => {
-        if(user.password.length!=0 && user.password_confirm.length!=0){
+        if (user.password.length != 0 && user.password_confirm.length != 0) {
             console.log("0이 아님");
             setCompare(user.password === user.password_confirm);
         }
-        else{
+        else {
             console.log("0임");
             setCompare(false);
         }
@@ -240,8 +240,8 @@ const SignUpContainer = () => {
     return (
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
-            <div className={styles['sign-main']}>
-                <div className={styles['sign-content']}>
+            <div className={cx('sign-main', 'pd-none')}>
+                <div className={cx('sign-content', 'pd-box','pd-top')}>
                     <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={"중복검사"} />
                     <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                     <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
@@ -251,31 +251,38 @@ const SignUpContainer = () => {
                     {/* <label>휴대폰 인증</label>
                     <SignAuthInput inputType={"text"} initValue={user.phoneNumber} onChange={updatePhoneNumber} buttonTitle={"인증번호 발송"} />
                     <SignAuthInput inputType={"text"} initValue={user.authNumber} onChange={updateAuthNumber} buttonTitle={"인증하기"} /> */}
-                    <AcceptContainer
-                        {...check}
-                        updateAllCheck={updateAllCheck}
-                        onChangeCheck1={onChangeCheck1}
-                        onChangeCheck2={onChangeCheck2}
-                        onChangeCheck3={onChangeCheck3}
-                    />
                 </div>
+                <AcceptContainer
+                    {...check}
+                    updateAllCheck={updateAllCheck}
+                    onChangeCheck1={onChangeCheck1}
+                    onChangeCheck2={onChangeCheck2}
+                    onChangeCheck3={onChangeCheck3}
+                />
+
             </div>
             <Button title={"가입완료"} onClick={onSignup} toggle={toggle} ></Button>
         </>
     )
 }
 
-const AcceptContainer =(props) => {
+const AcceptContainer = (props) => {
     return (
-        <div className={styles['agree']}>
-            <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
-            <CheckBox id={"check1"} text={"개인정보처리방침 필수동의"} check={props.check1} onChange={props.onChangeCheck1} />
-            <CheckBox id={"check2"} text={"이용약관 필수"} check={props.check2} onChange={props.onChangeCheck2} />
-            <CheckBox id={"check3"} text={"이벤트알림 선택동의"} check={props.check3} onChange={props.onChangeCheck3} />
-            <div className={styles['box']}>
-                <div className={styles['sub-text']}>
-                    <label>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 </label><br></br>
-                    <label>받아보실 수 있습니다. </label>
+        <div className={cx('agree')}>
+            <div className={cx('pd-box','line','pd-sub-top')}>
+                <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
+            </div>
+            <div className={styles['background']}>
+                <div className={cx('pd-sub-top')}>
+                    <CheckBox id={"check1"} text={"개인정보처리방침 필수동의"} check={props.check1} onChange={props.onChangeCheck1} />
+                    <CheckBox id={"check2"} text={"이용약관 필수"} check={props.check2} onChange={props.onChangeCheck2} />
+                    <CheckBox id={"check3"} text={"이벤트알림 선택동의"} check={props.check3} onChange={props.onChangeCheck3} />
+                    <div className={styles['box']}>
+                        <div className={styles['sub-text']}>
+                            <label>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를 </label><br></br>
+                            <label>받아보실 수 있습니다. </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

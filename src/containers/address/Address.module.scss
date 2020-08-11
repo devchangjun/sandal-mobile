@@ -1,8 +1,9 @@
 @import '../../styels//Root.scss';
 
-.addr{
+.container{
     max-width: $max-width;
     min-width: $min-width;
+    padding: $padding-side;
     margin: 0 auto;
     .title{
         font-size: 14px;
@@ -15,7 +16,6 @@
         display: flex;
         justify-content: center;
         flex-direction: row;
-        margin: 0 5px;
         .input-box{
                 width: 100%;
                 height: 40px;
@@ -27,12 +27,14 @@
         margin: 20px 0 20px 0;
     }
     .location-btn{
-        border: 1px solid black;
-        margin: 20px 5px;
+        border: 1px solid $main-color;
         display: flex;
+        border-radius: 10px;
+        color:$main-color;
         justify-content: center;
         align-items: center;
         height: 50px;
+        margin:15px 0;
 
     }
 }  

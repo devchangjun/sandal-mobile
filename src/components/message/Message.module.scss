@@ -7,11 +7,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .icon{
+    }
     .title-msg{
         text-align: center;
         font-size: 14px;
         color: #555555;
         margin: 20px 0 20px 0;
+        word-break: keep-all;
     }
     .custom-btn{
         display: flex;

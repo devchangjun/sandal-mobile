@@ -69,6 +69,7 @@ const AddressContainer = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  
   const handleKeyPress = (e) => {
     if (e.key == 'Enter') {
       handleClickOpen();
@@ -93,9 +94,11 @@ const AddressContainer = () => {
   const onClickAddrItem = (data) => {
     setSelectAddr(data);
   }
+
   const onChangeAddr = e => {
     setSearchAddr(e.target.value);
   };
+
   const onChangeDetail = e => {
     setDetailAddr(e.target.value);
   }
@@ -110,9 +113,6 @@ const AddressContainer = () => {
       setAddrs(result);
       console.log(result);
     }
-
-
-
   }
 
   const callApi = () => {
@@ -122,81 +122,42 @@ const AddressContainer = () => {
       .catch(err => console.log(err));
   }
 
-
   useEffect(() => {
     console.log("재 렌더");
   }, [])
 
-
   return (
     <>
-      <TitleBar />
-      <div className={styles['addr']}>
+      <TitleBar title={"주소설정"} />
+      <div className={styles['container']}>
         <div className={styles['title']}>배달 받으실 장소를 입력하세요</div>
         <div className={styles['addr-input']}>
           <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={searchAddr} onChange={onChangeAddr} onKeyPress={handleKeyPress} />
           <div className={styles['search-btn']} onClick={handleClickOpen} ><AiOutlineSearch /></div>
         </div>
         <div className={styles['location-btn']}>
-            현위치로 주소 설정
+          현위치로 주소 설정
           </div>
         <div className={styles['addr-list']}>
           <div className={styles['title']}>최근 배달 주소</div>
           <DeliveryItemList addrs={latestAddrs} />
         </div>
       </div>
-      <AddressModal 
-      open ={open}
-      handleClose={handleClose}
-      searchAddr = {searchAddr}
-      onChangeAddr={onChangeAddr}
-      handleKeyPress={handleKeyPress}
-      onSearch ={onSearch}
-      addrs={addrs}
-      onClickAddrItem={onClickAddrItem}
-      selectAddr={selectAddr}
-      detailAddr={detailAddr}
-      onChangeDetail={onChangeDetail}
-      onInsertAddr={onInsertAddr}
-
-
+      <AddressModal
+        open={open}
+        handleClose={handleClose}
+        searchAddr={searchAddr}
+        onChangeAddr={onChangeAddr}
+        handleKeyPress={handleKeyPress}
+        onSearch={onSearch}
+        addrs={addrs}
+        onClickAddrItem={onClickAddrItem}
+        selectAddr={selectAddr}
+        detailAddr={detailAddr}
+        onChangeDetail={onChangeDetail}
+        onInsertAddr={onInsertAddr}
 
       />
-      {/* <div className={styles['modal']}>
-        <Dialog
-          fullWidth={fullWidth}
-          maxWidth={maxWidth}
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <div className={styles['title']}>
-            <DialogTitle id="form-dialog-title">배달 받을 주소</DialogTitle>
-          </div>
-          <DialogContent>
-            <div className={styles['modal-input-box']}>
-              <input className={styles['modal-input']} type="text" value={userAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={onChangeAddr} onKeyPress={handleKeyPress}></input>
-              <div className={styles['search-btn']} onClick={onSearch} ><BsSearch /></div>
-            </div>
-          </DialogContent>
-          <DialogContent>
-            <div className={styles['addrs-box']}>
-              {addrs ? `${addrs.length}개의 검색결과가 있습니다.` : "0개의 검색결과가 있습니다."}
-              <div className={styles['addrs-list']}>
-                {addrs ? <AddrItemList addrs={addrs} onClick={onClickAddrItem} /> : ""}
-              </div>
-              {selectAddr ? selectAddr : ""}
-              <input className={styles['modal-input']} type="text" value={detailAddr} placeholder="상세 주소를 입력하세요" onChange={onChangeDetail}></input>
-            </div>
-          </DialogContent>
-          <DialogContent>
-            <div className={styles['setting-btn']} onClick={onInsertAddr}>
-              이 주소로 배달지 설정
-          </div>
-          </DialogContent>
-        </Dialog>
-      </div> */}
-
     </>
   );
 };

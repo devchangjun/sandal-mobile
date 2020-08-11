@@ -1,15 +1,17 @@
 @import '../../styels/Root.scss';
 .sign-main{
     max-width: $max-width;
+
     position: relative;
     margin: 0 auto;
+    margin-top: $mg-top;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     padding: $padding;
     .sign-content{
-        width: 485px;
+        width: 100%;
         background: #fff;
         border-radius: 10px;
         position: relative;
@@ -102,16 +104,29 @@
 
 //회원가입 창 동의서
 .agree{
+    max-width: $max-width;
+    width: 100%;
     position: relative;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin: 50px 0;
+    .background{
+        border: 0px solid red;
+        background-color: #EBEBEB;
+        height: 220px;
+    
+        label{
+            color:#777777;
+
+        }
+    }
     .box{
         width: 100%;
         display: flex;
         justify-content: center;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 24px;
     }
 }
 
@@ -151,3 +166,24 @@
 }
 
 
+.pd-none{
+    padding: 0;
+}
+.pd-box{
+    padding: 0 24px;
+}
+.pd-top{
+    padding:45px 24px;
+}
+.pd-sub-top{
+    padding: 20px 24px;
+}
+.line{
+    border-top : 1px solid #EBEBEB;
+    border-bottom: 1px solid #EBEBEB;
+    label{
+        color: #444444;
+        font-size: 20px;
+        font-weight: bold;
+    }
+}

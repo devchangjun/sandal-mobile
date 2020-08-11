@@ -3,7 +3,7 @@ import {Paths} from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
 import {IoIosArrowRoundBack} from 'react-icons/io';
-import logo from 'logo.svg';
+import back from 'components/svg/header/back.svg';
 
 // 메인 로고 이미지
 
@@ -36,7 +36,9 @@ function BackButton(onClick) {
     }
     return (
         <div className ={styles['back'] }onClick={goToBack}>
-            <IoIosArrowRoundBack size="50"/>
+            <div className={styles['pd-box']}>
+            <img src ={back}/>
+            </div>
         </div>
     )
 }

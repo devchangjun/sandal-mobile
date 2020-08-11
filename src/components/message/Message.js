@@ -1,19 +1,24 @@
 import React from 'react';
 import styles from './Message.module.scss';
 import propTypes from 'prop-types';
-
+import NoMenu from 'components/svg/menu/nomenu.svg';
 
 //맞춤 주문시 보여줄 컴포넌트
-const Message = ({ msg,onClick, isButton }) => {
+const Message = ({ src, msg,onClick, isButton ,buttonName }) => {
 
     return (
         <div className={styles['reserve-custom-order']}>
+            {src &&
+            <div className={styles['icon']}>
+                <img src={NoMenu}></img>
+            </div>
+                }
             <div className={styles['title-msg']}>
                 {msg}
             </div>
             {isButton ? (
                 <div className={styles['custom-btn']} onClick={onClick}>
-                    맞춤 주문 설정
+                   {buttonName}
                 </div>
             ) : null}
 

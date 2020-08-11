@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './BottomNav.module.scss';
 import classNames  from 'classnames/bind';
-import { NavLink } from 'react-router-dom';
+import { NavLink ,Link} from 'react-router-dom';
 import styled from 'styled-components';
 import { Paths } from 'paths';
 
@@ -13,6 +13,13 @@ import { AiOutlineUser } from 'react-icons/ai';
 const cx = classNames.bind(styles);
 
 const TabLink = styled(NavLink)`
+    text-decoration:none;
+    color:black;
+    display: table-cell; /* 핵심! */
+    vertical-align: middle; 
+    text-align: center;
+`;
+const LinkBtn = styled(Link)`
     text-decoration:none;
     color:black;
     display: table-cell; /* 핵심! */
@@ -52,17 +59,25 @@ const NavList = () => {
                 <div className={styles['menu']}>쿠폰</div>
             </div>
             </TabLink>
+            <LinkBtn key={3} exact to ={`${Paths.ajoonamu.shop}`}>
             <div className={cx('nav-item','order')}>
                 <div className={styles['menu']}>주문</div>
             </div>
+            </LinkBtn>
+            <TabLink key={4} exact to ={`${Paths.ajoonamu.order_list}/order`} activeStyle={activeStyle}>
+
             <div className={styles['nav-item']}>
                 <div className={styles['icon']}><RiFileList2Line /></div>
                 <div className={styles['menu']}>주문내역</div>
             </div>
+            </TabLink>
+            <TabLink key={5} exact to ={`${Paths.ajoonamu.mypage}`} activeStyle={activeStyle}>
             <div className={styles['nav-item']}>
                 <div className={styles['icon']}><AiOutlineUser /></div>
                 <div className={styles['menu']}>마이페이지</div>
             </div>
+            </TabLink>
+
         </div>
     )
 }

@@ -3,26 +3,35 @@
 .user-info{
     width: 100%;
     height: 120px;
+    margin-top: $mg-top;
     border: 1px solid black;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    font-size: $font-size;
+
 
 }
 .tab{
     display: flex;
     flex-direction: column;
-    
+    .pd-box{
+        &:not(:first-child){
+            border-top : 1px solid #F9F9F9;
+        }
+    }
     .item{
         width: 100%;
         height: 48px;
         display: flex;
         align-items: center;
-        padding: 0 24px;
-            &:not(:first-child){
-                border-top : 1px solid #F9F9F9;
-            }
+        font-size: $font-size;
+         
     }
 
+}
+
+.pd-box{
+    padding: 0 24px;
 }

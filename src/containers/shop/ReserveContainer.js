@@ -98,19 +98,23 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                             msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
                             isButton={true}
                             onClick={onClickCustomOrder}
+                            buttonName={"맞춤 주문 하기"}
+
                         />
                     }
                     {tab === 'menu1' &&
                         <MenuItemList />}
                     {tab === 'menu2' &&
                         <Message
-                            msg={"추천메뉴가 없습니다."}
+                            msg={"추천드릴 메뉴 구성이 존재하지 않습니다."}
+                            src={true}
                             isButton={false}
                         />}
                     {tab === 'menu3' &&
                         <Message
-                            msg={"메뉴가 없습니다."}
+                            msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
                             isButton={false}
+                            src={true}
                         />}
                 </div>
             </div>

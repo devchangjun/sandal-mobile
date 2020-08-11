@@ -2,6 +2,7 @@
 .order{
     margin: 0 auto;
     width: 100%;
+    margin-top :$mg-top;
     max-width: $max-width;
     min-width: $min-width;
     border: 1px solid black;
@@ -14,7 +15,6 @@
         background-color: #F9F9F9;
         display: flex;
         align-items: center;
-
         height: 56px;
     }
     .table{

@@ -13,6 +13,8 @@ import MenuListView from 'components/item/MenuListView';
 import { useSelector } from 'react-redux';
 import BottomNav from 'components/tab/BottomNav';
 
+
+
 const tabInit = [
     {
         url: `${Paths.ajoonamu.shop}/custom?`,
@@ -22,8 +24,6 @@ const tabInit = [
         url: `${Paths.ajoonamu.shop}/menu1`,
         name: '택배주문'
     },
-
-
 ]
 
 
@@ -40,7 +40,9 @@ const HomeContainer = () => {
         <>
             <Header />
             <Title/>
+            <div className={styles['mg-top']}>
             <TabMenu tabs={tabInit}/>
+            </div>
             <div className={styles['carousel']}>
                 <HomeSlick />
             </div>

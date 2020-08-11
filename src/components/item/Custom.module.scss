@@ -2,6 +2,9 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
     .custom-item{
         border: 0px solid blue;
         box-sizing: border-box;

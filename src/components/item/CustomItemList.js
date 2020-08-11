@@ -75,7 +75,6 @@ const CustomItemList = ({init}) => {
     )
     return (
         <div className={styles['custom-lists']}>
-            맞춤메뉴
             {itemList}
         </div>
 

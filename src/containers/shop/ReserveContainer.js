@@ -92,7 +92,12 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 <TabMenu tabs={tabInit} />
                 <div className={styles['container']}>
                     {/* 이부분 바꿔야함 */}
-                    {(tab === 'custom' && result) ? <CustomItemList /> :
+                    {(tab === 'custom' && result) ? 
+                     <div>
+                    맞춤 메뉴
+                    <CustomItemList /> 
+                    </div>
+                    :
                         (tab === 'custom' && !result) &&
                         <Message
                             msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}

@@ -4,12 +4,45 @@
     width: 100%;
     height: 120px;
     margin-top: $mg-top;
-    border: 0px solid black;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     font-size: $font-size;
+    .profile{
+        width: 100px;
+        display: flex;
+        justify-content: center;;
+
+    }
+    .info{
+        width: 100%;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        .point {
+            margin-top: 10px;
+            border: 1px solid #EBEBEB;
+            border-radius: 16px;
+            box-sizing: border-box;
+            width: 152px;
+            height: 32px;
+            text-align: center;
+            padding-top:7px;
+        }
+        .name{
+            span{
+                font-weight: bold;
+            }
+        }
+    }
+
+    .link{
+        display: flex;
+        justify-content: center;
+        width: 50px;
+    }
 
 
 }
@@ -31,7 +64,13 @@
     }
 
 }
-
 .pd-box{
     padding: 0 24px;
+}
+
+.pd-left{
+    padding-left :24px;
+}
+.pd-right{
+    padding-right: 24px;
 }

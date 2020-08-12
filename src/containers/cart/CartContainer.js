@@ -129,10 +129,10 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
+                    {/* <CartItem />
                     <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    {/* <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/> */}
+                    <CartItem /> */}
+                    <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/>
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>

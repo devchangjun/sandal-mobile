@@ -11,10 +11,10 @@ import cart from '../svg/cart/cart.png';
 const CartItem = props => {
 
 
-    // const {id,isChecked,handleCheckChild} = props;
-    // const {item_img,item_name,item_option_id,item_price,item_quanity} =props.item;
-    // const options = props.options;
-    // console.log(options);
+    const { id, isChecked, handleCheckChild } = props;
+    const { item_img, item_name, item_option_id, item_price, item_quanity } = props.item;
+    const options = props.options;
+    console.log(options);
 
     const onClick = () => {
         // console.log(options);
@@ -31,36 +31,32 @@ const CartItem = props => {
                         <div className={styles['item-info']}>
                             <div className={styles['bar']}>
                                 <div className={styles['name']}>
-                                    {/* {item_name} */} 과일도시락
-                            </div>
+                                    {item_name}
+                                </div>
                                 <div className={styles['delete']}>
                                     &times;
                               </div>
                             </div>
                             <div className={styles['options']}>
-                                추가선택 없음
-                        {/* {
-                            options.map(
-                                op =>(
-                                   op.option_name
-                                )
-                            )
-                        } */}
+                                {
+                                    options.map(
+                                        op => (
+                                            op.option_name
+                                        )
+                                    )
+                                }
+
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>
-                                    <Counter value={3} />
-                                    {/* 수량 <Counter value={item_quanity} /> */}
+                                    {/* <Counter value={3} /> */}
+                                     <Counter value={item_quanity} />
                                 </div>
-
-                                {/* <div className={styles['price']}> */}
-                                {/* {item_price} */}
-                                {/* </div> */}
                             </div>
                         </div>
                     </div>
                     <div className={styles['price']}>
-                        {/* {item_price}  */} 50,000원
+                        {item_price} 원
                     </div>
                 </div>
             </div>

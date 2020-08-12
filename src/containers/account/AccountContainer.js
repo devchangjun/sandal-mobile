@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Header from 'components/header/Header';
 import Title from 'components/titlebar/Title';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -6,6 +7,7 @@ import SignAuthInput from 'components/sign/SignAuthInput';
 import styles from './Account.module.scss';
 
 const AccountContainer = () => {
+    const { user } = useSelector(state => state.auth);
     return (
         <>
             <Header/>

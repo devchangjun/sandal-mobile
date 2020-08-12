@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import {useDispatch} from 'react-redux';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Sign.module.scss';
@@ -6,7 +7,9 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
+import {get_user_info} from '../../store/auth/auth';
 import classNames from 'classnames/bind'
+
 const cx = classNames.bind(styles);
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
@@ -39,25 +42,26 @@ const userReducer = (state, action) => {
 
 const SignInContainer = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const [checked, setChecked] = useState(false);
-    const [toggle,setToggle] = useState(false);
+    const [toggle, setToggle] = useState(false);
 
     useEffect(() => {
         console.log("로그인 렌더");
     }, [])
 
-    useEffect(()=>{
-        const{email,password}  =user;
-        if(email.length !=0 && password.length !=0){
+    useEffect(() => {
+        const { email, password } = user;
+        if (email.length != 0 && password.length != 0) {
             console.log("토글 완성");
             setToggle(true);
-        } 
-        else{
+        }
+        else {
             setToggle(false);
         }
-    
-    },[user])
+
+    }, [user])
 
     const updateEmail = useCallback((e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -76,9 +80,18 @@ const SignInContainer = () => {
 
         const { email, password } = user;
         const res = await localLogin(email, password);
+        console.log(res);
         if (res.status == 200) {
-            sessionStorage.setItem("access_token", res.data.access_token);
+            // sessionStorage.setItem("access_token", res.data.access_token);
             // history.push(Paths.index);
+            if (res.data.msg === "회원가입 되어있지 않은 이메일입니다.") {
+                alert("회원가입 되어있지 않은 이메일입니다.");
+            }
+            else if (res.data.access_token) {
+                sessionStorage.setItem("access_token", res.data.access_token);
+                dispatch(get_user_info(res.data.access_token));
+                history.push(Paths.index);
+            }
         }
         else {
             alert("이메일 혹은 패스워드를 확인해주세요");
@@ -93,13 +106,13 @@ const SignInContainer = () => {
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
             <div className={styles['sign-main']}>
-                   <div className={styles['sign-content']}>
-                    <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true}/>
-                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"}/>
+                <div className={styles['sign-content']}>
+                    <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
+                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                     <div className={styles['btn-box']}>
-                    <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
+                        <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
                     </div>
-                <div className={styles['recovery-table']}>
+                    <div className={styles['recovery-table']}>
                         <div className={styles['table-cell']} onClick={goToSignup} >
                             <div className={styles['sub-text']}>회원가입</div>
                         </div>
@@ -115,7 +128,7 @@ const SignInContainer = () => {
                         <div className={styles['table-cell']} onClick={goToRecovery}>
                             <div className={styles['sub-text']}>비밀번호찾기</div>
                         </div>
-                </div>
+                    </div>
                     {/* 이부분 컴포넌트 만들어야함 */}
                     <div className={styles.social}>
                         <div className={styles.sns}>

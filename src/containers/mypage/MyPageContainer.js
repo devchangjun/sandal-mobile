@@ -1,36 +1,62 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Paths } from 'paths';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './MyPage.module.scss';
 import Profile from 'components/svg/sign/profile.png';
 import BottomNav from 'components/tab/BottomNav';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
+
+
 
 const MyPageContainer = () => {
-    const history = useHistory();
 
+
+    const { user } = useSelector(state => state.auth);
+    const history = useHistory();
     const goToLogin = () => {
         history.push(Paths.ajoonamu.signin);
     }
+    const goToAccount = () => {
+        history.push(Paths.ajoonamu.account);
+    }
+    useEffect(() => {
+        console.log("재렌더");
+        console.log(user);
+    }, [user]);
     return (
         <>
             <TitleBar title={"마이페이지"} />
             <div className={styles['user-info']}>
-                <div className={styles['profile']}>
+                <div className={cx('profile','pd-left')}>
                     <img src={Profile}></img>
                 </div>
-                <div className={styles['info']}>
-                    <div className={styles['name']} onClick={goToLogin}>
-                        로그인을 해주세요
-                    </div>
-                    <div className={styles['point']}>
+                <div className={cx('info','pd-box')}>
+                    <div className={styles['auth']} onClick={user ? goToAccount : goToLogin}>
+                        <div className>
+
+                        </div>
+                        {user ?
+                            <div className={styles['name']}>
+                                <span> {user.name}</span>님 반갑습니다.
+                            </div>
+                            : "로그인을 해주세요"}
 
                     </div>
+                    {user &&
+                        <div className={styles['point']}>
+                            보유 포인트 {user.point}
+                        </div>
+                    }
+
                 </div>
-                <div className={styles['link']}>
+                <div className={cx('link','pd-right')}>
                     {">"}
                 </div>
-            </div>
+                </div>
             <div className={styles['tab']}>
                 <div className={styles['pd-box']}>
                     <div className={styles['item']}>

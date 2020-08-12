@@ -47,8 +47,8 @@ const RecoveryPwContainer = () => {
                 <div className={styles['sign-content']}>
                     <SignNormalInput placeholder={"이름"} initValue={name} onChange={onChangeName}/>
                     <SignNormalInput placeholder={"이메일"} initValue={email} onChange={onChangeEmail}/>
-                    <SignAuthInput placeholder={"휴대폰번호"}inputType={""} initValue={phone} buttonTitle={"인증번호 발송"} onChange={onChangePhone} onClick={postAuthNumber}  toggle={toggle}/>
-                    <div className={cx('auth-box',{not_view: !toggle})}>
+                    <SignAuthInput placeholder={"휴대폰번호"}inputType={""} initValue={phone} buttonTitle={toggle ? "인증번호 재발송" : "인증번호 발송"} onChange={onChangePhone} onClick={postAuthNumber}  toggle={toggle}/>
+                    <div className={cx('auth-btn',{not_view: !toggle})}>
                     <SignAuthInput inputType={"text"} initValue={auth} buttonTitle={"인증하기"} onChange={onChangeAuth} />
                     </div>
                     <Button title={"확인"}></Button>

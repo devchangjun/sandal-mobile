@@ -1,7 +1,8 @@
 @import '../../styels/Root.scss';
+
+//로그인 회원가입 정보찾기에 관한 모든 메인
 .sign-main{
     max-width: $max-width;
-
     position: relative;
     margin: 0 auto;
     margin-top: $mg-top;
@@ -15,10 +16,11 @@
         background: #fff;
         border-radius: 10px;
         position: relative;
-        .recovery-table{
+        //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
+        .link-table{
             display: table; 
             width: 100%;
-
+            //링크 테이블 셀
             .table-cell{
                 display: table-cell;
                 position: relative;
@@ -37,18 +39,9 @@
                     height: 12px;
                 }
             }
-        .line{
-            width: 1px;
-            height: 1px;
-            .vertical-line{
-                box-sizing: border-box;
-                height: 12px;
-                background-color:#DBDBDB;
-               
-            }
-        }
+
       }
-        .btn-box{
+        .login-btn{
             margin: 35px 0;
         }
         .img{
@@ -59,7 +52,9 @@
             justify-content: center;
         }
     }
-    .auth-box{
+
+    //휴대폰 인증 버튼
+    .auth-btn{
         overflow: hidden;
         transition:opacity .3s ease-in-out;
         height: 135px;
@@ -71,6 +66,7 @@
     }
 }
 
+//회색 글씨
 .sub-text{
     font-size: 12px;
     color: #999999;
@@ -111,6 +107,8 @@
     display: flex;
     flex-direction: column;
     margin: 50px 0;
+
+    //회원가입 수신 동의서 백그라운드 
     .background{
         border: 0px solid red;
         background-color: #EBEBEB;
@@ -121,7 +119,9 @@
 
         }
     }
-    .box{
+
+    //SMS 알림
+    .sms{
         width: 100%;
         display: flex;
         justify-content: center;
@@ -148,6 +148,7 @@
         height: 0px;
     }
 }
+
 // 회원정보 찾기 링크
 
 .recovery-box{

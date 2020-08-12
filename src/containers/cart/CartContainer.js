@@ -13,6 +13,7 @@ import classNames from 'classnames/bind';
 import Check from 'components/svg/sign/Check';
 import CheckBox from 'components/checkbox/CheckBox';
 import CartModal from 'components/asset/CartModal';
+import Message from 'components/message/Message';
 
 const cx = classNames.bind(styles);
 
@@ -117,44 +118,40 @@ const CartContainer = () => {
     }
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
-    return (
-        <>
-            <TitleBar title={"장바구니"} />
-            <div className={styles['cart-page']}>
-                <div className={styles['bar']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['delete']}>
+    const renderList = () => {
+        return (
+            <>
+            <div className={styles['bar']}>
+                <div className={styles['pd-box']}>
+                    <div className={styles['delete']}>
                             전체 삭제
                     </div>
-                    </div>
                 </div>
-                <div className={styles['cart-list']}>
-                    {/* <CartItem />
-                    <CartItem />
-                    <CartItem /> */}
-                    <CartItemList allChecked ={allChecked} carts={cartList}  handleCheckChild={handleCheckChild}/>
-                </div>
-                <div className={styles['finally']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['finally-price']}>
-                            <div className={cx('title', 'total')}>
-                                총 주문금액
+            </div>
+            <div className={styles['cart-list']}>
+                    <CartItemList allChecked={allChecked} carts={cartList} handleCheckChild={handleCheckChild} />
+             </div>
+            <div className={styles['finally']}>
+                 <div className={styles['pd-box']}>
+                     <div className={styles['finally-price']}>
+                        <div className={cx('title', 'total')}>
+                             총 주문금액
                         </div>
-                            <div className={cx('title', 'total')}>
+                        <div className={cx('title', 'total')}>
                                 {total}원
                         </div>
-                        </div>
+                       </div>
                         <div className={styles['finally-price']}>
                             <div className={styles['title']}>
                                 배달비
-                        </div>
+                             </div>
                             <div className={styles['title']}>
                                 {delivery_cost}원
-                        </div>
+                          </div>
                         </div>
                         {/* <div className={styles['order-text']}>
-                            * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
-                        </div> */}
+                    * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
+                </div> */}
 
                         {/* 이거 그냥 다시 만드는게 나을듯 */}
                         <div className={styles['estm']}>
@@ -167,15 +164,32 @@ const CartContainer = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <Button title={"주문하기"} onClick={handleOpen} toggle={true}></Button>
-            <CartModal
-                open={open}
-                handleClose={handleClose}
-                handleOpen={handleOpen}
-                onClick={goToOrder}
-            />
 
+                <Button title={"주문하기"} onClick={handleOpen} toggle={true}></Button>
+                <CartModal
+                    open={open}
+                    handleClose={handleClose}
+                    handleOpen={handleOpen}
+                    onClick={goToOrder}
+                />
+            </>
+        )
+    }
+
+
+    return (
+        <>
+            <TitleBar title={"장바구니"} />
+            <div className={styles['cart-page']}>
+                {cartList.length!==0 ? renderList() : 
+                    <Message
+                        src={true}
+                        msg={"장바구니가 비었습니다."}
+                        isButton={true}
+                        buttonName={"주문하러 가기"}
+                        />
+                }
+            </div>
         </>
     )
 }

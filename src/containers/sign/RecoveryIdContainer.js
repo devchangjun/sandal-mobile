@@ -19,7 +19,7 @@ const RecoveryIdContainer = () => {
     const [success , setSuccess] = useState(false); 
 
 
-    const onChangeId = (e) => {
+    const onChangeName = (e) => {
         setUserName(e.target.value);
     }
     const onChangePhone = (e) => {
@@ -39,9 +39,9 @@ const RecoveryIdContainer = () => {
 
             <div className={styles['sign-main']}>
                 <div className={styles['sign-content']}>
-                    <SignNormalInput inputType={"text"} initValue={userName} onChange={onChangeId} placeholder={"이름"}/>
+                    <SignNormalInput inputType={"text"} initValue={userName} onChange={onChangeName} placeholder={"이름"}/>
                     <SignAuthInput inputType={"text"} onClick={postAuthNumber} toggle={toggle}initValue={userPhone} buttonTitle={toggle ? "인증번호 재발송" : "인증번호 발송"} onChange={onChangePhone} placeholder={"핸드폰 번호"}/>
-                    <div className={cx('auth-box',{not_view: !toggle})}>
+                    <div className={cx('auth-btn',{not_view: !toggle})}>
                     <SignAuthInput inputType={"text"} initValue={userAuth} buttonTitle={"인증하기"} onChange={onChangeAuth} />
                     </div>
                     <Button title={"확인"}></Button>

@@ -28,10 +28,9 @@ const DetailContainer = ({ menu_name }) => {
         <>
             <div className={styles['menu-img']}>
                 <img className={styles['img']} src= {Test}/>
-
             </div>
             <div className={styles['detail-view']}>
-                <div className={styles['item-info']}>
+                <div className={styles['menu-info']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['item-text']}>
                             {menu_name}

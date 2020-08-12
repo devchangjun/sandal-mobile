@@ -109,10 +109,10 @@ const SignInContainer = () => {
                 <div className={styles['sign-content']}>
                     <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
                     <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
-                    <div className={styles['btn-box']}>
+                    <div className={styles['login-btn']}>
                         <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
                     </div>
-                    <div className={styles['recovery-table']}>
+                    <div className={styles['link-table']}>
                         <div className={styles['table-cell']} onClick={goToSignup} >
                             <div className={styles['sub-text']}>회원가입</div>
                         </div>

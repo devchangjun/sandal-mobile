@@ -14,6 +14,7 @@
     - $yarn add redux-devtools-extension
     - $yarn add redux-saga
     - &yarn add redux-devtools-extension
+    - &yarn add qs
     
     
 2. 추후 생각해야할 패키지

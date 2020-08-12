@@ -7,7 +7,7 @@ import logo from 'logo.svg';
 const initMenu = [
     {
         item_id: 1,
-        title: "과일도시락",
+        title: "과일도시락1",
         text: "과일도시락 맛잇어",
         img: "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg",
         price: "5000원"

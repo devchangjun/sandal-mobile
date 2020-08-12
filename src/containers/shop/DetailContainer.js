@@ -18,9 +18,8 @@ const initMenu = {
     price: "5000원"
 }
 
-const DetailContainer = ({ match }) => {
+const DetailContainer = ({ menu_name }) => {
     const history = useHistory();
-    console.log(match.params.data)
 
     const getCart = () => {
         history.push(Paths.ajoonamu.cart);
@@ -35,7 +34,7 @@ const DetailContainer = ({ match }) => {
                 <div className={styles['item-info']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['item-text']}>
-                            과일 도시락
+                            {menu_name}
                          </div>
                          <div className={styles['item-text']}>
                          싱싱한 과일들로 구성된 알찬 도시락입니다.

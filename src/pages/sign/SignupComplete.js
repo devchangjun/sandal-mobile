@@ -1,12 +1,17 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
 import SignCompleteContainer from 'containers/sign/SignCompleteContainer';
+import qs from 'qs';
 
-const SignupComplete =({match})=>{
+const SignupComplete =({match,location})=>{
     console.log(match.params.name);
+    console.log(location);
+    const query = qs.parse(location.search,{
+        ignoreQueryPrefix: true
+    });
+    console.log(query);
     return(
-        <SignCompleteContainer name={match.params.name}/>
-        // <Route path={`${match.url}/:name`} component={SignCompleteContainer}> </Route>
+        <SignCompleteContainer name={query.name}/>
     )
 }
 

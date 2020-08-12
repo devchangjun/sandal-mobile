@@ -12,16 +12,12 @@ const MenuDetailLink = styled(NavLink)`
     margin:10px;
 `;
 
-const NewButton = styled.button`
-    background :red;
-`;
 
 //홈 메뉴 아이템 컴포넌트
 const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
-
     return (
         // item_id 로 경로 줘야함
-        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail/${menuTitle}`}>
+        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?menu=${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />
                 <div className={styles['pd-box']}>

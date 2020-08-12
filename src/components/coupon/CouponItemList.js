@@ -43,7 +43,6 @@ const cp_init=[
 ]
 
 const CouponItemList =({check})=>{
-    console.log("체크확인" +check);
     const list = cp_init.map(cp=>(
         <CouponItem key ={cp.cp_id} item={cp} check={check}/>
     ))

@@ -3,7 +3,7 @@ import styles from './Coupon.module.scss';
 import { FaArrowDown } from 'react-icons/fa';
 
 const CouponItem = (props) => {
-    console.log(props);
+    // console.log(props);
     return (
         <div className={styles['coupon-item']}>
             <div className={styles['down']}>

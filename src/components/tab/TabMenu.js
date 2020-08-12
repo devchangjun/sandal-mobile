@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { Paths } from 'paths';
-import { NavLink } from 'react-router-dom';
+import { NavLink,useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './TabMenu.module.scss';
 
@@ -18,7 +18,6 @@ const TabLink = styled(NavLink)`
 
 const TabMenu = ({ tabs }) => {
 
-    console.log(tabs);
     const activeStyle = {
         height: '100%',
         textDecoration: 'none',
@@ -27,8 +26,7 @@ const TabMenu = ({ tabs }) => {
     };
 
     const tabList = tabs.map(tab => (
-
-        <TabLink key={tab.url} exact to={tab.url} activeStyle={activeStyle}><TabItem name={tab.name} /> </TabLink>
+        <TabLink key={tab.url} to={tab.url} activeStyle={activeStyle}><TabItem name={tab.name} /> </TabLink>
     ))
         ;
     return (

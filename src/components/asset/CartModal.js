@@ -99,7 +99,7 @@ function LinkButton({on,onClick}){
     return(
         <div className={styles['btn']}>
             <div className={cx('item',{on:on})} onClick={onClick}>
-                    건너뛰기!
+                    건너뛰기
             </div>
             <div className={cx('item',{on:!on})} onClick={onClick}>
                     견적서 발송

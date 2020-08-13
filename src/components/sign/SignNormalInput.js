@@ -1,5 +1,5 @@
 import React,{useRef, useEffect} from 'react';
-import styles from './SignModule.module.scss';
+import styles from './SignInput.module.scss';
 
 //인증 버튼을 포함하지 않을 input
 

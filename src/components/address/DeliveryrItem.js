@@ -1,31 +1,29 @@
 import React from 'react';
 import styles from './Addr.module.scss';
 
-const DeliveryrItem = ({ jibunAddr, roadAddr, onClick }) => {
+const DeliveryrItem = (props) => {
 
     /* 
         최근 배달 주소를 보여줄 컴포넌트
     */
-
+   const {addr1,addr2,lat,lan} = props;
+    console.log(props);
 
     //배달 받을 주소로 설정
     const handleClick = () => {
-        console.log("gd");
-        var data = jibunAddr;
+        console.log("배달지 주소로 선택합니다");
     }
 
     //최근 배달 주소 삭제
     const handleRemove = () => {
-
-        // 최근 배달 주소 삭제시 id값 넣어줘야 함.
-        console.log("삭제");
+        console.log("배달지 삭제 삭제");
     }
 
     return (
-        <div className={styles['latest-item']} onClick={handleClick}>
+        <div className={styles['delivery-item']} onClick={handleClick}>
             <div className={styles['item-box']}>
-                <JibunAddrBox jibunAddr={jibunAddr}></JibunAddrBox>
-                <RoadAddrBox roadAddr={roadAddr}></RoadAddrBox>
+                <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
+                <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
             </div>
             <div className={styles['item-remove']} onClick={(e) => {
                 e.stopPropagation();

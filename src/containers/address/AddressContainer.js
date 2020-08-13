@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,useCallback } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { BsSearch } from 'react-icons/bs';
 import styles from './Address.module.scss';
@@ -7,9 +7,7 @@ import AddrItemList from 'components/address/AddrItemList';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { AiOutlineSearch } from 'react-icons/ai';
 import AddressModal from 'components/asset/AddressModal';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { getDeliveryList } from '../../api/address/address';
 import produce from 'immer';
 
 // import key from "./key";
@@ -42,18 +40,20 @@ const AddressContainer = () => {
   const [maxWidth, setMaxWidth] = React.useState('sm');
   const [open, setOpen] = React.useState(false);
   const nextId = useRef(3);
-  const [latestAddrs, setLatestAddrs] = useState([
-    {
-      id: 1,
-      jibunAddr: "동아대학교",
-      roadAddr: "사하구",
-    },
-    {
-      id: 2,
-      jibunAddr: "동아대학교",
-      roadAddr: "사하구",
-    }
-  ])
+  const [delivery_addrs, setDeliveryAddrs] = useState([]);
+
+  useEffect(()=>{
+    getList();
+  },[]);
+
+
+  const getList = useCallback(async () => {
+    const token = sessionStorage.getItem("access_token");
+    const res = await getDeliveryList(token);
+    console.log(res.data.query);
+    setDeliveryAddrs(res.data.query);
+  }, []);
+
 
   const handleClickOpen = () => {
     if (searchAddr == "") {
@@ -83,8 +83,8 @@ const AddressContainer = () => {
       jibunAddr: selectAddr,
       roadAddr: detailAddr
     }
-    setLatestAddrs(
-      produce(latestAddrs, draft => {
+    setDeliveryAddrs(
+      produce(delivery_addrs, draft => {
         draft.push(item);
       })
     )
@@ -140,7 +140,7 @@ const AddressContainer = () => {
           </div>
         <div className={styles['addr-list']}>
           <div className={styles['title']}>최근 배달 주소</div>
-          <DeliveryItemList addrs={latestAddrs} />
+          <DeliveryItemList addrs={delivery_addrs} />
         </div>
       </div>
       <AddressModal

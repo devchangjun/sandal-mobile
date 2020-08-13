@@ -9,7 +9,7 @@ import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
-import BottomNav from 'components/tab/BottomNav';
+import BottomNav from 'components/nav/BottomNav';
 
 
 

@@ -35,6 +35,16 @@ export const localLogin = async (email, password) => {
     return res;
 }
 
+export const localLogout = async (token) =>{
+    const req = DEFAULT_URL + "user/logout";
+    axios.defaults.baseURL = req;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const res = await axios.post();
+    console.log(res.data);
+    return res.data;
+}
+
 export const localRegister = async (email, password, password_confirm) => {
 
     const req = DEFAULT_URL + "user/register";

@@ -53,6 +53,7 @@ const NavList = () => {
 
     const goToCoupon =()=>{
         history.push(`${Paths.ajoonamu.coupon}/mycoupon`)
+        console.log(window.location.pathname);
     }
     const goToOrderList =()=>{
         history.push(`${Paths.ajoonamu.order_list}/order`)

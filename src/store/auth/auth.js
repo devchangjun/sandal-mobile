@@ -5,11 +5,16 @@ const GET_USERINFO = "GET_USERINFO";
 const GET_USERINFO_SUCCEED = "GET_USERINFO_SUCCEED";
 const GET_USERINFO_ERROR = "GET_USERINFO_ERROR";
 
+const LOGOUT = "LOGOUT";
 
 export const get_user_info = (token) => ({
     type: GET_USERINFO,
     token,
 });
+
+export const logout = () => ({
+    type: LOGOUT
+})
 
 const initState = {
     loading: false,
@@ -27,14 +32,14 @@ function* get_user_info_saga(action) {
         yield put(
             {
                 type: GET_USERINFO_SUCCEED,
-                payload :res
+                payload: res
             }
         )
     }
-    catch(e){
+    catch (e) {
         yield put({
             type: GET_USERINFO_ERROR,
-            payload :e 
+            payload: e
         })
     }
 
@@ -66,6 +71,15 @@ export default function auth(state = initState, action) {
                 ...state,
                 error: true,
             }
+        case LOGOUT:
+            console.log("로그아웃");
+            return {
+                ...state,
+                loading: false,
+                succeed: false,
+                user: null
+            }
+
         default:
             return state
     }

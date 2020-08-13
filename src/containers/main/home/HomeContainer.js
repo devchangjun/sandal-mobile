@@ -11,9 +11,7 @@ import HomeSlick from './HomeSlick';
 import TabMenu from 'components/tab/TabMenu';
 import MenuListView from 'components/item/MenuListView';
 import { useSelector } from 'react-redux';
-import BottomNav from 'components/tab/BottomNav';
-
-
+import BottomNav from 'components/nav/BottomNav';
 
 const tabInit = [
     {

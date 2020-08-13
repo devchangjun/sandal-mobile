@@ -6,7 +6,7 @@ import Title from 'components/titlebar/Title';
 import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
-import BottomNav from 'components/tab/BottomNav';
+import BottomNav from 'components/nav/BottomNav';
 import SignAuthInput from 'components/sign/SignAuthInput';
 
 const tabInit = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './SignModule.module.scss';
+import styles from './SignInput.module.scss';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);

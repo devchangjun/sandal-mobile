@@ -2,8 +2,6 @@ import React from 'react';
 import { Paths } from 'paths'
 import styles from './Detail.module.scss';
 import Button from 'components/button/Button';
-import TitleBar from 'components/titlebar/TitleBar'
-import MenuItem from 'components/item/MenuItem';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
 import { useHistory } from 'react-router';

@@ -53,13 +53,8 @@ const SignInContainer = () => {
 
     useEffect(() => {
         const { email, password } = user;
-        if (email.length != 0 && password.length != 0) {
-            console.log("토글 완성");
-            setToggle(true);
-        }
-        else {
-            setToggle(false);
-        }
+        const btnToggle = (email.length != 0 && password.length != 0) ? true : false;
+        setToggle(btnToggle);
 
     }, [user])
 

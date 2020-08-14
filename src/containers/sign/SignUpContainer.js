@@ -201,12 +201,12 @@ const SignUpContainer = () => {
     })
 
     const matchPassword = () => {
+
+
         if (user.password.length != 0 && user.password_confirm.length != 0) {
-            console.log("0이 아님");
             setCompare(user.password === user.password_confirm);
         }
         else {
-            console.log("0임");
             setCompare(false);
         }
     }

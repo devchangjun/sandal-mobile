@@ -37,7 +37,7 @@ const MyPageContainer = () => {
         }
     }
     useEffect(() => {
-        console.log("재렌더");
+        console.log("리렌더");
         console.log(user);
     }, [user]);
     return (

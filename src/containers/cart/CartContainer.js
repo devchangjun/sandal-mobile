@@ -113,9 +113,7 @@ const CartContainer = () => {
         return;
     }
 
-    const test = () => {
-        console.log(allChecked);
-    }
+
     const goToOrder = () => history.push(Paths.ajoonamu.order);
 
     const renderList = () => {

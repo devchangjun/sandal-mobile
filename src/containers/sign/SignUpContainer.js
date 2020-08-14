@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths'
+import {localRegister} from '../../api/auth/auth';
 import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
@@ -113,36 +114,30 @@ const SignUpContainer = () => {
     const { allCheck, check1, check2, check3 } = check;
 
     useEffect(() => {
-        console.log("이메일 재렌더");
         updateToggle();
     }, [user.email])
 
     useEffect(() => {
-        console.log("비번 재렌더");
         matchPassword();
     }, [user.password, user.password_confirm])
     useEffect(() => {
-        console.log("컴페어 렌더");
         updateToggle();
     }, [compare]);
 
     useEffect(() => {
         onToggleAllCheck();
         updateToggle();
-        console.log("체크 제렌더");
     }, [check1, check2, check3]);
 
     useEffect(() => {
         onToggleCheck();
         updateToggle();
-        console.log("올체크 제렌더");
     }, [allCheck])
 
     const updateToggle = () => {
         const { email, password, password_confirm } = user;
         let checkbox = (check1 && check2) ? true : false;
         let userinfo = (email.length != 0 && compare) ? true : false;
-        console.log(email.length);
         let result = (checkbox && userinfo) ? true : false;
         setToggle(result);
     };
@@ -231,10 +226,18 @@ const SignUpContainer = () => {
             }
         }
     }
-    const onSignup = () => {
-        history.push(`${Paths.ajoonamu.complete}/${user.name}`);
-        // const { name, email, password, password_confirm } = user;
-        // const result = userSignup(email,password,password_confirm);
+    const onSignup = async () => {
+        const { name, email, password, password_confirm } = user;
+        const res = await localRegister(email,password,password_confirm);
+        console.log(res);
+        if(res.data.msg ==="존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.") {
+            alert("이미 존재하는 이메일 입니다.");
+        }
+        else if(res.data.status ==="success"){
+            console.log("회원가입 완료");
+            history.push(`${Paths.ajoonamu.complete}?name=${email}`);
+        }
+  
     }
 
     return (

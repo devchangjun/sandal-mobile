@@ -45,15 +45,15 @@ const BottomNav = () => {
 const NavList = () => {
 
     const history =useHistory();
-    const location = useLocation();
-    const [path,setPath] = useState('');
+    // const location = useLocation();
+    // const [path,setPath] = useState('');
 
-    const activeStyle = {
-        height: '100%',
-        textDecoration: 'none',
-        color: 'black',
-        borderBottom: '3px solid #000'
-    };
+    // const activeStyle = {
+    //     height: '100%',
+    //     textDecoration: 'none',
+    //     color: 'black',
+    //     borderBottom: '3px solid #000'
+    // };
 
     const goToHome =()=>{
         history.push(Paths.index);
@@ -87,13 +87,13 @@ const NavList = () => {
                 <div className={styles['menu']}>주문내역</div>
             </div>
             <div className={styles['nav-item']} onClick={goToMyPage}>
-                <div className={styles['icon']}><AiOutlineUser / ></div>
+                <div className={styles['icon']}><AiOutlineUser/></div>
                 <div className={styles['menu']}>마이페이지</div>
             </div>
-
         </div>
     )
 }
+
 const NavItem = ({ src, title }) => {
     return (
         <div className={styles['nav-item']}>
@@ -101,6 +101,6 @@ const NavItem = ({ src, title }) => {
             <div className={styles['menu']}>{title}</div>
         </div>
     )
-}
+} 
 
 export default BottomNav;

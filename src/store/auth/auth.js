@@ -23,7 +23,6 @@ function* get_user_info_saga(action) {
     console.log(action);
     try {
         const res = yield call(auth_api.getUserInfo, action.payload);
-        console.log(res);
         yield put(
             {
                 type: GET_USERINFO_SUCCEED,

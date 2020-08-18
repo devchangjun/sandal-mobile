@@ -5,8 +5,16 @@
     min-width:$min-width;
     margin: 0 auto;
     .container{
-        padding:$padding-side;
+        // padding:$padding-side;
         background-color: #F9F9F9;
+        .coupon-title{
+            border:0px solid red;
+            padding: 10px 24px;
+        }
+        .coupon-form{
+            background-color:#fff;
+            padding:24px;
+        }
         .code-input{
             width: 100%;
             border: 1px solid #999999;
@@ -15,13 +23,16 @@
             border-radius: 10px;
             height: 56px;
             padding-left: 10px;
-            margin: 20px 0;
-        }   
+            margin: 0px 0;
+        }
+        .coupon-list{
+            background-color:#F9F9F9;
+        }
         .submit-btn{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-
             border: 1px solid $main-color;
             box-sizing: border-box;
             border-radius: 10px;
@@ -29,7 +40,26 @@
             height: 56px;
             color: $main-color;
             font-size: $font-size;
-            margin-bottom: 20px;
+            margin-top: 10px;
+            background-color:#fff;
         }
     }
+}
+.pd-box{
+    padding: 0 24px;
+}
+.sticky-title{
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 40px;
+    width: 100%;
+    height: 40px;
+    z-index: 10;
+    // border:1px solid red;
+    background-color: #F9F9F9;
+
+}
+.shadow{
+    box-shadow: 0 0 10px gray;
 }

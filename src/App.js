@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import './App.css';
 import { get_user_info } from './store/auth/auth';
 
 import { Paths } from 'paths';
 import { Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage } from 'pages';
-import { Home, Account, Address, Reserve, DetailMenu, Prefer } from 'pages';
+import { Home, Account, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderList, Coupon } from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -41,7 +42,6 @@ function App() {
         </Switch>
         <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
-        <Route path={Paths.ajoonamu.prefer} component={Prefer}></Route>
         <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
         <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
     </div>

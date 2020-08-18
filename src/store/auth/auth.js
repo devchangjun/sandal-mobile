@@ -1,20 +1,15 @@
 import * as auth_api from '../../api/auth/auth';
-import { call, put, takeEvery, getContext } from 'redux-saga/effects';
+import { createAction, handleActions } from 'redux-actions';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
-const GET_USERINFO = "GET_USERINFO";
-const GET_USERINFO_SUCCEED = "GET_USERINFO_SUCCEED";
-const GET_USERINFO_ERROR = "GET_USERINFO_ERROR";
+const GET_USERINFO = "auth/GET_USERINFO";
+const GET_USERINFO_SUCCEED = "auth/GET_USERINFO_SUCCEED";
+const GET_USERINFO_ERROR = "auth/GET_USERINFO_ERROR";
 
-const LOGOUT = "LOGOUT";
+const LOGOUT = "auth/LOGOUT";
 
-export const get_user_info = (token) => ({
-    type: GET_USERINFO,
-    token,
-});
-
-export const logout = () => ({
-    type: LOGOUT
-})
+export const get_user_info = createAction(GET_USERINFO)
+export const logout =createAction(LOGOUT);
 
 const initState = {
     loading: false,
@@ -27,7 +22,7 @@ const initState = {
 function* get_user_info_saga(action) {
     console.log(action);
     try {
-        const res = yield call(auth_api.getUserInfo, action.token);
+        const res = yield call(auth_api.getUserInfo, action.payload);
         console.log(res);
         yield put(
             {
@@ -49,38 +44,29 @@ export function* auth_saga() {
     yield takeEvery(GET_USERINFO, get_user_info_saga);
 }
 
-export default function auth(state = initState, action) {
-    switch (action.type) {
-        case GET_USERINFO:
-            console.log("유저정보 들고오기");
-            return {
-                ...state,
-                loading: true,
-            }
-        case GET_USERINFO_SUCCEED:
-            console.log("정보들고오기 성공");
-            return {
-                ...state,
-                loading: false,
-                succeed: true,
-                user: action.payload
-            }
-        case GET_USERINFO_ERROR:
-            console.log("에러");
-            return {
-                ...state,
-                error: true,
-            }
-        case LOGOUT:
-            console.log("로그아웃");
-            return {
-                ...state,
-                loading: false,
-                succeed: false,
-                user: null
-            }
+const auth = handleActions({
+    [GET_USERINFO]: (state, action) => ({
+        ...state,
+        loading: true
+    }),
+    [GET_USERINFO_SUCCEED]: (state, action) => ({
+        ...state,
+        loading: false,
+        succeed: true,
+        user: action.payload
 
-        default:
-            return state
-    }
-}
+    }),
+    [GET_USERINFO_ERROR]: (state, action) => ({
+        ...state,
+        error: true,
+    }),
+    [LOGOUT]: (state, action) => ({
+        ...state,
+        loading: false,
+        succeed: false,
+        user: null
+    })
+}, initState);
+
+export default auth;
+

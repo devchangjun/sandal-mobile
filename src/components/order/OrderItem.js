@@ -24,7 +24,7 @@ const OrderItem = () => {
                     <div className={styles['pd-box']}>
 
                         <div className={styles['total']}>
-                            <span>결제금액</span> 66,000원
+                            <span>결제금액</span>66,000원
                           </div>
                         <div className={styles['sub']}>
                             주문금액 60,000원 + 배송비 6,000원

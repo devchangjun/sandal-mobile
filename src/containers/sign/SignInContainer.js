@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Sign.module.scss';
@@ -7,7 +7,7 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
-import {get_user_info} from '../../store/auth/auth';
+import { get_user_info } from '../../store/auth/auth';
 import classNames from 'classnames/bind'
 
 const cx = classNames.bind(styles);
@@ -77,11 +77,16 @@ const SignInContainer = () => {
         const res = await localLogin(email, password);
         console.log(res);
         if (res.status == 200) {
-            // sessionStorage.setItem("access_token", res.data.access_token);
-            // history.push(Paths.index);
+    
+            //회원가입 안되있는 이메일
             if (res.data.msg === "회원가입 되어있지 않은 이메일입니다.") {
                 alert("회원가입 되어있지 않은 이메일입니다.");
             }
+            //비밀번호가 틀렸을 때
+            else if(res.data.msg ==="비밀번호가 틀렸습니다."){
+                alert("비밀번호가 틀렸습니다.");
+            }
+            //로그인 성공 했을 때.
             else if (res.data.access_token) {
                 sessionStorage.setItem("access_token", res.data.access_token);
                 dispatch(get_user_info(res.data.access_token));
@@ -100,47 +105,46 @@ const SignInContainer = () => {
     return (
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
-            <div className={styles['sign-main']}>
-                <div className={styles['sign-content']}>
-                    <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
-                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
-                    <div className={styles['login-btn']}>
-                        <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
-                    </div>
-                    <div className={styles['link-table']}>
-                        <div className={styles['table-cell']} onClick={goToSignup} >
-                            <div className={styles['sub-text']}>회원가입</div>
+                <div className={styles['sign-main']}>
+                    <div className={styles['sign-content']}>
+                        <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
+                        <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
+                        <div className={styles['login-btn']}>
+                            <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
                         </div>
-                        {/* <div className={cx('table-cell','line')}>
+                        <div className={styles['link-table']}>
+                            <div className={styles['table-cell']} onClick={goToSignup} >
+                                <div className={styles['sub-text']}>회원가입</div>
+                            </div>
+                            {/* <div className={cx('table-cell','line')}>
                             <div className={styles['vertical-line']}/>
                         </div> */}
-                        <div className={styles['table-cell']} onClick={goToRecovery}>
-                            <div className={styles['sub-text']}>아이디찾기</div>
-                        </div>
-                        {/* <div className={cx('table-cell','line')}>
+                            <div className={styles['table-cell']} onClick={goToRecovery}>
+                                <div className={styles['sub-text']}>아이디찾기</div>
+                            </div>
+                            {/* <div className={cx('table-cell','line')}>
                             <div className={styles['vertical-line']}/>
                         </div> */}
-                        <div className={styles['table-cell']} onClick={goToRecovery}>
-                            <div className={styles['sub-text']}>비밀번호찾기</div>
+                            <div className={styles['table-cell']} onClick={goToRecovery}>
+                                <div className={styles['sub-text']}>비밀번호찾기</div>
+                            </div>
                         </div>
-                    </div>
-                    {/* 이부분 컴포넌트 만들어야함 */}
-                    <div className={styles.social}>
-                        <div className={styles.sns}>
-                            <img src={naver}></img>
-                        </div>
-                        <div className={styles.sns}>
+                        {/* 이부분 컴포넌트 만들어야함 */}
+                        <div className={styles.social}>
+                            <div className={styles.sns}>
+                                <img src={naver}></img>
+                            </div>
+                            <div className={styles.sns}>
 
-                            <img src={kakao}></img>
+                                <img src={kakao}></img>
 
-                        </div>
-                        <div className={styles.sns}>
-                            <img src={facebook}></img>
+                            </div>
+                            <div className={styles.sns}>
+                                <img src={facebook}></img>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-            </div>
         </>
 
     )

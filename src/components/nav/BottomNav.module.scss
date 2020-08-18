@@ -1,7 +1,12 @@
+@import '../../styels/Root.scss';
 .bottom-nav{
     width: 100%;
+    max-width: $max-width;
+    margin : 0 auto;
     position: fixed;
     bottom: 0px;
+    left: 0;
+    right: 0;
     z-index: 1000;
     background-color:rgb(245, 245, 245);
     border-top: 1px solid rgb(240, 240, 240);

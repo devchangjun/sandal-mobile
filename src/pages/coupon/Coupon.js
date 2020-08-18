@@ -2,10 +2,9 @@ import React from 'react';
 import CouponContainer from 'containers/coupon/CouponContainer';
 
 const Coupon=({match})=>{
-    const tab= match.params.tab ? match.params.tab : "mycoupon";
-
+    // const tab= match.params.tab ? match.params.tab : "mycoupon";
     return(
-        <CouponContainer tab={tab}/>
+        <CouponContainer tab={match.params.tab ? match.params.tab : "mycoupon"}/>
     )
 }
 export default Coupon;

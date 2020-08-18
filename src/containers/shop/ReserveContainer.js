@@ -46,23 +46,18 @@ const ReserveContainer = ({ tab = 'custom' }) => {
 
 
     useEffect(() => {
-
-    }, [open])
+        console.log("탭 바뀜");
+        console.log(tab);
+    }, [tab])
 
     //맞춤 주문 설정하기 버튼 클릭
-    const onClickCustomOrder = () => {
-
-        setOpen(true);
-    }
+    const onClickCustomOrder = () => setOpen(true);
 
     //주문 종류 선택
-    const onChangeType = (e) => {
-        setItemType(e.target.value);
-    }
+    const onChangeType = (e) => setItemType(e.target.value);
 
     //전체 예산 입력
     const onChangeBudget = (e) => {
-
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value == '' || re.test(e.target.value)) {
@@ -71,9 +66,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     }
 
     // 모달창 닫기
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleClose = () =>setOpen(false);
 
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {

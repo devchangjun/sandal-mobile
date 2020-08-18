@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from './OrderList.module.scss';
 import { Paths } from 'paths';
 import Header from 'components/header/Header';
@@ -25,12 +25,14 @@ const tabInit = [
 const OrderListContainer = ({ tab = 'order' }) => {
     const [open,setOpen] = useState(false);
     
-    const handleOpen =()=>{
-        setOpen(true);
-    }
-    const handleClose =()=>{
-        setOpen(false);
-    }
+    const handleOpen =()=>setOpen(true);
+    const handleClose =()=>setOpen(false);
+    
+    useEffect(()=>{
+        console.log("탭 바뀜");
+        console.log(tab);
+    },[tab])
+    
 
     return (
         <>
@@ -38,7 +40,7 @@ const OrderListContainer = ({ tab = 'order' }) => {
             <div className={styles['order-list-tab']}>
                 <TabMenu tabs={tabInit} />
                 <div className={styles['container']}>
-                    {tab === 'order' && <OrderItem />}
+                    {tab === 'order' && <><OrderItem /><OrderItem /></>}
                     {tab ==='delivery' && 
                     <Message
                         src={true}

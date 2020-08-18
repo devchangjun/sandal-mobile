@@ -18,10 +18,8 @@ const initMenu = {
 
 const DetailContainer = ({ menu_name }) => {
     const history = useHistory();
-
-    const getCart = () => {
-        history.push(Paths.ajoonamu.cart);
-    }
+    const getCart = () => history.push(Paths.ajoonamu.cart);
+    
     return (
         <>
             <div className={styles['menu-img']}>

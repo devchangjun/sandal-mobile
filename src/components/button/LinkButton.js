@@ -7,9 +7,10 @@ const cx = classNames.bind(styles);
 //fixed button
 
 const LinkButton = ({ title, onClick, toggle }) => {
+    
     return (
         <div>
-            <div className={cx('link-btn', { on: toggle })} onClick={onClick}>{title}</div>
+            <div className={cx('link-btn', { on: toggle })} onClick={toggle && onClick}>{title}</div>
         </div>
     )
 }

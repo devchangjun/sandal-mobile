@@ -1,4 +1,9 @@
 @import '../../styels/Root.scss';
+.sign{
+    height: 100vh;
+    border:1px;
+    background-color:white;
+}
 
 //로그인 회원가입 정보찾기에 관한 모든 메인
 .sign-main{
@@ -11,6 +16,7 @@
     justify-content: center;
     align-items: center;
     padding: $padding;
+    background-color:#fff;
     .sign-content{
         width: 100%;
         background: #fff;

@@ -20,24 +20,12 @@ const RecoveryPwContainer = () => {
     const [toggle , setToggle] = useState(false);
     const [success , setSuccess] = useState(false); 
 
-
-    const onChangeName=(e)=>{
-        setName(e.target.value);
-    }
-
-    const onChangeEmail = (e) => {
-        setEmail(e.target.value);
-    }
-    const onChangePhone = (e) => {
-        setPhone(e.target.value);
-    }
-    const onChangeAuth = (e) => {
-        setAuth(e.target.value);
-    }
-
-    const postAuthNumber =(e)=>{
-        setToggle(true);
-    }
+    const onChangeName=e=>setName(e.target.value);
+    const onChangeEmail = e => setEmail(e.target.value);
+    const onChangePhone = e => setPhone(e.target.value);
+    const onChangeAuth = e => setAuth(e.target.value);
+    const postAuthNumber =e=>setToggle(true);
+    
 
 
     return (

@@ -14,21 +14,10 @@ const cx = classNames.bind(styles);
 
 
 const OrderContainer = () => {
-    //모달창 상태
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
+
     const [open, setOpen] = React.useState(false);
-
-
-    //맞춤 주문 설정하기 버튼 클릭
-    const onClickCustomOrder = () => {
-        setOpen(true);
-    }
-
-    // 모달창 닫기
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return (
         <>

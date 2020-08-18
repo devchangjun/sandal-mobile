@@ -3,6 +3,7 @@
     box-sizing: border-box;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
+    margin:10px 0;
     .item{
         display: flex;
         flex-direction: column;
@@ -28,13 +29,12 @@
         }
         .cost{
             border-top: 1px solid #EBEBEB;
+            box-sizing: border-box;
             .total{
                 font-size: 16px;
                 font-weight: bold;
                 position: relative;
-            
                     span{
-                        z-index: 10;
                     &::after{
                         content: '';
                         width: 60px;
@@ -42,7 +42,7 @@
                         position: absolute;
                         margin-top: -10px;
                         border-radius: 10px;
-                        z-index: -999;
+                        z-index: -100;
                         border-bottom: 11px solid #FCD700;
                     }
                 }

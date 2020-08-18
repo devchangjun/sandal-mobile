@@ -29,6 +29,8 @@ const CartContainer = () => {
     const [cartList, setCartList] = React.useState([]); //장바구니
     const [total, setTotal] = React.useState(0);  //총 주문금액
     const [delivery_cost, setCost] = React.useState(0); // 배달비
+    const handleOpen = useCallback(()=> { setOpen(true)},[open]);
+    const handleClose = useCallback(()=>{setOpen(false)},[open]);
 
     const { user } = useSelector(state => state.auth);
 
@@ -41,17 +43,6 @@ const CartContainer = () => {
         haddleAllChecked();
         totalPrice();
     }, [cartList])
-
-
-    //모달 오픈
-    const handleOpen = () => {
-
-        setOpen(true);
-    }
-    // 모달창 닫기
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     //장바구니 들고와서 check 추가
     const getList = useCallback(async () => {

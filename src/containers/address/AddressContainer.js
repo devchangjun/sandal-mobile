@@ -36,16 +36,20 @@ const AddressContainer = () => {
   const [selectAddr, setSelectAddr] = useState(""); //선택
   const [detailAddr, setDetailAddr] = useState(""); //상세주소
   const [addrs, setAddrs] = useState(''); // 검색 리스트
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState('sm');
-  const [open, setOpen] = React.useState(false);
+
+  const [open, setOpen] = useState(false);
   const nextId = useRef(3);
   const [delivery_addrs, setDeliveryAddrs] = useState([]);
+
+  const onClickAddrItem = (data) => setSelectAddr(data);
+  const onChangeAddr = e => setSearchAddr(e.target.value);
+  const onChangeDetail = e => setDetailAddr(e.target.value);
+  
+
 
   useEffect(()=>{
     getList();
   },[]);
-
 
   const getList = useCallback(async () => {
     const token = sessionStorage.getItem("access_token");
@@ -91,17 +95,7 @@ const AddressContainer = () => {
     setDetailAddr("");
   };
 
-  const onClickAddrItem = (data) => {
-    setSelectAddr(data);
-  }
 
-  const onChangeAddr = e => {
-    setSearchAddr(e.target.value);
-  };
-
-  const onChangeDetail = e => {
-    setDetailAddr(e.target.value);
-  }
 
   const onSearch = async () => {
     if (searchAddr == "") {
@@ -122,9 +116,6 @@ const AddressContainer = () => {
       .catch(err => console.log(err));
   }
 
-  useEffect(() => {
-    console.log("재 렌더");
-  }, [])
 
   return (
     <>

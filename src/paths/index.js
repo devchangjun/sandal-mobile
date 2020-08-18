@@ -8,7 +8,6 @@ export const Paths ={
         recovery_pw :"/ajoonamu/recovery_pw",
         complete :"/ajoonamu/complete",
         shop : "/ajoonamu/shop",
-        prefer :"/ajoonamu/prefer",
         mypage:"/ajoonamu/mypage",
         account :"/ajoonamu/account",
         address :"/ajoonamu/address",

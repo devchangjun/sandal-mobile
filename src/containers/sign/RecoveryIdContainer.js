@@ -18,19 +18,10 @@ const RecoveryIdContainer = () => {
     const [toggle , setToggle] = useState(false);
     const [success , setSuccess] = useState(false); 
 
-
-    const onChangeName = (e) => {
-        setUserName(e.target.value);
-    }
-    const onChangePhone = (e) => {
-        setUserPhone(e.target.value);
-    }
-    const onChangeAuth = (e) => {
-        setUserAuth(e.target.value);
-    }
-    const postAuthNumber =(e)=>{
-        setToggle(true);
-    }
+    const onChangeName = e => setUserName(e.target.value);
+    const onChangePhone = e =>setUserPhone(e.target.value);
+    const onChangeAuth = e=> setUserAuth(e.target.value);
+    const postAuthNumber =()=>setToggle(true);
 
 
     return (

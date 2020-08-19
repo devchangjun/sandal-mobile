@@ -1,6 +1,6 @@
 @import '../../../styles/Root.scss';
 
-.home{
+.container{
     max-width: $max-width;
     min-width: $min-width;
     margin: 0 auto;
@@ -43,6 +43,7 @@
     max-width: $max-width;
     width: 100%;
     margin: 0 auto;
+    margin-top:$mg-top;
 }
 
 .menu-list{

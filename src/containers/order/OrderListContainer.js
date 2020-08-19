@@ -37,9 +37,9 @@ const OrderListContainer = ({ tab = 'order' }) => {
     return (
         <>
         <TitleBar title={"주문내역"}/>
-            <div className={styles['order-list-tab']}>
-                <TabMenu tabs={tabInit} />
-                <div className={styles['container']}>
+        <TabMenu tabs={tabInit} />
+            <div className={styles['container']}>
+                <div className={styles['pd-box']}>
                     {tab === 'order' && <><OrderItem /><OrderItem /></>}
                     {tab ==='delivery' && 
                     <Message

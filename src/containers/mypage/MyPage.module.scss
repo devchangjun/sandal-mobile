@@ -4,13 +4,12 @@
 .container{
     max-width: $max-width;
     margin:  0 auto;
-
+    margin-top: $mg-top40;
     //유저 정보 
     .user-info{
         width: 100%;
-
         height: 120px;
-        margin-top: $mg-top;
+   
         display: flex;
         flex-direction: row;
         justify-content: space-around;
@@ -98,7 +97,7 @@
 
 
 .pd-box{
-    padding: 0 24px;
+    padding: $padding-side;
     background-color:#fff;
 }
 

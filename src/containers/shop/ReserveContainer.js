@@ -80,10 +80,11 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     return (
         <>
             <TitleBar title={tab} /> {/*분류명 넣어야함 */}
-            <div className={styles['reserve-tab']}>
+            <TabMenu tabs={tabInit} />
 
-                <TabMenu tabs={tabInit} />
-                <div className={styles['container']}>
+            <div className={styles['container']}>
+
+                <div className={styles['pd-box']}>
                     {/* 이부분 바꿔야함 */}
                     {(tab === 'custom' && result) ? 
                      <div>

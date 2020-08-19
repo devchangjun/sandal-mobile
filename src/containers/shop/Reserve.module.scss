@@ -1,10 +1,11 @@
 @import '../../styles/Root.scss';
-.reserve-tab{
+.container{
         max-width: $max-width;
         min-width: $min-width;
         margin: 0 auto;
-        .container{
-                padding: $padding-side;
+        margin-top:$mg-top;
+        .pb-box{
+                padding: $padding-all;
         }
 }
 

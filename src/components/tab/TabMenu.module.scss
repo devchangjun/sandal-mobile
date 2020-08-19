@@ -7,6 +7,10 @@
     font-size: $font-size;
     max-width: $max-width;
     margin: 0 auto;
-    margin-top: $mg-top;
+    top:40px;
+    // margin-top: $mg-top;
     background-color:#fff;
+    position: fixed;
+    z-index: 99;
+    height: 40px;
 }

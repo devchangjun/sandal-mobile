@@ -1,11 +1,11 @@
 @import '../../styles/Root.scss';
 
-.cart-page{
+.container{
     max-width: $max-width;
     min-width: $min-width;
     margin :0 auto;
     width: 100%;
-    margin-top :$mg-top;
+    margin-top :$mg-top40;
 
     background-color: #F9F9F9;
     .bar{
@@ -14,7 +14,7 @@
         justify-content: flex-end;
         height: 60px;
         .pd-box{
-            padding: 24px;
+            padding: $padding-all;
         }
         .delete{
             border :1px solid #DBDBDB;
@@ -47,7 +47,7 @@
         }
 
         .pd-box{
-            padding: $padding-side;
+            padding: $padding-all;
 
         .finally-price{
             display: flex;

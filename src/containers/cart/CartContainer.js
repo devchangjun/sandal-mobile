@@ -169,7 +169,7 @@ const CartContainer = () => {
     return (
         <>
             <TitleBar title={"장바구니"} />
-            <div className={styles['cart-page']}>
+            <div className={styles['container']}>
                 {cartList.length!==0 ? renderList() : 
                     <Message
                         src={true}

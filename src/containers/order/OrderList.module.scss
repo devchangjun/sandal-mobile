@@ -1,9 +1,11 @@
 @import '../../styles/Root.scss';
-.order-list-tab{
+
+.container{
     max-width: $max-width;
     min-width : $min-width;
     margin: 0 auto;
+    margin-top:$mg-top;
 }
-.container{
-    padding: 24px;
+.pd-box{
+    padding:24px;
 }

@@ -54,15 +54,12 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
         tab === 'mycoupon' && window.addEventListener('scroll', onScroll);
 
         return () => {
-            console.log("언마운트");
+            console.log("쿠폰 언마운트");
             window.scrollTo(0, 0)
             window.removeEventListener('scroll', onScroll);
         };
 
     }, [tab, onScroll]);
-
-
-
 
     return (
         <>

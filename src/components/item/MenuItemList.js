@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './Menu.module.scss';
 import MenuItem from './MenuItem';
-import TempleteItem from './TempleteItem';
-import logo from 'logo.svg';
+
 
 const initMenu = [
     {
@@ -27,7 +26,7 @@ const initMenu = [
         price: "5000원"
     },    
     {
-        id: 4,
+        item_id: 4,
         title: "과일도시락4",
         text: "과일도시락 맛잇어",
         img: "https://s3-media3.fl.yelpcdn.com/bphoto/7F9eTTQ_yxaWIRytAu5feA/ls.jpg",

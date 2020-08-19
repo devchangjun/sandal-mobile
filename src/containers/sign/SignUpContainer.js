@@ -3,14 +3,13 @@ import classNames from 'classnames/bind';
 
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths'
-import {localRegister} from '../../api/auth/auth';
+import { localRegister } from '../../api/auth/auth';
 import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import produce from 'immer';
-import Check from 'components/svg/sign/Check';
+
 import CheckBox from 'components/checkbox/CheckBox';
 
 const cx = classNames.bind(styles);
@@ -67,6 +66,11 @@ const userReducer = (state, action) => {
                 ...state,
                 authNumber: action.authNumber
             }
+        case 'UPDATE_USER_AGREE_MARKETING':
+            return {
+                ...state,
+                agree_marketing: action.agree_marketing
+            }
         default:
             return state;
 
@@ -75,6 +79,7 @@ const userReducer = (state, action) => {
 
 const checkReducer = (state, action) => {
 
+    // console.log(action);
     switch (action.type) {
         case 'ALL_CHECK':
             return {
@@ -106,114 +111,131 @@ const SignUpContainer = () => {
     const history = useHistory();
 
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
+
+    const { email, password, password_confirm } = user;
+
     const [compare, setCompare] = useState(false);
     const [toggle, setToggle] = useState(false);
-
-
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
     const { allCheck, check1, check2, check3 } = check;
 
-    useEffect(() => {
-        updateToggle();
-    }, [user.email])
 
-    useEffect(() => {
-        matchPassword();
-    }, [user.password, user.password_confirm])
-    useEffect(() => {
-        updateToggle();
-    }, [compare]);
 
-    useEffect(() => {
-        onToggleAllCheck();
-        updateToggle();
-    }, [check1, check2, check3]);
 
-    useEffect(() => {
-        onToggleCheck();
-        updateToggle();
-    }, [allCheck])
 
-    const updateToggle = () => {
-        const { email, password, password_confirm } = user;
+    const updateToggle = useCallback(() => {
         let checkbox = (check1 && check2) ? true : false;
-        let userinfo = (email.length != 0 && compare) ? true : false;
+        let userinfo = (email.length !== 0 && compare) ? true : false;
         let result = (checkbox && userinfo) ? true : false;
         setToggle(result);
-    };
+    }, [check1, check2, email, compare]);
 
 
-    const updateAllCheck = useCallback((e) => {
-        dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
-    })
-    const onChangeCheck1 = useCallback((e) => {
-        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
-    })
-    const onChangeCheck2 = useCallback((e) => {
-        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
-    })
-    const onChangeCheck3 = useCallback((e) => {
-        dispatchCheck({ type: 'CHECK3', check: e.target.checked });
-    })
 
-    const onToggleAllCheck = () => {
-        if (check1 && check2 && check3) {
-            dispatchCheck({ type: 'ALL_CHECK', check: true });
-            dispatchCheck({ type: 'CHECK1', check: true });
-            dispatchCheck({ type: 'CHECK2', check: true });
-            dispatchCheck({ type: 'CHECK3', check: true });
-        }
-        else if (!check1 || !check2 || !check3) {
-            dispatchCheck({ type: 'ALL_CHECK', check: false });
-        }
-    }
-    const onToggleCheck = () => {
-        if (allCheck) {
-            dispatchCheck({ type: 'CHECK1', check: true });
-            dispatchCheck({ type: 'CHECK2', check: true });
-            dispatchCheck({ type: 'CHECK3', check: true });
-        }
-        else if (!check1 || !check2 || !check3) {
-            dispatchCheck({ type: 'ALL_CHECK', check: false });
-        }
-    }
-    const updateName = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_NAME', name: e.target.value });
-    })
-
-    const updateEmail = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
-    })
-    const updatePassword = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
-
-    })
-    const updateConfirm = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
-    })
-    const updatePhoneNumber = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_PHONENUMBER', phoneNumber: e.target.value });
-
-    })
-    const updateAuthNumber = useCallback((e) => {
-        dispatchUser({ type: 'UPDATE_USER_AUTHNUMBER', authNumber: e.target.value });
-
-    })
-
-    const matchPassword = () => {
-
-
-        if (user.password.length != 0 && user.password_confirm.length != 0) {
-            setCompare(user.password === user.password_confirm);
+    //패스워드 매칭 체크
+    const matchPassword = useCallback(() => {
+        if (password.length !== 0 && password_confirm.length !== 0) {
+            setCompare(password === password_confirm);
         }
         else {
             setCompare(false);
         }
-    }
+    }, [password, password_confirm]);
+
+
+    // 단일 체크박스 변경시 올체크인지 확인
+    const onToggleCheck = useCallback(() => {
+        console.log("단일 체크 변경");
+        if (check1 && check2 && check3) {
+            dispatchCheck({ type: 'ALL_CHECK', check: true });
+        }
+        else if (!check1 || !check2 || !check3) {
+            dispatchCheck({ type: 'ALL_CHECK', check: false });
+        }
+    }, [check1, check2, check3]);
+
+    const onToggleAllCheck = useCallback(() => {
+        if(allCheck){
+            dispatchCheck({ type: 'CHECK1', check: true });
+            dispatchCheck({ type: 'CHECK2', check: true });
+            dispatchCheck({ type: 'CHECK3', check: true });
+        }
+    }, [allCheck]);
+
+    //모두 체크인지 확인 함수
+    const isAllCheck = useCallback(() => {
+        if (check1 && check2 && check3) {
+            dispatchCheck({ type: 'ALL_CHECK', check: true });
+            console.log("올체크로 변경");
+        }
+        else if (!check1 || !check2 || !check3) {
+            dispatchCheck({ type: 'ALL_CHECK', check: false });
+        }
+    }, [check1, check2, check3]);
+
+    useEffect(() => {
+        updateToggle();
+    }, [updateToggle])
+
+    useEffect(() => {
+        matchPassword();
+    }, [matchPassword])
+
+    useEffect(() => {
+        isAllCheck();
+    }, [isAllCheck]);
+
+    useEffect(()=>{
+        onToggleAllCheck();
+    },[onToggleAllCheck])
+
+    useEffect(() => {
+        onToggleCheck();
+    }, [onToggleCheck])
+
+
+
+
+    const updateAllCheck = (e) => {
+        dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
+    };
+    const onChangeCheck1 = (e) => {
+        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
+    };
+    const onChangeCheck2 = (e) => {
+        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
+    };
+    const onChangeCheck3 = (e) => {
+        dispatchCheck({ type: 'CHECK3', check: e.target.checked });
+    };
+
+
+
+    // const updateName = (e) => {
+    //     dispatchUser({ type: 'UPDATE_USER_NAME', name: e.target.value });
+    // };
+
+    const updateEmail = (e) => {
+        dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
+    };
+    const updatePassword = (e) => {
+        dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
+
+    };
+    const updateConfirm = (e) => {
+        dispatchUser({ type: 'UPDATE_USER_COMPARE', password_confirm: e.target.value });
+    };
+    // const updatePhoneNumber = (e) => {
+    //     dispatchUser({ type: 'UPDATE_USER_PHONENUMBER', phoneNumber: e.target.value });
+
+    // };
+    // const updateAuthNumber = (e) => {
+    //     dispatchUser({ type: 'UPDATE_USER_AUTHNUMBER', authNumber: e.target.value });
+    // };
+
 
     const confirm = () => {
-        const { password, password_confirm } = user;
-        if (password.length != 0 || password_confirm.length != 0) {
+        if (password.length !== 0 || password_confirm.length !== 0) {
             if (compare) {
                 return (
                     "비밀번호가 일치합니다."
@@ -226,29 +248,28 @@ const SignUpContainer = () => {
             }
         }
     }
-    const onSignup = async () => {
-        const { name, email, password, password_confirm } = user;
-        const res = await localRegister(email,password,password_confirm);
+    const onSignup = useCallback(async () => {
+
+        const res = await localRegister(email, password, password_confirm);
         console.log(res);
-        if(res.data.msg ==="존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.") {
+        if (res.data.msg === "존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.") {
             alert("이미 존재하는 이메일 입니다.");
         }
-        else if(res.data.status ==="success"){
+        else if (res.data.status === "success") {
             console.log("회원가입 완료");
             history.push(`${Paths.ajoonamu.complete}?name=${email}`);
         }
-  
-    }
+    }, [email, password, password_confirm, history]);
 
     return (
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
             <div className={cx('sign-main', 'pd-none')}>
-                <div className={cx('sign-content', 'pd-box','pd-top')}>
+                <div className={cx('sign-content', 'pd-box', 'pd-top')}>
                     <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={"중복검사"} />
                     <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                     <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
-                    <div className={cx('compare', { on: compare, not_view: user.password.length == 0 && user.password_confirm.length == 0 })}>
+                    <div className={cx('compare', { on: compare, not_view: user.password.length === 0 && user.password_confirm.length === 0 })}>
                         <label>{confirm()}</label>
                     </div>
                     {/* <label>휴대폰 인증</label>
@@ -272,7 +293,7 @@ const SignUpContainer = () => {
 const AcceptContainer = (props) => {
     return (
         <div className={cx('agree')}>
-            <div className={cx('pd-box','line','pd-sub-top')}>
+            <div className={cx('pd-box', 'line', 'pd-sub-top')}>
                 <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
             </div>
             <div className={styles['background']}>

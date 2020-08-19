@@ -2,12 +2,7 @@ import React from 'react';
 import styles from './Order.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import SignAuthInput from 'components/sign/SignAuthInput';
-import SignNormalInput from 'components/sign/SignNormalInput';
-import DatePicker from 'components/asset/DatePicker';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
@@ -15,9 +10,12 @@ const cx = classNames.bind(styles);
 
 const OrderContainer = () => {
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
+    //포인트모달, 결제방식 모달 때 사용할 것.
+    
+    // const [open, setOpen] = React.useState(false);
+    // const handleOpen = () => setOpen(true);
+    // const handleClose = () => setOpen(false);
 
     return (
         <>

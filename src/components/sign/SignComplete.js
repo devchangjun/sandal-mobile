@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './SignComplete.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
-import Button from 'components/button/Button';
+
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);

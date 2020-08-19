@@ -9,12 +9,6 @@ import Test from 'components/svg/cart/test.png';
 import classNames from 'classnames/bind'
 
 const cx = classNames.bind(styles);
-const initMenu = {
-    item_id: 1,
-    title: "과일도시락1",
-    text: "과일도시락 맛잇어",
-    price: "5000원"
-}
 
 const DetailContainer = ({ menu_name }) => {
     const history = useHistory();
@@ -23,7 +17,7 @@ const DetailContainer = ({ menu_name }) => {
     return (
         <>
             <div className={styles['menu-img']}>
-                <img className={styles['img']} src= {Test}/>
+                <img className={styles['img']} src= {Test} alt={menu_name}/>
             </div>
             <div className={styles['detail-view']}>
                 <div className={styles['menu-info']}>

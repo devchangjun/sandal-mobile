@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useEffect,useCallback, useRef } from 'react';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -28,28 +28,13 @@ const tabInit = [
 ]
 
 
-const CouponConatiner = ({ tab='mycoupon' }) => {
+const CouponConatiner = ({ tab = 'mycoupon' }) => {
 
     const my_coupon = useRef(null);
 
-    useEffect(() => {
+    const onScroll = useCallback(e => {
 
-        console.log("탭 바뀜");
-        console.log(tab);
-        
-        tab=='mycoupon' &&window.addEventListener('scroll', onScroll);
-
-        return () => {
-            console.log("언마운트");
-            window.removeEventListener('scroll', onScroll);
-        };
-
-    }, [tab]);
-
-
-    const onScroll = e => {
-        
-        if (tab == 'mycoupon') {
+        if (tab === 'mycoupon') {
 
             const scrollTop = ('scroll', e.srcElement.scrollingElement.scrollTop);
 
@@ -60,12 +45,28 @@ const CouponConatiner = ({ tab='mycoupon' }) => {
                 my_coupon.current.classList.remove(cx('shadow'));
             }
         }
-    }
+    }, [tab]);
+
+    useEffect(() => {
+
+        console.log("탭 바뀜");
+        console.log(tab);
+        tab === 'mycoupon' && window.addEventListener('scroll', onScroll);
+
+        return () => {
+            console.log("언마운트");
+            window.removeEventListener('scroll', onScroll);
+        };
+
+    }, [tab, onScroll]);
+
+
+
 
     return (
         <>
             <TitleBar title={"쿠폰함"} />
-            <TabMenu tabs={tabInit}/>
+            <TabMenu tabs={tabInit} />
             <div className={styles['coupon-tab']}>
                 <div className={styles['container']}>
                     {tab === 'mycoupon' &&

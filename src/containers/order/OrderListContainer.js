@@ -1,7 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import styles from './OrderList.module.scss';
 import { Paths } from 'paths';
-import Header from 'components/header/Header';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import OrderItem from 'components/order/OrderItem';

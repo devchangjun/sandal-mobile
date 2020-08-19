@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styles from './HomeSlick.module.scss';
 import Slider from "react-slick";
 
@@ -32,21 +32,4 @@ class HomeSlick extends React.Component {
 	}
 }
 
-const cssstyle = `
-	.container {
-
-	  width: 90%;
-	}
-	h3 {
-		background: #5f9ea0;
-		color: #fff;
-		font-size: 36px;
-		line-height: 100px;
-		margin: 10px;
-		padding: 2%;
-		height:20vh;
-		text-align: center;
-	}
-
-	`
 export default HomeSlick;

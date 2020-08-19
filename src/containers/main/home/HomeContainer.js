@@ -1,16 +1,11 @@
 import React from 'react';
 import { Paths } from 'paths';
-import { useHistory } from 'react-router-dom';
 import styles from './HomeContainer.module.scss';
 import Header from 'components/header/Header';
 import MenuItemList from 'components/item/MenuItemList';
-import TempleteItmeList from 'components/item/TempleteItemList';
-import OrderButton from 'components/button/OrderButton';
-import Title from 'components/titlebar/Title';
 import HomeSlick from './HomeSlick';
 import TabMenu from 'components/tab/TabMenu';
-import MenuListView from 'components/item/MenuListView';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import BottomNav from 'components/nav/BottomNav';
 
 const tabInit = [
@@ -28,12 +23,9 @@ const tabInit = [
 
 const HomeContainer = () => {
 
-    const history = useHistory();
-    const {user} = useSelector(state=>state.auth);
+    // const {user} = useSelector(state=>state.auth);
 
-    const goToReverve = () => {
-        history.push(`${Paths.ajoonamu.reserve}/custom`);
-    }
+
     return (
         <>
             <Header />

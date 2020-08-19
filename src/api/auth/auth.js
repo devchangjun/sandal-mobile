@@ -3,18 +3,7 @@ import axios from 'axios';
 const DEFAULT_URL = "http://devapi.ajoonamu.com/api/";
 
 export const getUserInfo = async (token) => {
-    console.log("들어옴" + token);
     const req = DEFAULT_URL + "user/me";
-    // console.log(req);
-    const config = {
-        headers: {
-            // 'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    }
-    const post_type ={
-        'Content-Type': 'application/json',
-    }
     axios.defaults.baseURL = req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';

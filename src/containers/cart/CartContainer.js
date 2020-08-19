@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import CartItemList from 'components/cart/CartItemList';
-import CartItem from 'components/cart/CartItem';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';
-import Check from 'components/svg/sign/Check';
 import CheckBox from 'components/checkbox/CheckBox';
 import CartModal from 'components/asset/CartModal';
 import Message from 'components/message/Message';
@@ -25,60 +23,54 @@ const CartContainer = () => {
 
     const [open, setOpen] = React.useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    const [esitChcked, setEsitChcked] = React.useState(true); //견적서 발송
+    // const [esitChcked, setEsitChcked] = React.useState(true); //견적서 발송
     const [cartList, setCartList] = React.useState([]); //장바구니
     const [total, setTotal] = React.useState(0);  //총 주문금액
     const [delivery_cost, setCost] = React.useState(0); // 배달비
-    const handleOpen = useCallback(()=> { setOpen(true)},[open]);
-    const handleClose = useCallback(()=>{setOpen(false)},[open]);
+    const handleOpen = useCallback(() => { setOpen(true) }, []);
+    const handleClose = useCallback(() => { setOpen(false) }, []);
 
-    const { user } = useSelector(state => state.auth);
+    // const { user } = useSelector(state => state.auth);
 
-    useEffect(() => {
-        console.log("들어옴");
-        getList();
-    }, [])
 
-    useEffect(() => {
-        haddleAllChecked();
-        totalPrice();
-    }, [cartList])
-
-    //장바구니 들고와서 check 추가
-    const getList = useCallback(async () => {
+    //마운트 될 때 만 함수 생성.
+    const getList = useCallback (async () => {
         const token = sessionStorage.getItem("access_token");
         const res = await getCartList(token);
-        console.log(res);
         let len = Object.keys(res).length;
-        let list = new Array();
+        let list =[];
         for (let i = 0; i < len - 1; i++) {
             list[i] = res[i];
             list[i].isChecked = false;
         }
         setCost(res.delivery_cost);
         setCartList(list);
+    },[]);
 
-    }, [cartList]);
-
+    // 장바구니 리스트가 변경될 때 새로 생성.
     const totalPrice = useCallback(() => {
+        console.log(cartList);
         setTotal(0);
         let total = 0;
-        console.log("계산하자");
         for (let i = 0; i < cartList.length; i++) {
-            if (cartList[i].isChecked) {
-                console.log(cartList[i].item.item_price);
-                total += cartList[i].item.item_price
-            }
+            console.log(cartList[i].item);
+            total += cartList[i].item.item_price
         }
+        console.log(total);
         setTotal(total);
-    })
+    }, [cartList]);
 
-    const handleAllChecked = useCallback((e) => {
-        const newState = cartList.map(cart => {
-            return { ...cart, isChecked: e.target.checked };
-        })
-        setCartList(newState)
-    });
+    //마운트 될때만 함수 호출.
+    useEffect(() => {
+        getList();
+    }, [getList])
+
+
+    useEffect(() => {
+        totalPrice();
+    }, [totalPrice])
+
+
 
     const handleCheckChild = useCallback((e) => {
         const index = e.target.id;
@@ -87,15 +79,13 @@ const CartContainer = () => {
                 draft[index].isChecked = !draft[index].isChecked;
             })
         );
-
     }, [cartList]);
 
     //전체 선택인지 아닌지 여부 판단
-    const haddleAllChecked = () => {
+    const handleAllChecked = () => {
 
         for (let i = 0; i < cartList.length; i++) {
-            console.log(cartList[i]);
-            if (cartList[i].isChecked == false) {
+            if (cartList[i].isChecked === false) {
                 setAllChecked(false);
                 return;
             }
@@ -110,26 +100,26 @@ const CartContainer = () => {
     const renderList = () => {
         return (
             <>
-            <div className={styles['bar']}>
-                <div className={styles['pd-box']}>
-                    <div className={styles['delete']}>
+                <div className={styles['bar']}>
+                    <div className={styles['pd-box']}>
+                        <div className={styles['delete']}>
                             전체 삭제
                     </div>
+                    </div>
                 </div>
-            </div>
-            <div className={styles['cart-list']}>
+                <div className={styles['cart-list']}>
                     <CartItemList allChecked={allChecked} carts={cartList} handleCheckChild={handleCheckChild} />
-             </div>
-            <div className={styles['finally']}>
-                 <div className={styles['pd-box']}>
-                     <div className={styles['finally-price']}>
-                        <div className={cx('title', 'total')}>
-                             총 주문금액
+                </div>
+                <div className={styles['finally']}>
+                    <div className={styles['pd-box']}>
+                        <div className={styles['finally-price']}>
+                            <div className={cx('title', 'total')}>
+                                총 주문금액
                         </div>
-                        <div className={cx('title', 'total')}>
+                            <div className={cx('title', 'total')}>
                                 {total}원
                         </div>
-                       </div>
+                        </div>
                         <div className={styles['finally-price']}>
                             <div className={styles['title']}>
                                 배달비
@@ -170,13 +160,13 @@ const CartContainer = () => {
         <>
             <TitleBar title={"장바구니"} />
             <div className={styles['container']}>
-                {cartList.length!==0 ? renderList() : 
+                {cartList.length !== 0 ? renderList() :
                     <Message
                         src={true}
                         msg={"장바구니가 비었습니다."}
                         isButton={true}
                         buttonName={"주문하러 가기"}
-                        />
+                    />
                 }
             </div>
         </>

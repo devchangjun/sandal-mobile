@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Additional.module.scss';
 import Additional from './Additional';
 
 const init = [

@@ -8,7 +8,7 @@ const Additional =({menuName, menuPrice ,check})=>{
         <div className={styles['additional-item']}>
 
             <input type="checkbox" id="test"></input>
-            <label className={styles['label'] } for ="test">
+            <label className={styles['label'] } htmlFor ="test">
             <Select check={check}/> {menuName} 추가 {menuPrice} 원
             </label>
         </div>

@@ -10,7 +10,9 @@ const cx = classNames.bind(styles);
 const SignAuthInput = ({ inputType, onChange, onClick, initValue ,buttonTitle ,placeholder,toggle, success}) => {
     return (
         <div className={styles['sign-input']}>
-            <input className={styles['auth']} type={inputType} value={initValue}  placeholder={placeholder} onChange={onChange} ></input>
+            <form>
+            <input className={styles['auth']} type={inputType} value={initValue}  placeholder={placeholder} onChange={onChange}  autoComplete="on"></input>
+            </form>
             <div className={cx('auth-btn',{toggle:toggle},{success:success})} onClick={onClick}>{buttonTitle}</div>
         </div>
     )

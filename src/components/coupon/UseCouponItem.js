@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
-import classNames from 'classnames/bind';
+// import classNames from 'classnames/bind';
 
-const cx = classNames.bind(styles);
+// const cx = classNames.bind(styles);
 
-const UseCouponItem = (props) => {
+const UseCouponItem = () => {
     return (
         <div className={styles['coupon-item']}>
             <div className={styles['info']}>

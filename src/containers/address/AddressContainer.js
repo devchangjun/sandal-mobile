@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect,useCallback } from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import { BsSearch } from 'react-icons/bs';
 import styles from './Address.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
-import AddrItemList from 'components/address/AddrItemList';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { AiOutlineSearch } from 'react-icons/ai';
 import AddressModal from 'components/asset/AddressModal';
@@ -13,21 +10,6 @@ import produce from 'immer';
 // import key from "./key";
 
 
-const useStyles = makeStyles((theme) => ({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: 'auto',
-    width: 'fit-content',
-  },
-  formControl: {
-    marginTop: theme.spacing(2),
-    minWidth: 120,
-  },
-  formControlLabel: {
-    marginTop: theme.spacing(1),
-  },
-}));
 
 
 const key = "devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE";
@@ -46,11 +28,6 @@ const AddressContainer = () => {
   const onChangeDetail = e => setDetailAddr(e.target.value);
   
 
-
-  useEffect(()=>{
-    getList();
-  },[]);
-
   const getList = useCallback(async () => {
     const token = sessionStorage.getItem("access_token");
     const res = await getDeliveryList(token);
@@ -59,8 +36,16 @@ const AddressContainer = () => {
   }, []);
 
 
+  //토큰 없으면 에러.
+  useEffect(()=>{
+    getList();
+  },[getList]);
+
+
+
+
   const handleClickOpen = () => {
-    if (searchAddr == "") {
+    if (searchAddr === "") {
       alert("검색어를 입력해주세요.");
       return;
     }
@@ -75,7 +60,7 @@ const AddressContainer = () => {
   };
   
   const handleKeyPress = (e) => {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       handleClickOpen();
     }
   }
@@ -98,7 +83,7 @@ const AddressContainer = () => {
 
 
   const onSearch = async () => {
-    if (searchAddr == "") {
+    if (searchAddr === "") {
       alert("검색어를 입력해주세요.");
       return;
     }

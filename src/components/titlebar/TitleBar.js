@@ -1,8 +1,6 @@
 import React from 'react';
-import {Paths} from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
-import {IoIosArrowRoundBack} from 'react-icons/io';
 import back from 'components/svg/header/back.svg';
 
 // 메인 로고 이미지
@@ -29,7 +27,7 @@ function Title({ title }) {
     )
 }
 
-function BackButton(onClick) {
+function BackButton() {
     const history = useHistory();
     const goToBack = () => {
         history.goBack();
@@ -37,7 +35,7 @@ function BackButton(onClick) {
     return (
         <div className ={styles['back'] }onClick={goToBack}>
             <div className={styles['pd-box']}>
-            <img src ={back}/>
+            <img src ={back} alt={"뒤로가기"}/>
             </div>
         </div>
     )

@@ -12,17 +12,20 @@ import { Route, Switch } from 'react-router-dom';
 function App() {
 
   const dispatch = useDispatch();
+  
+  const getInfo = useCallback( () => {
+    const token = sessionStorage.getItem("access_token");
+    console.log(token===null)
+    if (token !== null && token !== undefined) {
+      dispatch(get_user_info(token));
+    }
+  },[dispatch]);
 
   useEffect(() => {
     getInfo();
-  }, [])
+  }, [getInfo])
 
-  const getInfo = useCallback(async () => {
-    const token = sessionStorage.getItem("access_token");
-    if (token != null || token != undefined) {
-      dispatch(get_user_info(token));
-    }
-  });
+
 
   return (
     <div className="App">
@@ -48,8 +51,6 @@ function App() {
   );
 }
 
-{/* ? 붙이면 없어도 되는 밸류*/ }
-{/* 디테일 메뉴는 어떤 값을 넣어줄지 생각해야함*/ }
-{/* <Route path="/reserve/:tab/:value/:data" exact component={Detail}></Route>  */ }
+
 
 export default App;

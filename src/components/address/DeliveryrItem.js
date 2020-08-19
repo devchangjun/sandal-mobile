@@ -11,7 +11,7 @@ const DeliveryrItem = (props) => {
 
     //배달 받을 주소로 설정
     const handleClick = () => {
-        console.log("배달지 주소로 선택합니다");
+        console.log("배달지 주소로 선택합니다" +lat + lan);
     }
 
     //최근 배달 주소 삭제

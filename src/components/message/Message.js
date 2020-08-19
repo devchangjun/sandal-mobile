@@ -10,7 +10,7 @@ const Message = ({ src, msg,onClick, isButton ,buttonName }) => {
         <div className={styles['reserve-custom-order']}>
             {src &&
             <div className={styles['icon']}>
-                <img src={NoMenu}></img>
+                <img src={NoMenu} alt={""}></img>
             </div>
                 }
             <div className={styles['title-msg']}>
@@ -30,14 +30,12 @@ Message.propTypes={
     msg : propTypes.string,
     onClick :propTypes.func,
     isButton :propTypes.bool
-
 }
 
 Message.defaultProps={
     msg : "아주나무",
     isButton : false,
     onClick :() => console.warn("onClick no defined")
-
 }
 
 export default Message;

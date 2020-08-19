@@ -1,5 +1,4 @@
 import React from 'react';
-import {Route} from 'react-router-dom';
 import SignCompleteContainer from 'containers/sign/SignCompleteContainer';
 import qs from 'qs';
 

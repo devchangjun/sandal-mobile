@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import styles from './MenuList.module.scss';
 import Slider from "react-slick";
 import MenuItem from "./MenuItem";
 
-import logo from 'logo.svg';
 
 const initMenu = [
     {

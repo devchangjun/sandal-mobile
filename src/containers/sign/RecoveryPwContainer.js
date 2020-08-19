@@ -18,7 +18,7 @@ const RecoveryPwContainer = () => {
     const [phone, setPhone] = useState('');
     const [auth, setAuth] = useState('');
     const [toggle , setToggle] = useState(false);
-    const [success , setSuccess] = useState(false); 
+    // const [success , setSuccess] = useState(false); 
 
     const onChangeName=e=>setName(e.target.value);
     const onChangeEmail = e => setEmail(e.target.value);

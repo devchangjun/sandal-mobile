@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+// import { useSelector } from 'react-redux';
+// import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -37,8 +37,8 @@ const tabInit = [
 const ReserveContainer = ({ tab = 'custom' }) => {
 
     const [open, setOpen] = React.useState(false);
-    const history = useHistory();
-    const { user } = useSelector(state => state.auth);
+    // const history = useHistory();
+    // const { user } = useSelector(state => state.auth);
     const [budget, setBudget] = React.useState(0); //맞춤 가격
     const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
     const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
@@ -60,9 +60,12 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
-        if (e.target.value == '' || re.test(e.target.value)) {
+        if (e.target.value === '' || re.test(e.target.value)) {
             setBudget(e.target.value)
         }
+    }
+    const onChangeDesireQune =(value)=>{
+        setDesireQuan(value);
     }
 
     // 모달창 닫기
@@ -71,7 +74,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {
         setOpen(false);
-        if (budget != 0) setResult(true);
+        if (budget !== 0) setResult(true);
     }
 
 
@@ -83,7 +86,6 @@ const ReserveContainer = ({ tab = 'custom' }) => {
             <TabMenu tabs={tabInit} />
 
             <div className={styles['container']}>
-
                 <div className={styles['pd-box']}>
                     {/* 이부분 바꿔야함 */}
                     {(tab === 'custom' && result) ? 
@@ -128,6 +130,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 onChangeBudget={onChangeBudget}
                 desireQuan={desireQuan}
                 onCustomOrder={onCustomOrder}
+                onChangeDesireQune={onChangeDesireQune}
             />
         </>
     )

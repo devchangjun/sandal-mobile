@@ -1,38 +1,130 @@
 @import '../../styles/Root.scss';
 
-.main{
+
+.container{
     max-width: $max-width;
-    min-width: $min-width;
-    margin: 0 auto;
-    table{
-        border-spacing: 0;
-        border:none;
+    margin:  0 auto;
+    margin-top: $mg-top40;
+    //유저 정보 
+    .user-info{
         width: 100%;
-        margin: 20px 0 50px 0;
-        min-width: 500px;
+        height: 120px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        font-size: $font-size;
+        margin-bottom:32px;
+        background-color:#fff;
+        .profile{
+            position: relative;
+            border-radius: 100px;
+            box-sizing: border-box;
+            overflow: hidden;
+            .profile-img{
+                width: 100%;
+            }
+            .change{
+                background-color:black;
+                opacity: 0.3;
+                color:white;
+                position: absolute;
+                top :57px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 1px 0;
+                height: auto;
+
+            }
+
+        }
+        .info{
+            width: 100%;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            .point {
+                margin-top: 10px;
+                border: 1px solid #EBEBEB;
+                border-radius: 16px;
+                box-sizing: border-box;
+                width: 152px;
+                height: 32px;
+                text-align: center;
+                padding-top:7px;
+            }
+            .name{
+                span{
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .link{
+            display: flex;
+            justify-content: center;
+            width: 50px;
+        }
+
     }
-    tr{
-        border:none;
+
+    //공지사항, 이벤트 및 링크 컴포넌트
+    .tab{
+        display: flex;
+        flex-direction: column;
+        .pd-box{
+            &:not(:first-child){
+                border-top : 1px solid #F9F9F9;
+            }
+        }
         .item{
-            padding-right:50%;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: $font-size;
+            .value{
+                color: #777777;
+            }
+            
         }
+
     }
-    td{
-        padding: 20px 0 20px 0;
-        input{
-            margin: 0;
-        }
+
+    .logout{
+        width: 100%;
+        height: 176px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .logout-btn{
+            width: 328px;
+            height: 56px;
+            background-color: white;
+            border: 1px solid #DBDBDB;
+            box-sizing: border-box;
+            border-radius: 10px;
+            text-align: center;
+            .pd-btn{
+                padding: 17px;
+            }
+        }        
     }
-}
-.content{
-    margin: 30px 0 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-.wrapper {
-    display: grid;
-    grid-template-columns: 300px 300px ;
-    grid-template-rows: 50px 50px 50px;
+
+.pd-box{
+    padding: $padding-side;
+    background-color:#fff;
+}
+
+.pd-left{
+    padding-left :24px;
+}
+.pd-right{
+    padding-right: 24px;
 }

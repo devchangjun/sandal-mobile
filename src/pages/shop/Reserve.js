@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import ReserveContainer from 'containers/shop/ReserveContainer';
 
 function Reserve({match}){

@@ -16,7 +16,7 @@ const RecoveryIdContainer = () => {
     const [userPhone, setUserPhone] = useState('');
     const [userAuth, setUserAuth] = useState('');
     const [toggle , setToggle] = useState(false);
-    const [success , setSuccess] = useState(false); 
+    // const [success , setSuccess] = useState(false); 
 
     const onChangeName = e => setUserName(e.target.value);
     const onChangePhone = e =>setUserPhone(e.target.value);

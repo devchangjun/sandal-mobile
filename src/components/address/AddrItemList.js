@@ -9,7 +9,7 @@ const AddrItemList =({addrs,onClick})=>{
     */ 
     
     const addrsList = addrs.map(addr =>(
-        <AddrItem jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
+        <AddrItem key={addr.roadAddr} jibunAddr ={addr.jibunAddr} roadAddr={addr.roadAddr} onClick={onClick}/>
     ))
     return(
         <div className={styles['addr-list']}>

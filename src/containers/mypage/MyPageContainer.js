@@ -46,13 +46,10 @@ const MyPageContainer = () => {
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
                     <div className={cx('profile', 'pd-left')}>
-                        <img src={Profile}></img>
+                        <img src={Profile} alt={"이미지"}></img>
                     </div>
                     <div className={cx('info', 'pd-box')}>
                         <div className={styles['auth']} onClick={user ? goToAccount : goToLogin}>
-                            <div className>
-
-                            </div>
                             {user ?
                                 <div className={styles['name']}>
                                     <span> {user.name}</span>님 반갑습니다.

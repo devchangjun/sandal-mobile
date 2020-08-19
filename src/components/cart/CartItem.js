@@ -2,7 +2,6 @@ import React from 'react';
 import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
-import logo from 'logo.svg';
 import cart from '../svg/cart/cart.png';
 
 
@@ -11,10 +10,9 @@ import cart from '../svg/cart/cart.png';
 const CartItem = props => {
 
 
-    const { id, isChecked, handleCheckChild } = props;
+    // const { id, isChecked, handleCheckChild } = props;
     const { item_img, item_name, item_option_id, item_price, item_quanity } = props.item;
     const options = props.options;
-    console.log(options);
 
     const onClick = () => {
         // console.log(options);
@@ -26,7 +24,7 @@ const CartItem = props => {
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
                         <div className={styles['item-img']}>
-                            <img src={cart}></img>
+                            <img src={cart} alt={item_name}></img>
                         </div>
                         <div className={styles['item-info']}>
                             <div className={styles['bar']}>

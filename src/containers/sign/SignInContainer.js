@@ -8,9 +8,7 @@ import TitleBar from 'components/titlebar/TitleBar';
 import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
-import classNames from 'classnames/bind'
 
-const cx = classNames.bind(styles);
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -44,30 +42,24 @@ const SignInContainer = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
-    const [checked, setChecked] = useState(false);
+    const {email,password} = user;
     const [toggle, setToggle] = useState(false);
 
     useEffect(() => {
-        console.log("로그인 렌더");
-    }, [])
 
-    useEffect(() => {
-        const { email, password } = user;
-        const btnToggle = (email.length != 0 && password.length != 0) ? true : false;
+        const btnToggle = (email.length !== 0 && password.length !== 0) ? true : false;
         setToggle(btnToggle);
 
-    }, [user])
+    }, [email,password])
 
-    const updateEmail = useCallback((e) => {
+    const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
-    })
-    const updatePassword = useCallback((e) => {
+    }
+
+    const updatePassword =(e) => {
         dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
-    })
-    const updateChecked = useCallback(() => {
-        setChecked(!checked);
-        console.log(checked);
-    })
+    }
+
     const goToSignup = () => {
         history.push(Paths.ajoonamu.signup);
     };
@@ -76,7 +68,7 @@ const SignInContainer = () => {
         const { email, password } = user;
         const res = await localLogin(email, password);
         console.log(res);
-        if (res.status == 200) {
+        if (res.status === 200) {
     
             //회원가입 안되있는 이메일
             if (res.data.msg === "회원가입 되어있지 않은 이메일입니다.") {
@@ -97,10 +89,11 @@ const SignInContainer = () => {
             alert("이메일 혹은 패스워드를 확인해주세요");
         }
 
-    })
+    },[user,history,dispatch])
+
     const goToRecovery = useCallback(() => {
         history.push(Paths.ajoonamu.recovery);
-    })
+    },[history])
 
     return (
         <>
@@ -132,15 +125,15 @@ const SignInContainer = () => {
                         {/* 이부분 컴포넌트 만들어야함 */}
                         <div className={styles.social}>
                             <div className={styles.sns}>
-                                <img src={naver}></img>
+                                <img src={naver} alt="naver"></img>
                             </div>
                             <div className={styles.sns}>
 
-                                <img src={kakao}></img>
+                                <img src={kakao} alt="kakao"></img>
 
                             </div>
                             <div className={styles.sns}>
-                                <img src={facebook}></img>
+                                <img src={facebook} alt="facebook"></img>
                             </div>
                         </div>
                     </div>

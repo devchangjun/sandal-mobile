@@ -1,6 +1,5 @@
-import React, { useEffect,useState } from 'react';
-import { Paths } from 'paths';
-import { NavLink,useHistory } from 'react-router-dom';
+import React  from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './TabMenu.module.scss';
 

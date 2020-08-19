@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Sign.module.scss';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';

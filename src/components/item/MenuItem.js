@@ -37,7 +37,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles.img} src={logo}></img>
+            <img className={styles.img} src={logo} alt="메뉴이미지"></img>
         </div>
     )
 }

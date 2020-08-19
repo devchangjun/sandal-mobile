@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import styles from './Asset.module.scss';
 import AppBar from '@material-ui/core/AppBar';
@@ -52,7 +51,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FullScreenDialog = (props) => {
     const classes = useStyles();
-
 
     return (
         <div>

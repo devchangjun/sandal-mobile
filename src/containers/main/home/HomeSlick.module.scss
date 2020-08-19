@@ -1,14 +1,19 @@
-.container{
-    width:90%;
-    height: 130px;
+@import '../../../styles/Root.scss';
+
+.container {
+    width: 100%;
+    max-width: $max-width;
+    min-width: $min-width;
+    height: 230px;
     overflow: hidden;
-}
-.item{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    background: #e4e4e4;
-    color: #fff;
-    font-size: 36px;
-    height: 100px;
+
+    .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #e4e4e4;
+        color: #fff;
+        font-size: 36px;
+        height: 200px;
+    }
 }

@@ -50,9 +50,7 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
 
         console.log("탭 바뀜");
         console.log(tab);
- 
         tab === 'mycoupon' && window.addEventListener('scroll', onScroll);
-
         return () => {
             console.log("쿠폰 언마운트");
             window.scrollTo(0, 0)

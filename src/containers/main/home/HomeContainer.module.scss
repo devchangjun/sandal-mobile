@@ -9,7 +9,6 @@
 
     .banner{
         width: 100%;
-        height: 75px;
         border: 0px solid rgb(246, 246, 246);
         background-color: rgb(253, 253, 253);
         flex-direction: column;
@@ -17,7 +16,9 @@
         text-align: center;
         align-items: center;
         justify-content: center;
-        
+        img{
+            width: 100%;
+        }
         .title{
             font-size: 14px;
             margin: 10px 0 10px 0;
@@ -46,10 +47,19 @@
     margin-top:$mg-top;
 }
 
-.menu-list{
-    border: 0px solid black;
+.menu-list {
+    margin-top: 34px;
     margin-bottom: 70px;
+    box-sizing: border-box;
+
+    .menu-list-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 0 24px;
+    }
 }
+
 
 .mg-top{
     div{

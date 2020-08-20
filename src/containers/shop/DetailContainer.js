@@ -7,17 +7,21 @@ import Counter from 'components/counter/Counter';
 import { useHistory } from 'react-router';
 import Test from 'components/svg/cart/test.png';
 import classNames from 'classnames/bind'
-
+import Back from 'components/svg/header/Back';
 const cx = classNames.bind(styles);
 
 const DetailContainer = ({ menu_name }) => {
     const history = useHistory();
     const onClickCart = () => history.push(Paths.ajoonamu.cart);
+    const onClickBack =() =>history.goBack();
     
     return (
         <>
             <div className={styles['menu-img']}>
                 <img className={styles['img']} src= {Test} alt={menu_name}/>
+                <div className={styles['back']}>
+                    <Back onClick={onClickBack} stroke ={"#fff"} strokeWidth={"3"}/>
+                </div>
             </div>
             <div className={styles['detail-view']}>
                 <div className={styles['menu-info']}>

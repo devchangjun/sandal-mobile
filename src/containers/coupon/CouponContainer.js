@@ -34,9 +34,7 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
 
     const onScroll = useCallback(e => {
         if (tab === 'mycoupon') {
-
             const scrollTop = ('scroll', e.srcElement.scrollingElement.scrollTop);
-
             if (scrollTop > 250) {
                 my_coupon.current.classList.add(cx('shadow'));
             }
@@ -47,12 +45,8 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
     }, [tab]);
 
     useEffect(() => {
-
-        console.log("탭 바뀜");
-        console.log(tab);
         tab === 'mycoupon' && window.addEventListener('scroll', onScroll);
         return () => {
-            console.log("쿠폰 언마운트");
             // window.scrollTo(0, 0)
             window.removeEventListener('scroll', onScroll);
         };

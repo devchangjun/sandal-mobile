@@ -7,7 +7,6 @@ const DeliveryrItem = (props) => {
         최근 배달 주소를 보여줄 컴포넌트
     */
    const {addr1,addr2,lat,lan} = props;
-    console.log(props);
 
     //배달 받을 주소로 설정
     const onClick = () => {

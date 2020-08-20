@@ -142,7 +142,6 @@ const SignUpContainer = () => {
 
     // 단일 체크박스 변경시 올체크인지 확인
     const onToggleCheck = useCallback(() => {
-        console.log("단일 체크 변경");
         if (check1 && check2 && check3) {
             dispatchCheck({ type: 'ALL_CHECK', check: true });
         }
@@ -163,7 +162,6 @@ const SignUpContainer = () => {
     const isAllCheck = useCallback(() => {
         if (check1 && check2 && check3) {
             dispatchCheck({ type: 'ALL_CHECK', check: true });
-            console.log("올체크로 변경");
         }
         else if (!check1 || !check2 || !check3) {
             dispatchCheck({ type: 'ALL_CHECK', check: false });

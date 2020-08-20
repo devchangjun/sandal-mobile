@@ -4,8 +4,15 @@
     width: 100%;
     max-width: $max-width;
     margin: 0 auto;
+    position: relative;
     img{
         width: 100%;
+    }
+    .back{
+        z-index: 100;
+        position: absolute;
+        top:24px;
+        left: 24px;
     }
 }
 .detail-view{

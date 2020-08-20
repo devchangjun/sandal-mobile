@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
-import back from 'components/svg/header/back.svg';
+import Back from 'components/svg/header/Back';
 
 // 메인 로고 이미지
 
@@ -29,13 +29,13 @@ function Title({ title }) {
 
 function BackButton() {
     const history = useHistory();
-    const goToBack = () => {
+    const onClickBack = () => {
         history.goBack();
     }
     return (
-        <div className ={styles['back'] }onClick={goToBack}>
+        <div className ={styles['back'] }>
             <div className={styles['pd-box']}>
-            <img src ={back} alt={"뒤로가기"}/>
+                <Back onClick={onClickBack}/>
             </div>
         </div>
     )

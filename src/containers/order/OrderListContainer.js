@@ -28,8 +28,8 @@ const OrderListContainer = ({ tab = 'order' }) => {
     const handleClose =()=>setOpen(false);
     
     useEffect(()=>{
-        console.log("탭 바뀜");
-        console.log(tab);
+        // console.log("탭 바뀜");
+        // console.log(tab);
     },[tab])
     
 

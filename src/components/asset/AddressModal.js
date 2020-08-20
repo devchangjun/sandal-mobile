@@ -45,7 +45,7 @@ const AddressModal = (props) => {
     const classes = useStyles();
 
 
-    console.log(props);
+    // console.log(props);
     return (
         <div>
             <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>

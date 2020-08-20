@@ -8,7 +8,7 @@ export const getUserInfo = async (token) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post();
-    console.log(res.data);
+    // console.log(res.data);
     return res.data;
 }
 

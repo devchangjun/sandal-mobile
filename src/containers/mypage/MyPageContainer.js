@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -10,10 +10,7 @@ import classNames from 'classnames/bind';
 import { localLogout } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 
-
 const cx = classNames.bind(styles);
-
-
 
 const MyPageContainer = () => {
 
@@ -36,10 +33,7 @@ const MyPageContainer = () => {
             history.push(Paths.index);
         }
     }
-    useEffect(() => {
-        console.log("리렌더");
-        console.log(user);
-    }, [user]);
+
     return (
         <>
             <TitleBar title={"마이페이지"} />
@@ -53,7 +47,7 @@ const MyPageContainer = () => {
                             {user ?
                                 <div className={styles['name']}>
                                     <span> {user.name}</span>님 반갑습니다.
-                            </div>
+                                 </div>
                                 : "로그인을 해주세요"}
 
                         </div>

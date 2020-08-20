@@ -24,7 +24,10 @@ const AddressContainer = () => {
   const [delivery_addrs, setDeliveryAddrs] = useState([]);
 
   const onClickAddrItem = (data) => setSelectAddr(data);
-  const onChangeAddr = e => setSearchAddr(e.target.value);
+
+  const onChangeSearchAddr = useCallback(e => {
+    setSearchAddr(e.target.value);
+  },[]);
   const onChangeDetail = e => setDetailAddr(e.target.value);
   
 
@@ -41,6 +44,15 @@ const AddressContainer = () => {
     onAddrList();
   },[onAddrList]);
 
+
+
+  const renderAddrList =useCallback(()=>{
+    return(
+      <>
+       <DeliveryItemList addrs={delivery_addrs} />
+      </>
+    ) 
+  },[delivery_addrs]);
 
 
 
@@ -107,7 +119,7 @@ const AddressContainer = () => {
       <div className={styles['container']}>
         <div className={styles['title']}>배달 받으실 장소를 입력하세요</div>
         <div className={styles['addr-input']}>
-          <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={searchAddr} onChange={onChangeAddr} onKeyPress={handleKeyPress} />
+          <input className={styles['input-box']} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" value={searchAddr} onChange={onChangeSearchAddr} onKeyPress={handleKeyPress} />
           <div className={styles['search-btn']} onClick={handleClickOpen} ><AiOutlineSearch /></div>
         </div>
         <div className={styles['location-btn']}>
@@ -115,14 +127,14 @@ const AddressContainer = () => {
           </div>
         <div className={styles['addr-list']}>
           <div className={styles['title']}>최근 배달 주소</div>
-          <DeliveryItemList addrs={delivery_addrs} />
+          {delivery_addrs && renderAddrList()}
         </div>
       </div>
       <AddressModal
         open={open}
         handleClose={handleClose}
         searchAddr={searchAddr}
-        onChangeAddr={onChangeAddr}
+        onChangeAddr={onChangeSearchAddr}
         handleKeyPress={handleKeyPress}
         onSearch={onChangeSearch}
         addrs={addrs}

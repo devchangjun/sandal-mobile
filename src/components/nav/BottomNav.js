@@ -3,7 +3,6 @@ import styles from './BottomNav.module.scss';
 import classNames from 'classnames/bind';
 import { Link, useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
-
 import homeImageActive from '../svg/bottom-nav/home-active.svg';
 import couponImage from '../svg/bottom-nav/coupon.svg';
 import deliveryImage from '../svg/bottom-nav/delivery.svg';
@@ -29,6 +28,9 @@ const BottomNav = () => {
     }
     const handleClose = () => {
         setOpen(false);
+    }
+    const handleChange=()=>{
+        console.log("체인지");
     }
 
     const goToHome = () => {
@@ -66,7 +68,7 @@ const BottomNav = () => {
                         </div>
 
                         <div className={cx('nav-item', 'order')}>
-                            <input type="checkbox"className={styles["menu-open"]} checked={open} />
+                            <input type="checkbox"className={styles["menu-open"]} checked={open} onChange={handleChange}/>
                             <div className={styles["menu-open-button"]} onClick={handleOpen}>
                                 <div className={cx('menu', { visible: !open })}>
                                     <img src={deliveryImage} alt="bottom-nav-delivery" />

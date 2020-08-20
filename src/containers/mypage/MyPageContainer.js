@@ -20,13 +20,13 @@ const MyPageContainer = () => {
     const { user } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const history = useHistory();
-    const goToLogin = () => {
+    const onClickLogin = () => {
         history.push(Paths.ajoonamu.signin);
     }
-    const goToAccount = () => {
+    const onClickAccount = () => {
         history.push(Paths.ajoonamu.account);
     }
-    const onLogout = async () => {
+    const onClickLogout = async () => {
         const token = sessionStorage.getItem("access_token");
         const res = await localLogout(token);
         sessionStorage.removeItem("access_token");
@@ -49,7 +49,7 @@ const MyPageContainer = () => {
                         <img src={Profile} alt={"이미지"}></img>
                     </div>
                     <div className={cx('info', 'pd-box')}>
-                        <div className={styles['auth']} onClick={user ? goToAccount : goToLogin}>
+                        <div className={styles['auth']} onClick={user ? onClickAccount : onClickLogin}>
                             {user ?
                                 <div className={styles['name']}>
                                     <span> {user.name}</span>님 반갑습니다.
@@ -78,7 +78,7 @@ const MyPageContainer = () => {
                     {user && <Item text={"이용약관"} />}
                 </div>
                 {user &&
-                    <div className={styles['logout']} onClick={onLogout}>
+                    <div className={styles['logout']} onClick={onClickLogout}>
                         <div className={styles['logout-btn']}>
                             <div className={styles['pd-btn']}>
                                 로그아웃

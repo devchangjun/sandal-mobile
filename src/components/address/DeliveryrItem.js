@@ -10,24 +10,24 @@ const DeliveryrItem = (props) => {
     console.log(props);
 
     //배달 받을 주소로 설정
-    const handleClick = () => {
+    const onClick = () => {
         console.log("배달지 주소로 선택합니다" +lat + lan);
     }
 
     //최근 배달 주소 삭제
-    const handleRemove = () => {
+    const onRemove = () => {
         console.log("배달지 삭제 삭제");
     }
 
     return (
-        <div className={styles['delivery-item']} onClick={handleClick}>
+        <div className={styles['delivery-item']} onClick={onClick}>
             <div className={styles['item-box']}>
                 <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
                 <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
             </div>
             <div className={styles['item-remove']} onClick={(e) => {
                 e.stopPropagation();
-                handleRemove()
+                onRemove()
             }}> &times;
             </div>
         </div>

@@ -9,13 +9,13 @@ const cx = classNames.bind(styles);
 
 const LinkButton = ({ title, onClick, toggle }) => {
     
-    const test=()=>{
-        console.log('null');
+    const onClickDefault=()=>{
+        console.warn('null');
     }
     
     return (
         <div>
-            <div className={cx('link-btn', { on: toggle })} onClick={toggle ? onClick: test}>{title}</div>
+            <div className={cx('link-btn', { on: toggle })} onClick={toggle ? onClick: onClickDefault}>{title}</div>
         </div>
     )
 }

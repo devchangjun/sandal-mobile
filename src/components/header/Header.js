@@ -14,11 +14,11 @@ const Header =()=>{
 
     },[user])
 
-    const goToHome =()=> history.push(Paths.index);
+    const onClickHome =()=> history.push(Paths.index);
 
     return(
         <div className={styles['header']}>
-                <div className={styles['header-logo']} onClick={goToHome}>
+                <div className={styles['header-logo']} onClick={onClickHome}>
                     <img className ={styles['header-logoimg']} src={logo} alt={"로고"}></img>
                 </div>
         </div>

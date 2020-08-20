@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
-import { FaArrowDown } from 'react-icons/fa';
-
+import DownCoupon from 'components/svg/coupon/down.svg';
 const CouponItem = (props) => {
     // console.log(props);
     return (
         <div className={styles['coupon-item']}>
             <div className={styles['down']}>
-                {props.check ? <CouponDown /> : ""}
+                <CouponDown check ={props.check}/>
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
@@ -51,9 +50,9 @@ function CouponDate({ date }) {
 }
 function CouponDown({ check }) {
     return (
-        <div>
-            <FaArrowDown />
-        </div>
+        <>
+        {check &&<img src ={DownCoupon} alt="다운"/>}
+        </>
     )
 }
 

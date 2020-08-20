@@ -60,10 +60,14 @@ const SignInContainer = () => {
         dispatchUser({ type: 'UPDATE_USER_PASSWORD', password: e.target.value });
     }
 
-    const goToSignup = () => {
+    const onClickSignup = useCallback(() => {
         history.push(Paths.ajoonamu.signup);
-    };
-    const onLogin = useCallback(async () => {
+    },[history]);
+    
+    const onClickRecovery = useCallback(() => {
+        history.push(Paths.ajoonamu.recovery);
+    },[history])
+    const onClickLogin = useCallback(async () => {
 
         const { email, password } = user;
         const res = await localLogin(email, password);
@@ -91,9 +95,6 @@ const SignInContainer = () => {
 
     },[user,history,dispatch])
 
-    const goToRecovery = useCallback(() => {
-        history.push(Paths.ajoonamu.recovery);
-    },[history])
 
     return (
         <>
@@ -103,22 +104,22 @@ const SignInContainer = () => {
                         <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
                         <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                         <div className={styles['login-btn']}>
-                            <LinkButton title={"로그인"} onClick={onLogin} toggle={toggle}></LinkButton>
+                            <LinkButton title={"로그인"} onClick={onClickLogin} toggle={toggle}></LinkButton>
                         </div>
                         <div className={styles['link-table']}>
-                            <div className={styles['table-cell']} onClick={goToSignup} >
+                            <div className={styles['table-cell']} onClick={onClickSignup} >
                                 <div className={styles['sub-text']}>회원가입</div>
                             </div>
                             {/* <div className={cx('table-cell','line')}>
                             <div className={styles['vertical-line']}/>
                         </div> */}
-                            <div className={styles['table-cell']} onClick={goToRecovery}>
+                            <div className={styles['table-cell']} onClick={onClickRecovery}>
                                 <div className={styles['sub-text']}>아이디찾기</div>
                             </div>
                             {/* <div className={cx('table-cell','line')}>
                             <div className={styles['vertical-line']}/>
                         </div> */}
-                            <div className={styles['table-cell']} onClick={goToRecovery}>
+                            <div className={styles['table-cell']} onClick={onClickRecovery}>
                                 <div className={styles['sub-text']}>비밀번호찾기</div>
                             </div>
                         </div>

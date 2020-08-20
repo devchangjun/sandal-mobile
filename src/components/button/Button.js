@@ -8,11 +8,11 @@ const cx = classNames.bind(styles);
 
 const Button =({title, onClick,toggle})=>{
 
-    const defaultFc =()=>{
+    const onClickDefault =()=>{
         console.warn("not data");
     }
     return(
-        <div className={cx('btn',{on:toggle})} onClick ={toggle ? onClick : defaultFc }>{title}</div>
+        <div className={cx('btn',{on:toggle})} onClick ={toggle ? onClick : onClickDefault }>{title}</div>
     )
 }
 

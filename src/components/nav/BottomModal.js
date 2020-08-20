@@ -39,11 +39,7 @@ const BottomModal = ({open,handleClose}) => {
 
                 </div>
             </div>
-            {open &&
-                   <div className={styles['dim']} onClick={handleClose}>
-
-                   </div>
-            }
+            {open && <div className={styles['dim']} onClick={handleClose}/>}
     
         </>
     )

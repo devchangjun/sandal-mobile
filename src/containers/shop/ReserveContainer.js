@@ -50,8 +50,10 @@ const ReserveContainer = ({ tab = 'custom' }) => {
         console.log(tab);
     }, [tab])
 
-    //맞춤 주문 설정하기 버튼 클릭
-    const onClickCustomOrder = () => setOpen(true);
+    //맞춤 주문하기 버튼 클릭
+    const handleOpen = () => setOpen(true);
+    // 모달창 닫기
+    const handleClose = () => setOpen(false);
 
     //주문 종류 선택
     const onChangeType = (e) => setItemType(e.target.value);
@@ -64,13 +66,9 @@ const ReserveContainer = ({ tab = 'custom' }) => {
             setBudget(e.target.value)
         }
     }
-    const onChangeDesireQune =(value)=>{
+    const onChangeDesireQune = (value) => {
         setDesireQuan(value);
     }
-
-    // 모달창 닫기
-    const handleClose = () =>setOpen(false);
-
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {
         setOpen(false);
@@ -88,17 +86,17 @@ const ReserveContainer = ({ tab = 'custom' }) => {
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     {/* 이부분 바꿔야함 */}
-                    {(tab === 'custom' && result) ? 
-                     <div>
-                    맞춤 메뉴
-                    <CustomItemList /> 
-                    </div>
-                    :
+                    {(tab === 'custom' && result) ?
+                        <div>
+                            맞춤 메뉴
+                    <CustomItemList />
+                        </div>
+                        :
                         (tab === 'custom' && !result) &&
                         <Message
                             msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
                             isButton={true}
-                            onClick={onClickCustomOrder}
+                            onClick={handleOpen}
                             buttonName={"맞춤 주문 하기"}
 
                         />

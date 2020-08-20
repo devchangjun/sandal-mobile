@@ -2,7 +2,6 @@ import React from 'react';
 import { Paths } from 'paths';
 import Title from 'components/titlebar/Title';
 import styles from './HomeContainer.module.scss';
-import Header from 'components/header/Header';
 import MenuItemList from 'components/item/MenuItemList';
 import HomeSlick from './HomeSlick';
 import TabMenu from 'components/tab/TabMenu';
@@ -26,11 +25,9 @@ const tabInit = [
 const HomeContainer = () => {
 
     // const {user} = useSelector(state=>state.auth);
-
-
     return (
         <>
-            <Title></Title>
+            <Title/>
             <TabMenu tabs={tabInit}/>
             <div className={styles['carousel']}>
                 <HomeSlick />
@@ -47,19 +44,9 @@ const HomeContainer = () => {
     )
 }
 
-function Banner({ title, subtitle, text }) {
+function Banner() {
     return (
         <div className={styles['banner']}>
-            {/* <div className={styles['title']}>
-                {title}
-            </div>
-            <div className={styles['sub-title']}>
-                {subtitle}
-            </div>
-            <div className={styles['text']}>
-                {text}
-            </div> */}
-
             <img src={BannerImg} alt="subBanner" />
         </div>
     )

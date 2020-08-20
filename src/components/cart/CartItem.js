@@ -11,7 +11,8 @@ const CartItem = props => {
 
 
     // const { id, isChecked, handleCheckChild } = props;
-    const { item_img, item_name, item_option_id, item_price, item_quanity } = props.item;
+    // const {item_img, item_option_id} = props.item;
+    const { item_name,  item_price, item_quanity } = props.item;
     const options = props.options;
 
     const onClick = () => {

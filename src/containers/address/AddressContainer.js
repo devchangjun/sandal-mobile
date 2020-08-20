@@ -28,7 +28,7 @@ const AddressContainer = () => {
   const onChangeDetail = e => setDetailAddr(e.target.value);
   
 
-  const getList = useCallback(async () => {
+  const onAddrList = useCallback(async () => {
     const token = sessionStorage.getItem("access_token");
     const res = await getDeliveryList(token);
     console.log(res.data.query);
@@ -38,8 +38,8 @@ const AddressContainer = () => {
 
   //토큰 없으면 에러.
   useEffect(()=>{
-    getList();
-  },[getList]);
+    onAddrList();
+  },[onAddrList]);
 
 
 
@@ -51,7 +51,7 @@ const AddressContainer = () => {
     }
     else {
       setOpen(true);
-      onSearch();
+      onChangeSearch();
     }
   };
 
@@ -65,7 +65,7 @@ const AddressContainer = () => {
     }
   }
 
-  const onInsertAddr = () => {
+  const onClickInsertAddr = () => {
     setOpen(false);
     const item = {
       id: nextId.current,
@@ -81,8 +81,7 @@ const AddressContainer = () => {
   };
 
 
-
-  const onSearch = async () => {
+  const onChangeSearch = async () => {
     if (searchAddr === "") {
       alert("검색어를 입력해주세요.");
       return;
@@ -125,13 +124,13 @@ const AddressContainer = () => {
         searchAddr={searchAddr}
         onChangeAddr={onChangeAddr}
         handleKeyPress={handleKeyPress}
-        onSearch={onSearch}
+        onSearch={onChangeSearch}
         addrs={addrs}
         onClickAddrItem={onClickAddrItem}
         selectAddr={selectAddr}
         detailAddr={detailAddr}
         onChangeDetail={onChangeDetail}
-        onInsertAddr={onInsertAddr}
+        onInsertAddr={onClickInsertAddr}
 
       />
     </>

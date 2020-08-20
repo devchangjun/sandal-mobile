@@ -18,7 +18,7 @@ const Title = ({ addr }) => {
         addr로 받아와 렌더.
         useSelect로 전역 state로 받아와도 됨
     */
-    const goToAddress = () => {
+    const onClickAddr = () => {
         history.push(Paths.ajoonamu.address);
     };
 
@@ -29,7 +29,7 @@ const Title = ({ addr }) => {
                     <div className="app-title-notification unread">
                         <img src={notificationBellImage} alt="notification-bell" />
                     </div>
-                    <div className="app-title-location" onClick={goToAddress}>
+                    <div className="app-title-location" onClick={onClickAddr}>
                         {addr ? addr : '배달지를 설정해주세요'}
                     </div>
                     <div className="app-title-location-button">

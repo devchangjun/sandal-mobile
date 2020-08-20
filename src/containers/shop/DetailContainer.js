@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 const DetailContainer = ({ menu_name }) => {
     const history = useHistory();
-    const getCart = () => history.push(Paths.ajoonamu.cart);
+    const onClickCart = () => history.push(Paths.ajoonamu.cart);
     
     return (
         <>
@@ -45,7 +45,7 @@ const DetailContainer = ({ menu_name }) => {
                     </div>
                 </div>
             </div>
-            <Button title={"1개 담기(5,000원)"} onClick ={getCart} toggle={true}/>
+            <Button title={"1개 담기(5,000원)"} onClick ={onClickCart} toggle={true}/>
         </>
     )
 }

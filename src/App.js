@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import ScrollToTop from 'components/scrollTop/ScrollToTop';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import { get_user_info } from './store/auth/auth';
@@ -12,23 +13,22 @@ import { Route, Switch } from 'react-router-dom';
 function App() {
 
   const dispatch = useDispatch();
-  
-  const getInfo = useCallback( () => {
+
+  const existJWT = useCallback(() => {
     const token = sessionStorage.getItem("access_token");
-    console.log(token===null)
+    console.log(token === null)
     if (token !== null && token !== undefined) {
       dispatch(get_user_info(token));
     }
-  },[dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
-    getInfo();
-  }, [getInfo])
-
-
+    existJWT();
+  }, [existJWT])
 
   return (
     <div className="App">
+      <ScrollToTop>
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
         <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
@@ -47,6 +47,7 @@ function App() {
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
         <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
         <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
+      </ScrollToTop>
     </div>
   );
 }

@@ -19,9 +19,6 @@ const AccountContainer = () => {
         if(user===null){
             history.push(Paths.index);
         }
-        else{
-
-        }
     },[user,history])
 
     const render =()=>{

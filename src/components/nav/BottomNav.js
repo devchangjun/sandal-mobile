@@ -33,16 +33,16 @@ const BottomNav = () => {
         console.log("체인지");
     }
 
-    const goToHome = () => {
+    const onClickHome = () => {
         history.push(Paths.index);
     }
-    const goToCoupon = () => {
+    const onClickCoupon = () => {
         history.push(`${Paths.ajoonamu.coupon}/mycoupon`)
     }
-    const goToOrderList = () => {
+    const onClickOrderList = () => {
         history.push(`${Paths.ajoonamu.order_list}/order`)
     }
-    const goToMyPage = () => {
+    const onClickMyPage = () => {
         history.push(`${Paths.ajoonamu.mypage}`);
     }
 
@@ -53,20 +53,18 @@ const BottomNav = () => {
                 <div className={styles['pd-box']}>
 
                     <div className={styles['nav-list']}>
-                        <div className={styles['nav-item']} onClick={goToHome}>
+                        <div className={styles['nav-item']} onClick={onClickHome}>
                             <div className={styles['icon']}>
                                 <img src={homeImageActive} alt="bottom-nav-home" />
                             </div>
                             <div className={styles['menu-name']}>홈</div>
                         </div>
-
-                        <div className={styles['nav-item']} onClick={goToCoupon}>
+                        <div className={styles['nav-item']} onClick={onClickCoupon}>
                             <div className={styles['icon']}>
                                 <img src={couponImage} alt="bottom-nav-coupon" />
                             </div>
                             <div className={styles['menu-name']}>쿠폰</div>
                         </div>
-
                         <div className={cx('nav-item', 'order')}>
                             <input type="checkbox"className={styles["menu-open"]} checked={open} onChange={handleChange}/>
                             <div className={styles["menu-open-button"]} onClick={handleOpen}>
@@ -77,16 +75,16 @@ const BottomNav = () => {
                                     <img src={deliveryCloseImage} alt="bottom-nav-delivery" />
                                 </div>
                             </div>
-                            <Link to="#" className={styles["menu-item"]}>예약주문</Link>
-                            <Link to="#" className={styles["menu-item"]}>택배배송</Link>
+                            <Link to={`${Paths.ajoonamu.shop}/custom`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
+                            <Link to="#" className={styles["menu-item"]}  onClick={handleClose}>택배배송</Link>
                         </div>
-                        <div className={styles['nav-item']} onClick={goToOrderList}>
+                        <div className={styles['nav-item']} onClick={onClickOrderList}>
                             <div className={styles['icon']}>
                                 <img src={orderlistImage} alt="bottom-nav-orderlist" />
                             </div>
                             <div className={styles['menu-name']}>주문내역</div>
                         </div>
-                        <div className={styles['nav-item']} onClick={goToMyPage}>
+                        <div className={styles['nav-item']} onClick={onClickMyPage}>
                             <div className={styles['icon']}>
                                 <MyPageImage />
                             </div>

@@ -120,9 +120,6 @@ const SignUpContainer = () => {
     const { allCheck, check1, check2, check3 } = check;
 
 
-
-
-
     const updateToggle = useCallback(() => {
         let checkbox = (check1 && check2) ? true : false;
         let userinfo = (email.length !== 0 && compare) ? true : false;
@@ -248,8 +245,7 @@ const SignUpContainer = () => {
             }
         }
     }
-    const onSignup = useCallback(async () => {
-
+    const onClickSignUp = useCallback(async () => {
         const res = await localRegister(email, password, password_confirm);
         console.log(res);
         if (res.data.msg === "존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.") {
@@ -285,7 +281,7 @@ const SignUpContainer = () => {
                 />
 
             </div>
-            <Button title={"가입완료"} onClick={onSignup} toggle={toggle} ></Button>
+            <Button title={"가입완료"} onClick={onClickSignUp} toggle={toggle} ></Button>
         </>
     )
 }

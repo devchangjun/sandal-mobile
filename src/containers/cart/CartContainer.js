@@ -34,7 +34,7 @@ const CartContainer = () => {
 
 
     //마운트 될 때 만 함수 생성.
-    const getList = useCallback (async () => {
+    const onCartList = useCallback (async () => {
         const token = sessionStorage.getItem("access_token");
         const res = await getCartList(token);
         let len = Object.keys(res).length;
@@ -45,10 +45,11 @@ const CartContainer = () => {
         }
         setCost(res.delivery_cost);
         setCartList(list);
+        setAllChecked(true) //나중에 빼야함
     },[]);
 
     // 장바구니 리스트가 변경될 때 새로 생성.
-    const totalPrice = useCallback(() => {
+    const onChangeTotalPrice = useCallback(() => {
         console.log(cartList);
         setTotal(0);
         let total = 0;
@@ -62,14 +63,13 @@ const CartContainer = () => {
 
     //마운트 될때만 함수 호출.
     useEffect(() => {
-        getList();
-    }, [getList])
+        onCartList();
+    }, [onCartList])
 
 
     useEffect(() => {
-        totalPrice();
-    }, [totalPrice])
-
+        onChangeTotalPrice();
+    }, [onChangeTotalPrice])
 
 
     const handleCheckChild = useCallback((e) => {
@@ -82,20 +82,20 @@ const CartContainer = () => {
     }, [cartList]);
 
     //전체 선택인지 아닌지 여부 판단
-    const handleAllChecked = () => {
+    // const handleAllChecked = () => {
 
-        for (let i = 0; i < cartList.length; i++) {
-            if (cartList[i].isChecked === false) {
-                setAllChecked(false);
-                return;
-            }
-        }
-        setAllChecked(true);
-        return;
-    }
+    //     for (let i = 0; i < cartList.length; i++) {
+    //         if (cartList[i].isChecked === false) {
+    //             setAllChecked(false);
+    //             return;
+    //         }
+    //     }
+    //     setAllChecked(true);
+    //     return;
+    // }
 
 
-    const goToOrder = () => history.push(Paths.ajoonamu.order);
+    const onClickOrder = () => history.push(Paths.ajoonamu.order);
 
     const renderList = () => {
         return (
@@ -149,7 +149,7 @@ const CartContainer = () => {
                     open={open}
                     handleClose={handleClose}
                     handleOpen={handleOpen}
-                    onClick={goToOrder}
+                    onClick={onClickOrder}
                 />
             </>
         )

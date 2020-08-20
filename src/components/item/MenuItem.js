@@ -3,7 +3,6 @@ import { Paths } from 'paths';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './Menu.module.scss';
-import logo from 'logo.svg';
 
 
 const MenuDetailLink = styled(NavLink)`
@@ -37,7 +36,7 @@ const MenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles.img} src={logo} alt="메뉴이미지"></img>
+            <img className={styles.img} src={src} alt="메뉴이미지"></img>
         </div>
     )
 }

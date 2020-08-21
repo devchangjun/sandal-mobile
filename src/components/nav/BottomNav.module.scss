@@ -68,6 +68,9 @@ $menu-items: 2;
                     margin-top: 2px;
                     color:#999999;
                 }
+                .active{
+                    color:$main-color;
+                }
             }
             .order {
                 width: 56px;

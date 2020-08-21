@@ -41,11 +41,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+    //modal brunch test
+
+
 const AddressModal = (props) => {
     const classes = useStyles();
-
-
-    // console.log(props);
     return (
         <div>
             <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>

@@ -1,4 +1,4 @@
-.title-bar{
+.title-bar {
     align-items: center;
     display: flex;
     justify-content: center;
@@ -7,12 +7,12 @@
     width: 100%;
     background-color: white;
     z-index: 1000;
-    position: fixed; top:0px; left: 0;
+    position: fixed;
+    top: 0px;
+    left: 0;
     // border-bottom: 1px solid rgb(214, 214, 214);
-    
 
-    .item{
-        
+    .item {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -20,42 +20,35 @@
         height: 40px;
         justify-content: center;
 
-        .title{
-            font-size: 14px;
-            line-height: 1.2;
+        .title {
+            font-size: 18px;
             text-align: center;
             width: 100%;
+            color: #444;
             display: flex;
             justify-content: center;
             align-items: center;
-              height: 40px;
+            height: 40px;
 
             // display: flex;
-            
         }
-        .back{
+        .back {
             display: flex;
             align-items: center;
             width: auto;
             cursor: pointer;
-         height: 40px;
+            height: 40px;
 
             // border: 1px solid red;
         }
 
-        .empty{
+        .empty {
             width: 50px;
-        height: 40px;
-        padding-right: 24px;
-
+            height: 40px;
+            padding-right: 24px;
         }
-        
     }
-
-
-  
 }
-.pd-box{
+.pd-box {
     padding-left: 24px;
 }
-

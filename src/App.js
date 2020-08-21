@@ -31,7 +31,7 @@ function App() {
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
         <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
-        <Route path={`${Paths.ajoonamu.complete}`} component={SignupComplete}></Route>
+        <Route path={Paths.ajoonamu.complete} component={SignupComplete}></Route>
         <Route path={Paths.ajoonamu.recovery} component={Recovery}></Route>
         <Route path={Paths.ajoonamu.recovery_id} component={RecoveryId}></Route>
         <Route path={Paths.ajoonamu.recovery_pw} component={RecoveryPw}></Route>

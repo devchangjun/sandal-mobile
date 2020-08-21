@@ -8,37 +8,35 @@ import Back from 'components/svg/header/Back';
 const TitleBar = ({ title, src, alt }) => {
     return (
         <div className={styles['title-bar']}>
-      
             <div className={styles['item']}>
                 <BackButton />
                 <Title title={title} />
                 <div className={styles['empty']} />
             </div>
         </div>
+    );
+};
 
-    )
-}
-
-function Title({ title }) {
+const Title = ({ title }) => {
     return (
         <div className={styles['title']}>
             <span>{title}</span>
         </div>
-    )
+    );
 }
 
-function BackButton() {
+const BackButton = () => {
     const history = useHistory();
     const onClickBack = () => {
         history.goBack();
-    }
+    };
     return (
-        <div className ={styles['back'] }>
+        <div className={styles['back']}>
             <div className={styles['pd-box']}>
-                <Back onClick={onClickBack}/>
+                <Back onClick={onClickBack} />
             </div>
         </div>
-    )
+    );
 }
 
 export default TitleBar;

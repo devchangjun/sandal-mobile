@@ -1,0 +1,25 @@
+@import '../../styles/Root.scss';
+
+.map-modal{
+
+    display: block;
+    position: fixed;
+    // max-width: $max-width;
+    // margin:0 auto;
+    left:0 ;
+    right:0;
+    top: 100%;
+    z-index: 2500;
+    width: 100%;
+    transition:all .3s ease-in-out;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    .map{
+        border:1px solid red;
+    }
+    &.on{
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%);
+    }
+
+}

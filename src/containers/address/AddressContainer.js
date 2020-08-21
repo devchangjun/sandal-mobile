@@ -7,6 +7,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import AddressModal from 'components/asset/AddressModal';
 import { getDeliveryList } from '../../api/address/address';
 import produce from 'immer';
+import MapModal from 'components/asset/MapModal';
 
 
 const cx = classNames.bind(styles);
@@ -20,6 +21,9 @@ const AddressContainer = () => {
     const [addrs, setAddrs] = useState(''); // 검색 리스트
 
     const [open, setOpen] = useState(false);
+    const [mapOpen, setMapOpen] = useState(false);
+    const onClickMapOpen = ()=>setMapOpen(true);
+    const onClickMapClose = ()=>setMapOpen(false);
     const nextId = useRef(3);
     const [delivery_addrs, setDeliveryAddrs] = useState([]);
 
@@ -127,7 +131,7 @@ const AddressContainer = () => {
                         <AiOutlineSearch />
                     </div>
                 </div>
-                <div className={styles['location-btn']}>현위치로 주소 설정</div>
+                <div className={styles['location-btn']} onClick={onClickMapOpen}>현위치로 주소 설정</div>
             </div>
             <div className={styles['recently-title']}>최근 배달 주소</div>
             <div className={cx('container', 'no-margin-header')}>
@@ -149,6 +153,7 @@ const AddressContainer = () => {
                 onChangeDetail={onChangeDetail}
                 onInsertAddr={onClickInsertAddr}
             />
+            <MapModal open ={mapOpen}/>
         </>
     );
 };

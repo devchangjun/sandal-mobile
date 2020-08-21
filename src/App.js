@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, {useEffect, useCallback } from 'react';
 import ScrollToTop from 'components/scrollTop/ScrollToTop';
 import { useDispatch } from 'react-redux';
 import './App.css';
@@ -9,7 +9,7 @@ import { Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPag
 import { Home, Account, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderList, Coupon } from 'pages';
 import { Route, Switch } from 'react-router-dom';
-
+import MapModal from 'components/asset/MapModal';
 function App() {
 
   const dispatch = useDispatch();
@@ -28,11 +28,9 @@ function App() {
   //test commit
 
 
-  // modal merge test
-
-  
   return (
     <div className="App">
+
       <ScrollToTop>
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>

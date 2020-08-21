@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Order.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-
+import PointModal from 'components/asset/PointModal';
 import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
@@ -11,11 +11,11 @@ const cx = classNames.bind(styles);
 const OrderContainer = () => {
 
 
-    //포인트모달, 결제방식 모달 때 사용할 것.
+//    포인트모달, 결제방식 모달 때 사용할 것.
     
-    // const [open, setOpen] = React.useState(false);
-    // const handleOpen = () => setOpen(true);
-    // const handleClose = () => setOpen(false);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     return (
         <>
@@ -79,22 +79,25 @@ const OrderContainer = () => {
                 <div className={cx('title', 'pd-box')}>
                     결제방법
                 </div>
-                <div className={cx('table', 'pd-box')}>
-                    <div className={styles['value']}>
-                        <div className={styles['payment']}>
+                <div className={cx('table')}>
+                    <div className={cx('value','pd-box')}>
+                             <div className={styles['payment']}>
                             만나서 직접 결제
                             </div>
-                    </div>
+                            <div className={styles['label']}>
+                            다른결제를 원하시면 눌러서 변경해주세요.
+                            </div>
+                       </div>
                     <div className={styles['order-info']}>
-                        <div className={styles['box']}>
+                        <div className={cx('box','pd-box')}>
                             <div className={styles['label']}>
                                 할인 쿠폰
                                 </div>
                             <div className={styles['info']}>
                                 1개보유
                                 </div>
-                        </div>
-                        <div className={styles['box']}>
+                            </div>
+                        <div className={cx('box','pd-box')} onClick={handleOpen}>
                             <div className={styles['label']}>
                                 포인트 사용
                                 </div>
@@ -169,6 +172,10 @@ const OrderContainer = () => {
                 </div>
             </div>
             <Button title={"10000원 결제"} />
+            <PointModal
+                open={open}
+                handleClose={handleClose}
+            />
         </>
     )
 }

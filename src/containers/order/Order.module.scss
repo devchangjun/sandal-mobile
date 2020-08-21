@@ -99,6 +99,11 @@
                 border: 1px solid $main-color;
                 color :$main-color;
             }
+            .label{
+                margin : 15px 0;
+                color:#999;
+                text-align: center;
+            }
         }
 
         .total-order{
@@ -146,8 +151,25 @@
         .box{
             display: flex;
             justify-content: space-between;
-            margin: 5px 0;      
-            font-size: 14px;      
+            align-items: center;
+            font-size: 14px;     
+            height: 56px;
+            font-size:16px;
+            color:#333;
+            border-top:1px solid #EBEBEB; 
+            box-sizing: border-box;
+            &:not(:first-child){
+                border-top:1px solid #EBEBEB;
+                border-bottom:1px solid #EBEBEB; 
+
+
+            }
+            .label{
+                font-weight: bold;
+            }
+            .info{
+
+            }
             .sub-title{
                 font-size: 16px;
                 margin: 20px 0 10px 0;

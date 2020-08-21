@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BsSearch } from 'react-icons/bs';
 import AddrItemList from 'components/address/AddrItemList';
 import Dialog from '@material-ui/core/Dialog';
-
+import DialogContent from '@material-ui/core/DialogContent';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,18 +23,27 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         textAlign: 'center',
         backgroundColor: 'white',
-        color: 'black'
+        color: 'black',
+        boxShadow: 'none',
+        fontSize: 10
     },
     title: {
         textAlign: 'center',
         width: '100%',
+        fontSize: 14
     },
     toolbar: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    content:{
+        padding: 0,
+        paddingLeft :24,
+        paddingRight:24,
+        flex: "0 0 auto"
+    },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -62,28 +71,27 @@ const AddressModal = (props) => {
                         </div>
                     </Toolbar>
                 </AppBar>
-                <div className={styles['title']}>
-                    <DialogTitle id="form-dialog-title">배달 받을 주소</DialogTitle>
-                </div>
+                <DialogTitle id="form-dialog-title">배달 받을 주소</DialogTitle>
+                <DialogContent className={classes.content}>
                 <div className={styles['addrs-box']}>
-                    <div className={styles['pd-box']}>
                         <div className={styles['modal-input-box']}>
                             <input className={styles['modal-input']} type="text" value={props.searchAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
                             <div className={styles['search-btn']} onClick={props.onSearch} ><BsSearch /></div>
                         </div>
+                        <div className={styles['result']}>
                         {props.addrs ? `${props.addrs.length}개의 검색결과가 있습니다.` : "0개의 검색결과가 있습니다."}
+
+                        </div>
                         <div className={styles['addrs-list']}>
                             {props.addrs ? <AddrItemList addrs={props.addrs} onClick={props.onClickAddrItem} /> : ""}
                         </div>
                         <div className={styles['select-addr']}>
                             {props.selectAddr ? props.selectAddr : ""}
-
                         </div>
                         <input className={cx('modal-input','md-top')} type="text" value={props.detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail}></input>
-                    </div>
 
                 </div>
-
+                </DialogContent>
                 <FixButton title={"이 주소로 배달지 설정"} onClick={props.onInsertAddr} />
             </Dialog>
 

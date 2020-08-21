@@ -64,6 +64,8 @@
     display: flex;
     align-items: center;
     padding: 0 24px;
+    max-width: $max-width;
+    margin: 0 auto;
 }
 
 .addrs-box {

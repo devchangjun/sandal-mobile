@@ -31,6 +31,8 @@ const BottomNav = () => {
     }
     const handleChange=()=>{
         console.log("체인지");
+        //test
+        
     }
 
     const onClickHome = () => {

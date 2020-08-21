@@ -1,6 +1,4 @@
 import React from 'react';
-import BottomNav from '../../nav/BottomNav';
-
 
 const active_color = "#007246";
 const normal_color ="#ccc";

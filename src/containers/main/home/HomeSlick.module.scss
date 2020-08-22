@@ -16,7 +16,8 @@
         color: #fff;
         font-size: 36px;
         height: 200px;
-        animation: fadeIn .5s linear;
+        @include animation(0.5s,fadeIn);
+        // animation: fadeIn .5s linear;
 
         img{
                width: 100%;
@@ -60,12 +61,23 @@
 
 }
 
-@keyframes fadeIn{
+@include keyframe(fadeIn){
     from{
-        filter: blur(10px);
+        filter : blur(100px);
     }
     to{
-        filter: blur(0);
-
+        filter:blur(0);
     }
 }
+
+
+
+// @keyframes fadeIn{
+//     from{
+//         filter: blur(10px);
+//     }
+//     to{
+//         filter: blur(0);
+
+//     }
+// }

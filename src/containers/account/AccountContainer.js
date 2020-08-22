@@ -1,18 +1,22 @@
 import React,{useEffect} from 'react';
 import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import styles from './Account.module.scss';
 import Profile from 'components/svg/sign/profile.png';
 import BottomNav from 'components/nav/BottomNav';
+import { localLogout } from '../../api/auth/auth';
+import { logout } from '../../store/auth/auth';
 const cx = classNames.bind(styles);
 
 
 
 const AccountContainer = () => {
     const { user } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+
     const history= useHistory();
 
     useEffect(()=>{
@@ -20,6 +24,18 @@ const AccountContainer = () => {
             history.push(Paths.index);
         }
     },[user,history])
+
+    const onClickLogout = async () => {
+        const token = sessionStorage.getItem("access_token");
+        const res = await localLogout(token);
+        sessionStorage.removeItem("access_token");
+        console.log(res);
+        if (res.message === "로그아웃에 성공하셨습니다.") {
+            dispatch(logout());
+            history.push(Paths.index);
+        }
+    }
+
 
     const render =()=>{
         return(
@@ -40,7 +56,7 @@ const AccountContainer = () => {
                 </div>
 
 
-                <div className={styles['logout']}>
+                <div className={styles['logout']} onClick={onClickLogout}>
                     <div className={styles['logout-btn']}>
                         <div className={styles['pd-btn']}>
                             로그아웃

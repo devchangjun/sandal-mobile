@@ -6,6 +6,7 @@
     margin: 0 auto;
     position: relative;
     img{
+        @include animation(0.5s,fadeIn);
         width: 100%;
     }
     .back{
@@ -53,4 +54,13 @@
 .pd-box{
     padding: $padding-all;
     margin-bottom: 50px;
+}
+
+@include keyframe(fadeIn){
+    from{
+        filter: blur(50px);
+    }
+    to{
+        filter: blur(0);
+    }
 }

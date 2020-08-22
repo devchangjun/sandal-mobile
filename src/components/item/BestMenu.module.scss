@@ -12,12 +12,14 @@
 .menu-item{
     width: 150px;
     height: 260px;
+
     cursor: pointer;
     .menu-img{
         display: flex;
         align-items: center;
         justify-content: center;
         height: auto;
+        animation: fadeIn .5s linear;
         img{
             width:152px;
             height: 200px;
@@ -46,4 +48,15 @@
 }
 .pd-box{
     padding: 0 10px;
+}
+
+
+@keyframes fadeIn{
+    from{
+        filter: blur(10px);
+    }
+    to{
+        filter: blur(0);
+
+    }
 }

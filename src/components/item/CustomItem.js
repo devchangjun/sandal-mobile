@@ -3,7 +3,7 @@ import styles from './Custom.module.scss';
 import Menu from 'components/svg/menu/menu.png';
 
 //추천 메뉴 아이템
-const CoustomItem = ({datas}) => {
+const CustomItem = ({datas}) => {
 
     return (
         <>
@@ -82,4 +82,4 @@ function CustomPrice({ price }) {
     )
 }
 
-export default CoustomItem;
+export default CustomItem;

@@ -1,0 +1,24 @@
+@import '../../styles/Root.scss';
+.menu-list {
+    .menu-item {
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        margin-top: 30px;
+        &:first-child {
+            margin: 0;
+        }
+        .menu-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            .menu-price {
+                font-weight: bold;
+            }
+        }
+    }
+    .pd-box {
+        padding: $padding-side;
+    }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Order.module.scss';
 
 
-
+// 전제척인 주문 메뉴 아이템
 const OrderItem = () => {
     return (
         <div className={styles['order-item']}>
@@ -13,7 +13,7 @@ const OrderItem = () => {
                             2020-05-01(목) 24:59:59
                         </div>
                         <div className={styles['list']}>
-                            <MenuItemList />
+                            <OrderMenuItemList />
                         </div>
 
                     </div>
@@ -35,15 +35,18 @@ const OrderItem = () => {
     )
 }
 
-const MenuItemList = () => {
+//주문 메뉴 리스트
+const OrderMenuItemList = () => {
     return (
         <div className={styles['menu-item-list']}>
-            <MenuItem />
-            <MenuItem />
+            <OrderMenuItem />
+            <OrderMenuItem />
         </div>
     )
 }
-const MenuItem = () => {
+
+//주문 메뉴 아이템 (개별)
+const OrderMenuItem = () => {
     return (
         <div className={styles['menu-name']}>
             <div className={styles['name']}>

@@ -9,17 +9,22 @@
     left:0 ;
     right:0;
     top: 100%;
-    z-index: 2500;
+    z-index: 2000;
     width: 100%;
     transition:all .3s ease-in-out;
     -webkit-transform: translateY(0);
     transform: translateY(0);
-    .map{
-        border:1px solid red;
-    }
+
     &.on{
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
     }
 
+}
+
+.back{
+    z-index: 2100;
+    position: absolute;
+    top:24px;
+    left: 24px;
 }

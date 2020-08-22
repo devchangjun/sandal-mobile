@@ -153,7 +153,7 @@ const AddressContainer = () => {
                 onChangeDetail={onChangeDetail}
                 onInsertAddr={onClickInsertAddr}
             />
-            <MapModal open ={mapOpen}/>
+            <MapModal open ={mapOpen} handleClose={onClickMapClose}/>
         </>
     );
 };

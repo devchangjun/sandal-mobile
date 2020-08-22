@@ -3,9 +3,58 @@ import styles from './Order.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import PointModal from 'components/asset/PointModal';
+import CouponModal from 'components/asset/CouponModal';
 import classNames from 'classnames/bind';
+import produce from 'immer';
 
 const cx = classNames.bind(styles);
+
+const cp_init=[
+    {
+        cp_id :1,
+        event_name:"첫주문 3,000원 할인 쿠폰",
+        sale :"3000원",
+        sub_name:"첫주문시 사용",
+        date:"2020-05-10 ~ 2020-06-10 까지",
+        select : false,
+    },
+
+    {
+        cp_id :2,
+        event_name:"첫주문 3,000원 할인 쿠폰",
+        sale :"4000원",
+        sub_name:"첫주문시 사용",
+        date:"2020-05-10 ~ 2020-06-10 까지",
+        select : false,
+    },
+    
+    {
+        cp_id :3,
+        event_name:"첫주문 3,000원 할인 쿠폰",
+        sale :"4000원",
+        sub_name:"첫주문시 사용",
+        date:"2020-05-10 ~ 2020-06-10 까지",
+        select : false,
+    },
+    {
+        cp_id :4,
+        event_name:"첫주문 3,000원 할인 쿠폰",
+        sale :"4000원",
+        sub_name:"첫주문시 사용",
+        date:"2020-05-10 ~ 2020-06-10 까지",
+        select : false,
+    },
+    {
+        cp_id :5,
+        event_name:"첫주문 3,000원 할인 쿠폰",
+        sale :"4000원",
+        sub_name:"첫주문시 사용",
+        date:"2020-05-10 ~ 2020-06-10 까지",
+        select : false,
+    }
+]
+
+
 
 
 const OrderContainer = () => {
@@ -13,9 +62,27 @@ const OrderContainer = () => {
 
 //    포인트모달, 결제방식 모달 때 사용할 것.
     
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [pointOpen, setPointOpen] = React.useState(false);
+    const onClickPointOpen = () => setPointOpen(true);
+    const onClickPointClose = () => setPointOpen(false);
+    const [couponOpen, setCouponOpen] = React.useState(false);
+    const onClickCouponOpen =()=>setCouponOpen(true);
+    const onClickCouponClose =()=>setCouponOpen(false);
+    const [couponList ,setCouponList] = React.useState(cp_init);
+
+    
+    const onClickSelectCoupon =(data)=>{
+
+        const index = couponList.findIndex(c=>c.cp_id ===data);
+        console.log(index);
+
+        setCouponList(
+            produce(couponList, draft => {
+                draft[index].select = !draft[index].select;
+            })
+        );
+    }
+
 
     return (
         <>
@@ -89,7 +156,7 @@ const OrderContainer = () => {
                             </div>
                        </div>
                     <div className={styles['order-info']}>
-                        <div className={cx('box','pd-box')}>
+                        <div className={cx('box','pd-box')} onClick={onClickCouponOpen}>
                             <div className={styles['label']}>
                                 할인 쿠폰
                                 </div>
@@ -97,7 +164,7 @@ const OrderContainer = () => {
                                 1개보유
                                 </div>
                             </div>
-                        <div className={cx('box','pd-box')} onClick={handleOpen}>
+                        <div className={cx('box','pd-box')} onClick={onClickPointOpen}>
                             <div className={styles['label']}>
                                 포인트 사용
                                 </div>
@@ -173,9 +240,15 @@ const OrderContainer = () => {
             </div>
             <Button title={"10000원 결제"} />
             <PointModal
-                open={open}
-                handleClose={handleClose}
+                open={pointOpen}
+                handleClose={onClickPointClose}
             />
+            <CouponModal
+                open={couponOpen}
+                handleClose={onClickCouponClose}
+                onClick={onClickSelectCoupon}
+                list ={couponList}
+                />
         </>
     )
 }

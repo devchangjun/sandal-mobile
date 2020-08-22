@@ -3,8 +3,10 @@ import styles from './Custom.module.scss';
 import CustomItem from './CustomItem';
 
 const initMenu = [
-
-    [{
+{
+    id: 1,
+    list: [
+    {
         id: 1,
         title: "떡볶이",
         img: "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg",
@@ -30,9 +32,12 @@ const initMenu = [
         img: "https://s3-media3.fl.yelpcdn.com/bphoto/7F9eTTQ_yxaWIRytAu5feA/ls.jpg",
         count :"2",
         price: "5000원"
-    }],
-
-    [{
+    }]
+},
+{
+    id: 2,
+    list: [
+    {
         id: 1,
         title: "떡볶이",
         img: "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg",
@@ -58,8 +63,8 @@ const initMenu = [
         img: "https://s3-media3.fl.yelpcdn.com/bphoto/7F9eTTQ_yxaWIRytAu5feA/ls.jpg",
         count :"2",
         price: "5000원"
-    }],
-    
+    }]
+},
 
 
 ]
@@ -69,8 +74,8 @@ const initMenu = [
 
 const CustomItemList = ({init}) => {
 
-    const itemList = initMenu.map(data => (
-        <CustomItem datas={data} />
+    const itemList = initMenu.map((data) => (
+        <CustomItem datas={data.list}  key={data.id}/>
     )
     )
     return (

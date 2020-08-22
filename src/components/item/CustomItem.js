@@ -40,12 +40,12 @@ function CustomImg({ src }) {
 
 //추천 메뉴리스트에서 메뉴, 가격 등 텍스트를 렌더할 컴포넌트
 function CustomTitleList({datas}){
-    const list = datas.map((item,index) => (
+    const list = datas.map((item) => (
         <CustomTitle 
         title={item.title} 
         count={item.count}
         price={item.price}
-        key={index}
+        key={item.id}
         />
     ))
     return (

@@ -19,7 +19,7 @@
         align-items: center;
         justify-content: center;
         height: auto;
-        animation: fadeIn .5s linear;
+       @include animation(0.5s,fadeIn);
         img{
             width:152px;
             height: 200px;
@@ -51,12 +51,11 @@
 }
 
 
-@keyframes fadeIn{
+@include keyframe(fadeIn){
     from{
-        filter: blur(10px);
+        filter: blur(100px);
     }
     to{
         filter: blur(0);
-
     }
 }

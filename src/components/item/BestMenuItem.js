@@ -3,9 +3,7 @@ import { Paths } from 'paths';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './BestMenu.module.scss';
-import classNames from 'classnames/bind';
 
-const cx = classNames.bind(styles);
 
 
 const MenuDetailLink = styled(NavLink)`

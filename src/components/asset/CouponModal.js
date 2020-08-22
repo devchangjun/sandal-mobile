@@ -9,9 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import FixButton from 'components/button/Button';
-import SelectCouponItemList from 'components/coupon/SelectCouponList';
+import SelectCouponItemList from 'components/coupon/SelectCouponItemList';
 
-import DialogContent from '@material-ui/core/DialogContent';
 
 
 //test commit

@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import styles from './SelectCoupon.module.scss';
 import SelectCouponItem from './SelectCouponItem';
 

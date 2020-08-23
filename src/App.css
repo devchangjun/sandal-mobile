@@ -1,38 +1,38 @@
-html,body{
+html,
+body {
 }
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Apple SD Gothic Neo';
 }
-button{
-  cursor: pointer;
+button {
+    cursor: pointer;
 }
-input{
-  box-sizing: border-box;
-  outline: none;
-  border:1px solid red;
-  appearance: none;
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
+input {
+    box-sizing: border-box;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
 }
-select{
-  /*ios대응*/
-  -webkit-appearance: none;
-  -moz-appearance: none; 
-  appearance: none;
-  /*화살표 배경 넣기*/
-  background: url('../src/components/svg/select/select_check.svg') no-repeat 98% 50% #fff;
-   /*화살표 select박스 오른쪽 중앙 배치,배경 흰색*/
-}
-
-select::-ms-expand{ 
-  display:none; /* 화살표 없애기 for IE10, 11*/
+select {
+    /*ios대응*/
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /*화살표 배경 넣기*/
+    background: url('../src/components/svg/select/select_check.svg') no-repeat
+        98% 50% #fff;
+    /*화살표 select박스 오른쪽 중앙 배치,배경 흰색*/
 }
 
-#root{
-
-}
-.App{
+select::-ms-expand {
+    display: none; /* 화살표 없애기 for IE10, 11*/
 }
 
+#root {
+}
+.App {
+}

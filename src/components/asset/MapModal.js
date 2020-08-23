@@ -205,11 +205,7 @@ function BottomModal ({open,jibun,road}){
                 <input className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
              </div>
             </div>
- 
-       
-     
             <LinkButtom title={"이 위치로 배달지 설정"} toggle={true} />
-
         </div>
     </div>
     )

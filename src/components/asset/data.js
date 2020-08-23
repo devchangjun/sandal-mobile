@@ -1,3 +1,4 @@
+// 주변 가게정보 임시 데이터
 export const markerdata = [
     {
       title: "콜드스퀘어",

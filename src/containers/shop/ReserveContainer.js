@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 // import { useSelector } from 'react-redux';
 // import { useHistory } from 'react-router';
 import { Paths } from 'paths';
@@ -43,12 +43,25 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
     const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
+    const [title ,setTitle] = React.useState('추천메뉴');
 
-
+    const onChangeTitle = useCallback(()=>{
+        if(tab==='custom'){
+            setTitle("추천메뉴");
+        }
+        else if(tab==='menu1'){
+            setTitle("메뉴1");
+        }
+        else if(tab==='menu2'){
+            setTitle("메뉴2");
+        }
+        else if(tab==='menu3'){
+            setTitle("메뉴3");
+        }
+    },[tab])
     useEffect(() => {
-        console.log("탭 바뀜");
-        console.log(tab);
-    }, [tab])
+        onChangeTitle();
+    }, [onChangeTitle])
 
     //맞춤 주문하기 버튼 클릭
     const handleOpen = () => setOpen(true);
@@ -75,14 +88,10 @@ const ReserveContainer = ({ tab = 'custom' }) => {
         if (budget !== 0) setResult(true);
     }
 
-
-
-
     return (
         <>
-            <TitleBar title={tab} /> {/*분류명 넣어야함 */}
+            <TitleBar title={title} /> {/*분류명 넣어야함 */}
             <TabMenu tabs={tabInit} />
-
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     {/* 이부분 바꿔야함 */}

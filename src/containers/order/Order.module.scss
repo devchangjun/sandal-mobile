@@ -3,8 +3,9 @@
 .order{
     margin: 0 auto;
     width: 100%;
-    margin-top :$mg-top40;
+    padding-top :$pd-top40;
     max-width: $max-width;
+    min-height: $min-height;
     min-width: $min-width;
     display: flex;
     flex-direction: column;

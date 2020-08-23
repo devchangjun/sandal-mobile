@@ -8,6 +8,8 @@ import TitleBar from 'components/titlebar/TitleBar';
 import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
+import classNames from 'classnames/bind';
+const cx= classNames.bind(styles);
 
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
@@ -99,8 +101,8 @@ const SignInContainer = () => {
     return (
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
-                <div className={styles['sign-main']}>
-                    <div className={styles['sign-content']}>
+                <div className={cx('container','min-height')}>
+                    <div className={cx('content','pd-box')}>
                         <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
                         <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                         <div className={styles['login-btn']}>

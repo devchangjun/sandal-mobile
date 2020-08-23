@@ -258,8 +258,8 @@ const SignUpContainer = () => {
     return (
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
-            <div className={cx('sign-main', 'pd-none')}>
-                <div className={cx('sign-content', 'pd-box', 'pd-top')}>
+            <div className={cx('container')}>
+                <div className={cx('content', 'pd-box')}>
                     <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={"중복검사"} />
                     <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                     <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
@@ -287,7 +287,7 @@ const SignUpContainer = () => {
 const AcceptContainer = (props) => {
     return (
         <div className={cx('agree')}>
-            <div className={cx('pd-box', 'line', 'pd-sub-top')}>
+            <div className={cx('pd-box', 'border-box', 'pd-sub-top')}>
                 <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
             </div>
             <div className={styles['background']}>

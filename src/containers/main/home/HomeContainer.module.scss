@@ -1,12 +1,7 @@
 @import '../../../styles/Root.scss';
 
 .container{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin: 0 auto;
-    border: 0px solid gray;
-
-
+     @include wireframe(40px);
     .banner{
         width: 100%;
         border: 0px solid rgb(246, 246, 246);
@@ -44,7 +39,7 @@
     max-width: $max-width;
     width: 100%;
     margin: 0 auto;
-    margin-top:$mg-top;
+    padding-top:$pd-top;
 }
 
 .menu-list {

@@ -21,9 +21,9 @@ const SignCompleteContainer = ({ name }) => {
     return (
         <>
             <TitleBar title={"회원가입"} src={logo} alt={"회원가입"} />
-            <div className={styles['sign-main']}>
-                   <div className={styles['sign-content']}>
-                    <div className={styles['img']}>
+            <div className={styles['container']}>
+                   <div className={styles['content']}>
+                    <div className={styles['success-img']}>
                     <img src ={Complete} alt={"축하합니다"}/>
                     </div>
                     <SignComplete mainTitle={`축하합니다 ${name}님`} subTitle={"아주나무 딜리버리 회원가입이 완료 되었습니다. "} 

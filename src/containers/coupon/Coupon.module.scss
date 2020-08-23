@@ -1,55 +1,49 @@
 @import '../../styles/Root.scss';
-.coupon-tab{
+.container {
+    @include wireframe(40px);
     width: 100%;
-    max-width:$max-width;
-    min-width:$min-width;
-    margin: 0 auto;
-    margin-top : $mg-top;
-    .container{
-        // padding:$padding-side;
-        background-color: #F9F9F9;
-        .coupon-title{
-            border:0px solid red;
-            padding: 10px 24px;
-        }
-        .coupon-form{
-            background-color:#fff;
-            padding:24px;
-        }
-        .code-input{
-            width: 100%;
-            border: 1px solid #999999;
-            box-sizing: border-box;
-            color : #999999;
-            border-radius: 10px;
-            height: 56px;
-            padding-left: 10px;
-            margin: 0px 0;
-        }
-        .coupon-list{
-            background-color:#F9F9F9;
-        }
-        .submit-btn{
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid $main-color;
-            box-sizing: border-box;
-            border-radius: 10px;
-            width: 100%;
-            height: 56px;
-            color: $main-color;
-            font-size: $font-size;
-            margin-top: 10px;
-            background-color:#fff;
-        }
+    background-color: #f9f9f9;
+    .coupon-title {
+        border: 0px solid red;
+        padding: 10px 24px;
+    }
+    .coupon-form {
+        background-color: #fff;
+        padding: 24px;
+    }
+    .code-input {
+        width: 100%;
+        border: 1px solid #999999;
+        box-sizing: border-box;
+        color: #999999;
+        border-radius: 10px;
+        height: 56px;
+        padding-left: 10px;
+        margin: 0px 0;
+    }
+    .coupon-list {
+        background-color: #f9f9f9;
+    }
+    .submit-btn {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $main-color;
+        box-sizing: border-box;
+        border-radius: 10px;
+        width: 100%;
+        height: 56px;
+        color: $main-color;
+        font-size: $font-size;
+        margin-top: 10px;
+        background-color: #fff;
     }
 }
-.pd-box{
+.pd-box {
     padding: $padding-side;
 }
-.sticky-title{
+.sticky-title {
     display: flex;
     align-items: center;
     position: sticky;
@@ -58,9 +52,8 @@
     height: 40px;
     z-index: 10;
     // border:1px solid red;
-    background-color: #F9F9F9;
-
+    background-color: #f9f9f9;
 }
-.shadow{
+.shadow {
     box-shadow: 0 0 10px gray;
 }

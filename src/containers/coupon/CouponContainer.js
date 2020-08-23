@@ -57,7 +57,6 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
         <>
             <TitleBar title={"쿠폰함"} />
             <TabMenu tabs={tabInit} />
-            <div className={styles['coupon-tab']}>
                 <div className={styles['container']}>
                     {tab === 'mycoupon' &&
                         <>
@@ -86,7 +85,6 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
                         </div>
                     }
                 </div>
-            </div>
             <BottomNav />
         </>
     )

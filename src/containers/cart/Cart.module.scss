@@ -1,12 +1,8 @@
 @import '../../styles/Root.scss';
 
 .container{
-    max-width: $max-width;
-    min-width: $min-width;
-    margin :0 auto;
+    @include wireframe(40px);
     width: 100%;
-    margin-top :$mg-top40;
-
     background-color: #F9F9F9;
     .bar{
         width: 100%;

@@ -1,27 +1,20 @@
 @import '../../styles/Root.scss';
-.sign{
-    height: 100vh;
-    border:1px;
-    background-color:white;
-}
 
 //로그인 회원가입 정보찾기에 관한 모든 메인
-.sign-main{
-    max-width: $max-width;
+.container{
+    @include wireframe(40px);
     position: relative;
-    margin: 0 auto;
-    margin-top: $mg-top40;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: $padding-all;
     background-color:#fff;
-    .sign-content{
+    .content{
         width: 100%;
         background: #fff;
         border-radius: 10px;
         position: relative;
+        margin-top:$mg-top40;
         //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
         .link-table{
             display: table; 
@@ -50,8 +43,8 @@
         .login-btn{
             margin: 35px 0;
         }
-        .img{
-            border: 0px solid red;
+        .success-img{
+            border: 1px solid red;
             display: flex;
             width: 100%;
             display: flex;
@@ -100,7 +93,6 @@
             width: 50px;
         }
     }
-    
 }
 
 
@@ -112,17 +104,14 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    margin: 50px 0;
+    margin-bottom: 50px;
 
     //회원가입 수신 동의서 백그라운드 
     .background{
-        border: 0px solid red;
         background-color: #EBEBEB;
-        height: 220px;
-    
+        height: 270px;
         label{
             color:#777777;
-
         }
     }
 
@@ -155,37 +144,19 @@
     }
 }
 
-// 회원정보 찾기 링크
-
-.recovery-box{
-    width: 100%;
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-
-
+.min-height{
+    min-height: 0;
 }
-.link{
-    width: 100%;
-    height: auto;
-    cursor: pointer;
-}
-
-
 .pd-none{
     padding: 0;
 }
 .pd-box{
     padding: 0 24px;
 }
-.pd-top{
-    padding:45px 24px;
-}
 .pd-sub-top{
     padding: 20px 24px;
 }
-.line{
+.border-box{
     border-top : 1px solid #EBEBEB;
     border-bottom: 1px solid #EBEBEB;
     label{

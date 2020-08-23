@@ -1,0 +1,24 @@
+@import '../../styles/Root.scss';
+.container{
+    @include wireframe(40px);
+    .content{
+        margin-top:$mg-top40;
+    }
+}
+.pd-box{
+    padding:$padding-side;
+}
+
+
+
+    //휴대폰 인증 버튼
+    .auth-btn{
+        overflow: hidden;
+        transition:opacity .3s ease-in-out;
+        height: 135px;
+        opacity: 1;
+        &.not_view {
+        opacity: 0;
+            // height: 0px;
+        }
+    }

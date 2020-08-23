@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Sign.module.scss';
+import styles from './Recovery.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -28,8 +28,8 @@ const RecoveryIdContainer = () => {
         <>
             <TitleBar title="아이디 찾기" src={logo} alt="아이디 찾기"></TitleBar>
 
-            <div className={styles['sign-main']}>
-                <div className={styles['sign-content']}>
+            <div className={styles['container']}>
+                <div className={cx('content','pd-box')}>
                     <SignNormalInput inputType={"text"} initValue={userName} onChange={onChangeName} placeholder={"이름"}/>
                     <SignAuthInput inputType={"text"} onClick={postAuthNumber} toggle={toggle}initValue={userPhone} buttonTitle={toggle ? "인증번호 재발송" : "인증번호 발송"} onChange={onChangePhone} placeholder={"핸드폰 번호"}/>
                     <div className={cx('auth-btn',{not_view: !toggle})}>

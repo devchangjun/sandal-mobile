@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Sign.module.scss';
+import styles from './Recovery.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -31,8 +31,8 @@ const RecoveryPwContainer = () => {
     return (
         <>
             <TitleBar title="비밀번호 찾기" src={logo} alt="비밀번호 찾기"></TitleBar>
-            <div className={styles['sign-main']}>
-                <div className={styles['sign-content']}>
+            <div className={styles['container']}>
+                <div className={cx('content','pd-box')}>
                     <SignNormalInput placeholder={"이름"} initValue={name} onChange={onChangeName}/>
                     <SignNormalInput placeholder={"이메일"} initValue={email} onChange={onChangeEmail}/>
                     <SignAuthInput placeholder={"휴대폰번호"}inputType={""} initValue={phone} buttonTitle={toggle ? "인증번호 재발송" : "인증번호 발송"} onChange={onChangePhone} onClick={onChangePostAuthNumber}  toggle={toggle}/>

@@ -1,14 +1,8 @@
 @import '../../styles/Root.scss';
 
 .container {
-    max-width: $max-width;
-    min-width: $min-width;
-    padding: 0 $padding-all;
-    margin: 0 auto;
-    padding-top: $mg-top40;
-    &.no-padding-header {
-        padding-top: 0;
-    }
+    @include wireframe(40px);
+
     .title {
         font-size: 18px;
         font-weight: bold;
@@ -29,7 +23,7 @@
             width: 24px;
             height: 24px;
             position: absolute;
-            right: 16px;
+            right: 30px;
             top: 50%;
             transform: translateY(-50%);
             svg {
@@ -62,9 +56,7 @@
     background-color: #F9F9F9;
     display: flex;
     align-items: center;
-    padding: 0 24px;
-    max-width: $max-width;
-    margin: 0 auto;
+    padding :$padding-side;
 }
 
 .addrs-box {
@@ -92,4 +84,7 @@
     height: 40px;
     border: 1px solid black;
     padding: 2px;
+}
+.pd-box{
+    @include padding-side;
 }

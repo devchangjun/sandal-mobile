@@ -109,32 +109,33 @@ const AddressContainer = () => {
         <>
             <TitleBar title={'주소설정'} />
             <div className={styles['container']}>
-                <div className={styles['title']}>
+                <div className={cx('title','pd-box')}>
                     배달 받으실 장소를 입력하세요
                 </div>
-                <div className={styles['addr-input']}>
+                <div className={cx('addr-input','pd-box')}>
                     <input
-                        className={styles['input-box']}
+                        className={cx('input-box','pd-box')}
                         // placeholder="예) 아주나무동12-3 또는 아주나무 아파트"
                         value={searchAddr}
                         onChange={onChangeSearchAddr}
                         onKeyPress={handleKeyPress}
                     />
                     <div
-                        className={styles['search-btn']}
+                        className={cx('search-btn')}
                         onClick={handleClickOpen}
                     >
                         <AiOutlineSearch />
                     </div>
                 </div>
-                <div className={styles['location-btn']}>현위치로 주소 설정</div>
-            </div>
-            <div className={styles['recently-title']}>최근 배달 주소</div>
-            <div className={cx('container', 'no-padding-header')}>
-                <div className={styles['addr-list']}>
+                 <div className={styles['pd-box']}>
+                <div className={cx('location-btn')}>현위치로 주소 설정</div>
+                </div>
+                   <div className={styles['recently-title']}>최근 배달 주소</div>
+                <div className={cx('addr-list','pd-box')}>
                     {delivery_addrs && renderAddrList()}
                 </div>
             </div>
+
             <AddressModal
                 open={open}
                 handleClose={handleClose}

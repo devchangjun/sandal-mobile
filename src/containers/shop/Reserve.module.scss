@@ -1,14 +1,8 @@
 @import '../../styles/Root.scss';
 .container{
-        max-width: $max-width;
-        min-width: $min-width;
-        margin: 0 auto;
-        margin-top:$mg-top;
-
+        @include wireframe(80px);
         .pd-box{
                 padding: $padding-all;
         }
-        
-        
 }
 

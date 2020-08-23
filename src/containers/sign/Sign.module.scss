@@ -12,7 +12,6 @@
     .content{
         width: 100%;
         background: #fff;
-        border-radius: 10px;
         position: relative;
         margin-top:$mg-top40;
         //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
@@ -44,7 +43,6 @@
             margin: 35px 0;
         }
         .success-img{
-            border: 1px solid red;
             display: flex;
             width: 100%;
             display: flex;
@@ -104,16 +102,12 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
-
-    //회원가입 수신 동의서 백그라운드 
-    .background{
-        background-color: #EBEBEB;
-        height: 270px;
-        label{
-            color:#777777;
-        }
+    padding-bottom: 50px;
+    background-color: #EBEBEB;
+    label{
+        color:#777777;
     }
+
 
     //SMS 알림
     .sms{
@@ -159,6 +153,7 @@
 .border-box{
     border-top : 1px solid #EBEBEB;
     border-bottom: 1px solid #EBEBEB;
+    background-color:#fff;
     label{
         color: #444444;
         font-size: 20px;

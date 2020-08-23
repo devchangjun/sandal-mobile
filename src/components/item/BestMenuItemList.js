@@ -13,42 +13,42 @@ const initMenu = [
     {
         item_id: 1,
         title: "과일도시락1",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img: MenuItemImage1,
         price: "5000원"
     },
     {
         item_id: 2,
         title: "과일도시락2",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img:MenuItemImage2,
         price: "5000원"
     },
     {
         item_id: 3,
         title: "과일도시락3",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img : MenuItemImage3,
         price: "5000원"
     },    
     {
         item_id: 4,
         title: "과일도시락4",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img: MenuItemImage4,
         price: "5000원"
     },
     {
         item_id: 5,
         title: "과일도시락5",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img: MenuItemImage5,
         price: "5000원"
     },
     {
         item_id: 6,
         title: "과일도시락6",
-        text: "과일도시락 맛잇어",
+        text: "아주나무",
         img: MenuItemImage6,
         price: "5000원"
     }

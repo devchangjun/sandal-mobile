@@ -5,6 +5,7 @@ $menu-items: 2;
 
 .bottom-nav {
     width: 100%;
+    position: -webkit-sticky;
     position: fixed;
     bottom: 0px;
     z-index: 1100;

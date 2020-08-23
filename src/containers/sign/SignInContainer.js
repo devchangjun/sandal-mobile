@@ -9,14 +9,13 @@ import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 import classNames from 'classnames/bind';
+import {Kakao,Naver,Facebook} from '../../components/svg/sign/social';
 const cx= classNames.bind(styles);
 
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
-const kakao = "https://i0.wp.com/forhappywomen.com/wp-content/uploads/2018/11/%EC%82%B0%EB%B6%80%EC%9D%B8%EA%B3%BC-%ED%8F%AC%ED%95%B4%ED%94%BC%EC%9A%B0%EB%A8%BC-%EB%AC%B8%EC%9D%98-%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%94%8C%EB%9F%AC%EC%8A%A4%EC%B9%9C%EA%B5%AC-%EB%B2%84%ED%8A%BC.png?w=586&ssl=1";
-const naver = "https://www.inavi.com/Content2/Images/mobileLogin/social-login-naver-icon.svg";
-const facebook = "https://w7.pngwing.com/pngs/670/159/png-transparent-facebook-logo-social-media-facebook-computer-icons-linkedin-logo-facebook-icon-media-internet-facebook-icon.png";
+
 const initialUserState = {
     email: '',
     password: '',
@@ -128,15 +127,15 @@ const SignInContainer = () => {
                         {/* 이부분 컴포넌트 만들어야함 */}
                         <div className={styles.social}>
                             <div className={styles.sns}>
-                                <img src={naver} alt="naver"></img>
+                                <img src={Naver} alt="naver"></img>
                             </div>
                             <div className={styles.sns}>
 
-                                <img src={kakao} alt="kakao"></img>
+                                <img src={Kakao} alt="kakao"></img>
 
                             </div>
                             <div className={styles.sns}>
-                                <img src={facebook} alt="facebook"></img>
+                                <img src={Facebook} alt="facebook"></img>
                             </div>
                         </div>
                     </div>

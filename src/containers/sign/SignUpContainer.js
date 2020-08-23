@@ -287,7 +287,7 @@ const SignUpContainer = () => {
 const AcceptContainer = (props) => {
     return (
         <div className={cx('agree')}>
-            <div className={cx('pd-box', 'border-box', 'pd-sub-top')}>
+            <div className={cx('pd-box', 'border-box')}>
                 <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
             </div>
             <div className={styles['background']}>

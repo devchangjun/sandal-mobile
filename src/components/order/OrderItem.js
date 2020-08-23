@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Order.module.scss';
+import { numberFormat } from "../../lib/formatter";
 
 
 // 전제척인 주문 메뉴 아이템

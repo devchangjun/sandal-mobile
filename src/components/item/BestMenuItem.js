@@ -3,6 +3,7 @@ import { Paths } from 'paths';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './BestMenu.module.scss';
+import { numberFormat } from "../../lib/formatter";
 
 
 
@@ -63,7 +64,7 @@ function MenuText({ menuText }) {
 function MenuPrice({ menuPrice }) {
     return (
         <div className={styles['menu-price']}>
-            {menuPrice}
+            {numberFormat(menuPrice)}
         </div>
     )
 }

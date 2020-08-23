@@ -8,6 +8,7 @@ import { Paths } from 'paths';
 import { Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage } from 'pages';
 import { Home, Account, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderList, Coupon } from 'pages';
+import { Notice } from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -52,6 +53,8 @@ function App() {
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
         <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
         <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
+        
+        <Route path={Paths.ajoonamu.support} component={Notice}></Route>
       </ScrollToTop>
     </div>
   );

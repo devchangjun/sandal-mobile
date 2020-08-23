@@ -3,6 +3,8 @@ import styles from './MenuItem.module.scss';
 import IMG from '../svg/menu/menuitem.png';
 import classNames from 'classnames/bind';
 
+import { numberFormat } from "../../lib/formatter";
+
 const cx = classNames.bind(styles);
 
 const MenuItem = (props) => {
@@ -17,7 +19,7 @@ const MenuItem = (props) => {
                    {menu_name}
                     </div>
                 <div className={styles['menu-price']}>
-                {menu_price}
+                {numberFormat(menu_price)}
                     </div>
             </div>
         </div>

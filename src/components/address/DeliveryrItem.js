@@ -14,9 +14,9 @@ const DeliveryrItem = (props) => {
     }
 
     //최근 배달 주소 삭제
-    const onRemove = () => {
-        console.log("배달지 삭제 삭제");
-    }
+    // const onRemove = () => {
+    //     console.log("배달지 삭제");
+    // }
 
     return (
         <div className={styles['delivery-item']} onClick={onClick}>
@@ -24,11 +24,13 @@ const DeliveryrItem = (props) => {
                 <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
                 <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
             </div>
-            <div className={styles['item-remove']} onClick={(e) => {
-                e.stopPropagation();
-                onRemove()
-            }}> &times;
-            </div>
+            {/*
+                <div className={styles['item-remove']} onClick={(e) => {
+                    e.stopPropagation();
+                    onRemove()
+                }}> &times;
+                </div>
+            */}
         </div>
     )
 }
@@ -42,7 +44,8 @@ const JibunAddrBox = ({ jibunAddr }) => {
 const RoadAddrBox = ({ roadAddr }) => {
     return (
         <div className={styles['roadAddr-box']}>
-            <AddrBtn /> {roadAddr}
+            <AddrBtn />
+            <span className={styles['roadAddr-content']}>{roadAddr}</span>
         </div>
     )
 }

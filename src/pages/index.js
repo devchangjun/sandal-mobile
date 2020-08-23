@@ -17,3 +17,4 @@ export {default as Order} from './order/Order';
 export {default as OrderList} from './order/OrderList';
 export {default as Coupon} from './coupon/Coupon';
 
+export {default as Notice} from './support/Notice';

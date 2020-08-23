@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './Custom.module.scss';
 import Menu from 'components/svg/menu/menu.png';
+import { numberFormat } from "../../lib/formatter";
 
 //추천 메뉴 아이템
 const CustomItem = ({datas}) => {
+
 
     return (
         <>
@@ -59,7 +61,7 @@ function CustomTitleList({datas}){
 function CustomTitle({ title,count,price }) {
     return (
         <div className={styles['custom-title']}>
-            {`${title} ${count}개 (${price})`}
+            {`${title} ${count}개 (${numberFormat(price)})`}
         </div>
     )
 }
@@ -77,7 +79,7 @@ function CustomTitle({ title,count,price }) {
 function CustomPrice({ price }) {
     return (
         <div className={styles['custom-price']}>
-            총 {"20000원"}
+            총 {"20,000원"}
         </div>
     )
 }

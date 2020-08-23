@@ -146,12 +146,7 @@ const BottomNav = (props) => {
                     </div>
                 </div>
             </div>
-
-            {open &&
-                <div className={styles['dim']} onClick={handleClose}>
-
-                </div>
-            }
+            <div className={cx('dim', {'open': open})} onClick={handleClose} />
         </>
     )
 }

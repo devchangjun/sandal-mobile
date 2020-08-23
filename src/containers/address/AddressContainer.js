@@ -130,7 +130,7 @@ const AddressContainer = () => {
                 <div className={styles['location-btn']}>현위치로 주소 설정</div>
             </div>
             <div className={styles['recently-title']}>최근 배달 주소</div>
-            <div className={cx('container', 'no-margin-header')}>
+            <div className={cx('container', 'no-padding-header')}>
                 <div className={styles['addr-list']}>
                     {delivery_addrs && renderAddrList()}
                 </div>

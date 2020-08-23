@@ -8,6 +8,7 @@ import { useHistory } from 'react-router';
 import Test from 'components/svg/cart/test.png';
 import classNames from 'classnames/bind'
 import Back from 'components/svg/header/Back';
+import { numberFormat } from "../../lib/formatter";
 const cx = classNames.bind(styles);
 
 const DetailContainer = ({ menu_name }) => {
@@ -34,7 +35,7 @@ const DetailContainer = ({ menu_name }) => {
                          </div>
                         <div className={styles['cost-count']}>
                             <div className={styles['cost']}>
-                                    5000원
+                                    {numberFormat(5000)}원
                             </div>
                             <div className={styles['count']}>
                                 <Counter value={1}/>
@@ -49,7 +50,7 @@ const DetailContainer = ({ menu_name }) => {
                     </div>
                 </div>
             </div>
-            <Button title={"1개 담기(5,000원)"} onClick ={onClickCart} toggle={true}/>
+            <Button title={`1개 담기(${numberFormat(5000)}원)`} onClick ={onClickCart} toggle={true}/>
         </>
     )
 }

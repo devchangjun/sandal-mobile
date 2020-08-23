@@ -3,17 +3,17 @@
 .container {
     max-width: $max-width;
     min-width: $min-width;
-    padding: $padding-all;
+    padding: 0 $padding-all;
     margin: 0 auto;
-    margin-top: $mg-top40;
-    &.no-margin-header {
-        margin-top: 0;
+    padding-top: $mg-top40;
+    &.no-padding-header {
+        padding-top: 0;
     }
     .title {
         font-size: 18px;
         font-weight: bold;
         color: #444;
-        margin-bottom: 24px;
+        margin: 24px 0;
     }
     .addr-input {
         position: relative;
@@ -42,7 +42,6 @@
     .addr-list {
         display: flex;
         flex-direction: column;
-        margin: 20px 0 20px 0;
     }
     .location-btn {
         border: 1px solid $main-color;

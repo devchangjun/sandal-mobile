@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     },
     sub:{
         fontSize:10
+    },
+    close:{
+        position :"absolute",
+        left:24,
     }
 }));
 
@@ -76,15 +80,15 @@ const FullScreenDialog = (props) => {
             <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
-                        <IconButton edge="start" color="inherit" onClick={onClickClose} aria-label="close">
+                        <IconButton 
+                             className={classes.close}
+                        color="inherit" onClick={onClickClose} aria-label="close">
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             결제 방법 선택
                          </Typography>
-                        <div className={styles['empty']}>
-
-                        </div>
+               
                     </Toolbar>
                 </AppBar>
                 <div className={styles['title']}>결제 방법 선택</div>

@@ -27,6 +27,10 @@
     position: absolute;
     top:24px;
     left: 24px;
+    display: none;
+    &.on{
+        display: block;
+    }
 }
 
 .bottom-modal{

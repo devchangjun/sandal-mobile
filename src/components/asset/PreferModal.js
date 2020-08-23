@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
         color: 'black',
         boxShadow: 'none',
         fontSize: 10,
+        paddingLeft:24,
+        paddingRight:24,
     },
     title: {
         textAlign: 'center',
@@ -43,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
     sub: {
         fontSize: 10,
     },
+    close:{
+        position :"absolute",
+        left:0,
+    }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -63,17 +69,16 @@ const FullScreenDialog = (props) => {
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
                         <IconButton
-                            edge="start"
                             color="inherit"
                             onClick={props.handleClose}
                             aria-label="close"
-                        >
+                            className={classes.close}
+                         >
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             맞춤주문
                         </Typography>
-                        <div className={styles['empty']}></div>
                     </Toolbar>
                 </AppBar>
                 <div className={styles['title']}>맞춤 주문 설정</div>

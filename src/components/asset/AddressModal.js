@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
         paddingRight:24,
         flex: "0 0 auto"
     },
+    close:{
+        position :"absolute",
+        left:24,
+        zIndex:2100
+    }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -60,15 +65,16 @@ const AddressModal = (props) => {
             <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
-                        <IconButton edge="start" color="inherit" onClick={props.handleClose} aria-label="close">
+                        <IconButton 
+                        className={classes.close}
+                        color="inherit" 
+                        onClick={props.handleClose} aria-label="close">
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             배달받을 주소
                          </Typography>
-                        <div className={styles['empty']}>
-
-                        </div>
+            
                     </Toolbar>
                 </AppBar>
                 <div className={styles['title']}>배달 받을 주소</div>

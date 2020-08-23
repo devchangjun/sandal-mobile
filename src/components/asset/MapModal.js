@@ -54,7 +54,7 @@ const FullScreenDialog = (props) => {
     const [road ,setRoad] = React.useState('새말로v9길 46, 삼성빌딩 407호');
 
     useEffect(() => {
-        console.log(props.open)
+        console.log(props.open);
         mapScript();
     }, []);
 
@@ -176,7 +176,7 @@ const FullScreenDialog = (props) => {
             <div className={cx('map-modal',{on:props.open})}>
             <div id="map" className={styles['map']} style={{ width: "100vw", height: "100vh" }}></div>
             </div>
-            <div className={styles['back']}>
+            <div className={cx('back',{on:props.open})}>
                     <Back onClick={props.handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
             </div>
             <BottomModal open={props.open} jibun={jibun} road={road}/>

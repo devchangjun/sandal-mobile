@@ -13,7 +13,8 @@ import MapModal from 'components/asset/MapModal';
 const cx = classNames.bind(styles);
 // Address Branch Commit
 
-const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
+// const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
+const key= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU';
 const AddressContainer = () => {
     const [searchAddr, setSearchAddr] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택

@@ -35,7 +35,7 @@ const OrderListContainer = ({ tab = 'order' }) => {
 
     return (
         <>
-        <TitleBar title={"주문내역"}/>
+        <TitleBar title={"주문내역"} sub={true} onClick={handleOpen}/>
         <TabMenu tabs={tabInit} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
@@ -50,7 +50,6 @@ const OrderListContainer = ({ tab = 'order' }) => {
                     }
                 </div>
 
-            <button onClick={handleOpen}>test</button>
 
             </div>
             <BottomNav/>

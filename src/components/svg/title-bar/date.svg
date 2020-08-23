@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <pattern id="pattern" width="1" height="1" viewBox="0 -1.091 26.182 26.182">
+      <image preserveAspectRatio="xMidYMid slice" width="26.182" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABYCAMAAAA9bwLKAAAAHlBMVEVHcEx3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3ceh9ApAAAACXRSTlMA4CAQgNDAMFCO732LAAAACXBIWXMAACxKAAAsSgF3enRNAAAA10lEQVRoge3Z4QrDIAwE4Gi19d7/hYdjjMFIZjWhlN39EUraLyDEgqJnKxWoZTNKhmq0HAnPpGOtRu3t9S6Q1P5GatQUvFNWatRUAHvOO4C6UqOmt5VFcl9Xakzgc52tIfAXQEsIS2oiLe7zPU0C++9JEvt9QN0gOGzy9cDqsDMBj3FtAh4Hjgl4HJkm4HHo24DDb8sPYD0ExoHIEBgDwjeZAAECBE4CX8Nq8jmBecAzBAjcFeAsuh7wDAECdwU4Kq4HPEOAAAECZ4DIxF9zhV/UhV41piYPo9xZzfzvQ7gAAAAASUVORK5CYII="/>
+    </pattern>
+  </defs>
+  <rect id="자산_39_4x-8" data-name="자산 39@4x-8" width="24" height="24" fill="url(#pattern)"/>
+</svg>

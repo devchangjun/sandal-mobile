@@ -16,8 +16,8 @@ const MenuDetailLink = styled(NavLink)`
 
 //홈 메뉴 아이템 컴포넌트
 const BestMenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
+    // item_id 로 경로 줘야함
     return (
-        // item_id 로 경로 줘야함
         <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?menu=${menuTitle}`}>
             <div className={styles['menu-item']}>
                 <MenuImg src={src} />

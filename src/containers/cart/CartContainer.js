@@ -9,10 +9,9 @@ import CartItemList from 'components/cart/CartItemList';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';
-import CheckBox from 'components/checkbox/CheckBox';
 import Check from 'components/svg/sign/Check';
 
-import EsitModal from 'components/asset/EsitModal';
+import EstmModal from 'components/asset/EstmModal';
 import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
 
@@ -22,8 +21,8 @@ const CartContainer = () => {
     const history = useHistory();
     const [open, setOpen] = React.useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    const [esit, setEsit] = React.useState(false); //견적서 발송
-    const [not_esit, setNotEsit] = React.useState(true); // 견적서 미발송
+    const [estm, setEstm] = React.useState(false); //견적서 발송
+    const [not_estm, setNotEstm] = React.useState(true); // 견적서 미발송
     const [cartList, setCartList] = React.useState([]); //장바구니
     const [total, setTotal] = React.useState(0); //총 주문금액
     const [delivery_cost, setCost] = React.useState(0); // 배달비
@@ -34,14 +33,14 @@ const CartContainer = () => {
         setOpen(false);
     }, []);
 
-    const onChangeEsit = (e) => {
-        setEsit(true);
-        setNotEsit(false);
+    const onChangeEstm = (e) => {
+        setEstm(true);
+        setNotEstm(false);
     };
 
-    const onChangeNotEsit = (e) => {
-        setEsit(false);
-        setNotEsit(true);
+    const onChangeNotEstm = (e) => {
+        setEstm(false);
+        setNotEstm(true);
     };
 
     // const { user } = useSelector(state => state.auth);
@@ -142,17 +141,17 @@ const CartContainer = () => {
                             </div>
                         </div>
                         <div className={styles['estm']}>
-                            <div className={cx('check', { on: not_esit })} onClick={onChangeNotEsit}>
+                            <div className={cx('check', { on: not_estm })} onClick={onChangeNotEstm}>
                                 <div className={styles['check-box']}>
-                                    <Check on={not_esit}/>
+                                    <Check on={not_estm}/>
                                 </div>
                                 <div className={styles['value']}>
                                     견적서 미발송
                                 </div>
                             </div>
-                            <div className={cx('check', { on: esit })} onClick={onChangeEsit}>
+                            <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
                                 <div className={styles['check-box']}>
-                                    <Check  on={esit}/>
+                                    <Check  on={estm}/>
                                 </div>
                                 <div className={styles['value']}>
                                     견적서 발송
@@ -163,15 +162,15 @@ const CartContainer = () => {
                 </div>
                 <Button
                     title={'주문하기'}
-                    onClick={handleOpen}
+                    onClick={estm? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>
-                <EsitModal
+                <EstmModal
                     open={open}
                     handleClose={handleClose}
                     handleOpen={handleOpen}
                     onClick={onClickOrder}
-                    isEsit={esit}
+                    isEsit={estm}
                 />
             </>
         );

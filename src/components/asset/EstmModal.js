@@ -1,14 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import styles from './Esit.module.scss';
+import styles from './Estm.module.scss';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-
+import esit from 'components/svg/esit/esit.png';
 import classNames from 'classnames/bind';
 import DialogContent from '@material-ui/core/DialogContent';
 
@@ -92,7 +92,9 @@ const EsitModal = (props) => {
                 </DialogContent>
                 {props.isEsit && (
                     <DialogContent className={classes.content}>
-                        <div className={styles['estm']}></div>
+                        <div className={styles['estm']}>
+                            <img src ={esit} alt="estm"/>
+                        </div>
                         {/* <FixButton title={"확인"} onClick={props.handleOpen} toggle={true} /> */}
                     </DialogContent>
                 )}
@@ -105,10 +107,10 @@ const EsitModal = (props) => {
 function LinkButton({ on, onClick }) {
     return (
         <div className={styles['btn']}>
-            <div className={cx('item', { on: on })} onClick={onClick}>
+            <div className={cx('item', { on: !on })} onClick={onClick}>
                 건너뛰기
             </div>
-            <div className={cx('item', { on: !on })} onClick={onClick}>
+            <div className={cx('item', { on: on })} onClick={onClick}>
                 견적서 발송
             </div>
         </div>

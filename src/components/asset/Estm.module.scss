@@ -26,7 +26,6 @@
 
 .btn{
     box-sizing: border-box;
-    height: 60px;
     overflow: hidden;
     position: fixed; bottom:0px; left: 0;
     width: 100%;
@@ -35,9 +34,8 @@
     z-index:2000;
     justify-content: center;
     align-items: center;
-    background-color:$normal-color;
+  
     color:white;
-    padding-bottom: 13px;
     transition: background-color .15s ease-in-out;
 
     .item{
@@ -46,6 +44,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color:$normal-color;
         &.on{
             background-color: $main-color;
         }
@@ -66,6 +65,9 @@
     background-color:  #EBEBEB;
     box-sizing: border-box;
     height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .empty{

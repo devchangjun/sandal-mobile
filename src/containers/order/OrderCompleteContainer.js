@@ -1,4 +1,6 @@
 import React from 'react';
+import {Paths} from 'paths';
+import {useHistory} from 'react-router-dom';
 import styles from './OrderComplete.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import DetailOrderItem from 'components/order/DetailOrderItem';
@@ -6,6 +8,11 @@ import classNames from 'classnames/bind';
 const cx =classNames.bind(styles);
 
 const OrderCompleteContainer =()=>{
+    const history = useHistory();
+
+    const onClickHome =()=>{
+        history.push(Paths.index);
+    }
     return (
         <>
             <TitleBar title={'주문완료'} />
@@ -78,7 +85,7 @@ const OrderCompleteContainer =()=>{
                         <div className={styles['btn']}>
                                 문구 서비스 신청
                         </div>
-                        <div className={cx('btn',{on:true})}>
+                        <div className={cx('btn',{on:true})} onClick={onClickHome}>
                                     완료
                             </div>
                     </div>

@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         textAlign: 'center',
         width: '100%',
-        fontSize: 14,
+        fontSize: 18,
     },
     toolbar: {
         display: 'flex',
@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
         fontWeight:"bold",
         color :"#333",
     },
+    close:{
+        position :"absolute",
+        left:24,
+        zIndex:2100
+    }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -65,7 +70,7 @@ const EsitModal = (props) => {
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
                         <IconButton
-                            edge="start"
+                              className={classes.close}
                             color="inherit"
                             onClick={props.handleClose}
                             aria-label="close"
@@ -75,7 +80,6 @@ const EsitModal = (props) => {
                         <Typography variant="h6" className={classes.title}>
                             견적서 발송
                         </Typography>
-                        <div className={styles['empty']}></div>
                     </Toolbar>
                 </AppBar>
                 <div className={styles['title']}>수신자</div>

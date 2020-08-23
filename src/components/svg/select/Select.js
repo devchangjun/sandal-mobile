@@ -1,5 +1,6 @@
 import React from 'react';
 
+//추가 주문 아이템 셀렉트 박스
 
 const Select = ({check}) => {
     return (

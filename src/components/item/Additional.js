@@ -9,7 +9,7 @@ const Additional = ({ menuName, menuPrice, check }) => {
         <div className={styles['additional-item']}>
             <input type="checkbox" id="test"></input>
             <label className={styles['label']} htmlFor="test">
-                <Select check={check} /> {menuName} 추가 {numberFormat(menuPrice)} 원
+                <Select check={check} />{menuName} 추가 {numberFormat(menuPrice)} 원
             </label>
         </div>
     );

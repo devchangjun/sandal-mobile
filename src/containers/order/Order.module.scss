@@ -176,6 +176,14 @@
  
     }
 }
+.agree-order{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    .text{
+        padding-left:10px;
+    }
+}
 .pd-box{
     padding: 0 24px;
     box-sizing: border-box;
@@ -191,7 +199,7 @@
     padding-top:30px;
 }
 .bt-mg{
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 70px;
 }
 .bg-color{

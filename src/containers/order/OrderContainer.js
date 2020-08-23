@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import {useHistory} from 'react-router-dom';
+import {Paths }from 'paths';
 import styles from './Order.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
@@ -74,6 +76,7 @@ const initPayment = [
 const OrderContainer = () => {
     //    포인트모달, 결제방식 모달 때 사용할 것.
 
+    const history = useHistory();
     const [pointOpen, setPointOpen] = React.useState(false);
     const onClickPointOpen = () => setPointOpen(true);
     const onClickPointClose = () => setPointOpen(false);
@@ -102,6 +105,10 @@ const OrderContainer = () => {
             }),
         );
     };
+
+    const onClickOrder=()=>{
+        history.push(`${Paths.ajoonamu.order_complete}?order_number=${123456}`);
+    }
 
     return (
         <>
@@ -266,7 +273,7 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={'10000원 결제'} toggle={toggle}/>
+            <Button title={'10000원 결제'} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} />
             <CouponModal
                 open={couponOpen}

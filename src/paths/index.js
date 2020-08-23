@@ -14,6 +14,7 @@ export const Paths = {
         cart: '/ajoonamu/cart',
         order: '/ajoonamu/order',
         order_list: '/ajoonamu/order_list',
+        order_complete :'/ajoonamu/order_complete',
         coupon: '/ajoonamu/coupon',
         support: '/ajoonamu/support'
     },

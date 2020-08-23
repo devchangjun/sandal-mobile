@@ -25,12 +25,6 @@ function App() {
   useEffect(() => {
     existJWT();
   }, [existJWT])
-
-  //test commit
-
-
-  // modal merge test
-
   
   return (
     <div className="App">

@@ -4,7 +4,9 @@ import { numberFormat } from "../../lib/formatter";
 
 
 // 전제척인 주문 메뉴 아이템
-const OrderItem = () => {
+const OrderItem = (props) => {
+    const {id,items,order_id,total_price, send_cost,cp_price,point_price,receipt_price} = props;
+    console.log(props);
     return (
         <div className={styles['order-item']}>
             <div className={styles['item']}>
@@ -12,6 +14,7 @@ const OrderItem = () => {
                     <div className={styles['pd-box']}>
                         <div className={styles['date']}>
                             2020-05-01(목) 24:59:59
+                            {/* {order_id} */}
                         </div>
                         <div className={styles['list']}>
                             <OrderMenuItemList />
@@ -23,7 +26,7 @@ const OrderItem = () => {
                     <div className={styles['pd-box']}>
 
                         <div className={styles['total']}>
-                            <span>결제금액</span>66,000원
+                            <span>결제금액</span>{numberFormat(total_price)}원
                           </div>
                         <div className={styles['sub']}>
                             주문금액 60,000원 + 배송비 6,000원

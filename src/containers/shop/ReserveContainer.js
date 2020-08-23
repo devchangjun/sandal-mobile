@@ -87,7 +87,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 <div className={styles['pd-box']}>
                     {/* 이부분 바꿔야함 */}
                     {(tab === 'custom' && result) ?
-                        <div>
+                        <div className={styles['title']}>
                             맞춤 메뉴
                     <CustomItemList />
                         </div>

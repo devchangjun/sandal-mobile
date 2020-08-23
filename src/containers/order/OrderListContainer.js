@@ -3,7 +3,7 @@ import styles from './OrderList.module.scss';
 import { Paths } from 'paths';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
-import OrderItem from 'components/order/OrderItem';
+import OrderItemList from 'components/order/OrderItemList';
 import BottomNav from 'components/nav/BottomNav';
 import BottomModal from 'components/nav/BottomModal';
 
@@ -39,7 +39,7 @@ const OrderListContainer = ({ tab = 'order' }) => {
         <TabMenu tabs={tabInit} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
-                    {tab === 'order' && <><OrderItem /><OrderItem /></>}
+                    {tab === 'order' && <><OrderItemList /></>}
                     {tab ==='delivery' && 
                     <Message
                         src={true}
@@ -49,8 +49,10 @@ const OrderListContainer = ({ tab = 'order' }) => {
                     />  
                     }
                 </div>
-            </div>
+
             <button onClick={handleOpen}>test</button>
+
+            </div>
             <BottomNav/>
             <BottomModal
                 open ={open}

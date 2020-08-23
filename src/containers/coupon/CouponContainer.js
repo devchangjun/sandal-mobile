@@ -57,7 +57,7 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
         <>
             <TitleBar title={"쿠폰함"} />
             <TabMenu tabs={tabInit} />
-                <div className={styles['container']}>
+                <div className={cx('container')}>
                     {tab === 'mycoupon' &&
                         <>
                             <div className={cx('coupon-title', 'pd-box')}>

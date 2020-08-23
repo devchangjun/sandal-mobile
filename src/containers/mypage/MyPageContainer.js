@@ -12,6 +12,8 @@ import { logout } from '../../store/auth/auth';
 import Button from '@material-ui/core/Button';
 import { numberFormat } from "../../lib/formatter";
 
+import Back from 'components/svg/header/Back';
+
 const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
@@ -62,7 +64,7 @@ const MyPageContainer = () => {
                             </div>
                         )}
                     </div>
-                    <div className={cx('link', 'pd-right')}>{'>'}</div>
+                    <div className={cx('link', 'pd-right')}><Back rotate="180deg" /></div>
                 </Button>
                 <div className={styles['tab']}>
                     <Item text={'공지사항'} />

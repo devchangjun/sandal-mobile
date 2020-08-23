@@ -26,12 +26,18 @@
         &:last-child{
             margin-bottom:24px;
         }
-        .down{
-            width: 80px;
+        .down,
+        .not-down {
             display: flex;
             justify-content: center;
             align-items: center;
             border-right: 1px dashed #999999;
+        }
+        .down {
+            width: 80px;
+        }
+        .not-down {
+            width: 40px;
         }
         .info{
             width: 100%;

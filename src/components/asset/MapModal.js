@@ -56,7 +56,6 @@ const FullScreenDialog = (props) => {
         mapScript();
     }, []);
 
-
     
     const mapScript = () => {
         console.log("실행");
@@ -66,6 +65,7 @@ const FullScreenDialog = (props) => {
             level: 5,
         };
         const map = new kakao.maps.Map(container, options);
+        const geocoder = new kakao.maps.services.Geocoder();
 
         var imageSrc = MarkerImg,
             imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
@@ -80,24 +80,50 @@ const FullScreenDialog = (props) => {
             position: map.getCenter(),
             image:markerImage
         });
+        const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
         marker.setMap(map);
 
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
             // 클릭한 위도, 경도 정보를 가져옵니다 
-            var latlng = mouseEvent.latLng;
+            // var latlng = mouseEvent.latLng;
 
-            // 마커 위치를 클릭한 위치로 옮깁니다
-            marker.setPosition(latlng);
+            // // 마커 위치를 클릭한 위치로 옮깁니다
+            // marker.setPosition(latlng);
 
-            var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-            message += '경도는 ' + latlng.getLng() + ' 입니다';
-            console.log(message);
-            var resultDiv = document.getElementById('clickLatlng');
-            //resultDiv.innerHTML = message;
+            // var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+            // message += '경도는 ' + latlng.getLng() + ' 입니다';
+            // console.log(message);
+            // var resultDiv = document.getElementById('clickLatlng');
+            // //resultDiv.innerHTML = message;
+
+            searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+                    detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+                    
+                    var content = '<div class="bAddr">' +
+                                    '<span class="title">법정동 주소정보</span>' + 
+                                    detailAddr + 
+                                '</div>';
+        
+                    // 마커를 클릭한 위치에 표시합니다 
+                    marker.setPosition(mouseEvent.latLng);
+                    marker.setMap(map);
+        
+                    // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }   
+            });
 
         });
 
+        function searchDetailAddrFromCoords(coords, callback) {
+            // 좌표로 법정동 상세 주소 정보를 요청합니다
+            geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+        }
+        
         markerdata.forEach((el) => {
             const marker = new kakao.maps.Marker({
                 map: map,

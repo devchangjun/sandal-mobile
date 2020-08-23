@@ -1,21 +1,23 @@
 @import '../../styles/Root.scss';
 
-.btn{
+.btn {
     box-sizing: border-box;
     height: 60px;
     overflow: hidden;
-    position: fixed; bottom:0px; left: 0;
+    position: fixed;
+    bottom: 0px;
+    left: 0;
     z-index: 1200;
     width: 100%;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:$normal-color;
-    color:white;
+    background-color: $normal-color;
+    color: white;
     padding-bottom: 13px;
-    transition: background-color .15s ease-in-out;
-}
-.on{
-    background-color: $main-color;
+    transition: background-color 0.15s ease-in-out;
+    &.on {
+        background-color: $main-color;
+    }    
 }

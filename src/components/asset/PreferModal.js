@@ -11,6 +11,7 @@ import Slide from '@material-ui/core/Slide';
 import FixButton from 'components/button/Button';
 
 import DialogContent from '@material-ui/core/DialogContent';
+import { numberFormat } from "../../lib/formatter";
 
 
 //test commit
@@ -76,7 +77,6 @@ const FullScreenDialog = (props) => {
                         <div className={styles['empty']}></div>
                     </Toolbar>
                 </AppBar>
-                <div className={styles['title']}>맞춤 주문 설정</div>
                 <div className={styles['title']}>주문 종류</div>
 
                 <DialogContent className={classes.content}>
@@ -96,7 +96,7 @@ const FullScreenDialog = (props) => {
                 <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
                         <input
-                            value={props.budget}
+                            value={numberFormat(props.budget)}
                             onChange={props.onChangeBudget}
                         ></input>
                     </div>

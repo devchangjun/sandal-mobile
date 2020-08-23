@@ -1,48 +1,47 @@
 @import '../../styles/Root.scss';
 
 //로그인 회원가입 정보찾기에 관한 모든 메인
-.container{
+.container {
     @include wireframe(40px);
     position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background-color:#fff;
-    .content{
+    background-color: #fff;
+    .content {
         width: 100%;
         background: #fff;
         position: relative;
-        margin-top:$mg-top40;
+        margin-top: $mg-top40;
         //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
-        .link-table{
-            display: table; 
+        .link-table {
+            display: table;
             width: 100%;
             //링크 테이블 셀
-            .table-cell{
+            .table-cell {
                 display: table-cell;
                 position: relative;
-                width :100px;
-                vertical-align: middle; 
+                width: 100px;
+                vertical-align: middle;
                 text-align: center;
-                padding:3px 0;
+                padding: 3px 0;
 
-                & + div::after{
+                & + div::after {
                     border-right: 1px solid #dbdbdb;
                     position: absolute;
                     left: 0;
                     top: 50%;
                     transform: translateY(-50%);
-                    content: "";
+                    content: '';
                     height: 12px;
                 }
             }
-
-      }
-        .login-btn{
+        }
+        .login-btn {
             margin: 35px 0;
         }
-        .success-img{
+        .success-img {
             display: flex;
             width: 100%;
             display: flex;
@@ -51,20 +50,20 @@
     }
 
     //휴대폰 인증 버튼
-    .auth-btn{
+    .auth-btn {
         overflow: hidden;
-        transition:opacity .3s ease-in-out;
+        transition: opacity 0.3s ease-in-out;
         height: 135px;
         opacity: 1;
         &.not_view {
-        opacity: 0;
+            opacity: 0;
             // height: 0px;
         }
     }
 }
 
 //회색 글씨
-.sub-text{
+.sub-text {
     font-size: 12px;
     color: #999999;
     line-height: 1.2;
@@ -73,29 +72,28 @@
 }
 
 // 로그인창 소셜 로그인
-.social{
+.social {
     margin-top: 50px;
     display: flex;
-    
+
     flex-direction: row;
     justify-content: center;
     margin-bottom: 50px;
 
-    .sns{
+    .sns {
         width: 100%;
         height: 50px;
         display: flex;
         justify-content: center;
         margin: 20px 0 20px 0;
-        img{
+        img {
             width: 50px;
         }
     }
 }
 
-
 //회원가입 창 동의서
-.agree{
+.agree {
     max-width: $max-width;
     width: 100%;
     position: relative;
@@ -103,14 +101,13 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 50px;
-    background-color: #EBEBEB;
-    label{
-        color:#777777;
+    background-color: #ebebeb;
+    label {
+        color: #777777;
     }
 
-
     //SMS 알림
-    .sms{
+    .sms {
         width: 100%;
         display: flex;
         justify-content: center;
@@ -119,42 +116,41 @@
     }
 }
 
-
 //회원가입창 비밀번호 일치 불일치
-.compare{
+.compare {
     font-size: 12px;
-    color:#A61332;
-    margin-bottom:30px;
+    color: #a61332;
+    margin-bottom: 30px;
     overflow: hidden;
-    transition:all .15s ease-in-out;
+    transition: all 0.15s ease-in-out;
     height: 20px;
-    &.on{
+    &.on {
         font-size: 12px;
-        color:$main-color ;
-        margin-bottom:30px;
+        color: $main-color;
+        margin-bottom: 30px;
     }
     &.not_view {
         height: 0px;
     }
 }
 
-.min-height{
+.min-height {
     min-height: 0;
 }
-.pd-none{
+.pd-none {
     padding: 0;
 }
-.pd-box{
+.pd-box {
     padding: 0 24px;
 }
-.pd-sub-top{
+.pd-sub-top {
     padding: 20px 24px;
 }
-.border-box{
-    border-top : 1px solid #EBEBEB;
-    border-bottom: 1px solid #EBEBEB;
-    background-color:#fff;
-    label{
+.border-box {
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+    background-color: #fff;
+    label {
         color: #444444;
         font-size: 20px;
         font-weight: bold;

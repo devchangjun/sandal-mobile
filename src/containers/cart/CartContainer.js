@@ -12,6 +12,7 @@ import classNames from 'classnames/bind';
 import CheckBox from 'components/checkbox/CheckBox';
 import CartModal from 'components/asset/CartModal';
 import Message from 'components/message/Message';
+import { numberFormat } from "../../lib/formatter";
 
 const cx = classNames.bind(styles);
 
@@ -117,7 +118,7 @@ const CartContainer = () => {
                                 총 주문금액
                         </div>
                             <div className={cx('title', 'total')}>
-                                {total}원
+                                {numberFormat(total)}원
                         </div>
                         </div>
                         <div className={styles['finally-price']}>
@@ -125,7 +126,7 @@ const CartContainer = () => {
                                 배달비
                              </div>
                             <div className={styles['title']}>
-                                {delivery_cost}원
+                                {numberFormat(delivery_cost)}원
                           </div>
                         </div>
                         {/* <div className={styles['order-text']}>

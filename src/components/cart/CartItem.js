@@ -3,6 +3,8 @@ import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
 import cart from '../svg/cart/cart.png';
+import { numberFormat } from "../../lib/formatter";
+
 
 
 // 메뉴이름, 추가옵션
@@ -55,7 +57,7 @@ const CartItem = props => {
                         </div>
                     </div>
                     <div className={styles['price']}>
-                        {item_price} 원
+                        {numberFormat(item_price)} 원
                     </div>
                 </div>
             </div>

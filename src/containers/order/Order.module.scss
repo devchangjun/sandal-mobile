@@ -1,12 +1,8 @@
 
 @import '../../styles/Root.scss';
 .order{
-    margin: 0 auto;
     width: 100%;
-    padding-top :$pd-top40;
-    max-width: $max-width;
-    min-height: $min-height;
-    min-width: $min-width;
+    @include wireframe(40px);
     display: flex;
     flex-direction: column;
     font-size: 30px;

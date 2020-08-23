@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Asset.module.scss';
+import styles from './Address.module.scss';
 import classNames from 'classnames/bind';
 import { makeStyles } from '@material-ui/core/styles';
 import { BsSearch } from 'react-icons/bs';
@@ -71,9 +71,9 @@ const AddressModal = (props) => {
                         </div>
                     </Toolbar>
                 </AppBar>
-                <DialogTitle id="form-dialog-title">배달 받을 주소</DialogTitle>
+                <div className={styles['title']}>배달 받을 주소</div>
                 <DialogContent className={classes.content}>
-                <div className={styles['addrs-box']}>
+                <div className={styles['container']}>
                         <div className={styles['modal-input-box']}>
                             <input className={styles['modal-input']} type="text" value={props.searchAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
                             <div className={styles['search-btn']} onClick={props.onSearch} ><BsSearch /></div>
@@ -89,7 +89,6 @@ const AddressModal = (props) => {
                             {props.selectAddr ? props.selectAddr : ""}
                         </div>
                         <input className={cx('modal-input','md-top')} type="text" value={props.detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail}></input>
-
                 </div>
                 </DialogContent>
                 <FixButton title={"이 주소로 배달지 설정"} onClick={props.onInsertAddr} />

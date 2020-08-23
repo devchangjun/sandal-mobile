@@ -15,7 +15,7 @@ export default function CheckBox({ id, text, check, onChange, url, }) {
                     <Check on={check} />{text}
                 </label>
             </div>
-            {url &&
+            {url!==null &&
             <div className={styles['sub-text']}>
                     <label>보기 </label>
                 </div>
@@ -24,3 +24,11 @@ export default function CheckBox({ id, text, check, onChange, url, }) {
     )
 }
 
+
+CheckBox.defaultProps ={
+    id:'check',
+    text:'text',
+    check:false,
+    onChange :()=>console.warn("onChange"),
+    url:null,
+}

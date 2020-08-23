@@ -10,44 +10,56 @@ import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';
 import CheckBox from 'components/checkbox/CheckBox';
-import CartModal from 'components/asset/CartModal';
+import Check from 'components/svg/sign/Check';
+
+import EsitModal from 'components/asset/EsitModal';
 import Message from 'components/message/Message';
-import { numberFormat } from "../../lib/formatter";
+import { numberFormat } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
 
-
-
-
 const CartContainer = () => {
     const history = useHistory();
-
     const [open, setOpen] = React.useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    // const [esitChcked, setEsitChcked] = React.useState(true); //견적서 발송
+    const [esit, setEsit] = React.useState(false); //견적서 발송
+    const [not_esit, setNotEsit] = React.useState(true); // 견적서 미발송
     const [cartList, setCartList] = React.useState([]); //장바구니
-    const [total, setTotal] = React.useState(0);  //총 주문금액
+    const [total, setTotal] = React.useState(0); //총 주문금액
     const [delivery_cost, setCost] = React.useState(0); // 배달비
-    const handleOpen = useCallback(() => { setOpen(true) }, []);
-    const handleClose = useCallback(() => { setOpen(false) }, []);
+    const handleOpen = useCallback(() => {
+        setOpen(true);
+    }, []);
+    const handleClose = useCallback(() => {
+        setOpen(false);
+    }, []);
+
+    const onChangeEsit = (e) => {
+        setEsit(true);
+        setNotEsit(false);
+    };
+
+    const onChangeNotEsit = (e) => {
+        setEsit(false);
+        setNotEsit(true);
+    };
 
     // const { user } = useSelector(state => state.auth);
 
-
     //마운트 될 때 만 함수 생성.
-    const onCartList = useCallback (async () => {
-        const token = sessionStorage.getItem("access_token");
+    const onCartList = useCallback(async () => {
+        const token = sessionStorage.getItem('access_token');
         const res = await getCartList(token);
         let len = Object.keys(res).length;
-        let list =[];
+        let list = [];
         for (let i = 0; i < len - 1; i++) {
             list[i] = res[i];
             list[i].isChecked = false;
         }
         setCost(res.delivery_cost);
         setCartList(list);
-        setAllChecked(true) //나중에 빼야함
-    },[]);
+        setAllChecked(true); //나중에 빼야함
+    }, []);
 
     // 장바구니 리스트가 변경될 때 새로 생성.
     const onChangeTotalPrice = useCallback(() => {
@@ -56,7 +68,7 @@ const CartContainer = () => {
         let total = 0;
         for (let i = 0; i < cartList.length; i++) {
             console.log(cartList[i].item);
-            total += cartList[i].item.item_price
+            total += cartList[i].item.item_price;
         }
         console.log(total);
         setTotal(total);
@@ -65,22 +77,23 @@ const CartContainer = () => {
     //마운트 될때만 함수 호출.
     useEffect(() => {
         onCartList();
-    }, [onCartList])
-
+    }, [onCartList]);
 
     useEffect(() => {
         onChangeTotalPrice();
-    }, [onChangeTotalPrice])
+    }, [onChangeTotalPrice]);
 
-
-    const handleCheckChild = useCallback((e) => {
-        const index = e.target.id;
-        setCartList(
-            produce(cartList, draft => {
-                draft[index].isChecked = !draft[index].isChecked;
-            })
-        );
-    }, [cartList]);
+    const handleCheckChild = useCallback(
+        (e) => {
+            const index = e.target.id;
+            setCartList(
+                produce(cartList, (draft) => {
+                    draft[index].isChecked = !draft[index].isChecked;
+                }),
+            );
+        },
+        [cartList],
+    );
 
     //전체 선택인지 아닌지 여부 판단
     // const handleAllChecked = () => {
@@ -95,7 +108,6 @@ const CartContainer = () => {
     //     return;
     // }
 
-
     const onClickOrder = () => history.push(Paths.ajoonamu.order);
 
     const renderList = () => {
@@ -103,78 +115,85 @@ const CartContainer = () => {
             <>
                 <div className={styles['bar']}>
                     <div className={styles['pd-box']}>
-                        <div className={styles['delete']}>
-                            전체 삭제
-                    </div>
+                        <div className={styles['delete']}>전체 삭제</div>
                     </div>
                 </div>
                 <div className={styles['cart-list']}>
-                    <CartItemList allChecked={allChecked} carts={cartList} handleCheckChild={handleCheckChild} />
+                    <CartItemList
+                        allChecked={allChecked}
+                        carts={cartList}
+                        handleCheckChild={handleCheckChild}
+                    />
                 </div>
                 <div className={styles['finally']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['finally-price']}>
                             <div className={cx('title', 'total')}>
                                 총 주문금액
-                        </div>
+                            </div>
                             <div className={cx('title', 'total')}>
                                 {numberFormat(total)}원
-                        </div>
+                            </div>
                         </div>
                         <div className={styles['finally-price']}>
-                            <div className={styles['title']}>
-                                배달비
-                             </div>
+                            <div className={styles['title']}>배달비</div>
                             <div className={styles['title']}>
                                 {numberFormat(delivery_cost)}원
-                          </div>
-                        </div>
-                        {/* <div className={styles['order-text']}>
-                    * 배달비는 거리에 따라 측정되며, 20만원 이상 결제시 배달비는 무료입니다.
-                </div> */}
-
-                        {/* 이거 그냥 다시 만드는게 나을듯 */}
-                        <div className={styles['estm']}>
-                            <div className={styles['estm-check']}>
-                                <CheckBox id={"check1"} text={"견적서 미발송"} />
                             </div>
-                            <div className={styles['estm-check']}>
-                                <CheckBox id={"check1"} text={"견적서 발송"} />
+                        </div>
+                        <div className={styles['estm']}>
+                            <div className={cx('check', { on: not_esit })} onClick={onChangeNotEsit}>
+                                <div className={styles['check-box']}>
+                                    <Check on={not_esit}/>
+                                </div>
+                                <div className={styles['value']}>
+                                    견적서 미발송
+                                </div>
+                            </div>
+                            <div className={cx('check', { on: esit })} onClick={onChangeEsit}>
+                                <div className={styles['check-box']}>
+                                    <Check  on={esit}/>
+                                </div>
+                                <div className={styles['value']}>
+                                    견적서 발송
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <Button title={"주문하기"} onClick={handleOpen} toggle={true}></Button>
-                <CartModal
+                <Button
+                    title={'주문하기'}
+                    onClick={handleOpen}
+                    toggle={true}
+                ></Button>
+                <EsitModal
                     open={open}
                     handleClose={handleClose}
                     handleOpen={handleOpen}
                     onClick={onClickOrder}
+                    isEsit={esit}
                 />
             </>
-        )
-    }
-
+        );
+    };
 
     return (
         <>
-            <TitleBar title={"장바구니"} />
+            <TitleBar title={'장바구니'} />
             <div className={styles['container']}>
-                {cartList.length !== 0 ? renderList() :
+                {cartList.length !== 0 ? (
+                    renderList()
+                ) : (
                     <Message
                         src={true}
-                        msg={"장바구니가 비었습니다."}
+                        msg={'장바구니가 비었습니다.'}
                         isButton={true}
-                        buttonName={"주문하러 가기"}
+                        buttonName={'주문하러 가기'}
                     />
-                }
+                )}
             </div>
         </>
-    )
-}
-
-
-
+    );
+};
 
 export default CartContainer;

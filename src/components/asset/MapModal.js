@@ -7,6 +7,7 @@ import Slide from '@material-ui/core/Slide';
 import classNames from 'classnames/bind';
 import styles from './Map.module.scss';
 import Back from 'components/svg/header/Back';
+import LinkButtom from 'components/button/LinkButton';
 
 const cx = classNames.bind(styles);
 
@@ -49,7 +50,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const FullScreenDialog = (props) => {
-    const classes = useStyles();
+    const [jibun,setJibun] = React.useState('서울특별시 구로구 구로동 557, 삼성빌딩 407호');
+    const [road ,setRoad] = React.useState('새말로v9길 46, 삼성빌딩 407호');
 
     useEffect(() => {
         console.log(props.open)
@@ -73,13 +75,15 @@ const FullScreenDialog = (props) => {
 
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-            markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 마커가 표시될 위치입니다
+            markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
 
 
+        // 마커 정보를 가지고 뷰에 띄울 마커 생성
         const marker = new kakao.maps.Marker({
             position: map.getCenter(),
             image:markerImage
         });
+
         const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
         marker.setMap(map);
 
@@ -99,21 +103,26 @@ const FullScreenDialog = (props) => {
 
             searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-                    detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+                    // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+                    // detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
                     
-                    var content = '<div class="bAddr">' +
-                                    '<span class="title">법정동 주소정보</span>' + 
-                                    detailAddr + 
-                                '</div>';
+                    // var content = '<div class="bAddr">' +
+                    //                 '<span class="title">법정동 주소정보</span>' + 
+                    //                 detailAddr + 
+                    //             '</div>';
         
                     // 마커를 클릭한 위치에 표시합니다 
                     marker.setPosition(mouseEvent.latLng);
                     marker.setMap(map);
+                    setJibun(result[0].address.address_name );
+
+                    if(!!result[0].road_address){
+                        setRoad(result[0].road_address.address_name);
+                    }
         
                     // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-                    infowindow.setContent(content);
-                    infowindow.open(map, marker);
+                    // infowindow.setContent(content);
+                    // infowindow.open(map, marker);
                 }   
             });
 
@@ -124,38 +133,40 @@ const FullScreenDialog = (props) => {
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
         }
         
-        markerdata.forEach((el) => {
-            const marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(el.lat, el.lng),
-                title: el.title,
-                clickable: true,
-                image : markerImage
-            })
+
+        // 나중에 가게 정보 받아올때 띄워야 할 마커
+        // markerdata.forEach((el) => {
+        //     const marker = new kakao.maps.Marker({
+        //         map: map,
+        //         position: new kakao.maps.LatLng(el.lat, el.lng),
+        //         title: el.title,
+        //         clickable: true,
+        //         image : markerImage
+        //     })
 
 
-            const hstyle = {
-                color: "black",
-                backgroundColor: "blue",
-                fontFamily: "Arial"
-            }
+        //     const hstyle = {
+        //         color: "black",
+        //         backgroundColor: "blue",
+        //         fontFamily: "Arial"
+        //     }
 
-            var iwContent = '<div class="customoverlay" >Hello Wozzzrld!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-                iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        //     var iwContent = '<div class="customoverlay" >Hello Wozzzrld!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        //         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: iwContent,
-                removable: iwRemoveable
-            });
+        //     // 인포윈도우를 생성합니다
+        //     var infowindow = new kakao.maps.InfoWindow({
+        //         content: iwContent,
+        //         removable: iwRemoveable
+        //     });
 
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', function () {
-                // 마커 위에 인포윈도우를 표시합니다
-                infowindow.open(map, marker);
-            });
+        //     // 마커에 클릭이벤트를 등록합니다
+        //     kakao.maps.event.addListener(marker, 'click', function () {
+        //         // 마커 위에 인포윈도우를 표시합니다
+        //         infowindow.open(map, marker);
+        //     });
 
-        });
+        // });
 
     };
 
@@ -167,9 +178,41 @@ const FullScreenDialog = (props) => {
             </div>
             <div className={styles['back']}>
                     <Back onClick={props.handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
-                </div>
+            </div>
+            <BottomModal open={props.open} jibun={jibun} road={road}/>
         </div>
     );
+}
+
+function BottomModal ({open,jibun,road}){
+    return(
+        <div className={cx('bottom-modal',{on: open})}>
+        <div className={styles['table']}>
+            <div className={styles['addr']}>
+            <div className={styles['jibun-addr']}>
+            {jibun}
+             </div>
+             <div className={styles['road']}>
+                 <div className={styles['box']}>
+                    도로명
+                 </div>
+                <div className={styles['road-addr']}>
+                {road}
+
+                </div>
+             </div>
+             <div className={styles['detail']}>
+                <input className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
+             </div>
+            </div>
+ 
+       
+     
+            <LinkButtom title={"이 위치로 배달지 설정"} toggle={true} />
+
+        </div>
+    </div>
+    )
 }
 
 export default FullScreenDialog

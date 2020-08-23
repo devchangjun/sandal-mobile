@@ -126,6 +126,7 @@ const OrderContainer = () => {
                             <input
                                 type="text"
                                 className={cx('input', 'normal')}
+                                placeholder="상세주소를 입력하세요."
                             />
                         </div>
                     </div>
@@ -160,7 +161,10 @@ const OrderContainer = () => {
                             주문 요청사항
                         </div>
                         <div className={styles['save']}>
-                            <input type="checkbox"></input> 자동저장
+                            <input className={styles['check']}type="checkbox" id="check1"></input>
+                            <label className={styles['label']} htmlFor="check1">
+                            자동저장
+                            </label>
                         </div>
                     </div>
                     <div className={styles['value']}>
@@ -171,7 +175,10 @@ const OrderContainer = () => {
                             배달 요청사항
                         </div>
                         <div className={styles['save']}>
-                            <input type="checkbox"></input> 자동저장
+                        <input className={styles['check']}type="checkbox" id="check2"></input>
+                            <label className={styles['label']} htmlFor="check2">
+                            자동저장
+                            </label>
                         </div>
                     </div>
                     <div className={styles['value']}>
@@ -204,7 +211,7 @@ const OrderContainer = () => {
                             onClick={onClickPointOpen}
                         >
                             <div className={styles['label']}>포인트 사용</div>
-                            <div className={styles['info']}>1000원</div>
+                            <div className={styles['info']}>1,000원</div>
                         </div>
                     </div>
                 </div>
@@ -216,7 +223,7 @@ const OrderContainer = () => {
                                     <div className={cx('text')}>
                                         총 결제금액
                                     </div>
-                                    <div className={cx('cost')}>50000원</div>
+                                    <div className={cx('cost')}>101,000원</div>
                                 </div>
                             </div>
                             <div className={styles['total-table']}>
@@ -226,7 +233,7 @@ const OrderContainer = () => {
                                             주문 금액
                                         </div>
                                         <div className={cx('cost')}>
-                                            50000원
+                                        100,000원
                                         </div>
                                     </div>
                                 </div>
@@ -236,7 +243,7 @@ const OrderContainer = () => {
                                             배달비용
                                         </div>
                                         <div className={cx('cost')}>
-                                            50000원
+                                        50,000원
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +253,7 @@ const OrderContainer = () => {
                                             쿠폰 할인
                                         </div>
                                         <div className={cx('cost')}>
-                                            50000원
+                                        -3,000원
                                         </div>
                                     </div>
                                 </div>
@@ -256,7 +263,7 @@ const OrderContainer = () => {
                                             포인트 할인
                                         </div>
                                         <div className={cx('cost')}>
-                                            50000원
+                                        -1,000원
                                         </div>
                                     </div>
                                 </div>
@@ -273,7 +280,7 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={'10000원 결제'} toggle={toggle} onClick={onClickOrder}/>
+            <Button title={'101,000원 결제'} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} />
             <CouponModal
                 open={couponOpen}

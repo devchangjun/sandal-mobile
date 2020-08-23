@@ -72,6 +72,21 @@
             font-size: $font-size;
             display: flex;
             justify-content: space-between;
+            .save{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                input[type="checkbox"] {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    border: 1px solid #bcbcbc;
+                    cursor: pointer;
+                }
+                label{
+                    padding-left: 5px;
+                }
+            }
         }
         .value{
             width: 100%;

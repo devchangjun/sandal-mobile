@@ -2,6 +2,7 @@ import React, {useEffect, useCallback } from 'react';
 import ScrollToTop from 'components/scrollTop/ScrollToTop';
 import { useDispatch } from 'react-redux';
 import './App.css';
+import './styles/global.scss';
 import { get_user_info } from './store/auth/auth';
 
 import { Paths } from 'paths';

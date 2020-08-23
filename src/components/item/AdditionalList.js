@@ -1,26 +1,16 @@
 import React from 'react';
 import Additional from './Additional';
 
-const init = [
-    {
-        menu_name: '딸기',
-        menu_price: 1000,
-        check: false,
-    },
-    {
-        menu_name: '떡볶이',
-        menu_price: 1000,
-        check: true,
-    },
-];
+
 //추가선택 아이템 리스트
-const AdditionalList = () => {
-    const list = init.map((item) => (
+const AdditionalList = ({ itemList, onClickAddItem }) => {
+    const list = itemList.map((item) => (
         <Additional
-            key={item.menu_name}
+            key={item.id}
             menuName={item.menu_name}
             menuPrice={item.menu_price}
             check={item.check}
+            onClickAddItem={(e) => onClickAddItem(item.id)}
         />
     ));
     return <div>{list}</div>;

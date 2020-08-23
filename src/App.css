@@ -1,11 +1,9 @@
-html,
-body {
-}
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Apple SD Gothic Neo';
+    -webkit-tap-highlight-color: transparent;
 }
 button {
     cursor: pointer;
@@ -30,9 +28,4 @@ select {
 
 select::-ms-expand {
     display: none; /* 화살표 없애기 for IE10, 11*/
-}
-
-#root {
-}
-.App {
 }

@@ -2,30 +2,29 @@ import React  from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import styles from './TabMenu.module.scss';
-
+import Button from '@material-ui/core/Button';
 
 
 const TabLink = styled(NavLink)`
     text-decoration:none;
     color:black;
     display: table-cell; /* 핵심! */
-    width :100px;
+    width :100px; height: 100%;
+    border-bottom: 3px solid transparent;
     vertical-align: middle; 
     text-align: center;
-    padding : 10px;
 `;
 
 const TabMenu = ({ tabs }) => {
 
     const activeStyle = {
-        height: '100%',
-        textDecoration: 'none',
-        color: 'black',
         borderBottom: '3px solid #000'
     };
 
     const tabList = tabs.map(tab => (
-        <TabLink key={tab.url} to={tab.url} activeStyle={activeStyle}><TabItem name={tab.name} /> </TabLink>
+        <TabLink key={tab.url} to={tab.url} activeStyle={activeStyle}>
+            <TabItem name={tab.name} />
+        </TabLink>
     ))
         ;
     return (
@@ -39,9 +38,9 @@ const TabMenu = ({ tabs }) => {
 const TabItem = ({ name }) => {
 
     return (
-        <div className={styles['tab-item']} >
+        <Button className={styles['tab-item']} >
             {name}
-        </div>
+        </Button>
     )
 }
 export default TabMenu;

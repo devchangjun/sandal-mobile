@@ -7,6 +7,7 @@ import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
 import BottomNav from 'components/nav/BottomNav';
+import { Button } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -65,7 +66,8 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
                             </div>
                             <div className={cx('coupon-form', 'pd-box')}>
                                 <input className={styles['code-input']} type="text" placeholder={"쿠폰 코드를 입력하세요"} />
-                                <div className={styles['submit-btn']}>쿠폰등록</div>
+                                <Button className={styles['submit-btn']}>쿠폰등록</Button>
+                                
                             </div>
                             <div className={cx('sticky-title', 'pd-box')} ref={my_coupon}>
                                 내 쿠폰

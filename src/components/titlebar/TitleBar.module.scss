@@ -29,6 +29,9 @@
             width: auto;
             cursor: pointer;
             height: 40px;
+            .back-button {
+                width: 24px; height: 24px;
+            }
         }
         .empty {
             width: 50px;

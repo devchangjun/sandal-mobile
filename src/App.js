@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, {useEffect, useCallback } from 'react';
 import ScrollToTop from 'components/scrollTop/ScrollToTop';
 import { useDispatch } from 'react-redux';
 import './App.css';
@@ -10,7 +10,7 @@ import { Home, Account, Address, Reserve, DetailMenu } from 'pages';
 import { Cart, Order, OrderList, OrderComplete,Coupon } from 'pages';
 import { Notice } from 'pages';
 import { Route, Switch } from 'react-router-dom';
-
+import MapModal from 'components/asset/MapModal';
 function App() {
 
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ function App() {
   
   return (
     <div className="App">
+
       <ScrollToTop>
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>

@@ -50,7 +50,7 @@ function App() {
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
         <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
         <Route path={`${Paths.ajoonamu.order_complete}`} component={OrderComplete}></Route>
-        <Route paths={Paths.ajoonamu.order_detail} component={OrderDetail}></Route>
+        <Route path={Paths.ajoonamu.order_detail} component={OrderDetail}></Route>
         <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
         
         <Route path={Paths.ajoonamu.support} component={Notice}></Route>

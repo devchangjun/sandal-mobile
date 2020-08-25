@@ -1,0 +1,50 @@
+@import '../../styles/Root.scss';
+
+.container{
+    @include wireframe(40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .content{
+        text-align: center;
+        min-height: 70vh;
+        .text{
+            font-size: 14px;
+        }
+        .user{
+            color:#222222;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px 0;
+        }
+    }
+    .btn-box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding:$padding-side;
+        width: 100%;
+
+        .btn{
+            width: 100%;
+            height: 56px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border:1px solid $main-color;
+            color:#fff;
+            background-color:$main-color;
+            margin:5px 0;
+            border-radius: 10px;
+            font-size: 16px;
+            &:last-child{
+                background-color:#fff;
+                color:$main-color;
+
+            }
+        }
+        
+    }
+}

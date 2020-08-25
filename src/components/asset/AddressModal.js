@@ -14,7 +14,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import FixButton from 'components/button/Button';
 
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 const cx = classNames.bind(styles);
 

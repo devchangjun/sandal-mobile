@@ -51,4 +51,17 @@ export const localRegister = async (email, password, password_confirm) => {
     return res;
 }
 
+export const findId = async (name,hp)=>{
+    const req = DEFAULT_URL + "user/find_id";
+
+    const form_data = {
+        name:name,
+        hp:hp
+    }
+    const res = await axios.post(req, form_data);
+    console.log(res);
+    return res;
+
+}
+
 

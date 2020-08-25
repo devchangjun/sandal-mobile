@@ -10,9 +10,10 @@ import classNames from 'classnames/bind';
 import { localLogout } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import Button from '@material-ui/core/Button';
-import { numberFormat } from "../../lib/formatter";
+import { numberFormat } from '../../lib/formatter';
 
 import Back from 'components/svg/header/Back';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -59,15 +60,21 @@ const MyPageContainer = () => {
                         </div>
                         {user && (
                             <div className={styles['point']}>
-                                <span className={styles['name']}>보유 포인트</span>
-                                <span className={styles['value']}>{numberFormat(user.point)}P</span>
+                                <span className={styles['name']}>
+                                    보유 포인트
+                                </span>
+                                <span className={styles['value']}>
+                                    {numberFormat(user.point)}P
+                                </span>
                             </div>
                         )}
                     </div>
-                    <div className={cx('link', 'pd-right')}><Back rotate="180deg" /></div>
+                    <div className={cx('link', 'pd-right')}>
+                        <Back rotate="180deg" />
+                    </div>
                 </Button>
                 <div className={styles['tab']}>
-                    <Item text={'공지사항'} />
+                    <Item url={Paths.ajoonamu.support} text={'공지사항'} />
                     <Item text={'이벤트'} />
                     <Item text={'자주 묻는 질문'} />
                     <Item text={'1:1 문의'} />
@@ -88,13 +95,18 @@ const MyPageContainer = () => {
     );
 };
 
-const Item = ({ text, onHyperLink }) => {
-    
-    
+const Item = ({ text, url }) => {
     return (
-        <Button onClick={onHyperLink} className={styles['pd-box']}>
-            <div className={styles['item']}>{text}</div>
-        </Button>
+        <Link to={url}>
+            <Button className={styles['pd-box']}>
+                <div className={styles['item']}>{text}</div>
+            </Button>
+        </Link>
     );
-}
+};
+
+Item.defaultProps = {
+    url: "/"
+};
+
 export default MyPageContainer;

@@ -126,7 +126,6 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                         />}
                 </div>
             </div>
-            <BottomNav></BottomNav>
 
             <PreferModal
                 open={open}
@@ -139,6 +138,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 onCustomOrder={onCustomOrder}
                 onChangeDesireQune={onChangeDesireQune}
             />
+            <BottomNav></BottomNav>
         </>
     )
 }

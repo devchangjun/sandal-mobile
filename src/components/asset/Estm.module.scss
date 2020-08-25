@@ -1,16 +1,16 @@
 @import '../../styles/Root.scss';
-.title{
+.title {
     font-size: 16px;
-    color:#333;
+    color: #333;
     font-weight: bold;
     padding: $padding-all;
 }
-.modal-input-box{
+.modal-input-box {
     // border: 1px solid red;
-    .modal-input{
+    .modal-input {
         width: 100%; /* 원하는 너비설정 */
         height: 56px;
-        padding: .8em .5em; /* 여백으로 높이 설정 */
+        padding: 0.8em 0.5em; /* 여백으로 높이 설정 */
         border: 1px solid #999;
         border-radius: 10px; /* iOS 둥근모서리 제거 */
         box-sizing: border-box;
@@ -18,51 +18,51 @@
     }
 }
 
-.empty{
+.empty {
     border: 0px solid red;
     width: 50px;
-    height: 50px;;
+    height: 50px;
 }
 
-.btn{
+.btn {
     box-sizing: border-box;
     overflow: hidden;
-    position: fixed; bottom:0px; left: 0;
+    position: fixed;
+    bottom: 0px;
+    left: 0;
     width: 100%;
     cursor: pointer;
     display: flex;
-    z-index:2000;
+    z-index: 2000;
     justify-content: center;
     align-items: center;
-  
-    color:white;
-    transition: background-color .15s ease-in-out;
 
-    .item{
+    color: white;
+    transition: background-color 0.15s ease-in-out;
+
+    .item {
         width: 100%;
         height: 70px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color:$normal-color;
-        &.on{
+        background-color: $normal-color;
+        &.on {
             background-color: $main-color;
         }
     }
 }
 
-
-
-
-.estimate{
+.estimate {
     width: 100%;
     height: 400px;
     border: 1px solid black;
 }
-.estm{
-    margin-top :48px;
+.estm {
+    margin: 48px 0;
+    margin-bottom: 140px;
     width: 100%;
-    background-color:  #EBEBEB;
+    background-color: #ebebeb;
     box-sizing: border-box;
     height: 320px;
     display: flex;
@@ -70,9 +70,8 @@
     align-items: center;
 }
 
-.empty{
+.empty {
     border: 0px solid red;
     width: 50px;
-    height: 50px;;
+    height: 50px;
 }
-

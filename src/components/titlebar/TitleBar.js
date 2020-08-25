@@ -39,7 +39,7 @@ const BackButton = () => {
     return (
         <div className={styles['back']}>
             <div className={styles['pd-box']}>
-                <IconButton className={styles['back-button']}>
+                <IconButton onClick={() => {console.log('ㅡㅡ')}} className={styles['back-button']}>
                     <Back onClick={onClickBack} />
                 </IconButton>
             </div>

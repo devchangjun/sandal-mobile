@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import cryptoRandomString from 'crypto-random-string';
 import moment from 'moment-timezone';
 
-const SOLAPI_SMS_URL = '/messages/v4/send';
+const SOLAPI_SMS_URL = 'https://api.solapi.com/messages/v4/send';
 
 // const TEST = 'https://api.solapi.com/messages/v4/list';
 const apiKey = 'NCS55Z1EBXCNYR8P';

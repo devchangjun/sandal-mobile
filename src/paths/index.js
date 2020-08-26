@@ -8,6 +8,7 @@ export const Paths = {
         recovery_pw: '/recovery_pw',
         complete: '/complete',
         find_email :'/find_email',
+        find_password : '/find_password',
         shop: '/shop',
         mypage: '/mypage',
         account: '/account',

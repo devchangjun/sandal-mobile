@@ -6,11 +6,18 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    padding:$padding-side;
     .content{
         text-align: center;
         min-height: 70vh;
+
         .text{
             font-size: 14px;
+            word-break: keep-all;
+            p{
+                color:#777777;
+            }
         }
         .user{
             color:#222222;
@@ -18,13 +25,15 @@
             font-weight: bold;
             padding: 15px 0;
         }
+        .input{
+            padding: 65px 0;
+        }
     }
     .btn-box{
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        padding:$padding-side;
         width: 100%;
 
         .btn{
@@ -46,5 +55,26 @@
             }
         }
         
+    }
+}
+
+
+
+//회원가입창 비밀번호 일치 불일치
+.compare {
+    font-size: 12px;
+    color: #a61332;
+    text-align: left;
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: all 0.15s ease-in-out;
+    height: 20px;
+    &.on {
+        font-size: 12px;
+        color: $main-color;
+        margin-bottom: 30px;
+    }
+    &.not_view {
+        height: 0px;
     }
 }

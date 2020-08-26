@@ -2,6 +2,7 @@ export { default as Signin } from './sign/Signin';
 export { default as SignUp } from './sign/Signup';
 export { default as SignupComplete } from './sign/SignupComplete';
 export {default as FindEmail} from './sign/FindEmail';
+export {default as FindPassword} from './sign/FindPassword';
 export { default as RecoveryId } from './sign/RecoveryId';
 export { default as RecoveryPw } from './sign/RecoveryPw';
 export {default as Recovery} from './sign/Recover';

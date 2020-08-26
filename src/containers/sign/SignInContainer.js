@@ -9,7 +9,20 @@ import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 import classNames from 'classnames/bind';
-import {Kakao,Naver,Facebook} from '../../components/svg/sign/social';
+import {KakaoImg,Naver,Facebook} from '../../components/svg/sign/social';
+import KakaoLogin from 'react-kakao-login';
+import Kakao from 'kakaojs';
+import styled from 'styled-components';
+import Axios from 'axios';
+
+const KakaoButton = styled(KakaoLogin)`
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+`;
+
 const cx= classNames.bind(styles);
 
 
@@ -45,6 +58,7 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const {email,password} = user;
     const [toggle, setToggle] = useState(false);
+    const [kakao_api,setKakao] = useState('');
 
     useEffect(() => {
 
@@ -96,6 +110,29 @@ const SignInContainer = () => {
 
     },[user,history,dispatch])
 
+    const test=async (res)=>{
+        console.log(res);
+        setKakao(res);
+        const token = res.response.access_token;
+        const url ='https://kapi.kakao.com/v2/user/me';
+        Axios.defaults.baseURL = url;
+        Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        Axios.defaults.headers.get['Context-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        const result = await Axios.get();
+        console.log(result);
+
+    }
+    const kakaoLogout =async()=>{
+        const {profile,response} = kakao_api;
+        const token = response.access_token;
+        const id = profile.id;
+        const url ='https://kapi.kakao.com/v2/user/me';
+        Axios.defaults.baseURL = url;
+        Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        Axios.defaults.headers.get['Context-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+        const result = await Axios.get();
+        console.log(result);
+    }
 
     return (
         <>
@@ -130,8 +167,14 @@ const SignInContainer = () => {
                                 <img src={Naver} alt="naver"></img>
                             </div>
                             <div className={styles.sns}>
+                                <KakaoLogin
+                                    jsKey={'9f4d0e5bb1c19aed9322372dd32fbd51'}
+                                    buttonText="Kakao"
+                                    getProfile={true}
+                                    onSuccess={test}
 
-                                <img src={Kakao} alt="kakao"></img>
+                                />
+                                <img src={KakaoImg} onClick ={kakaoLogout}alt="kakao"></img>
 
                             </div>
                             <div className={styles.sns}>

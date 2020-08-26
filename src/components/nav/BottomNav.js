@@ -11,7 +11,6 @@ import deliveryImage from '../svg/bottom-nav/delivery.svg';
 import deliveryCloseImage from '../svg/bottom-nav/delivery-close.svg';
 
 import { withRouter } from 'react-router-dom';
-import { Icon } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 

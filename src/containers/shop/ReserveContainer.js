@@ -98,29 +98,6 @@ const ReserveContainer = ({ tab }) => {
             <TitleBar title={title} />
             <TabMenu tabs={tabInit} onSetSwiper={onSetSwiper} ctl ={secondSwiper} />
 
-            {/* <Swiper
-                onSwiper={(swiper) => {
-                    setFirstSwiper(swiper) ;
-               }}
-                controller={{ control: secondSwiper }}
-                initialSlide={0}
-                spaceBetween={50}
-                slidesPerView={3}
-                onSlideChange={(swiper) => {
-                    console.log("체인지")
-                }}
-                onClick={(swiper)=>{
-                        console.log(swiper.controller.control.slideTo(swiper.clickedIndex,300,true));
-                }
-            }
-           
-            >
-                <SwiperSlide>추천메뉴</SwiperSlide>
-                <SwiperSlide>메뉴1</SwiperSlide>
-                <SwiperSlide>메뉴2</SwiperSlide>
-                <SwiperSlide>메뉴3</SwiperSlide>
-            </Swiper> */}
-
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     <Swiper

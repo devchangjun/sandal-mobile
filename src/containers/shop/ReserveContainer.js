@@ -1,67 +1,68 @@
-import React, { useEffect, useCallback } from 'react';
-// import { useSelector } from 'react-redux';
-// import { useHistory } from 'react-router';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import MenuItemList from 'components/item/MenuItemList';
-import Message from 'components/message/Message'
+import Message from 'components/message/Message';
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Controller } from 'swiper'
 
-
-
+SwiperCore.use([Controller]);
 
 const tabInit = [
     {
-        url: `${Paths.ajoonamu.shop}/custom?`,
-        name: '추천메뉴'
+        url: `${Paths.ajoonamu.shop}?menu=0`,
+        name: '추천메뉴',
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu1`,
-        name: '메뉴1'
+        url: `${Paths.ajoonamu.shop}?menu=1`,
+        name: '메뉴1',
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu2`,
-        name: '메뉴2'
+        url: `${Paths.ajoonamu.shop}?menu=2`,
+        name: '메뉴2',
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu3`,
-        name: '메뉴3'
+        url: `${Paths.ajoonamu.shop}?menu=3`,
+        name: '메뉴3',
     },
 
-]
+];
 
-const ReserveContainer = ({ tab = 'custom' }) => {
-
-    const [open, setOpen] = React.useState(false);
-    // const history = useHistory();
+const ReserveContainer = ({ tab }) => {
+    const [open, setOpen] = useState(false);
+    const history = useHistory();
     // const { user } = useSelector(state => state.auth);
-    const [budget, setBudget] = React.useState(0); //맞춤 가격
-    const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
-    const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
-    const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
-    const [title ,setTitle] = React.useState('추천메뉴');
+    const [budget, setBudget] = useState(0); //맞춤 가격
+    const [desireQuan, setDesireQuan] = useState(0); //희망수량
+    const [itemType, setItemType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
+    const [result, setResult] = useState(false); // 예약주문 요청시 결과값.
+    const [title, setTitle] = useState('추천메뉴');
 
-    const onChangeTitle = useCallback(()=>{
-        if(tab==='custom'){
-            setTitle("추천메뉴");
+    const [firstSwiper, setFirstSwiper] = useState(null);
+    const [secondSwiper, setSecondSwiper] = useState(null);
+
+
+
+    const onChangeTitle = useCallback(() => {
+        if (tab === '0') {
+            setTitle('추천메뉴');
+        } else if (tab === '1') {
+            setTitle('메뉴1');
+        } else if (tab === '2') {
+            setTitle('메뉴2');
+        } else if (tab === '3') {
+            setTitle('메뉴3');
         }
-        else if(tab==='menu1'){
-            setTitle("메뉴1");
-        }
-        else if(tab==='menu2'){
-            setTitle("메뉴2");
-        }
-        else if(tab==='menu3'){
-            setTitle("메뉴3");
-        }
-    },[tab])
+    }, [tab]);
     useEffect(() => {
         onChangeTitle();
-    }, [onChangeTitle])
+    }, [onChangeTitle]);
 
     //맞춤 주문하기 버튼 클릭
     const handleOpen = () => setOpen(true);
@@ -76,54 +77,133 @@ const ReserveContainer = ({ tab = 'custom' }) => {
         const re = /^[0-9\b]+$/;
         // if value is not blank, then test the regex
         if (e.target.value === '' || re.test(e.target.value)) {
-            setBudget(e.target.value)
+            setBudget(e.target.value);
         }
-    }
+    };
     const onChangeDesireQune = (value) => {
         setDesireQuan(value);
-    }
+    };
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {
         setOpen(false);
         if (budget !== 0) setResult(true);
+    };
+
+    const onSetSwiper =(swiper) =>{
+        setFirstSwiper(swiper);
     }
 
     return (
         <>
-            <TitleBar title={title} /> {/*분류명 넣어야함 */}
-            <TabMenu tabs={tabInit} />
+            <TitleBar title={title} />
+            <TabMenu tabs={tabInit} onSetSwiper={onSetSwiper} ctl ={secondSwiper} />
+
+            {/* <Swiper
+                onSwiper={(swiper) => {
+                    setFirstSwiper(swiper) ;
+               }}
+                controller={{ control: secondSwiper }}
+                initialSlide={0}
+                spaceBetween={50}
+                slidesPerView={3}
+                onSlideChange={(swiper) => {
+                    console.log("체인지")
+                }}
+                onClick={(swiper)=>{
+                        console.log(swiper.controller.control.slideTo(swiper.clickedIndex,300,true));
+                }
+            }
+           
+            >
+                <SwiperSlide>추천메뉴</SwiperSlide>
+                <SwiperSlide>메뉴1</SwiperSlide>
+                <SwiperSlide>메뉴2</SwiperSlide>
+                <SwiperSlide>메뉴3</SwiperSlide>
+            </Swiper> */}
+
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
-                    {/* 이부분 바꿔야함 */}
-                    {(tab === 'custom' && result) ?
+                    <Swiper
+                          onSwiper={(swiper) => {
+                           setSecondSwiper(swiper);
+                           console.log("스위퍼 셋");
+                        }}
+                        controller={{ control: firstSwiper }}
+                        initialSlide={0}
+                        spaceBetween={50}
+                        slidesPerView={1}
+                        onSlideChange={(swiper) => {
+                                console.log("자식 스위퍼 변환");
+                                console.log(swiper);
+                        }}
+                  
+                    >
+                        <SwiperSlide>
+                            <Message
+                                msg={
+                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                }
+                                isButton={true}
+                                onClick={handleOpen}
+                                buttonName={'맞춤 주문 하기'}
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <MenuItemList />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Message
+                                msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                                src={true}
+                                isButton={false}
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Message
+                                msg={
+                                    '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                                }
+                                isButton={false}
+                                src={true}
+                            />
+                        </SwiperSlide>
+                    </Swiper>
+
+                    {/* {tab === 'custom' && result ? (
                         <div className={styles['title']}>
                             맞춤 메뉴
-                    <CustomItemList />
+                            <CustomItemList />
                         </div>
-                        :
-                        (tab === 'custom' && !result) &&
+                    ) : (
+                        tab === 'custom' &&
+                        !result && (
+                            <Message
+                                msg={
+                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                }
+                                isButton={true}
+                                onClick={handleOpen}
+                                buttonName={'맞춤 주문 하기'}
+                            />
+                        )
+                    )}
+                    {tab === 'menu1' && <MenuItemList />}
+                    {tab === 'menu2' && (
                         <Message
-                            msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
-                            isButton={true}
-                            onClick={handleOpen}
-                            buttonName={"맞춤 주문 하기"}
-
+                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                            src={true}
+                            isButton={false}
                         />
-                    }
-                    {tab === 'menu1' &&
-                        <MenuItemList />}
-                    {tab === 'menu2' &&
+                    )}
+                    {tab === 'menu3' && (
                         <Message
-                            msg={"추천드릴 메뉴 구성이 존재하지 않습니다."}
-                            src={true}
-                            isButton={false}
-                        />}
-                    {tab === 'menu3' &&
-                        <Message
-                            msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
+                            msg={
+                                '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                            }
                             isButton={false}
                             src={true}
-                        />}
+                        />
+                    )} */}
                 </div>
             </div>
             <BottomNav></BottomNav>
@@ -140,7 +220,6 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 onChangeDesireQune={onChangeDesireQune}
             />
         </>
-    )
-}
+    );
+};
 export default ReserveContainer;
-

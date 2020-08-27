@@ -17,3 +17,18 @@
     position: fixed;
     z-index: 99;
 }
+.tab-list{
+    border:1px solid red;
+}
+.tab-item{
+
+    // border:1px solid blue;
+    .tab-name{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        // border-bottom: 3px solid black;
+    }
+}
+

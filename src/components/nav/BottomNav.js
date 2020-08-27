@@ -55,7 +55,7 @@ const BottomNav = (props) => {
     const[tab, dispatchTab] = useReducer(tabReducer,initState);
 
     const onUpdateTab = useCallback(()=>{
-        console.log(props.match.path);
+        // console.log(props.match.path);
         if(props.match.path==="/"){
             dispatchTab({type:"HOME"});
         }
@@ -85,7 +85,7 @@ const BottomNav = (props) => {
         setOpen(false);
     }
     const handleChange = () => {
-        console.log("체인지");
+
     }
 
     const onClickHome = () => {

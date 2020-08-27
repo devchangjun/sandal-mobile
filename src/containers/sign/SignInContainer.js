@@ -101,7 +101,7 @@ const SignInContainer = () => {
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
                 <div className={cx('container','min-height')}>
-                    <div className={cx('content','pd-box')}>
+                    <div className={cx('content','pd-box','mg-top40')}>
                         <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
                         <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                         <div className={styles['login-btn']}>
@@ -125,14 +125,21 @@ const SignInContainer = () => {
                             </div>
                         </div>
                         {/* 이부분 컴포넌트 만들어야함 */}
-                        <div className={styles.social}>
-                            <div className={styles.sns}>
+
+                        <div className={styles['social-login']}>
+                            <div className={styles['text']}>
+                                간편 로그인
+                            </div>
+                            <div className={styles['line']}>
+
+                            </div>
+                            </div>                        
+                        <div className={styles['social']}>
+                            <div className={styles['sns']}>
                                 <img src={Naver} alt="naver"></img>
                             </div>
                             <div className={styles.sns}>
-
                                 <img src={Kakao} alt="kakao"></img>
-
                             </div>
                             <div className={styles.sns}>
                                 <img src={Facebook} alt="facebook"></img>

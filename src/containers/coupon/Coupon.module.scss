@@ -1,6 +1,6 @@
 @import '../../styles/Root.scss';
 .container {
-    @include wireframe(80px);
+    @include wireframe($pd-top);
     width: 100%;
     background-color: #f9f9f9;
     .coupon-title {

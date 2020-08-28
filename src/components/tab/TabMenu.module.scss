@@ -1,19 +1,17 @@
 @import '../../styles/Root.scss';
 
-
-.tab-menu{
+.tab-menu {
     display: table; /* 핵심! */
-    width: 100%; height: 40px;
+    width: 100%;
+    height: 48px;
     font-size: $font-size;
     max-width: $max-width;
     margin: 0 auto;
-    top:40px;
-    left:0;
-    // border:1px solid red;
-    right:0;
-
-    // margin-top: $mg-top;
-    background-color:#fff;
+    top: 40px;
+    left: 0;
+    right: 0;
+    padding: 0 24px;
+    background-color: #fff;
     position: fixed;
     z-index: 99;
 }

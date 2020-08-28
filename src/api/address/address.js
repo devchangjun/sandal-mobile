@@ -1,10 +1,9 @@
 import axios from 'axios';
-
-const DEFAULT_URL = "http://devapi.ajoonamu.com/api/";
+import { Paths } from '../../paths';
 
 export const getDeliveryList = async (token) => {
 
-    const req = `${DEFAULT_URL}user/delivery/list`;
+    const req = `${Paths.api}user/delivery/list`;
     const params = {
         params: {
             lat: 37.182183,

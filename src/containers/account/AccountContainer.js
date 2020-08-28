@@ -1,22 +1,29 @@
-import React,{useEffect} from 'react';
-import {Paths} from 'paths';
-import {useHistory} from 'react-router-dom';
-import { useSelector,useDispatch } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import Button from '@material-ui/core/Button';
+
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
+import BottomNav from 'components/nav/BottomNav';
+
+import { localLogout, requestAgreeChange } from '../../api/auth/auth';
+import { logout } from '../../store/auth/auth';
+
+
 import styles from './Account.module.scss';
 import Profile from 'components/svg/sign/profile.png';
-import BottomNav from 'components/nav/BottomNav';
-import { localLogout } from '../../api/auth/auth';
-import { logout } from '../../store/auth/auth';
-import Button from '@material-ui/core/Button';
-const cx = classNames.bind(styles);
+import { stringToTel } from '../../lib/formatter';
+import Back from '../../components/svg/header/Back';
+
+const cn = classNames.bind(styles);
 
 const AccountContainer = () => {
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
-    const history= useHistory();
+    const history = useHistory();
 
     useEffect(() => {
         if (user === null) {
@@ -25,61 +32,125 @@ const AccountContainer = () => {
     }, [user, history]);
 
     const onClickLogout = async () => {
-        const token = sessionStorage.getItem("access_token");
+        const token = sessionStorage.getItem('access_token');
         const res = await localLogout(token);
-        sessionStorage.removeItem("access_token");
-        console.log(res);
-        if (res.message === "로그아웃에 성공하셨습니다.") {
+        sessionStorage.removeItem('access_token');
+
+        if (res.message === '로그아웃에 성공하셨습니다.') {
             dispatch(logout());
             history.push(Paths.index);
         }
-    }
+    };
 
-
-    const render =()=>{
-        return(
-            <>
-                <TitleBar title={'내정보'} />
-                <div className={styles['container']}>
-                    <div className={styles['user-info']}>
-                        <div className={cx('profile')}>
-                            <img
-                                className={styles['profile-img']}
-                                src={Profile}
-                                alt={'프로필 이미지'}
-                            ></img>
-                            <div className={styles['change']}>변경</div>
-                        </div>
-                    </div>
-                    <div className={styles['tab']}>
-                        <Item text={'이름'} value={user && user.name} />
-                        <Item text={'핸드폰번호'} value={user && user.hp} />
-                        <Item text={'이메일'} value={user && user.email} />
-                        <Item text={'비밀번호 변경'} />
-                    </div>
-
-                    <div className={styles['logout']} onClick={onClickLogout}>
-                        <Button className={styles['logout-btn']}>
-                            <div className={styles['pd-btn']}>로그아웃</div>
-                        </Button>
+    const render = () => (
+        <>
+            <TitleBar title={'내정보'} />
+            <div className={styles['container']}>
+                <div className={styles['user-info']}>
+                    <div className={cn('profile')}>
+                        <img
+                            className={styles['profile-img']}
+                            src={Profile}
+                            alt={'프로필 이미지'}
+                        />
+                        <div className={styles['change']}>변경</div>
                     </div>
                 </div>
+                <div className={styles['tab']}>
+                    <Item text={'이름'} value={user && user.name} />
+                    <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)} />
+                    <Item text={'이메일'} value={user && user.email} />
+                    <Item text={'비밀번호 변경'} />
+                </div>
 
-                <BottomNav />
-            </>
-        );
-    };
+                <MarketingAgree
+                    agreeMail={user.agree_mail}
+                    agreeSMS={user.agree_sms}
+                />
+
+                <div className={styles['logout']} onClick={onClickLogout}>
+                    <Button className={styles['logout-btn']}>
+                        <div className={styles['pd-btn']}>로그아웃</div>
+                    </Button>
+                </div>
+            </div>
+            <BottomNav />
+        </>
+    );
     return <>{user === null ? history.push(Paths.index) : render()}</>;
+};
+
+const MarketingAgree = ({ agreeMail, agreeSMS }) => {
+    const [mail, setMail] = useState(agreeMail);
+    const [sms, setSMS] = useState(agreeSMS);
+
+    const sendPostAgreeChange = useCallback(async (type, value) => {
+        /*
+            수신 동의 변경하기.
+            type과 value로 값 설정.
+        */
+        const token = sessionStorage.getItem('access_token');
+        const res = await requestAgreeChange(token, type, value);
+        console.log(res);
+    }, []);
+
+    const changeMail = useCallback(() => {
+        sendPostAgreeChange('mail', !mail);
+        setMail(!mail);
+    }, [mail, sendPostAgreeChange]);
+    const changeSMS = useCallback(() => {
+        sendPostAgreeChange('sms', !sms);
+        setSMS(!sms);
+    }, [sms, sendPostAgreeChange]);
+
+    return (
+        <div className={styles['marketing']}>
+            <div className={styles['head']}>
+                <h3 className={styles['title']}>마케팅 정보 수신 동의</h3>
+                <p className={styles['sub-title']}>
+                    이벤트 및 할인 혜택에 대한 정보를 받으실 수 있습니다.
+                </p>
+            </div>
+            <div className={styles['selector-box']}>
+                <AgreeToggle
+                    name="메일 수신 동의"
+                    checked={mail}
+                    onToggle={changeMail}
+                />
+                <AgreeToggle
+                    name="SMS 수신 동의"
+                    checked={sms}
+                    onToggle={changeSMS}
+                />
+            </div>
+        </div>
+    );
+};
+
+const AgreeToggle = ({ name, checked, onToggle }) => {
+    return (
+        <div className={styles['selector']}>
+            <div className={styles['name']}>{name}</div>
+            <div className={cn('toggle', { checked })} onClick={onToggle}>
+                <div className={styles['box']}>
+                    <div className={styles['switch']}></div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 function Item({ text, value }) {
     return (
-        <div className={styles['pd-box']}>
+        <Button className={styles['pd-box']}>
             <div className={styles['item']}>
                 <div className={styles['text']}>{text}</div>
-                <div className={styles['value']}>{value}</div>
+                {value &&
+                <div className={styles['value']}>
+                    {value}<Back rotate="180deg" width={18} height={18} />
+                </div>}
             </div>
-        </div>
+        </Button>
     );
 }
 

@@ -11,8 +11,9 @@ a {
 }
 button {
     cursor: pointer;
+    outline: none;
 }
-input {
+input, textarea {
     box-sizing: border-box;
     outline: none;
     appearance: none;
@@ -24,12 +25,12 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    outline: none;
     /*화살표 배경 넣기*/
     background: url('../src/components/svg/select/select_check.svg') no-repeat
         98% 50% #fff;
     /*화살표 select박스 오른쪽 중앙 배치,배경 흰색*/
 }
-
 select::-ms-expand {
     display: none; /* 화살표 없애기 for IE10, 11*/
 }

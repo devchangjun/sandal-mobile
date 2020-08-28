@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-export const getCartList = async (token) => {
-    const req = Paths.api + 'user/cart/list';
+export const requestNoticeList = async (token) => {
+    const req = Paths.api + 'user/notice/list';
     const config = {
         headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
     };
     const result = await axios.get(req, config);
-    console.log(result.data.query);
     return result.data.query;
-};
+}

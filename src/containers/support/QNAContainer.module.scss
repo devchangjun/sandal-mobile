@@ -1,0 +1,11 @@
+@import '../../styles/Root.scss';
+
+.container {
+    @include wireframe($pd-top);
+    background-color: #f9f9f9;
+    min-height: 100vh;
+
+    &.list {
+        background-color: transparent;
+    }
+}

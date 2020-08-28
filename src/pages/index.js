@@ -19,4 +19,6 @@ export { default as OrderComplete } from './order/OrderComplete';
 
 export { default as Coupon } from './coupon/Coupon';
 
-export { default as Notice } from './support/Notice';
+export { default as Support } from './support/Support';
+export { default as Notice } from './notice/Notice';
+export { default as Event } from './event/Event';

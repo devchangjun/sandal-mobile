@@ -15,9 +15,11 @@
         background-color: #fff;
         .profile {
             position: relative;
-            border-radius: 100px;
+            border-radius: 50%;
+            font-size: 9px;
             box-sizing: border-box;
             overflow: hidden;
+            width: 72px; height: 72px;
             .profile-img {
                 width: 100%;
             }
@@ -26,7 +28,7 @@
                 opacity: 0.3;
                 color: white;
                 position: absolute;
-                top: 57px;
+                bottom: 0;
                 width: 100%;
                 display: flex;
                 justify-content: center;
@@ -65,15 +67,20 @@
         }
     }
 
-    //공지사항, 이벤트 및 링크 컴포넌트
+    // 공지사항, 이벤트 및 링크 컴포넌트
     .tab {
         display: flex;
         flex-direction: column;
+        
         .pd-box {
+            width: 100%;
+            padding: $padding-side;
+            background-color: #fff;
             &:not(:first-child) {
                 border-top: 1px solid #f9f9f9;
             }
         }
+        
         .item {
             width: 100%;
             height: 48px;
@@ -81,8 +88,17 @@
             align-items: center;
             justify-content: space-between;
             font-size: $font-size;
+            .text {
+                font-size: 16px;
+                color: #333;
+            }
             .value {
-                color: #777777;
+                @include flex-center(space-between);
+                font-size: 14px;
+                color: #777;
+                svg {
+                    margin-left: 20px;
+                }
             }
         }
     }
@@ -90,7 +106,7 @@
 
 .logout {
     width: 100%;
-    height: 176px;
+    height: 112px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,15 +121,96 @@
     }
 }
 
-
-.pd-box {
-    padding: $padding-side;
-    background-color: #fff;
-}
-
 .pd-left {
     padding-left: 24px;
 }
 .pd-right {
     padding-right: 24px;
+}
+
+.marketing {
+    background-color: #fff;
+    padding: 24px;
+    margin-top: 32px;
+    .head {
+        border-bottom: solid 1px #EBEBEB;
+        padding-bottom: 10px;
+        line-height: 1.5;
+        .title {
+            color: #333;
+            font-weight: normal;
+            font-size: 16px;
+        }
+        .sub-title {
+            color: #ccc;
+            font-size: 10px;
+        }
+    }
+    .selector-box {
+        padding-top: 15px;
+        .selector {
+            @include flex-center(space-between);
+            .name {
+                color: #333;
+                font-size: 14px;
+            }
+            .toggle {
+                .box {
+                    position: relative;
+                    width: 48px; height: 24px;
+                    border-radius: 12px;
+                    border: solid 1px #DBDBDB;
+                    background-color: #F0F0F0;
+                    transition: all .3s cubic-bezier(0.39, 0.575, 0.565, 1);
+                    cursor: pointer;
+                    .switch {
+                        position: absolute;
+                        width: 24px; height: 24px;
+                        left: -1px; top: -1px;
+                        transition: all .3s cubic-bezier(0.39, 0.575, 0.565, 1);
+                        &::after {
+                            content: '';
+                            position: absolute;
+                            width: 100%; height: 100%;
+                            top: 50%; left: 50%;
+                            transform: translate(-50%, -50%);
+                            border-radius: 50%;
+                            background-color: #aaa;
+                            box-shadow: rgba($color: #000000, $alpha: 0.16) 0px 3px 3px;
+                            transition: all .3s cubic-bezier(0.39, 0.575, 0.565, 1);
+                        }
+                    }
+                    &:hover {
+                        .switch::before {
+                            content: '';
+                            position: absolute;
+                            width: 150%; height: 150%;
+                            top: 50%; left: 50%;
+                            transform: translate(-50%, -50%);
+                            border-radius: 50%;
+                            background-color: rgba($color: #000000, $alpha: 0.1);
+                        }
+                    }
+                }
+                &.checked {
+                    .box {
+                        border-color: #BEE2CF;
+                        background-color: #E4F4EC;
+                        .switch {
+                            left: 50%;
+                            &::before {
+                                background: rgba($color: $main-color, $alpha: 0.2)
+                            }
+                            &::after {
+                                background-color: $main-color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.selector + .selector {
+    margin-top: 8px;
 }

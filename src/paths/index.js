@@ -16,6 +16,9 @@ export const Paths = {
         order_list: '/order_list',
         order_complete :'/order_complete',
         coupon: '/coupon',
-        support: '/support'
+        support: '/support',
+        notice: '/notice',
+        event: '/event'
     },
+    api: 'http://devapi.ajoonamu.com/api/',
 };

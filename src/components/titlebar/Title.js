@@ -21,12 +21,15 @@ const Title = ({ addr }) => {
     const onClickAddr = () => {
         history.push(Paths.ajoonamu.address);
     };
+    const onClickNotice = () => {
+        history.push(Paths.ajoonamu.notice);
+    }
 
     return (
         <div className="app-title">
             <div className="app-title-main">
                 <div className="app-title-content">
-                    <div className="app-title-notification unread">
+                    <div className="app-title-notification unread" onClick={onClickNotice}>
                         <img src={notificationBellImage} alt="notification-bell" />
                     </div>
                     <div className="app-title-location" onClick={onClickAddr}>

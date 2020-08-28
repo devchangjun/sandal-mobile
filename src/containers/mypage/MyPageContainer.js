@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './MyPage.module.scss';
+import styled from 'styled-components';
 import Profile from 'components/svg/sign/profile.png';
 import BottomNav from 'components/nav/BottomNav';
 import classNames from 'classnames/bind';
@@ -14,10 +15,13 @@ import { numberFormat } from '../../lib/formatter';
 
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
+import Loading from '../../components/asset/Loading';
 
 const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
+
+    const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -28,6 +32,7 @@ const MyPageContainer = () => {
         history.push(Paths.ajoonamu.account);
     };
     const onClickLogout = async () => {
+        setLoading(true);
         const token = sessionStorage.getItem('access_token');
         const res = await localLogout(token);
         sessionStorage.removeItem('access_token');
@@ -35,10 +40,12 @@ const MyPageContainer = () => {
             dispatch(logout());
             history.push(Paths.index);
         }
+        setLoading(false);
     };
 
     return (
         <>
+            <Loading open={loading} />
             <TitleBar title={'마이페이지'} />
             <div className={styles['container']}>
                 <Button
@@ -46,7 +53,7 @@ const MyPageContainer = () => {
                     onClick={user ? onClickAccount : onClickLogin}
                 >
                     <div className={cx('profile', 'pd-left')}>
-                        <img src={Profile} alt={'이미지'}></img>
+                        <img src={Profile} alt={'이미지'} />
                     </div>
                     <div className={cx('info', 'pd-box')}>
                         <div className={styles['auth']}>
@@ -74,10 +81,10 @@ const MyPageContainer = () => {
                     </div>
                 </Button>
                 <div className={styles['tab']}>
-                    <Item url={Paths.ajoonamu.support} text={'공지사항'} />
+                    <Item url={`${Paths.ajoonamu.support}/notice`} text={'공지사항'} />
                     <Item text={'이벤트'} />
-                    <Item text={'자주 묻는 질문'} />
-                    <Item text={'1:1 문의'} />
+                    <Item url={`${Paths.ajoonamu.support}/faq`} text={'자주 묻는 질문'} />
+                    <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />
                     <Item text={'버전정보'} />
                     {user && <Item text={'이용약관'} />}
@@ -95,13 +102,19 @@ const MyPageContainer = () => {
     );
 };
 
+const SupportLink = styled(Link)`
+    & + & {
+        border-top: solid 1px #F9F9F9;
+    }
+`;
+
 const Item = ({ text, url }) => {
     return (
-        <Link to={url}>
+        <SupportLink to={url}>
             <Button className={styles['pd-box']}>
                 <div className={styles['item']}>{text}</div>
             </Button>
-        </Link>
+        </SupportLink>
     );
 };
 

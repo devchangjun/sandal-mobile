@@ -15,16 +15,12 @@ const tabInit = [
     {
         url: `${Paths.ajoonamu.coupon}/mycoupon`,
         name: '내쿠폰',
-    },
-    {
+    }, {
         url: `${Paths.ajoonamu.coupon}/download_cp`,
         name: '쿠폰받기',
-
-    },
-    {
+    }, {
         url: `${Paths.ajoonamu.coupon}/list_use`,
         name: '쿠폰사용내역',
-
     },
 ]
 
@@ -48,7 +44,6 @@ const CouponConatiner = ({ tab = 'mycoupon' }) => {
     useEffect(() => {
         tab === 'mycoupon' && window.addEventListener('scroll', onScroll);
         return () => {
-            // window.scrollTo(0, 0)
             window.removeEventListener('scroll', onScroll);
         };
 

@@ -82,7 +82,7 @@ const MyPageContainer = () => {
                 </Button>
                 <div className={styles['tab']}>
                     <Item url={`${Paths.ajoonamu.support}/notice`} text={'공지사항'} />
-                    <Item text={'이벤트'} />
+                    <Item url={Paths.ajoonamu.event} text={'이벤트'} />
                     <Item url={`${Paths.ajoonamu.support}/faq`} text={'자주 묻는 질문'} />
                     <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />

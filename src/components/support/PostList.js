@@ -9,17 +9,6 @@ import { Button } from '@material-ui/core';
 
 const cn = classnames.bind(styles);
 
-
-const PostList = ({ listData, emptyMessage }) => {
-    return Array.isArray(listData) && listData.length ? (
-        <ul className={styles['post-list']}>
-            {listData.map((postData) => 
-                <PostItem postData={postData} key={postData.id} />
-            )}
-        </ul>
-    ) : <Message msg={emptyMessage} />;
-};
-
 const PostItem = ({ postData }) => {
     const {
         title, body, created_at,
@@ -43,4 +32,11 @@ const PostItem = ({ postData }) => {
     )
 }
 
-export default PostList;
+export default ({ listData, emptyMessage }) => 
+    Array.isArray(listData) && listData.length ? (
+        <ul className={styles['post-list']}>
+            {listData.map((postData) => 
+                <PostItem postData={postData} key={postData.id} />
+            )}
+        </ul>
+    ) : <Message msg={emptyMessage} />;

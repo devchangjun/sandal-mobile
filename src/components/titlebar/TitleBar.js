@@ -2,18 +2,17 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
 import Back from 'components/svg/header/Back';
-import date from 'components/svg/title-bar/date.svg';
-import { IconButton, Button } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 // 메인 로고 이미지
 
-const TitleBar = ({ title, sub, alt, onClick }) => {
+const TitleBar = ({ title, children }) => {
     return (
         <div className={styles['title-bar']}>
             <div className={styles['item']}>
                 <BackButton />
                 <Title title={title} />
                 <div className={styles['empty']}>
-                    {sub && <img src={date} alt="데이트" onClick={onClick} />}
+                    {children}
                 </div>
             </div>
         </div>

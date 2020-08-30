@@ -6,10 +6,11 @@ import './styles/global.scss';
 import { get_user_info } from './store/auth/auth';
 
 import { Paths } from './paths';
-import { Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
+import {
+    Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     Home, Account, Address, Reserve, DetailMenu,
-    Cart, Order, OrderList, OrderComplete,Coupon,
-    Support, Notice } from 'pages';
+    Cart, Order, OrderList, OrderComplete, Coupon,
+    Support, Notice, Event } from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
 
@@ -47,6 +48,7 @@ const App = () => {
                 <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
                 <Route path={`${Paths.ajoonamu.order_complete}`} component={OrderComplete}></Route>
                 <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
+                <Route path={`${Paths.ajoonamu.event}/:post?`} component={Event}></Route>
                 <Route path={Paths.ajoonamu.notice} component={Notice}></Route>
                 <Route path={`${Paths.ajoonamu.support}/:tab?`} component={Support}></Route>
             </ScrollToTop>

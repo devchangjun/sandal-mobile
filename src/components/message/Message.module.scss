@@ -1,6 +1,6 @@
 @import '../../styles/Root.scss';
 
-.reserve-custom-order{
+.reserve-custom-order {
     width: 100%;
     border: 0px solid black;
     height: 500px;
@@ -8,14 +8,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .title-msg{
+    .title-msg {
         text-align: center;
         font-size: 14px;
         color: #555555;
         margin: 20px 0 20px 0;
         word-break: keep-all;
     }
-    .custom-btn{
+    .custom-btn {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -24,10 +24,9 @@
         height: 56px;
         background-color: $main-color;
         border-radius: 28px;
-        color:white;
+        color: white;
         margin: 20px 0 20px 0;
         font-size: 16px;
         cursor: pointer;
-
     }
 }

@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
 
-.tab-menu{
+.tab-list{
     display: table; /* 핵심! */
     width: 100%; height: 40px;
     font-size: $font-size;
@@ -9,11 +9,29 @@
     margin: 0 auto;
     top:40px;
     left:0;
-    // border:1px solid red;
     right:0;
-
-    // margin-top: $mg-top;
+    border:1px solid red;
     background-color:#fff;
     position: fixed;
     z-index: 99;
+    height: 40px;
+    max-height: 40px;
+
+}
+
+.tab-item{
+    text-decoration:none;
+    color:black;
+    display: table-cell; /* 핵심! */
+    width :100%;
+    vertical-align: middle; 
+    text-align: center;
+    height: 40px;
+  
+    border:1px solid red;
+
+}
+:global .PrivateTabIndicator-root-2{
+    border:1px solid blue;
+    bottom:0;
 }

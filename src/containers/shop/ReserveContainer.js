@@ -11,7 +11,25 @@ import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
 
+import SwipeableViews from "react-swipeable-views";
 
+
+
+const styles2 = {
+    tabs: {
+      background: "#fff",
+      width:"100%",
+      border:"1px solid #000",
+      display:"flex",
+      justifyContent :"center"
+  
+    },
+    tab:{
+      width:"33%",
+  
+    },
+  };
+  
 
 
 const tabInit = [
@@ -44,6 +62,18 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
     const [title ,setTitle] = React.useState('추천메뉴');
+    const [index, setIndex] = React.useState(0);
+
+    const onChangeTabIndex =(e,value) =>{
+        console.log("체인지1")
+        setIndex(value);
+    }
+    const onChangeSwiperIndex =(index)=>{
+        console.log("스위퍼 인덱스 체인지")
+        console.log(index);
+        setIndex(index);
+    }
+
 
     const onChangeTitle = useCallback(()=>{
         if(tab==='custom'){
@@ -90,42 +120,87 @@ const ReserveContainer = ({ tab = 'custom' }) => {
 
     return (
         <>
-            <TitleBar title={title} /> {/*분류명 넣어야함 */}
-            <TabMenu tabs={tabInit} />
+            <TitleBar title={title} />
+            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
-                    {/* 이부분 바꿔야함 */}
-                    {(tab === 'custom' && result) ?
-                        <div className={styles['title']}>
-                            맞춤 메뉴
-                    <CustomItemList />
+                    <SwipeableViews
+                        enableMouseEvents
+                        index={index}
+                        onChangeIndex={onChangeSwiperIndex}
+                    >
+                        <div>
+                            <Message
+                                msg={
+                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                }
+                                isButton={true}
+                                onClick={handleOpen}
+                                buttonName={'맞춤 주문 하기'}
+                            />
                         </div>
-                        :
-                        (tab === 'custom' && !result) &&
+                        <div>
+                            <MenuItemList />
+                        </div>
+                        <div>
+                            <Message
+                                msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                                src={true}
+                                isButton={false}
+                            />
+                        </div>
+                        <div>
                         <Message
-                            msg={"전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다."}
-                            isButton={true}
-                            onClick={handleOpen}
-                            buttonName={"맞춤 주문 하기"}
-
+                            msg={
+                                '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                            }
+                            isButton={false}
+                            src={true}
                         />
-                    }
-                    {tab === 'menu1' &&
-                        <MenuItemList />}
-                    {tab === 'menu2' &&
-                        <Message
-                            msg={"추천드릴 메뉴 구성이 존재하지 않습니다."}
-                            src={true}
-                            isButton={false}
-                        />}
-                    {tab === 'menu3' &&
-                        <Message
-                            msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
-                            isButton={false}
-                            src={true}
-                        />}
+                        </div>
+                    </SwipeableViews>
                 </div>
             </div>
+
+            {/* <div className={styles['container']}>
+                <div className={styles['pd-box']}>
+                    {tab === 'custom' && result ? (
+                        <div className={styles['title']}>
+                            맞춤 메뉴
+                            <CustomItemList />
+                        </div>
+                    ) : (
+                        tab === 'custom' &&
+                        !result && (
+                            <Message
+                                msg={
+                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                }
+                                isButton={true}
+                                onClick={handleOpen}
+                                buttonName={'맞춤 주문 하기'}
+                            />
+                        )
+                    )}
+                    {tab === 'menu1' && <MenuItemList />}
+                    {tab === 'menu2' && (
+                        <Message
+                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                            src={true}
+                            isButton={false}
+                        />
+                    )}
+                    {tab === 'menu3' && (
+                        <Message
+                            msg={
+                                '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                            }
+                            isButton={false}
+                            src={true}
+                        />
+                    )}
+                </div>
+            </div> */}
             <BottomNav></BottomNav>
 
             <PreferModal
@@ -140,7 +215,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
                 onChangeDesireQune={onChangeDesireQune}
             />
         </>
-    )
+    );
 }
 export default ReserveContainer;
 

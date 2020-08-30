@@ -55,7 +55,6 @@ const BottomNav = (props) => {
     const[tab, dispatchTab] = useReducer(tabReducer,initState);
 
     const onUpdateTab = useCallback(()=>{
-        console.log(props.match.path);
         if(props.match.path==="/"){
             dispatchTab({type:"HOME"});
         }

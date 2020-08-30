@@ -1,68 +1,68 @@
-import React  from 'react';
-import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+
+
+
+import React,{useState}  from 'react';
+import {useHistory} from 'react-router-dom';
 import styles from './TabMenu.module.scss';
-import Button from '@material-ui/core/Button';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
-
-
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     tabs:{
-        display:"table",
-        width:"100%",
-        heigth:"40px",
-        maxHeight:"40px",
-        maxWidth:"1374px",
+        
+        width: "100%",
+        maxWidth: "768px",
+        minHeight:"40px",
         margin: "0 auto",
         top:"40px",
         left:0,
-        zIndex:99,
-        position: "fixed"
+        right:0,
+        backgroundColor:"#fff",
+        position: "fixed",
+        zIndex: 99,
     },
-    tabitem: {
-        backgroundColor: '#fff', 
-        minHeight:'40px',
-        padding:0,
-        display:"table-cell",
-        width:"100px",
-        height:"100%",
-    }
+ 
 
 }));
 
 
-const TabMenu = ({ tabs,index,onChange }) => {
+const TabMenu = ({ tabs,index,onChange}) => {
 
     const classes = useStyles();
+    const history = useHistory();
 
-
-    const activeStyle = {
-        borderBottom: '3px solid #000'
-    };
-
+    const onClickTab=(url)=>{
+        history.push(url);
+    }
 
     const tabList = tabs.map(tab => (
-        <Tab  className={classes.tabitem} label={tab.name} />
+        <Tab label={tab.name}  key={tab.name} className={styles['test']} onClick={()=>onClickTab(tab.url)}/>
     ))
+
     return (
-            <Tabs
-                value={index}
-                fullWidth
-                onChange={onChange}
-                TabIndicatorProps={{
-                    style: {
-                      backgroundColor: "#000"
-                    }
-                  }}
-                className={classes.tabs}
-            >
-                {tabList}
-            </Tabs>
+
+        <Tabs
+            value={index}
+            onChange={onChange}
+            TabIndicatorProps={{
+                style: {
+                    backgroundColor: '#000',
+                },
+            }}
+            className={classes.tabs}
+        >
+            {tabList}
+        </Tabs>
     );
+
 }
 
+TabMenu.defaultProps={
+    tabs:null,
+    index:0,
+    onChange: ()=>console.warn(null)
+}
 
 export default TabMenu;
+

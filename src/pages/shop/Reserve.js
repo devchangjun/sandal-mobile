@@ -6,6 +6,6 @@ function Reserve({ location }) {
     const query = qs.parse(location.search,{
         ignoreQueryPrefix: true
     });
-    return <ReserveContainer />;
+    return <ReserveContainer tab={query.menu}/>;
 }
 export default Reserve;

@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 // import { useSelector } from 'react-redux';
-// import { useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -34,28 +34,28 @@ const styles2 = {
 
 const tabInit = [
     {
-        url: `${Paths.ajoonamu.shop}/custom?`,
+        url: `${Paths.ajoonamu.shop}?menu=0`,
         name: '추천메뉴'
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu1`,
+        url: `${Paths.ajoonamu.shop}?menu=1`,
         name: '메뉴1'
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu2`,
+        url: `${Paths.ajoonamu.shop}?menu=2`,
         name: '메뉴2'
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu3`,
+        url: `${Paths.ajoonamu.shop}?menu3`,
         name: '메뉴3'
     },
 
 ]
 
-const ReserveContainer = ({ tab = 'custom' }) => {
+const ReserveContainer = ({ tab }) => {
 
     const [open, setOpen] = React.useState(false);
-    // const history = useHistory();
+    const history = useHistory();
     // const { user } = useSelector(state => state.auth);
     const [budget, setBudget] = React.useState(0); //맞춤 가격
     const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
@@ -65,27 +65,25 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     const [index, setIndex] = React.useState(0);
 
     const onChangeTabIndex =(e,value) =>{
-        console.log("체인지1")
         setIndex(value);
     }
     const onChangeSwiperIndex =(index)=>{
-        console.log("스위퍼 인덱스 체인지")
-        console.log(index);
         setIndex(index);
+        history.push(`${Paths.ajoonamu.shop}?menu${index}`);
     }
 
 
     const onChangeTitle = useCallback(()=>{
-        if(tab==='custom'){
+        if(tab==='0'){
             setTitle("추천메뉴");
         }
-        else if(tab==='menu1'){
+        else if(tab==='1'){
             setTitle("메뉴1");
         }
-        else if(tab==='menu2'){
+        else if(tab==='2'){
             setTitle("메뉴2");
         }
-        else if(tab==='menu3'){
+        else if(tab==='3'){
             setTitle("메뉴3");
         }
     },[tab])
@@ -121,7 +119,7 @@ const ReserveContainer = ({ tab = 'custom' }) => {
     return (
         <>
             <TitleBar title={title} />
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
+            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex}/>
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     <SwipeableViews

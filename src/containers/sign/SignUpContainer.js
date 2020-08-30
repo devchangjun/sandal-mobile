@@ -150,13 +150,7 @@ const SignUpContainer = () => {
         }
     }, [check1, check2, check3]);
 
-    const onToggleAllCheck = useCallback(() => {
-        if(allCheck){
-            dispatchCheck({ type: 'CHECK1', check: true });
-            dispatchCheck({ type: 'CHECK2', check: true });
-            dispatchCheck({ type: 'CHECK3', check: true });
-        }
-    }, [allCheck]);
+
 
     //모두 체크인지 확인 함수
     const isAllCheck = useCallback(() => {
@@ -180,10 +174,6 @@ const SignUpContainer = () => {
         isAllCheck();
     }, [isAllCheck]);
 
-    useEffect(()=>{
-        onToggleAllCheck();
-    },[onToggleAllCheck])
-
     useEffect(() => {
         onToggleCheck();
     }, [onToggleCheck])
@@ -193,6 +183,9 @@ const SignUpContainer = () => {
 
     const updateAllCheck = (e) => {
         dispatchCheck({ type: 'ALL_CHECK', check: e.target.checked });
+        dispatchCheck({ type: 'CHECK1', check: e.target.checked });
+        dispatchCheck({ type: 'CHECK2', check: e.target.checked });
+        dispatchCheck({ type: 'CHECK3', check: e.target.checked });
     };
     const onChangeCheck1 = (e) => {
         dispatchCheck({ type: 'CHECK1', check: e.target.checked });

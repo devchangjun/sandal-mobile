@@ -48,7 +48,6 @@ const QNAContainer = ({ tab = 'send' }) => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
         const res = await requestQNAStore(token, state);
-        console.log(res);
         setLoading(false);
     }, [state]);
     const onChange = e => dispatch(e.target);

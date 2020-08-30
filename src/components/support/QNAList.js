@@ -1,10 +1,12 @@
 import React from 'react';
+import PropsTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { Button } from '@material-ui/core';
-import styles from './QNAList.module.scss';
 import Message from '../message/Message';
 
-import PropsTypes from 'prop-types';
+import styles from './QNAList.module.scss';
+
+import { dateToRelative } from '../../lib/formatter';
 
 const cn = classNames.bind(styles);
 
@@ -17,12 +19,10 @@ const QNAList = ({ listData, emptyMessage }) => {
         </ul>
     ) : <Message msg={emptyMessage} />;
 };
-
 QNAList.defalutProps = {
     listData: [],
     emptyMessage: ""
 };
-
 QNAList.propTypes = {
     listData: PropsTypes.array.isRequired,
     emptyMessage: PropsTypes.string
@@ -44,7 +44,8 @@ const QNAItem = ({ qnaData }) => {
                     <h2 className={styles['subject']}>{subject}</h2>
                     <p className={styles['text']}>
                         <span className={styles['name']}>{name}</span>
-                        <span className={styles['date-time']}>{q_datetime}</span>
+                        {/* <span className={styles['date-time']}>{q_datetime}</span> */}
+                        <span className={styles['date-time']}>{dateToRelative(new Date(q_datetime), '-')}</span>
                     </p>
                 </div>
                 <div>

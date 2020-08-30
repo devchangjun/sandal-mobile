@@ -91,7 +91,6 @@ const MarketingAgree = ({ agreeMail, agreeSMS }) => {
         */
         const token = sessionStorage.getItem('access_token');
         const res = await requestAgreeChange(token, type, value);
-        console.log(res);
     }, []);
 
     const changeMail = useCallback(() => {

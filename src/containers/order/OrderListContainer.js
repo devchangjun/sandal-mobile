@@ -36,8 +36,8 @@ const OrderListContainer = ({ tab = 'order' }) => {
     return (
         <>
             <TitleBar title={'주문내역'}>
-                <IconButton>
-                    <img src={date} alt="calendar" onClick={handleOpen} />
+                <IconButton onClick={handleOpen}>
+                    <img src={date} alt="calendar"/>
                 </IconButton>
             </TitleBar>
             <TabMenu tabs={tabInit} />

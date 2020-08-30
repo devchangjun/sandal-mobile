@@ -76,7 +76,8 @@ const BottomNav = (props) => {
         } else if (
             props.match.path.indexOf('mypage') !== -1 ||
             props.match.path.indexOf('account') !== -1 ||
-            props.match.path.indexOf('support') !== -1
+            props.match.path.indexOf('support') !== -1 ||
+            props.match.path.indexOf('event') !== -1
         ) {
             dispatchTab({ type: 'MYPAGE' });
         }

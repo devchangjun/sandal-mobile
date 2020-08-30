@@ -5,6 +5,7 @@ import Message from "../../components/message/Message";
 
 import classnames from 'classnames/bind';
 import { Button } from '@material-ui/core';
+import { dateToRelative } from '../../lib/formatter';
 
 
 const cn = classnames.bind(styles);
@@ -22,7 +23,8 @@ const PostItem = ({ postData }) => {
         <li className={cn('list-element', { open: open })} onClick={() => setOpen(!open)}>
             <Button className={styles['preview']}>
                 <div className={styles['text']}>
-                    <p className={styles['created-at']}>{created_at}</p>
+                    {/* <p className={styles['created-at']}>{created_at}</p> */}
+                    <p className={styles['created-at']}>{dateToRelative(new Date(created_at), '/')}</p>
                     <h2 className={styles['title']}>{title}{question}</h2>
                 </div>
                 <Back rotate="270deg"/>

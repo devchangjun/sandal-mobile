@@ -49,10 +49,10 @@ function App() {
         </Switch>
         <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
-        <Route path={`${Paths.ajoonamu.order_list}/:tab?`} component={OrderList}></Route>
+        <Route path={Paths.ajoonamu.order_list} component={OrderList}></Route>
         <Route path={`${Paths.ajoonamu.order_complete}`} component={OrderComplete}></Route>
         <Route path={Paths.ajoonamu.order_detail} component={OrderDetail}></Route>
-        <Route path={`${Paths.ajoonamu.coupon}/:tab?`} component={Coupon}></Route>
+        <Route path={Paths.ajoonamu.coupon} component={Coupon}></Route>
         <Route path={Paths.ajoonamu.find_email} component={FindEmail}></Route>
         <Route path={Paths.ajoonamu.find_password} component={FindPassword}></Route>
         

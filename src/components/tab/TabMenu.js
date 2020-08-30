@@ -33,7 +33,10 @@ const TabMenu = ({ tabs,index,onChange}) => {
     const history = useHistory();
 
     const onClickTab=(url)=>{
-        history.push(url);
+        if(url!==undefined){
+        history.replace(url);
+        console.log("푸쉬");
+        }
     }
 
     const tabList = tabs.map(tab => (

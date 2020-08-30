@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
+import {useHistory} from 'react-router-dom';
 // import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -34,59 +34,62 @@ const styles2 = {
 
 const tabInit = [
     {
-        url: `${Paths.ajoonamu.shop}?menu=0`,
+        url:`${Paths.ajoonamu.shop}?menu=0`,
         name: '추천메뉴'
     },
     {
-        url: `${Paths.ajoonamu.shop}?menu=1`,
+        url:`${Paths.ajoonamu.shop}?menu=1`,
         name: '메뉴1'
     },
     {
-        url: `${Paths.ajoonamu.shop}?menu=2`,
+        url:`${Paths.ajoonamu.shop}?menu=2`,
         name: '메뉴2'
     },
     {
-        url: `${Paths.ajoonamu.shop}?menu3`,
+        url:`${Paths.ajoonamu.shop}?menu=3`,
         name: '메뉴3'
     },
 
 ]
 
-const ReserveContainer = ({ tab }) => {
+const ReserveContainer = ({ tab="0" }) => {
 
     const [open, setOpen] = React.useState(false);
-    const history = useHistory();
+    const history= useHistory();
     // const { user } = useSelector(state => state.auth);
     const [budget, setBudget] = React.useState(0); //맞춤 가격
     const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
     const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
     const [title ,setTitle] = React.useState('추천메뉴');
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = React.useState(parseInt(tab));
 
     const onChangeTabIndex =(e,value) =>{
         setIndex(value);
     }
     const onChangeSwiperIndex =(index)=>{
         setIndex(index);
-        history.push(`${Paths.ajoonamu.shop}?menu${index}`);
     }
+    useEffect(()=>{
+        history.replace(`${Paths.ajoonamu.shop}?menu=${tab}`)
+        setIndex(parseInt(tab));
+    },[tab]);
 
 
     const onChangeTitle = useCallback(()=>{
-        if(tab==='0'){
+        if(index===0){
             setTitle("추천메뉴");
         }
-        else if(tab==='1'){
+        else if(index===1){
             setTitle("메뉴1");
         }
-        else if(tab==='2'){
+        else if(index===2){
             setTitle("메뉴2");
         }
-        else if(tab==='3'){
+        else if(index===3){
             setTitle("메뉴3");
         }
-    },[tab])
+    },[index])
     useEffect(() => {
         onChangeTitle();
     }, [onChangeTitle])
@@ -119,7 +122,7 @@ const ReserveContainer = ({ tab }) => {
     return (
         <>
             <TitleBar title={title} />
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex}/>
+            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     <SwipeableViews
@@ -128,14 +131,21 @@ const ReserveContainer = ({ tab }) => {
                         onChangeIndex={onChangeSwiperIndex}
                     >
                         <div>
-                            <Message
-                                msg={
-                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
-                                }
-                                isButton={true}
-                                onClick={handleOpen}
-                                buttonName={'맞춤 주문 하기'}
-                            />
+                            {result ? (
+                                <div className={styles['title']}>
+                                    맞춤 메뉴
+                                    <CustomItemList />
+                                </div>
+                            ) : (
+                                <Message
+                                    msg={
+                                        '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                    }
+                                    isButton={true}
+                                    onClick={handleOpen}
+                                    buttonName={'맞춤 주문 하기'}
+                                />
+                            )}
                         </div>
                         <div>
                             <MenuItemList />
@@ -148,13 +158,13 @@ const ReserveContainer = ({ tab }) => {
                             />
                         </div>
                         <div>
-                        <Message
-                            msg={
-                                '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
-                            }
-                            isButton={false}
-                            src={true}
-                        />
+                            <Message
+                                msg={
+                                    '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                                }
+                                isButton={false}
+                                src={true}
+                            />
                         </div>
                     </SwipeableViews>
                 </div>

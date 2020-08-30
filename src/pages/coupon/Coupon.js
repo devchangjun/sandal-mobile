@@ -1,10 +1,14 @@
 import React from 'react';
 import CouponContainer from 'containers/coupon/CouponContainer';
+import qs from 'qs';
 
-const Coupon=({match})=>{
-    // const tab= match.params.tab ? match.params.tab : "mycoupon";
+const Coupon=({location})=>{
+    const query = qs.parse(location.search,{
+        ignoreQueryPrefix: true
+    });
+    const tab= query.tab;
     return(
-        <CouponContainer tab={match.params.tab ? match.params.tab : "mycoupon"}/>
+        <CouponContainer tab={tab}/>
     )
 }
 export default Coupon;

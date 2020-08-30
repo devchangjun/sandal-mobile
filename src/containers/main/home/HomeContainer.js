@@ -11,24 +11,25 @@ import BottomNav from 'components/nav/BottomNav';
 
 const tabInit = [
     {
-        url: `${Paths.ajoonamu.shop}/custom?`,
+        url: `${Paths.ajoonamu.shop}?menu=0`,
         name: '예약주문'
     },
     {
-        url: `${Paths.ajoonamu.shop}/menu1`,
+        url: `${Paths.ajoonamu.shop}?menu=1`,
         name: '택배주문'
     },
 ]
 
 
-
 const HomeContainer = () => {
 
-    // const {user} = useSelector(state=>state.auth);
     return (
         <>
             <Title/>
-            <TabMenu tabs={tabInit}/>
+            <TabMenu tabs={tabInit} index={0}/>
+            <div className={styles['carousel']}>
+                <HomeSlick />
+            </div>
             <div className={styles['container']}>
                 <div className={styles['carousel']}>
                     <HomeSlick />

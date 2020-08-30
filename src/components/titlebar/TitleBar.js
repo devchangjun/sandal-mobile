@@ -4,9 +4,12 @@ import styles from './TitleBar.module.scss';
 import Back from 'components/svg/header/Back';
 import date from 'components/svg/title-bar/date.svg';
 import { IconButton } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
+
 // 메인 로고 이미지
 
-const TitleBar = ({ title, sub, alt ,onClick }) => {
+const TitleBar = (props) => {
+    const { title, sub, alt ,onClick } = props;
     return (
         <div className={styles['title-bar']}>
             <div className={styles['item']}>
@@ -34,6 +37,7 @@ const Title = ({ title }) => {
 const BackButton = () => {
     const history = useHistory();
     const onClickBack = () => {
+        console.log(history);
         history.goBack();
     };
     return (
@@ -51,4 +55,5 @@ TitleBar.defaultProps ={
     sub:false,
     onClick: ()=>console.warn('null'),
 }
-export default TitleBar;
+export default withRouter(TitleBar);
+

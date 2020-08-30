@@ -13,7 +13,6 @@
         width: 100%;
         background: #fff;
         position: relative;
-        margin-top: $mg-top40;
         //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
         .link-table {
             display: table;
@@ -71,14 +70,37 @@
     cursor: pointer;
 }
 
+.social-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top :70px;
+    .text{
+        color:#999;
+        font-size: 14px;
+        width: 100px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color:white;
+        z-index: 1;
+    }
+    .line{
+        border:1px solid #EBEBEB;
+        border-radius: 2px;
+        width: 100%;
+        position: absolute;
+    }
+}
 // 로그인창 소셜 로그인
 .social {
-    margin-top: 50px;
+    margin: 28px 0;
     display: flex;
 
     flex-direction: row;
     justify-content: center;
-    margin-bottom: 50px;
 
     .sns {
         width: 100%;
@@ -139,6 +161,9 @@
 }
 .pd-none {
     padding: 0;
+}
+.mg-top40{
+    margin-top:40px;
 }
 .pd-box {
     padding: 0 24px;

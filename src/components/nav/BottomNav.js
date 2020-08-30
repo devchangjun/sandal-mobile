@@ -55,7 +55,6 @@ const BottomNav = (props) => {
     const[tab, dispatchTab] = useReducer(tabReducer,initState);
 
     const onUpdateTab = useCallback(()=>{
-        console.log(props.match.path);
         if(props.match.path==="/"){
             dispatchTab({type:"HOME"});
         }
@@ -92,10 +91,10 @@ const BottomNav = (props) => {
         history.push(Paths.index);
     }
     const onClickCoupon = () => {
-        history.push(`${Paths.ajoonamu.coupon}/mycoupon`)
+        history.push(`${Paths.ajoonamu.coupon}?tab=0`);
     }
     const onClickOrderList = () => {
-        history.push(`${Paths.ajoonamu.order_list}/order`)
+        history.push(`${Paths.ajoonamu.order_list}?tab=0`)
     }
     const onClickMyPage = () => {
         history.push(`${Paths.ajoonamu.mypage}`);
@@ -130,8 +129,8 @@ const BottomNav = (props) => {
                                     <img src={deliveryCloseImage} alt="bottom-nav-delivery" />
                                 </div>
                             </div>
-                            <Link to={`${Paths.ajoonamu.shop}/custom`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
-                            <Link to="#" className={styles["menu-item"]} onClick={handleClose}>택배배송</Link>
+                            <Link to={`${Paths.ajoonamu.shop}?menu=0`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
+                            <Link to={`${Paths.ajoonamu.shop}?menu=1`}className={styles["menu-item"]} onClick={handleClose}>택배배송</Link>
                         </div>
                         <IconButton className={styles['nav-item']} onClick={onClickOrderList}>
                             <div className={styles['icon']}>

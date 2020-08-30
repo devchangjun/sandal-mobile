@@ -208,12 +208,7 @@ const ReserveContainer = ({ tab="0" }) => {
                         />
                     )}
                 </div>
-<<<<<<< HEAD
-            </div>
-=======
             </div> */}
-            <BottomNav></BottomNav>
->>>>>>> test
 
             <PreferModal
                 open={open}

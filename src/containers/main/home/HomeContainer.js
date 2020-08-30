@@ -27,9 +27,6 @@ const HomeContainer = () => {
         <>
             <Title/>
             <TabMenu tabs={tabInit} index={0}/>
-            <div className={styles['carousel']}>
-                <HomeSlick />
-            </div>
             <div className={styles['container']}>
                 <div className={styles['carousel']}>
                     <HomeSlick />

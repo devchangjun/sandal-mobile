@@ -1,6 +1,6 @@
 @import '../../styles/Root.scss';
 .container {
-    @include wireframe(80px);
+    @include wireframe($pd-top);
     width: 100%;
     background-color: #f9f9f9;
     .coupon-title {
@@ -19,7 +19,7 @@
         border-radius: 10px;
         height: 56px;
         padding-left: 10px;
-        margin: 0px 0;
+        margin: 0;
     }
     .coupon-list {
         background-color: #f9f9f9;

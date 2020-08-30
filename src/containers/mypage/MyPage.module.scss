@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
 .container {
-    @include wireframe(40px);
+    @include wireframe($pd-top40);
     background-color: #f9f9f9;
     //유저 정보
     .user-info {
@@ -29,7 +29,7 @@
             justify-content: center;
             flex-direction: column;
             .point {
-                margin-top: 10px;
+                margin-top: 8px;
                 display: flex;
                 align-items: center;
                 justify-content: center;

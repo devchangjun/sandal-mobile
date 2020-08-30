@@ -8,7 +8,7 @@ $menu-items: 2;
     position: -webkit-sticky;
     position: fixed;
     bottom: 0px;
-    z-index: 1100;
+    z-index: 1500;
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.08);
     .pd-box {
@@ -147,21 +147,5 @@ $menu-items: 2;
                 }
             }
         }
-    }
-}
-
-.dim {
-    background-color: black;
-    position: fixed;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    height: 100vh;
-    opacity: 0;
-    transition: opacity .3s cubic-bezier(0.075, 0.82, 0.165, 1);
-    &.open {
-        top: 0;
-        opacity: .3;
     }
 }

@@ -6,14 +6,14 @@ import './styles/global.scss';
 import { get_user_info } from './store/auth/auth';
 
 import { Paths } from 'paths';
-import { Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw,MyPage } from 'pages';
-import {FindEmail,FindPassword} from 'pages';
-import { Home, Account, Address, Reserve, DetailMenu } from 'pages';
-import { Cart,Coupon } from 'pages';
-import { Order, OrderList, OrderComplete,OrderDetail} from 'pages';
-
-import { Notice } from 'pages';
+import {
+    Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
+    FindEmail, FindPassword, Home, Account, Address, Reserve, DetailMenu,
+    Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
+    Support, Notice, Event
+} from 'pages';
 import { Route, Switch } from 'react-router-dom';
+
 function App() {
 
   const dispatch = useDispatch();
@@ -55,15 +55,12 @@ function App() {
         <Route path={Paths.ajoonamu.coupon} component={Coupon}></Route>
         <Route path={Paths.ajoonamu.find_email} component={FindEmail}></Route>
         <Route path={Paths.ajoonamu.find_password} component={FindPassword}></Route>
-        
-        <Route path={Paths.ajoonamu.support} component={Notice}></Route>
+        <Route path={`${Paths.ajoonamu.event}/:post?`} component={Event}></Route>
+        <Route path={Paths.ajoonamu.notice} component={Notice}></Route>
+        <Route path={`${Paths.ajoonamu.support}/:tab?`} component={Support}></Route>
       </ScrollToTop>
     </div>
   );
 }
-
-
-
-
 
 export default App;

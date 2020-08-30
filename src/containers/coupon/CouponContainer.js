@@ -26,7 +26,6 @@ const tabInit = [
     {
         url: `${Paths.ajoonamu.coupon}?tab=2`,
         name: '쿠폰사용내역',
-
     },
 ]
 
@@ -62,13 +61,12 @@ const CouponConatiner = ({ tab='0' }) => {
     useEffect(()=>{
         history.replace(`${Paths.ajoonamu.coupon}?tab=${tab}`)
         setIndex(parseInt(tab));
-    },[tab]);
+    },[tab, history]);
 
     useEffect(() => {
         window.scrollTo(0,0);
         index === 0 && window.addEventListener('scroll', onScroll);
         return () => {
-            // window.scrollTo(0, 0)
             window.removeEventListener('scroll', onScroll);
             my_coupon.current.classList.remove(cx('shadow'));
         };

@@ -38,6 +38,7 @@
                 display: flex;
                 position: relative;
                 align-items: center;
+                cursor: pointer;
             }
 
             .app-title-notification > img,
@@ -55,7 +56,6 @@
             }
 
             .app-title-location {
-                cursor: pointer;
             }
         }
     }

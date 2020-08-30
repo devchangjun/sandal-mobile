@@ -1,36 +1,42 @@
 $max-width: 768px;
 $min-width: 320px;
 $min-height: 100vh;
-$font-size :12px;
-$mg-top :80px;
-$mg-top40 : 40px;
-$pd-top:80px;
-$pd-top40:40px;
-$padding-all : 24px;
-$padding-side : 0 24px;
-$main-color:#007246;
-$normal-color:#999999;
-$border-radius :10px;
+$font-size: 12px;
+$mg-top: 80px;
+$mg-top40: 40px;
+$pd-top: 88px;
+$pd-top40: 40px;
+$padding-all: 24px;
+$padding-side: 0 24px;
+$main-color: #007246;
+$normal-color: #999999;
+$border-radius: 10px;
 
-
-@mixin padding-side{
-    padding : 0 24px;
+@mixin padding-side {
+    padding: 0 24px;
 }
 
-@mixin wireframe($padding){
+@mixin wireframe($padding) {
     max-width: 768px;
     min-width: 320px;
     min-height: 100vh;
-    margin:0 auto;
+    margin: 0 auto;
     padding-top: $padding;
+    padding-bottom: 70px;
 }
 
-@mixin animation ($delay ,$name){
-    animation: $name .2s linear;
+@mixin animation($delay, $name) {
+    animation: $name 0.2s linear;
 }
 
-@mixin keyframe($name){
-    @keyframes #{$name}{
-        @content
+@mixin keyframe($name) {
+    @keyframes #{$name} {
+        @content;
     }
+}
+
+@mixin flex-center($justify-content) {
+    display: flex;
+    justify-content: $justify-content;
+    align-items: center;
 }

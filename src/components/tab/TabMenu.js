@@ -1,50 +1,46 @@
-
-
-
-import React,{useState}  from 'react';
-import {useHistory} from 'react-router-dom';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    tabs:{
-        
-        width: "100%",
-        maxWidth: "768px",
-        minHeight:"40px",
-        margin: "0 auto",
-        top:"40px",
-        left:0,
-        right:0,
-        backgroundColor:"#fff",
-        position: "fixed",
+    tabs: {
+        width: '100%',
+        maxWidth: '768px',
+        minHeight: '40px',
+        margin: '0 auto',
+        top: '40px',
+        left: 0,
+        right: 0,
+        backgroundColor: '#fff',
+        position: 'fixed',
         zIndex: 99,
     },
- 
-
 }));
 
-
-const TabMenu = ({ tabs,index,onChange}) => {
-
+const TabMenu = ({ tabs, index, onChange }) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const onClickTab=(url)=>{
-        if(url!==undefined){
-        history.replace(url);
-        console.log("푸쉬");
+    const onClickTab = (url) => {
+        if (url !== undefined) {
+            history.replace(url);
+            console.log('푸쉬');
         }
-    }
+    };
 
-    const tabList = tabs.map(tab => (
-        <Tab label={tab.name}  key={tab.name} className={styles['test']} onClick={()=>onClickTab(tab.url)}/>
-    ))
+    const tabList = tabs.map((tab) => (
+        <Tab
+            label={tab.name}
+            key={tab.name}
+            className={styles['tab-item']}
+            onClick={() => onClickTab(tab.url)}
+        />
+    ));
 
     return (
-
         <Tabs
             value={index}
             onChange={onChange}
@@ -58,14 +54,12 @@ const TabMenu = ({ tabs,index,onChange}) => {
             {tabList}
         </Tabs>
     );
+};
 
-}
-
-TabMenu.defaultProps={
-    tabs:null,
-    index:0,
-    onChange: ()=>console.warn(null)
-}
+TabMenu.defaultProps = {
+    tabs: null,
+    index: 0,
+    onChange: () => console.warn(null),
+};
 
 export default TabMenu;
-

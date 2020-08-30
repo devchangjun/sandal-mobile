@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Back = ({ stroke, strokeWidth, onClick, rotate }) => {
+const Back = ({ stroke, strokeWidth, onClick, rotate, width, height }) => {
     return (
-        <svg style={{ transform: `rotate(${rotate})`}} width="24" height="24" viewBox="0 0 24 24" onClick={onClick}>
+        <svg style={{ transform: `rotate(${rotate})`}} width={width} height={height} viewBox="0 0 24 24" onClick={onClick}>
             <g transform="translate(13869 -3082)">
                 <g>
                     <rect width="24" height="24" transform="translate(-13869 3082)" fill="none" />
@@ -10,14 +10,15 @@ const Back = ({ stroke, strokeWidth, onClick, rotate }) => {
                 </g>
             </g>
         </svg>
-
-    )
-}
+    );
+};
 
 Back.defaultProps = {
     rotate: '0',
     stroke: "#000",
     strokeWidth: "1",
-    onClick: () => console.warn('warn')
-}
+    width: 24,
+    height: 24
+};
+
 export default Back;

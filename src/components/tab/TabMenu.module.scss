@@ -2,13 +2,11 @@
 @import '../../styles/Root.scss';
 
 
-.test{
-
+.tab-item{
     min-height: 40px !important; //필수
     padding: 0 !important;
     display: flex !important;
     flex : 1 1 0;
-
 }
 :global .MuiTabs-flexContainer{
 

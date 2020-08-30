@@ -10,18 +10,18 @@ import BottomModal from 'components/nav/BottomModal';
 import SwipeableViews from "react-swipeable-views";
 
 import Message from 'components/message/Message';
+
+
 const tabInit = [
     {
         url:`${Paths.ajoonamu.order_list}?tab=0`,
         name: '예약주문'
     },
-
     {
         url:`${Paths.ajoonamu.order_list}?tab=1`,
         name: '배달주문'
     },
-]
-
+];
 
 const OrderListContainer = ({ tab = '0' }) => {
     const [open,setOpen] = useState(false);
@@ -74,5 +74,6 @@ const OrderListContainer = ({ tab = '0' }) => {
             <BottomModal open={open} handleClose={handleClose} />
         </>
     );
-}
+};
+
 export default OrderListContainer;

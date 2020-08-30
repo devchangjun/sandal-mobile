@@ -1,6 +1,6 @@
 @import '../../styles/Root.scss';
 .container{
-        @include wireframe(80px);
+        @include wireframe($pd-top);
         .pd-box{
                 padding: $padding-all;
         }

@@ -1,11 +1,7 @@
 import React from 'react';
 import MyPageContainer from 'containers/mypage/MyPageContainer';
-const MyPage =()=>{
-    return(
-        <div>
-            <MyPageContainer/>
-        </div>
-    )
-}
+const MyPage = () => {
+    return <MyPageContainer />;
+};
 
 export default MyPage;

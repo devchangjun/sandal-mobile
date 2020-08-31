@@ -12,6 +12,7 @@ import FixButton from 'components/button/Button';
 
 import DialogContent from '@material-ui/core/DialogContent';
 import { numberFormat } from "../../lib/formatter";
+import zIndex from '@material-ui/core/styles/zIndex';
 
 
 //test commit

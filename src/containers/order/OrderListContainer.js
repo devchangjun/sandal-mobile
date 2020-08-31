@@ -8,8 +8,9 @@ import OrderItemList from 'components/order/OrderItemList';
 import BottomNav from 'components/nav/BottomNav';
 import BottomModal from 'components/nav/BottomModal';
 import SwipeableViews from "react-swipeable-views";
-
+import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
+import { IconButton } from '@material-ui/core';
 
 
 const tabInit = [
@@ -47,28 +48,31 @@ const OrderListContainer = ({ tab = '0' }) => {
 
     return (
         <>
-            <TitleBar title={'주문내역'} sub={true} onClick={handleOpen} />
+            <TitleBar title={'주문내역'}>
+                <IconButton onClick={handleOpen}>
+                    <img src={date} alt="데이트" />
+                </IconButton>
+            </TitleBar>
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
-            
-                    <SwipeableViews
-                        enableMouseEvents
-                        index={index}
-                        onChangeIndex={onChangeSwiperIndex}
-                    >
-                        <div className={styles['pd-box']}>
-                            <OrderItemList />
-                        </div>
-                        <div className={styles['pd-box']}>
-                            <Message
-                                src={true}
-                                msg={'주문 내역이 존재하지 않습니다.'}
-                                isButton={true}
-                                buttonName={'주문하러 가기'}
-                            />
-                        </div>
-                    </SwipeableViews>
-                </div>
+                <SwipeableViews
+                    enableMouseEvents
+                    index={index}
+                    onChangeIndex={onChangeSwiperIndex}
+                >
+                    <div className={styles['pd-box']}>
+                        <OrderItemList />
+                    </div>
+                    <div className={styles['pd-box']}>
+                        <Message
+                            src={true}
+                            msg={'주문 내역이 존재하지 않습니다.'}
+                            isButton={true}
+                            buttonName={'주문하러 가기'}
+                        />
+                    </div>
+                </SwipeableViews>
+            </div>
             <BottomNav />
             <BottomModal open={open} handleClose={handleClose} />
         </>

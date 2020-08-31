@@ -13,7 +13,7 @@ let notice_list = [
     },
     {
         id: 3,
-        message: "배송 시작(도착 예정 시간: 12시 ~ 13시사이)",
+        message: "배송 시작(도착 예정 시간: 12시 ~ 13시사이)",
         send_at: new Date(2020, 7, 30, 15, 38),
         checked: false,
     },

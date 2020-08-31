@@ -73,6 +73,30 @@ const CouponConatiner = ({ tab='0' }) => {
             <TitleBar title={'쿠폰함'} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cx('container')}>
+            {/* <div>
+                        <div className={cx('coupon-title', 'pd-box')}>
+                            쿠폰 코드 입력
+                        </div>
+                        <div className={cx('coupon-form', 'pd-box')}>
+                            <input
+                                className={styles['code-input']}
+                                type="text"
+                                placeholder={'쿠폰 코드를 입력하세요'}
+                            />
+                            <Button className={styles['submit-btn']}>
+                                쿠폰등록
+                            </Button>
+                        </div>
+                        <div
+                            className={cx('sticky-title', 'pd-box')}
+                            ref={my_coupon}
+                        >
+                            내 쿠폰
+                        </div>
+                        <div className={cx('coupon-list', 'pd-box')}>
+                            <CouponItemList check={false} />
+                        </div>
+                    </div> */}
                 <SwipeableViews
                     enableMouseEvents
                     index={index}
@@ -113,6 +137,7 @@ const CouponConatiner = ({ tab='0' }) => {
                         </div>
                     </div>
                 </SwipeableViews>
+              
                 {/* {tab === 'mycoupon' &&
                         <>
                             <div className={cx('coupon-title', 'pd-box')}>

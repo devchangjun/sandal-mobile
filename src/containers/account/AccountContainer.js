@@ -10,6 +10,7 @@ import BottomNav from 'components/nav/BottomNav';
 
 import { localLogout, requestAgreeChange } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
+import {update_user_info} from '../../store/auth/auth';
 
 
 import styles from './Account.module.scss';
@@ -27,7 +28,7 @@ const AccountContainer = () => {
 
     useEffect(() => {
         if (user === null) {
-            history.push(Paths.index);
+            history.replace(Paths.index);
         }
     }, [user, history]);
 
@@ -38,7 +39,7 @@ const AccountContainer = () => {
 
         if (res.message === '로그아웃에 성공하셨습니다.') {
             dispatch(logout());
-            history.push(Paths.index);
+            history.replace(Paths.index);
         }
     };
 
@@ -83,6 +84,7 @@ const AccountContainer = () => {
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {
     const [mail, setMail] = useState(agreeMail);
     const [sms, setSMS] = useState(agreeSMS);
+    const dispatch = useDispatch();
 
     const sendPostAgreeChange = useCallback(async (type, value) => {
         /*
@@ -91,16 +93,19 @@ const MarketingAgree = ({ agreeMail, agreeSMS }) => {
         */
         const token = sessionStorage.getItem('access_token');
         const res = await requestAgreeChange(token, type, value);
+        console.log(res);
     }, []);
 
     const changeMail = useCallback(() => {
         sendPostAgreeChange('mail', !mail);
         setMail(!mail);
-    }, [mail, sendPostAgreeChange]);
+        dispatch(update_user_info({name :'agree_mail' ,value: !mail}));
+    }, [mail, sendPostAgreeChange,dispatch]);
     const changeSMS = useCallback(() => {
         sendPostAgreeChange('sms', !sms);
         setSMS(!sms);
-    }, [sms, sendPostAgreeChange]);
+        dispatch(update_user_info({name :'agree_sms' ,value: !sms}));
+    }, [sms, sendPostAgreeChange,dispatch]);
 
     return (
         <div className={styles['marketing']}>

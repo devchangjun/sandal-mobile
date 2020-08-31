@@ -117,7 +117,7 @@ const SignUpContainer = () => {
     const [compare, setCompare] = useState(false);
     const [toggle, setToggle] = useState(false);
     const [check, dispatchCheck] = useReducer(checkReducer, initCheck);
-    const { allCheck, check1, check2, check3 } = check;
+    const {check1, check2, check3 } = check;
 
 
     const updateToggle = useCallback(() => {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './EventListContainer.module.scss';
-import { Button } from '@material-ui/core';
 import { requestEventList } from '../../api/event';
 import EventList from '../../components/event/EventList';
 

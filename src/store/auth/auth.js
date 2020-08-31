@@ -7,9 +7,11 @@ const GET_USERINFO_SUCCEED = 'auth/GET_USERINFO_SUCCEED';
 const GET_USERINFO_ERROR = 'auth/GET_USERINFO_ERROR';
 
 const LOGOUT = 'auth/LOGOUT';
+const UPDATE_USERINFO = 'auth/UPDATE_USERINFO';
 
 export const get_user_info = createAction(GET_USERINFO);
 export const logout = createAction(LOGOUT);
+export const update_user_info = createAction(UPDATE_USERINFO);
 
 const initState = {
     loading: false,
@@ -39,6 +41,8 @@ export function* auth_saga() {
     yield takeEvery(GET_USERINFO, get_user_info_saga);
 }
 
+
+
 const auth = handleActions(
     {
         [GET_USERINFO]: (state, action) => ({
@@ -61,6 +65,15 @@ const auth = handleActions(
             succeed: false,
             user: null,
         }),
+        [UPDATE_USERINFO] :(state,action)=>{
+            const {user} = state;
+            const {name,value} = action.payload;
+            user[name]  = value;
+            return {
+                ...state,
+                user :user
+            }
+        }
     },
     initState,
 );

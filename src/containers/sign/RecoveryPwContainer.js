@@ -6,7 +6,7 @@ import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import classNames from 'classnames/bind';
-import { sendSMS } from "../../api/sms/sms";
+// import { sendSMS } from "../../api/sms/sms";
 import { useHistory } from 'react-router';
 
 const cx = classNames.bind(styles);

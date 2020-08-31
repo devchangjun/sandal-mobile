@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import styles from './SupportContainer.module.scss';
 import classNames from 'classnames/bind';
 
@@ -13,7 +15,7 @@ import { requestFAQList } from '../../api/support/faq';
 import PostList from '../../components/support/PostList';
 import { Button } from '@material-ui/core';
 import Loading from '../../components/asset/Loading';
-
+import SwipeableViews from 'react-swipeable-views';
 const cn = classNames.bind(styles);
 
 const tabInit = [
@@ -29,12 +31,26 @@ const tabInit = [
 
 const SupportContainer = ({ tab = 'notice' }) => {
     
+    const history = useHistory();
+    const [index ,setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
     const [faqList, setFAQList] = useState([]);
     const [faqType, setFAQType] = useState('회원가입');
     const listData = tab === 'notice' ? noticeList : faqList;
     const emptyMessage = tab === 'notice' ? "공지사항이 존재하지 않습니다." : "등록된 자주 묻는 질문이 없습니다.";
+
+
+
+    const onChangeTabIndex = (e, value) => {
+        setIndex(value);
+    };
+    const onChangeSwiperIndex = (index) => {
+        setIndex(index);
+        const tab= (index===0) ? 'notice' : 'faq';
+        history.replace(`${Paths.ajoonamu.support}/${tab}`);
+    };
+
 
     const getNoticeList = useCallback(async () => {
         /*
@@ -72,10 +88,21 @@ const SupportContainer = ({ tab = 'notice' }) => {
         <>
             <Loading open={loading} />
             <TitleBar title="고객센터" />
-            <TabMenu tabs={tabInit} />
+            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
-                {tab === 'faq' && (
-                    <>
+                <SwipeableViews
+                    enableMouseEvents
+                    index={index}
+                    onChangeIndex={onChangeSwiperIndex}
+                >
+                    <div>
+                        <PostList
+                            listData={listData}
+                            emptyMessage={emptyMessage}
+                        />
+                    </div>
+
+                    <div>
                         <div className={styles['title']}>
                             <h2 className={styles['text']}>자주 묻는 질문</h2>
                         </div>
@@ -92,16 +119,21 @@ const SupportContainer = ({ tab = 'notice' }) => {
                                     <option value="결제">결제</option>
                                     <option value="포인트">포인트</option>
                                     <option value="배달">배달</option>
-                                    <option value="문구 서비스">문구 서비스</option>
+                                    <option value="문구 서비스">
+                                        문구 서비스
+                                    </option>
                                 </select>
                             </Button>
                         </div>
                         <div className={styles['title']}>
                             <h2 className={styles['text']}>{faqType}</h2>
                         </div>
-                    </>
-                )}
-                <PostList listData={listData} emptyMessage={emptyMessage}/>
+                        <PostList
+                            listData={listData}
+                            emptyMessage={emptyMessage}
+                        />
+                    </div>
+                </SwipeableViews>
             </div>
             <BottomNav />
         </>

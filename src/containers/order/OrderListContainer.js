@@ -49,7 +49,6 @@ const OrderListContainer = ({ tab = '0' }) => {
         <>
             <TitleBar title={'주문내역'} sub={true} onClick={handleOpen} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
-
             <div className={styles['container']}>
             
                     <SwipeableViews

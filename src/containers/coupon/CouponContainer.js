@@ -58,11 +58,6 @@ const CouponConatiner = ({ tab='0' }) => {
         history.replace(`${Paths.ajoonamu.coupon}?tab=${index}`);
     }
 
-    useEffect(()=>{
-        history.replace(`${Paths.ajoonamu.coupon}?tab=${tab}`)
-        setIndex(parseInt(tab));
-    },[tab, history]);
-
     useEffect(() => {
         window.scrollTo(0,0);
         index === 0 && window.addEventListener('scroll', onScroll);

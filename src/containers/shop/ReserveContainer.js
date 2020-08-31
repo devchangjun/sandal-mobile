@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
 import {useHistory} from 'react-router-dom';
-// import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -10,27 +9,7 @@ import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
-
 import SwipeableViews from "react-swipeable-views";
-
-
-
-const styles2 = {
-    tabs: {
-      background: "#fff",
-      width:"100%",
-      border:"1px solid #000",
-      display:"flex",
-      justifyContent :"center"
-  
-    },
-    tab:{
-      width:"33%",
-  
-    },
-  };
-  
-
 
 const tabInit = [
     {
@@ -52,7 +31,7 @@ const tabInit = [
 
 ]
 
-const ReserveContainer = ({ tab="0" }) => {
+const ReserveContainer = ({ tab='0'}) => {
 
     const [open, setOpen] = React.useState(false);
     const history= useHistory();
@@ -69,12 +48,8 @@ const ReserveContainer = ({ tab="0" }) => {
     }
     const onChangeSwiperIndex =(index)=>{
         setIndex(index);
+        history.replace(`${Paths.ajoonamu.shop}?menu=${index}`)
     }
-    useEffect(()=>{
-        history.replace(`${Paths.ajoonamu.shop}?menu=${tab}`)
-        setIndex(parseInt(tab));
-    },[tab]);
-
 
     const onChangeTitle = useCallback(()=>{
         if(index===0){
@@ -90,6 +65,7 @@ const ReserveContainer = ({ tab="0" }) => {
             setTitle("메뉴3");
         }
     },[index])
+
     useEffect(() => {
         onChangeTitle();
     }, [onChangeTitle])

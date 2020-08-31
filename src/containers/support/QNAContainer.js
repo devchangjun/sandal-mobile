@@ -1,4 +1,5 @@
 import React, { useReducer, useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './QNAContainer.module.scss';
 import classNames from 'classnames/bind';
 
@@ -11,6 +12,7 @@ import QNAList from '../../components/support/QNAList';
 import { Paths } from '../../paths';
 import { requestQNAList, requestQNAStore } from '../../api/support/qna';
 import Loading from '../../components/asset/Loading';
+import SwipeableViews from 'react-swipeable-views';
 
 const cn = classNames.bind(styles);
 
@@ -28,19 +30,31 @@ const tabInit = [
 function reducer(state, action) {
     return {
         ...state,
-        [action.name]: action.value
+        [action.name]: action.value,
     };
-};
+}
 
 const QNAContainer = ({ tab = 'send' }) => {
     // QNASend
+    const history = useHistory();
+    const [index, setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [state, dispatch] = useReducer(reducer, {
         title: '',
         content: '',
         email: '',
-        files: ''  
+        files: '',
     });
+
+    const onChangeTabIndex = (e, value) => {
+        setIndex(value);
+    };
+    const onChangeSwiperIndex = (index) => {
+        setIndex(index);
+        const tab= (index===0) ? 'send' : 'list';
+        history.replace(`${Paths.ajoonamu.support}/qna/${tab}`);
+    };
+
     const sendQNAItem = useCallback(async () => {
         /*
             문의하기 등록 버튼.
@@ -50,8 +64,8 @@ const QNAContainer = ({ tab = 'send' }) => {
         const res = await requestQNAStore(token, state);
         setLoading(false);
     }, [state]);
-    const onChange = e => dispatch(e.target);
-    const onSubmit = e => sendQNAItem();
+    const onChange = (e) => dispatch(e.target);
+    const onSubmit = (e) => sendQNAItem();
     // QNASend
 
     // QNAList
@@ -67,7 +81,7 @@ const QNAContainer = ({ tab = 'send' }) => {
             const { qnas } = res;
             setQnaList(qnas);
         } else {
-            alert('토큰이 없습니다.')
+            alert('토큰이 없습니다.');
         }
         setLoading(false);
     }, []);
@@ -80,12 +94,27 @@ const QNAContainer = ({ tab = 'send' }) => {
         <>
             <Loading open={loading} />
             <TitleBar title="고객센터" />
-            <TabMenu tabs={tabInit} />
-            <div className={cn('container', { list: tab === 'list'})}>
-                {tab === 'send' ?
-                    <QNASend state={state} onChange={onChange} onSubmit={onSubmit}/>
-                    : <QNAList listData={qnaList} emptyMessage="등록된 1:1 문의가 없습니다." />
-                }
+            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
+            <div className={cn('container', { list: tab === 'list' })}>
+                <SwipeableViews
+                    enableMouseEvents
+                    index={index}
+                    onChangeIndex={onChangeSwiperIndex}
+                >
+                    <div>
+                        <QNASend
+                            state={state}
+                            onChange={onChange}
+                            onSubmit={onSubmit}
+                        />
+                    </div>
+                    <div>
+                        <QNAList
+                            listData={qnaList}
+                            emptyMessage="등록된 1:1 문의가 없습니다."
+                        />
+                    </div>
+                </SwipeableViews>
             </div>
             <BottomNav />
         </>

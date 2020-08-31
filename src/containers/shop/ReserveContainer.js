@@ -9,6 +9,7 @@ import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
+
 import SwipeableViews from "react-swipeable-views";
 
 const tabInit = [
@@ -65,6 +66,11 @@ const ReserveContainer = ({ tab='0'}) => {
             setTitle("메뉴3");
         }
     },[index])
+
+    useEffect(()=>{
+        console.log(tab);
+        setIndex(parseInt(tab));
+    },[tab])
 
     useEffect(() => {
         onChangeTitle();

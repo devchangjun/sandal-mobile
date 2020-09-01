@@ -2,6 +2,9 @@ import React from 'react';
 import styles from './OrderComplete.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import DetailOrderItem from 'components/order/DetailOrderItem';
+import cn from 'classnames/bind';
+
+const cx = cn.bind(styles);
 
 
 const OrderDetailContainer =()=>{
@@ -17,7 +20,14 @@ const OrderDetailContainer =()=>{
                         <DetailOrderItem />
                         <DetailOrderItem />
                     </div>
-                    <div className={styles['title']}>배달 정보</div>
+                    <div className={cx('title','between')}>
+                        <div>  
+                        배달 정보
+                        </div>
+                        <div className={styles['order-type']}>
+                            예약주문
+                        </div>
+                    </div>
                     <div className={styles['list']}>
                         <UserInfo
                             value1={'김종완'}

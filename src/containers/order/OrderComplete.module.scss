@@ -9,10 +9,11 @@
         align-items: center;
         flex-direction: column;
         padding:$padding-side;
-        .title{
+        .text{
             color:$main-color;
             font-size:24px;
         }
+
         .order-number{
             font-size: 14px;
             color:#9999;
@@ -47,7 +48,24 @@
             font-weight: bold;
             padding: 15px 24px;
             background-color: #F9F9F9;
+            &.between{
+                display: flex;
+                justify-content: space-between;
+                .order-type{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border :1px solid $main-color;
+                    background-color:#fff;
+                    border-radius: 16px;
+                    font-size: 14px;
+                    color:$main-color;
+                    width: 80px;
+                    height: 32pxs;
+                }
+            }
         }
+
         .list{
             background-color: white;
             padding: $padding-all;

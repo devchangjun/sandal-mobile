@@ -18,7 +18,7 @@ const OrderCompleteContainer =()=>{
             <TitleBar title={'주문완료'} />
             <div className={styles['container']}>
                 <div className={styles['content']}>
-                    <div className={styles['title']}>
+                    <div className={styles['text']}>
                         주문이 완료되었습니다.
                     </div>
                     <div className={styles['order-number']}>주문번호 :1234</div>
@@ -44,7 +44,14 @@ const OrderCompleteContainer =()=>{
                         <DetailOrderItem />
                         <DetailOrderItem />
                     </div>
-                    <div className={styles['title']}>배달 정보</div>
+                    <div className={cx('title','between')}>
+                        <div>  
+                        배달 정보
+                        </div>
+                        <div className={styles['order-type']}>
+                            예약주문
+                        </div>
+                    </div>
                     <div className={styles['list']}>
                         <UserInfo
                             value1={'김종완'}

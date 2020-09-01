@@ -8,6 +8,9 @@ export { default as RecoveryPw } from './sign/RecoveryPw';
 export { default as Recovery } from './sign/Recover';
 
 export { default as Account } from './account/Account';
+export { default as UpdateName } from './account/UpdateName';
+export { default as UpdatePassword } from './account/UpdatePassword';
+export { default as UpdatePhone } from './account/UpdatePhone';
 export { default as MyPage } from './mypage/MyPage';
 export { default as Home } from './main/Home';
 export { default as Address } from './address/Address';

@@ -42,6 +42,15 @@ const AccountContainer = () => {
             history.replace(Paths.index);
         }
     };
+    const onClickUpdateName =()=>{
+        history.push(Paths.ajoonamu.update_name);
+    }
+    const onClickUpdatePhone =()=>{
+        history.push(Paths.ajoonamu.update_phone);
+    }
+    const onClickUpdatePassword =()=>{
+        history.push(Paths.ajoonamu.update_password);
+    }
 
     const render = () => (
         <>
@@ -58,10 +67,10 @@ const AccountContainer = () => {
                     </div>
                 </div>
                 <div className={styles['tab']}>
-                    <Item text={'이름'} value={user && user.name} />
-                    <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)} />
+                    <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
+                    <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
-                    <Item text={'비밀번호 변경'} />
+                    <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
                 </div>
 
                 <MarketingAgree
@@ -144,9 +153,9 @@ const AgreeToggle = ({ name, checked, onToggle }) => {
     );
 };
 
-function Item({ text, value }) {
+function Item({ text, value,onClick }) {
     return (
-        <Button className={styles['pd-box']}>
+        <Button className={styles['pd-box']} onClick={onClick}>
             <div className={styles['item']}>
                 <div className={styles['text']}>{text}</div>
                 {value &&

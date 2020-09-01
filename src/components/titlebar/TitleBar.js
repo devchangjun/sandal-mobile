@@ -33,7 +33,7 @@ const BackButton = () => {
     const history = useHistory();
     const onClickBack = () => {
         console.log(history);
-        history.replace("/");
+        history.goBack();
     };
     return (
         <div className={styles['back']}>

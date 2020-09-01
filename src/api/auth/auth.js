@@ -22,6 +22,19 @@ export const requestAgreeChange = async (token, type, value) => {
     return res;
 };
 
+export const updateName = async (token, value) => {
+    const req = Paths.api + 'user/mypage/update_name';
+    const form_data = {
+        name: value
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    return res;
+};
+
+
 export const localLogin = async (email, password) => {
     const req = Paths.api + 'user/login';
 

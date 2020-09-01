@@ -10,7 +10,7 @@ import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     FindEmail, FindPassword, Home, Account, Address, Reserve, DetailMenu,
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
-    Support, Notice, Event
+    Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone
 } from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -58,6 +58,10 @@ function App() {
         <Route path={`${Paths.ajoonamu.event}/:post?`} component={Event}></Route>
         <Route path={Paths.ajoonamu.notice} component={Notice}></Route>
         <Route path={`${Paths.ajoonamu.support}/:tab?`} component={Support}></Route>
+        <Route path={Paths.ajoonamu.update_name} component={UpdateName}></Route>
+        <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
+        <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
+
       </ScrollToTop>
     </div>
   );

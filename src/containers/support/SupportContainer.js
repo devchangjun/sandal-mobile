@@ -94,6 +94,7 @@ const SupportContainer = ({ tab = 'notice' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
+
                 >
                     <div>
                         <PostList

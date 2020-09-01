@@ -40,12 +40,6 @@ const OrderListContainer = ({ tab = '0' }) => {
         setIndex(index);
         history.replace(`${Paths.ajoonamu.order_list}?tab=${index}`);
     }
-    
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[index])
-    
-
     return (
         <>
             <TitleBar title={'주문내역'}>
@@ -59,6 +53,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
+                    animateHeight={true}
                 >
                     <div className={styles['pd-box']}>
                         <OrderItemList />

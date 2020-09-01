@@ -38,7 +38,6 @@ const CouponConatiner = ({ tab='0' }) => {
     const [index, setIndex] = React.useState(parseInt(tab));
 
     const onScroll = useCallback(e => {
-        console.log(index);
         if (index === 0) {
             const scrollTop = ('scroll', e.srcElement.scrollingElement.scrollTop);
             if (scrollTop > 250) {
@@ -59,8 +58,7 @@ const CouponConatiner = ({ tab='0' }) => {
     }
 
     useEffect(() => {
-        window.scrollTo(0,0);
-        my_coupon.current.classList.remove(cx('shadow'));
+
         index === 0 && window.addEventListener('scroll', onScroll);
         return () => {
             window.removeEventListener('scroll', onScroll);
@@ -101,6 +99,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
+                    animateHeight={true}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>

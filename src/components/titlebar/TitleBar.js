@@ -4,10 +4,13 @@ import styles from './TitleBar.module.scss';
 import Back from 'components/svg/header/Back';
 import { IconButton } from '@material-ui/core';
 
+
+
 // 메인 로고 이미지
 
 const TitleBar = ({ title, sub, alt, onClick, children }) => {
     return (
+
         <div className={styles['title-bar']}>
             <div className={styles['item']}>
                 <BackButton />
@@ -30,7 +33,7 @@ const BackButton = () => {
     const history = useHistory();
     const onClickBack = () => {
         console.log(history);
-        history.goBack();
+        history.replace("/");
     };
     return (
         <div className={styles['back']}>

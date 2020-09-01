@@ -100,6 +100,8 @@ const QNAContainer = ({ tab = 'send' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
+                    animateHeight={true}
+                    
                 >
                     <div>
                         <QNASend

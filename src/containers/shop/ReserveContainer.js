@@ -111,6 +111,7 @@ const ReserveContainer = ({ tab='0'}) => {
                         enableMouseEvents
                         index={index}
                         onChangeIndex={onChangeSwiperIndex}
+                        animateHeight={true}
                     >
                         <div>
                             {result ? (

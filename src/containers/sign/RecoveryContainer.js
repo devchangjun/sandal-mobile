@@ -27,12 +27,8 @@ const RecoveryContainer = () => {
             <div className={cx('container')}>
                 <div className={cx('content','pd-box')}>
                     <div className={styles['box']}>
-                        <div onClick={onClickIdLink}>
-                            <SignComplete  mainTitle={"아이디찾기"} text={"휴대폰 인증을 통해 아이디를 찾습니다."} onBorder={true}/>
-                        </div>
-                        <div  onClick={onClickPwLink}>
-                            <SignComplete mainTitle={"비밀번호 찾기"} text={"자신의 아이디와 휴대폰 인증을 통해 비밀번호를 찾습니다."} onBorder={true}/>
-                        </div>
+                            <SignComplete  mainTitle={"아이디찾기"} text={"휴대폰 인증을 통해 아이디를 찾습니다."} onBorder={true} onClick={onClickIdLink}/>
+                            <SignComplete mainTitle={"비밀번호 찾기"} text={"자신의 아이디와 휴대폰 인증을 통해 비밀번호를 찾습니다."} onBorder={true} onClick={onClickPwLink}/>
                     </div>
                 </div>
 

@@ -26,11 +26,11 @@ const UpdatePasswordContainer = () => {
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
-        if (new_password.length !== 0 && new_password_confirm.length !== 0) {
+          if (new_password.length !== 0 && new_password_confirm.length !== 0) {
             setCompare(new_password === new_password_confirm);
-        } else {
+          } else {
             setCompare(false);
-        }
+         }
     }, [new_password, new_password_confirm]);
 
     const confirm = () => {
@@ -42,6 +42,11 @@ const UpdatePasswordContainer = () => {
             }
         }
     };
+
+    const onClickUpdatePassword =()=>{
+        console.log("비밀번호 변경");
+    }
+ 
 
     useEffect(() => {
         matchPassword();
@@ -89,7 +94,7 @@ const UpdatePasswordContainer = () => {
                 </div>
             </div>
 
-            <Button title={'확인'} />
+            <Button title={'확인'} toggle ={compare}/>
         </>
     );
 };

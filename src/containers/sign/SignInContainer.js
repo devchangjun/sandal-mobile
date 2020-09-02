@@ -100,8 +100,8 @@ const SignInContainer = () => {
     return (
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
-                <div className={cx('container','min-height')}>
-                    <div className={cx('content','pd-box','mg-top40')}>
+                <div className={cx('container')}>
+                    <div className={cx('content')}>
                         <SignNormalInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} focus={true} />
                         <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                         <div className={styles['login-btn']}>
@@ -111,21 +111,14 @@ const SignInContainer = () => {
                             <div className={styles['table-cell']} onClick={onClickSignup} >
                                 <div className={styles['sub-text']}>회원가입</div>
                             </div>
-                            {/* <div className={cx('table-cell','line')}>
-                            <div className={styles['vertical-line']}/>
-                        </div> */}
                             <div className={styles['table-cell']} onClick={onClickRecovery}>
                                 <div className={styles['sub-text']}>아이디찾기</div>
                             </div>
-                            {/* <div className={cx('table-cell','line')}>
-                            <div className={styles['vertical-line']}/>
-                        </div> */}
                             <div className={styles['table-cell']} onClick={onClickRecovery}>
                                 <div className={styles['sub-text']}>비밀번호찾기</div>
                             </div>
                         </div>
-                        {/* 이부분 컴포넌트 만들어야함 */}
-
+                        <div className={styles['sns-box']}>
                         <div className={styles['social-login']}>
                             <div className={styles['text']}>
                                 간편 로그인
@@ -145,6 +138,7 @@ const SignInContainer = () => {
                                 <img src={Facebook} alt="facebook"></img>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
         </>

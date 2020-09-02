@@ -2,19 +2,16 @@
 
 .container{
     @include wireframe(40px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
     padding:$padding-side;
     .content{
         text-align: center;
+        padding-top:$pd-top40;
         min-height: 70vh;
 
         .text{
             font-size: 14px;
             word-break: keep-all;
+            margin-top:50px;
             p{
                 color:#777777;
             }

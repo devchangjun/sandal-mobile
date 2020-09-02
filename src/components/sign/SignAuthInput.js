@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './SignInput.module.scss';
 import classNames from 'classnames/bind';
-
 const cx = classNames.bind(styles);
 
 //인증 버튼을 포함한 input box

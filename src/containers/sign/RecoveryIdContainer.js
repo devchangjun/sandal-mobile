@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState,useEffect, useRef, useCallback } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Recovery.module.scss';
@@ -8,7 +8,8 @@ import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import classNames from 'classnames/bind';
 import { findId } from '../../api/auth/auth';
-
+import AuthTimer from 'components/sign/AuthTimer';
+import Check from 'components/svg/sign/Check';
 const cx = classNames.bind(styles);
 
 const logo =
@@ -20,29 +21,38 @@ const RecoveryIdContainer = () => {
     const random = useRef(496696);
     const [userName, setUserName] = useState('김보건');
     const [userPhone, setUserPhone] = useState('01072128994');
-    const [userAuth, setUserAuth] = useState('496696');
+    const [userAuth, setUserAuth] = useState('49669');
     const [toggle, setToggle] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [start_timer ,setStartTimer] = useState(false);
 
     const onChangeName = (e) => setUserName(e.target.value);
     const onChangePhone = (e) => setUserPhone(e.target.value);
-    const onChangeAuth = (e) => setUserAuth(e.target.value);
+    const onChangeAuth = (e) => {
+        setUserAuth(e.target.value)
+    };
 
+    const onClickCompareAuth = useCallback(() => {
+        const auth_num = parseInt(userAuth);
+        setSuccess(auth_num === random.current);
+    },[userAuth]);
+
+    useEffect(()=>{
+        onClickCompareAuth();
+    },[onClickCompareAuth])
+
+
+    //인증번호 발송 버튼
     const onClickSendAuth = () => {
         console.log(random.current);
         setToggle(true);
+        setStartTimer(true);
     };
-    const onClickCompareAuth = () => {
-        const auth_num = parseInt(userAuth);
-        console.log(typeof random.current);
-        if (auth_num === random.current) {
-            setSuccess(true);
-        } else {
-            alert('인증번호가 일치하지 않습니다.');
-            setSuccess(false);
-        }
-    };
-
+    const onClickReSendAuth =()=>{
+        setStartTimer(false);
+        setTimeout(()=>setStartTimer(true),0);
+    }
+ 
     const onClickFindEmail = async () => {
         const res = await findId(userName, userPhone);
         console.log(res);
@@ -75,7 +85,7 @@ const RecoveryIdContainer = () => {
                     />
                     <SignAuthInput
                         inputType={'text'}
-                        onClick={onClickSendAuth}
+                        onClick={toggle ? onClickReSendAuth : onClickSendAuth}
                         toggle={toggle}
                         initValue={userPhone}
                         buttonTitle={
@@ -85,13 +95,17 @@ const RecoveryIdContainer = () => {
                         placeholder={'핸드폰 번호'}
                     />
                     <div className={cx('auth-btn', { not_view: !toggle })}>
-                        <SignAuthInput
+                        <SignNormalInput
                             inputType={'text'}
                             initValue={userAuth}
-                            buttonTitle={'인증하기'}
                             onChange={onChangeAuth}
-                            onClick={onClickCompareAuth}
                         />
+                        <div className={styles['timer']}>
+                            {success ?
+                        <Check on={true}/> : 
+                        <AuthTimer start={start_timer}></AuthTimer>
+                            }
+                        </div>
                     </div>
                     <Button
                         title={'확인'}

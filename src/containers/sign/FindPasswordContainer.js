@@ -33,7 +33,7 @@ const FindPasswordContainer = () => {
             if (compare) {
                 return '비밀번호가 일치합니다.';
             } else {
-                return '비밀번호가 일치하지 않습니다.';
+                return '비밀번호가 불일치합니다.';
             }
         }
     };

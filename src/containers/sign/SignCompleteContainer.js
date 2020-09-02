@@ -6,7 +6,9 @@ import TitleBar from 'components/titlebar/TitleBar';
 import SignComplete from 'components/sign/SignComplete';
 import Button from 'components/button/Button';
 import Complete from '../../components/svg/sign/complete.svg';
+import cn from 'classnames/bind';
 
+const cx = cn.bind(styles);
 
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
@@ -21,8 +23,8 @@ const SignCompleteContainer = ({ name }) => {
     return (
         <>
             <TitleBar title={"회원가입"} src={logo} alt={"회원가입"} />
-            <div className={styles['container']}>
-                   <div className={styles['content']}>
+            <div className={cx('container','center')}>
+                   <div className={cx('content','pd-none')}>
                     <div className={styles['success-img']}>
                     <img src ={Complete} alt={"축하합니다"}/>
                     </div>

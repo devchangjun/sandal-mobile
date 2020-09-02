@@ -7,16 +7,20 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
     background-color: #fff;
+    &.center{
+        align-items: center;
+    }
     .content {
         width: 100%;
         background: #fff;
         position: relative;
         padding:$padding-side;
+        padding-top:40px;
         //로그인 창에서 회원가입 / 아이디찾기 / 비밀번호 찾기 영역
         .link-table {
             display: table;
+            position: relative;
             width: 100%;
             //링크 테이블 셀
             .table-cell {
@@ -71,28 +75,35 @@
     cursor: pointer;
 }
 
-.social-login{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding-top :70px;
-    .text{
-        color:#999;
-        font-size: 14px;
-        width: 100px;
-        height: 20px;
+.sns-box{
+    position: absolute;
+    left:0;
+    right:0;
+    top:50vh;
+    padding:$padding-side;
+    .social-login{
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color:white;
-        z-index: 1;
-    }
-    .line{
-        border:1px solid #EBEBEB;
-        border-radius: 2px;
-        width: 100%;
-        position: absolute;
+        position: relative;
+        padding-top :70px;
+        .text{
+            color:#999;
+            font-size: 14px;
+            width: 100px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color:white;
+            z-index: 1;
+        }
+        .line{
+            border:1px solid #EBEBEB;
+            border-radius: 2px;
+            width: 100%;
+            position: absolute;
+        }
     }
 }
 // 로그인창 소셜 로그인
@@ -119,12 +130,12 @@
 .agree {
     max-width: $max-width;
     width: 100%;
-    position: relative;
+    // position: absolute;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding-bottom: 50px;
     background-color: #ebebeb;
+
     label {
         color: #777777;
     }
@@ -157,14 +168,9 @@
     }
 }
 
-.min-height {
-    min-height: 0;
-}
-.pd-none {
-    padding: 0;
-}
-.mg-top40{
-    margin-top:40px;
+
+.pd-none{
+    padding-top: 0 !important;
 }
 .pd-box {
     padding: 0 24px;

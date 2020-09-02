@@ -2,23 +2,31 @@
 .container{
     @include wireframe(40px);
     .content{
-        margin-top:$mg-top40;
+        padding-top :$pd-top40;
+        .box{
+            border:0px solid red;
+       
+        }
     }
 }
 .pd-box{
     padding:$padding-side;
 }
 
-
-
     //휴대폰 인증 버튼
     .auth-btn{
         overflow: hidden;
         transition:opacity .3s ease-in-out;
-        height: 135px;
+        position: relative;
         opacity: 1;
         &.not_view {
         opacity: 0;
             // height: 0px;
+        }
+        .timer{
+            position: absolute;
+            right:20px;
+            top:50%;
+            transform: translateY(-50%);
         }
     }

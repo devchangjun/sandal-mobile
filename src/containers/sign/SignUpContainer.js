@@ -231,7 +231,7 @@ const SignUpContainer = () => {
             }
             else {
                 return (
-                    "비밀번호가 일치하지 않습니다."
+                    "비밀번호가 불일치합니다.."
                 )
             }
         }
@@ -252,7 +252,7 @@ const SignUpContainer = () => {
         <>
             <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
             <div className={cx('container')}>
-                <div className={cx('content', 'pd-box')}>
+                <div className={cx('content')}>
                     <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={"중복검사"} />
                     <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
                     <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
@@ -283,7 +283,7 @@ const AcceptContainer = (props) => {
             <div className={cx('pd-box', 'border-box')}>
                 <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
             </div>
-            <div className={styles['background']}>
+            <div className={styles['terms']}>
                 <div className={cx('pd-sub-top')}>
                     <CheckBox id={"check1"} text={"개인정보처리방침 필수동의"} check={props.check1} onChange={props.onChangeCheck1} />
                     <CheckBox id={"check2"} text={"이용약관 필수"} check={props.check2} onChange={props.onChangeCheck2} />

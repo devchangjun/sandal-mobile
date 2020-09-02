@@ -39,3 +39,21 @@
         height: 0px;
     }
 }
+
+
+.auth-btn{
+    overflow: hidden;
+    transition:opacity .3s ease-in-out;
+    position: relative;
+    opacity: 1;
+    &.not_view {
+    opacity: 0;
+        // height: 0px;
+    }
+    .timer{
+        position: absolute;
+        right:20px;
+        top:50%;
+        transform: translateY(-50%);
+    }
+}

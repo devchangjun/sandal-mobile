@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
@@ -14,18 +13,21 @@ import Check from 'components/svg/sign/Check';
 import EstmModal from 'components/asset/EstmModal';
 import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
+import Loading from '../../components/asset/Loading';
 
 const cx = classNames.bind(styles);
 
 const CartContainer = () => {
     const history = useHistory();
-    const [open, setOpen] = React.useState(false); //모달창 오픈
-    const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    const [estm, setEstm] = React.useState(false); //견적서 발송
-    const [not_estm, setNotEstm] = React.useState(true); // 견적서 미발송
-    const [cartList, setCartList] = React.useState([]); //장바구니
-    const [total, setTotal] = React.useState(0); //총 주문금액
-    const [delivery_cost, setCost] = React.useState(0); // 배달비
+    const [open, setOpen] = useState(false); //모달창 오픈
+    const [allChecked, setAllChecked] = useState(false); //전체선택
+    const [estm, setEstm] = useState(false); //견적서 발송
+    const [not_estm, setNotEstm] = useState(true); // 견적서 미발송
+    const [cartList, setCartList] = useState([]); //장바구니
+    const [total, setTotal] = useState(0); //총 주문금액
+    const [delivery_cost, setCost] = useState(0); // 배달비
+    const [loading, setLoading] = useState(false);
+
     const handleOpen = useCallback(() => {
         setOpen(true);
     }, []);
@@ -47,6 +49,7 @@ const CartContainer = () => {
 
     //마운트 될 때 만 함수 생성.
     const onCartList = useCallback(async () => {
+        setLoading(true);
         const token = sessionStorage.getItem('access_token');
         const res = await getCartList(token);
         let len = Object.keys(res).length;
@@ -58,6 +61,7 @@ const CartContainer = () => {
         setCost(res.delivery_cost);
         setCartList(list);
         setAllChecked(true); //나중에 빼야함
+        setLoading(false);
     }, []);
 
     // 장바구니 리스트가 변경될 때 새로 생성.
@@ -141,17 +145,23 @@ const CartContainer = () => {
                             </div>
                         </div>
                         <div className={styles['estm']}>
-                            <div className={cx('check', { on: not_estm })} onClick={onChangeNotEstm}>
+                            <div
+                                className={cx('check', { on: not_estm })}
+                                onClick={onChangeNotEstm}
+                            >
                                 <div className={styles['check-box']}>
-                                    <Check on={not_estm}/>
+                                    <Check on={not_estm} />
                                 </div>
                                 <div className={styles['value']}>
                                     견적서 미발송
                                 </div>
                             </div>
-                            <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
+                            <div
+                                className={cx('check', { on: estm })}
+                                onClick={onChangeEstm}
+                            >
                                 <div className={styles['check-box']}>
-                                    <Check  on={estm}/>
+                                    <Check on={estm} />
                                 </div>
                                 <div className={styles['value']}>
                                     견적서 발송
@@ -162,7 +172,7 @@ const CartContainer = () => {
                 </div>
                 <Button
                     title={'주문하기'}
-                    onClick={estm? handleOpen : onClickOrder}
+                    onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>
                 <EstmModal
@@ -178,19 +188,26 @@ const CartContainer = () => {
 
     return (
         <>
-            <TitleBar title={'장바구니'} />
-            <div className={styles['container']}>
-                {cartList.length !== 0 ? (
-                    renderList()
-                ) : (
-                    <Message
-                        src={true}
-                        msg={'장바구니가 비었습니다.'}
-                        isButton={true}
-                        buttonName={'주문하러 가기'}
-                    />
-                )}
-            </div>
+            {loading ? (
+                <Loading open={true} />
+            ) : (
+                <>
+                    <TitleBar title={'장바구니'} />
+                    <div className={styles['container']}>
+                        {cartList.length !== 0 ? (
+                            renderList()
+                        ) : (
+                            <Message
+                                src={true}
+                                msg={'장바구니가 비었습니다.'}
+                                isButton={true}
+                                buttonName={'주문하러 가기'}
+                                onClick={()=>{history.replace(Paths.ajoonamu.shop)}}
+                            />
+                        )}
+                    </div>
+                </>
+            )}
         </>
     );
 };

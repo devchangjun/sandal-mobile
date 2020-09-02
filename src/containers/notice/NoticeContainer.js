@@ -6,7 +6,7 @@ import NoticeList from '../../components/notice/NoticeList';
 import BottomNav from '../../components/nav/BottomNav';
 
 import { requestNoticeList, requestNoticeChecked } from '../../api/notice';
-
+import Loading from '../../components/asset/Loading';
 import styles from './NoticeContainer.module.scss';
 
 const cn = classnames.bind(styles);
@@ -14,26 +14,33 @@ const cn = classnames.bind(styles);
 const MyPageContainer = () => {
     const [list, setList] = useState([]);
     const [availableTotal, setAvailableTotal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const onChecked = useCallback(async (id) => {
-        setList(list => list.map(item => {
-            return id === item.id ? { ...item, checked: true } : item;
-        }));
+        setList((list) =>
+            list.map((item) => {
+                return id === item.id ? { ...item, checked: true } : item;
+            }),
+        );
         await requestNoticeChecked(id);
     }, []);
     const onAllChecked = useCallback(async () => {
-        setList(list => list.map(item => {
-            return { ...item, checked: true };
-        }));
+        setList((list) =>
+            list.map((item) => {
+                return { ...item, checked: true };
+            }),
+        );
     }, []);
     const confirmChecked = useCallback(() => {
-        const result = list.findIndex(item => !item.checked);
+        const result = list.findIndex((item) => !item.checked);
         setAvailableTotal(result !== -1);
     }, [list]);
 
     const getNoticeList = useCallback(async () => {
+        setLoading(true);
         const res = await requestNoticeList();
         setList(res);
+        setLoading(false);
     }, []);
 
     useEffect(() => {
@@ -41,13 +48,21 @@ const MyPageContainer = () => {
     }, [getNoticeList]);
     useEffect(() => {
         confirmChecked();
-    }, [confirmChecked])
-    
+    }, [confirmChecked]);
+
     return (
         <>
+            <Loading open={loading} />
             <TitleBar title={'알림'}>
                 <div className={styles['total']}>
-                    <Button className={cn('read-btn', { available: availableTotal })} onClick={onAllChecked}>전체읽기</Button>
+                    <Button
+                        className={cn('read-btn', {
+                            available: availableTotal,
+                        })}
+                        onClick={onAllChecked}
+                    >
+                        전체읽기
+                    </Button>
                 </div>
             </TitleBar>
             <div className={styles['container']}>

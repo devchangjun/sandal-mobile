@@ -27,15 +27,21 @@ export default ({ id }) => {
         content, precautions
     } = eventData;
     return (
+        <>
+        {loading ? <Loading open ={true}/> :
+        
         <div className={styles['container']}>
-            <Loading open={loading} />
-            <EventImage image={image} />
-            <EventCotent
-                created_at={created_at}
-                ended_at={ended_at}
-                content={content}
-                precautions={precautions}
-            />
-        </div>
+        <Loading open={loading} />
+        <EventImage image={image} />
+        <EventCotent
+            created_at={created_at}
+            ended_at={ended_at}
+            content={content}
+            precautions={precautions}
+        />
+    </div>
+        }
+     
+        </>
     );
 };

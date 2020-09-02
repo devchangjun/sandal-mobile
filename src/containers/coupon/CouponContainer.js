@@ -12,7 +12,7 @@ import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
 
 const cx = classNames.bind(styles);
-
+// 스와이퍼 테스트
 const tabInit = [
     {
         url: `${Paths.ajoonamu.coupon}?tab=0`,

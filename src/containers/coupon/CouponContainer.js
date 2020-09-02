@@ -1,4 +1,4 @@
-import React, { useEffect,useCallback, useRef } from 'react';
+import React, {useState, useEffect,useCallback, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
@@ -10,6 +10,9 @@ import UseCouponItemList from 'components/coupon/UseCouponItemList';
 import BottomNav from 'components/nav/BottomNav';
 import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
+import {getCoupons} from '../../api/coupon/coupon';
+import Loading from '../../components/asset/Loading';
+import Message from '../../components/message/Message';
 
 const cx = classNames.bind(styles);
 
@@ -32,19 +35,21 @@ const tabInit = [
 
 const CouponConatiner = ({ tab='0' }) => {
 
-    const my_coupon = useRef(null);
+    const myCouponTitle = useRef(null);
     const history = useHistory();
 
+    const [loading, setLoading] = useState(false);
     const [index, setIndex] = React.useState(parseInt(tab));
+    const [myCoupon ,setMyCoupon] = useState(null);
 
     const onScroll = useCallback(e => {
         if (index === 0) {
             const scrollTop = ('scroll', e.srcElement.scrollingElement.scrollTop);
             if (scrollTop > 250) {
-                my_coupon.current.classList.add(cx('shadow'));
+                myCouponTitle.current.classList.add(cx('shadow'));
             }
             else {
-                my_coupon.current.classList.remove(cx('shadow'));
+                myCouponTitle.current.classList.remove(cx('shadow'));
             }
         }
     }, [index]);
@@ -56,7 +61,19 @@ const CouponConatiner = ({ tab='0' }) => {
         setIndex(index);
         history.replace(`${Paths.ajoonamu.coupon}?tab=${index}`);
     }
+    const getMyCouponList = async () => {
+        setLoading(true);
+        const res = await getCoupons();
+        setMyCoupon(res);
+        setLoading(false);
+    };
 
+
+    useEffect(()=>{
+        console.log(myCoupon);
+        getMyCouponList();
+
+    },[])
     useEffect(() => {
 
         index === 0 && window.addEventListener('scroll', onScroll);
@@ -68,6 +85,7 @@ const CouponConatiner = ({ tab='0' }) => {
 
     return (
         <>
+            <Loading open={loading} />
             <TitleBar title={'쿠폰함'} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cx('container')}>
@@ -75,7 +93,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={true}
+                    animateHeight={myCoupon ? true : false}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>
@@ -93,17 +111,27 @@ const CouponConatiner = ({ tab='0' }) => {
                         </div>
                         <div
                             className={cx('sticky-title', 'pd-box')}
-                            ref={my_coupon}
+                            ref={myCouponTitle}
                         >
                             내 쿠폰
                         </div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            <CouponItemList check={false} />
+                            {myCoupon ?
+                            <CouponItemList check={false} cp_list={myCoupon}/>
+                            :
+                            <Message
+                                msg={"보유하고 있는 쿠폰이 없습니다"}/>
+                            }
                         </div>
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            <CouponItemList check={true} />
+                        {myCoupon ?
+                            <CouponItemList check={true}  cp_list={myCoupon}/>
+                            :
+                            <Message
+                                msg={"보유하고 있는 쿠폰이 없습니다"}/>
+                            }
                         </div>
                     </div>
                     <div>

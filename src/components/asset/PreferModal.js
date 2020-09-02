@@ -104,6 +104,9 @@ const FullScreenDialog = (props) => {
                             value={numberFormat(props.budget)}
                             onChange={props.onChangeBudget}
                         ></input>
+                        <div className={styles['won']}>
+                                원
+                        </div>
                     </div>
                 </DialogContent>
                 <div className={styles['title']}>희망 수량</div>

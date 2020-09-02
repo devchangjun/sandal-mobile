@@ -44,7 +44,7 @@ const OrderListContainer = ({ tab = '0' }) => {
         <>
             <TitleBar title={'주문내역'}>
                 <IconButton onClick={handleOpen}>
-                    <img src={date} alt="데이트" />
+                    <img src={date} alt="date" />
                 </IconButton>
             </TitleBar>
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
@@ -64,6 +64,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                             msg={'주문 내역이 존재하지 않습니다.'}
                             isButton={true}
                             buttonName={'주문하러 가기'}
+                            onClick={()=>{history.replace(Paths.ajoonamu.shop)}}
                         />
                     </div>
                 </SwipeableViews>

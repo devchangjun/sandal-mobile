@@ -2,6 +2,7 @@
 
 .container{
     @include wireframe(40px);
+    padding-bottom:0;
     .content{
         height:100vh;
         display:flex;
@@ -95,7 +96,7 @@
         .button-box{
             width: 100%;
             display: flex;
-            padding:$padding-all;
+            padding:36px 24px;
             justify-content: center;
         
             .btn{

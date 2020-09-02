@@ -74,6 +74,7 @@ const CouponConatiner = ({ tab='0' }) => {
         getMyCouponList();
 
     },[])
+
     useEffect(() => {
 
         index === 0 && window.addEventListener('scroll', onScroll);
@@ -85,6 +86,7 @@ const CouponConatiner = ({ tab='0' }) => {
 
     return (
         <>
+        
             <Loading open={loading} />
             <TitleBar title={'쿠폰함'} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />

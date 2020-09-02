@@ -11,6 +11,7 @@ import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from "react-swipeable-views";
+import {getCustomMenuList} from '../../api/menu/menu';
 
 const tabInit = [
     {
@@ -34,16 +35,16 @@ const tabInit = [
 
 const ReserveContainer = ({ tab='0'}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const history= useHistory();
-    // const { user } = useSelector(state => state.auth);
     const [loading, setLoading] = useState(false);
-    const [budget, setBudget] = React.useState(0); //맞춤 가격
-    const [desireQuan, setDesireQuan] = React.useState(0); //희망수량
-    const [itemType, setItemType] = React.useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
-    const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
-    const [title ,setTitle] = React.useState('추천메뉴');
-    const [index, setIndex] = React.useState(parseInt(tab));
+    const [budget, setBudget] = useState(0); //맞춤 가격
+    const [desireQuan, setDesireQuan] = useState(0); //희망수량
+    const [itemType, setItemType] = useState("reserve"); //사용자 선택 값 1.예약주문 2.배달주문
+    const [test, setTest] = useState(false); // 예약주문 요청시 결과값.
+    const [title ,setTitle] = useState('추천메뉴');
+    const [index, setIndex] = useState(parseInt(tab));
+    const [customMenuList ,setCustomMenuList] = useState(null);
 
     const onChangeTabIndex =(e,value) =>{
         setIndex(value);
@@ -54,28 +55,30 @@ const ReserveContainer = ({ tab='0'}) => {
     }
 
     const onChangeTitle = useCallback(()=>{
-        if(index===0){
-            setTitle("추천메뉴");
-        }
-        else if(index===1){
-            setTitle("메뉴1");
-        }
-        else if(index===2){
-            setTitle("메뉴2");
-        }
-        else if(index===3){
-            setTitle("메뉴3");
-        }
+        if(index===0) setTitle("추천메뉴");
+        else if(index===1) setTitle("메뉴1");
+        else if(index===2) setTitle("메뉴2")
+        else if(index===3)  setTitle("메뉴3");
+        
     },[index])
 
+    const getCustomList = async () => {
+        setLoading(true);
+        console.log(loading);
+        const res = await getCustomMenuList();
+        console.log(res);
+        setCustomMenuList(res);
+        setLoading(false);
+    };
+
     useEffect(()=>{
-        console.log(tab);
         setIndex(parseInt(tab));
     },[tab])
 
     useEffect(() => {
         onChangeTitle();
     }, [onChangeTitle])
+
 
     //맞춤 주문하기 버튼 클릭
     const handleOpen = () => setOpen(true);
@@ -98,13 +101,17 @@ const ReserveContainer = ({ tab='0'}) => {
     }
     // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
     const onCustomOrder = () => {
+        if(budget===0) return;
+        console.log("맞춤주문 시작");
         setOpen(false);
-        if (budget !== 0) setResult(true);
+        getCustomList();
     }
+ 
+
 
     return (
         <>
-            <Loading open={false} />
+            <Loading open={loading} />
             <TitleBar title={title} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
@@ -113,13 +120,13 @@ const ReserveContainer = ({ tab='0'}) => {
                         enableMouseEvents
                         index={index}
                         onChangeIndex={onChangeSwiperIndex}
-                        animateHeight={true}
+                        animateHeight={customMenuList ? true : false}
                     >
                         <div>
-                            {result ? (
+                            {customMenuList ? (
                                 <div className={styles['title']}>
                                     맞춤 메뉴
-                                    <CustomItemList />
+                                    <CustomItemList menuList={customMenuList} />
                                 </div>
                             ) : (
                                 <Message

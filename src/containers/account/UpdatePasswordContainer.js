@@ -5,6 +5,7 @@ import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import classNames from 'classnames/bind';
+//test commit
 const cx = classNames.bind(styles);
 
 const UpdatePasswordContainer = () => {

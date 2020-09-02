@@ -11,7 +11,8 @@ import PreferModal from 'components/asset/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
 
 import SwipeableViews from "react-swipeable-views";
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper.scss';
 const tabInit = [
     {
         url:`${Paths.ajoonamu.shop}?menu=0`,
@@ -103,8 +104,31 @@ const ReserveContainer = ({ tab='0'}) => {
 
     return (
         <>
-            <TitleBar title={title} />
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
+            {/* <TitleBar title={title} /> */}
+            <Swiper
+             spaceBetween={50}
+         slidesPerView={3}
+         freeMode={true}
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+      <SwiperSlide className={styles['tab-item']}>
+            추천메뉴 
+      </SwiperSlide>
+      <SwiperSlide>
+            추천메뉴 
+      </SwiperSlide>
+      <SwiperSlide>
+            추천메뉴 
+      </SwiperSlide>
+      <SwiperSlide>
+            추천메뉴 
+      </SwiperSlide>
+      <SwiperSlide>
+            추천메뉴 
+      </SwiperSlide>
+            {/* <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} /> */}
+            </Swiper>
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     <SwipeableViews

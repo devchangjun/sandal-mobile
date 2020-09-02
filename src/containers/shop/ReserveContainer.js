@@ -7,7 +7,7 @@ import TabMenu from 'components/tab/TabMenu';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
-import PreferModal from 'components/asset/PreferModal';
+import PreferModal from 'components/modal/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from "react-swipeable-views";

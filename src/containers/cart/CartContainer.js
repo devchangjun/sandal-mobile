@@ -10,10 +10,11 @@ import produce from 'immer';
 import classNames from 'classnames/bind';
 import Check from 'components/svg/sign/Check';
 
-import EstmModal from 'components/asset/EstmModal';
+import EstmModal from 'components/modal/EstmModal';
 import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
+import { ButtonBase } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -145,28 +146,26 @@ const CartContainer = () => {
                             </div>
                         </div>
                         <div className={styles['estm']}>
-                            <div
-                                className={cx('check', { on: not_estm })}
-                                onClick={onChangeNotEstm}
-                            >
-                                <div className={styles['check-box']}>
-                                    <Check on={not_estm} />
+                            <ButtonBase>
+                                <div className={cx('check', { on: not_estm })} onClick={onChangeNotEstm}>
+                                    <div className={styles['check-box']}>
+                                        <Check on={not_estm}/>
+                                    </div>
+                                    <div className={styles['value']}>
+                                        견적서 미발송
+                                    </div>
                                 </div>
-                                <div className={styles['value']}>
-                                    견적서 미발송
+                            </ButtonBase>
+                            <ButtonBase>
+                                <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
+                                    <div className={styles['check-box']}>
+                                        <Check  on={estm}/>
+                                    </div>
+                                    <div className={styles['value']}>
+                                        견적서 발송
+                                    </div>
                                 </div>
-                            </div>
-                            <div
-                                className={cx('check', { on: estm })}
-                                onClick={onChangeEstm}
-                            >
-                                <div className={styles['check-box']}>
-                                    <Check on={estm} />
-                                </div>
-                                <div className={styles['value']}>
-                                    견적서 발송
-                                </div>
-                            </div>
+                            </ButtonBase>
                         </div>
                     </div>
                 </div>

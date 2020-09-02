@@ -1,13 +1,17 @@
 /*global kakao*/
-import React,{useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { markerdata } from './data';
-import MarkerImg from './MarkerImg.svg';
-import Slide from '@material-ui/core/Slide';
+import React,{ useEffect } from 'react';
 import classNames from 'classnames/bind';
-import styles from './Map.module.scss';
+
+import { markerdata } from './data';
+
 import Back from 'components/svg/header/Back';
 import LinkButtom from 'components/button/LinkButton';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Slide from '@material-ui/core/Slide';
+
+import MarkerImg from './MarkerImg.svg';
+import styles from './MapModal.module.scss';
 
 const cx = classNames.bind(styles);
 

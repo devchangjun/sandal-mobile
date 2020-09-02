@@ -4,10 +4,10 @@ import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { AiOutlineSearch } from 'react-icons/ai';
-import AddressModal from 'components/asset/AddressModal';
+import AddressModal from 'components/modal/AddressModal';
+import MapModal from 'components/modal/MapModal';
 import { getDeliveryList } from '../../api/address/address';
 import produce from 'immer';
-import MapModal from 'components/asset/MapModal';
 
 
 const cx = classNames.bind(styles);

@@ -1,0 +1,63 @@
+@import '../../styles/Root.scss';
+
+.container {
+    margin-bottom: 70px;
+    .guide {
+        margin: 25px 0;
+    
+        .title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #444;
+            padding: 0 24px;
+        }
+        .content {
+            margin-top: 16px;
+            
+            .input-area {
+                padding: 0 24px;
+    
+                .input-box {
+                    width: 100%; padding: 20px;
+                    border-radius: 10px;
+                    border: solid 1px #DBDBDB;
+    
+                    &.input-logo {
+                        height: 160px;
+                        .filebox {display: none;}
+                        .label {
+                            @include flex-center(center);
+                            width: 100%; height: 100%;
+                            background-position: center;
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            .add {
+                                .import {
+                                    width: 40px; height: 40px;
+                                    @include flex-center(center);
+                                    margin: 0 auto;
+                                    border: solid 1px #DBDBDB;
+                                    border-radius: 50%;
+                                }
+                                .text {
+                                    color: #999;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    margin-top: 8px;
+                                }
+                            }
+                        }
+                    }
+                    &.input-phrase {
+                        height: 136px;
+                        resize: none;
+                        overflow: auto; overflow-x: hidden;
+                    }
+                    &.input-preview {
+                        height: 184px;
+                    }
+                }
+            }
+        }
+    }
+}

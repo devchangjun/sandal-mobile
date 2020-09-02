@@ -2,7 +2,6 @@ import axios from 'axios';
 import { Paths } from '../../paths';
 
 export const getDeliveryList = async (token) => {
-
     const req = `${Paths.api}user/delivery/list`;
     const params = {
         params: {
@@ -17,5 +16,4 @@ export const getDeliveryList = async (token) => {
     axios.defaults.params = params;
     const res = await axios.get();
     return res;
-
 }

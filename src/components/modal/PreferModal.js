@@ -1,18 +1,20 @@
 import React from 'react';
+
+import { numberFormat } from "../../lib/formatter";
+
+import FixButton from 'components/button/Button';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import styles from './Prefer.module.scss';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import FixButton from 'components/button/Button';
-
 import DialogContent from '@material-ui/core/DialogContent';
-import { numberFormat } from "../../lib/formatter";
 
+import styles from './PreferModal.module.scss';
 
 //test commit
 const useStyles = makeStyles((theme) => ({

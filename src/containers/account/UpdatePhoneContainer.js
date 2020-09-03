@@ -8,10 +8,12 @@ import Button from 'components/button/Button';
 import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/sign/Check';
 import classNames from 'classnames/bind';
+import Toast from 'components/message/Toast';
 const cx = classNames.bind(styles);
 
 const UpdatePhoneContainer = () => {
     const random = useRef(496696);
+    const [toast , setToast] = useState(false);
     const [phone, setPhone] = useState('');
     const [auth, setAuth] = useState('49669');
     const onChangePhone = (e) => setPhone(e.target.value);
@@ -24,8 +26,16 @@ const UpdatePhoneContainer = () => {
 
     //인증번호 발송
     const onClickSendAuth = () => {
+        if(phone.length===0){
+            setToast(true);
+            setTimeout(()=>{
+                setToast(false);
+            },3000)
+        }
+        else{
         setToggle(true);
         setStartTimer(true);
+        }
     };
     const onClickReSendAuth =()=>{
         setStartTimer(false);
@@ -75,7 +85,7 @@ const UpdatePhoneContainer = () => {
                     </div>
                 </div>
             </div>
-
+            <Toast on={toast} msg={"핸드폰 번호를 정확히 입력해주세요"}/>
             <Button title={'확인'} toggle={success}/>
         </>
     );

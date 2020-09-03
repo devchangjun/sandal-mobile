@@ -22,6 +22,10 @@ import styles from './EstmModal.module.scss';
 const cx = classNames.bind(styles);
 
 const useStyles = makeStyles(() => ({
+    container:{
+        paddingBottom:"73px",
+    },
+
     appBar: {
         position: 'relative',
         textAlign: 'center',
@@ -48,7 +52,9 @@ const useStyles = makeStyles(() => ({
         flex: '0 0 auto',
     },
     estimate: {
-        marginTop: 48
+        marginTop: 48,
+        marginBottom:73,
+        paddingBottom:73,
     },
     estimatePreview: {
         width: '100%'

@@ -8,7 +8,7 @@
     .custom-item{
         box-sizing: border-box;
         position: relative;
-        width: 328px;
+        width: 100%;
         height: 240px;
         overflow: hidden;
         border-radius: 10px;
@@ -16,12 +16,12 @@
         margin-top:24px;
         flex-direction: column;
         .custom-img{
-            width: 328px;
+            width: 100%;
             height: 240px;
             position: relative;
             box-sizing: border-box;
             img{
-                width: 328px;
+                width: 100%;
                 height: 240px;
                 box-sizing: border-box;
             }
@@ -39,7 +39,7 @@
         .custom-price{
             position: absolute;
             top:190px;
-            left: 240px;
+            right:23px;
             font-size: 14px;
             color:white;
             font-weight: bold;
@@ -49,7 +49,7 @@
     }
 }
 .dim{
-    width: 328px;
+    width: 100%;
     height: 240px;
     border: 0px solid red;
     position:absolute;

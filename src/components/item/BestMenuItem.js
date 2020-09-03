@@ -24,7 +24,7 @@ const BestMenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
                 <div className={styles['pd-box']}>
                     <div className={styles['menu-info']}>
                         <MenuTitle menuTitle={menuTitle} />
-                        <MenuText menuText={menuText} />
+                        {/* <MenuText menuText={menuText} /> */}
                         <MenuPrice menuPrice={menuPrice} />
                     </div>
                 </div>

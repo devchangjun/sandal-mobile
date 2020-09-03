@@ -15,6 +15,9 @@ import Slide from '@material-ui/core/Slide';
 import styles from './Coupon.module.scss';
 
 const useStyles = makeStyles((theme) => ({
+    container:{
+        paddingBottom:"73px",
+    },
     appBar: {
         position: 'relative',
         textAlign: 'center',
@@ -58,7 +61,7 @@ const FullScreenDialog = (props) => {
 
     return (
         <div>
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
+            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition} className={classes.container}>
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
                         <IconButton className={classes.close} color="inherit" onClick={props.handleClose} aria-label="close">

@@ -1,72 +1,74 @@
-.order-item{
-    width: 100%;
-    box-sizing: border-box;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    // box-shadow: 0 0 5px gray;
-    border-radius: 10px;
-    margin-top:24px;
-    &:first-child {
-        margin-top: 0;
-    }
-    &:last-child{
-        margin-bottom :24px;
-    }
-    .item{
-        display: flex;
-        flex-direction: column;
+.order-list{
 
-        .menu{
-            .date{
-                padding-bottom:24px;
-                font-size: 12px;
-                color:#999999;
-            }
-            .list{
-                .menu-name{
-                    margin: 5px 0;
-                    .name{
-                        font-size: 16px;
-                        font-weight: bold;
-                    }
-                    .options{
-                        font-size: 12px;
-                        color:#555555;
+    .order-item{
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        // box-shadow: 0 0 5px gray;
+        border-radius: 10px;
+        margin-top:24px;
+        &:first-child {
+            margin-top: 0;
+        }
+        &:last-child{
+            margin-bottom :24px;
+        }
+        .item{
+            display: flex;
+            flex-direction: column;
+
+            .menu{
+                .date{
+                    padding-bottom:24px;
+                    font-size: 12px;
+                    color:#999999;
+                }
+                .list{
+                    .menu-name{
+                        margin: 5px 0;
+                        .name{
+                            font-size: 16px;
+                            font-weight: bold;
+                        }
+                        .options{
+                            font-size: 12px;
+                            color:#555555;
+                        }
                     }
                 }
             }
-        }
-        .cost{
-            border-top: 1px solid #EBEBEB;
-            box-sizing: border-box;
-            .total{
-                font-size: 16px;
-                font-weight: bold;
-                position: relative;
-                    span{
-                    padding-right: 10px;
-                    &::after{
-                        content: '';
-                        width: 60px;
-                        display: block;
-                        position: absolute;
-                        margin-top: -10px;
-                        border-radius: 10px;
-                        z-index: -100;
-                        border-bottom: 11px solid #FCD700;
+            .cost{
+                border-top: 1px solid #EBEBEB;
+                box-sizing: border-box;
+                .total{
+                    font-size: 16px;
+                    font-weight: bold;
+                    position: relative;
+                        span{
+                        padding-right: 10px;
+                        &::after{
+                            content: '';
+                            width: 60px;
+                            display: block;
+                            position: absolute;
+                            margin-top: -10px;
+                            border-radius: 10px;
+                            z-index: -100;
+                            border-bottom: 11px solid #FCD700;
+                        }
                     }
                 }
-            }
-            .sub{
-                margin-top: 10px;
-                color:#555555;
-                font-size: 12px
+                .sub{
+                    margin-top: 10px;
+                    color:#555555;
+                    font-size: 12px
+                }
             }
         }
+
+
     }
-
-
 }
-
 .pd-box{
     padding: 24px; 
 }

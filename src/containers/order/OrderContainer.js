@@ -119,12 +119,12 @@ const OrderContainer = () => {
             <div className={styles['order']}>
                 <div className={cx('title', 'pd-box')}>배달정보</div>
                 <div className={styles['table']}>
-                    <div className={cx('text-info', 'pd-box')}>
+                    <div className={cx('text-info')}>
                         <div className={styles['info']}>
                             서울특별시 구로구 구로동 557
                         </div>
                     </div>
-                    <div className={cx('text-info', 'pd-box')}>
+                    <div className={cx('text-info')}>
                     <div className={cx('info', 'row')}>
                             <input
                                 type="text"
@@ -133,7 +133,7 @@ const OrderContainer = () => {
                             />
                         </div>
                     </div>
-                    <div className={cx('text-info', 'pd-box')}>
+                    <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
                             <input
                                 type="text"
@@ -143,7 +143,7 @@ const OrderContainer = () => {
                             <ButtonBase className={styles['auth-btn']}>인증번호 발송</ButtonBase>
                         </div>
                     </div>
-                    <div className={cx('text-info', 'pd-box')}>
+                    <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
                             <input
                                 type="text"
@@ -187,14 +187,16 @@ const OrderContainer = () => {
                     </div>
                 </div>
                 <div className={cx('title', 'pd-box')}>결제방법</div>
-                <div className={cx('table')}>
-                    <div className={cx('value', 'pd-box')}>
+                <div className={cx('table' ,'mg-none')}>
+                    <div className={cx('value','pd-none')}>
                         <ButtonBase className={styles['payment']} onClick={onClickPaymentOpen}>{payment}</ButtonBase>
                         <div className={styles['label']}>
                             다른결제를 원하시면 눌러서 변경해주세요.
                         </div>
                     </div>
-                    <div className={styles['order-info']}>
+ 
+                </div>
+                <div className={styles['order-info']}>
                         <ButtonBase className={cx('box', 'pd-box')}>
                             <div className={cx('box', 'pd-box')} onClick={onClickCouponOpen}>
                                 <div className={styles['label']}>할인 쿠폰</div>
@@ -208,7 +210,6 @@ const OrderContainer = () => {
                             </div>
                         </ButtonBase>
                     </div>
-                </div>
                 <div className={cx('table', 'pd-box', 'bg-color', 'pd-top')}>
                     <div className={cx('total-order')}>
                         <div className={cx('item')}>
@@ -264,7 +265,7 @@ const OrderContainer = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('agree-order', 'bt-mg')} onClick={onClickToggle}>
+                    <div className={cx('agree-order')} onClick={onClickToggle}>
                         <OrderCheck check={toggle}/>
                         <div className={styles['text']}>
                             구매에 동의하시겠습니까?

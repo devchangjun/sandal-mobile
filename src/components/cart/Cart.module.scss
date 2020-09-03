@@ -6,6 +6,9 @@
         margin: 10px 0;
         box-sizing: border-box;
         background-color: white;
+        &:first-child{
+            margin:0;
+        }
         .item-box{
             display: flex;
             justify-content: center;

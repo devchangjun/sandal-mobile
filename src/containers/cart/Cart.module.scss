@@ -6,29 +6,31 @@
     background-color: #F9F9F9;
     .bar{
         width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        height: 60px;
+        height: 56px;
+        position: relative;
         .pd-box{
             padding: $padding-all;
         }
         .delete{
+            position: absolute;
+            top:50%;
+            right:24px;
+            font-size:14px;
+            color:#555;
+            transform: translateY(-50%);
             border :1px solid #DBDBDB;
             background-color: white;
             box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            line-height: 32px;
+            text-align: center;
             width: 80px;
             height: 32px;
-            font-size: 10px;
             
         }
     }
   
 
     .finally{
-        margin-bottom: 50px;
         width: 100%;
         height: auto;
         display: flex;

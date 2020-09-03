@@ -118,9 +118,7 @@ const CartContainer = () => {
         return (
             <>
                 <div className={styles['bar']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['delete']}>전체 삭제</div>
-                    </div>
+                        <div className={styles['delete']}>전체삭제</div>
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList

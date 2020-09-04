@@ -68,8 +68,8 @@ const AccountContainer = () => {
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
-                    <Item text={'핸드폰번호'} value={"010-1234-1234"}  onClick={onClickUpdatePhone}/>
-                    {/* <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/> */}
+                    {/* <Item text={'핸드폰번호'} value={"010-1234-1234"}  onClick={onClickUpdatePhone}/> */}
+                    <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
                     <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
                 </div>

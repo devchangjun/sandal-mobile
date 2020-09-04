@@ -135,6 +135,7 @@ export default ({ open, handleClose }) => {
             문구 서비스 신청하기
         */
         const token = sessionStorage.getItem('access_token');
+        console.log(token);
         if (token && logo && phrase) {
             const res = await requestPostPhraseSerive(token, {
                 order_id: '1595924261-3598512',

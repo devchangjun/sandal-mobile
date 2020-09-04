@@ -85,7 +85,7 @@ const UpdatePhoneContainer = () => {
                     </div>
                 </div>
             </div>
-            <Toast on={toast} msg={"핸드폰 번호를 정확히 입력해주세요"}/>
+            <Toast on={toast} msg={"핸드폰 번호를 정확하게 기입해주세요."}/>
             <Button title={'확인'} toggle={success}/>
         </>
     );

@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from 'react';
+import {Paths} from 'paths';
 import {useSelector , useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {updateName} from '../../api/auth/auth';
@@ -34,7 +35,9 @@ const UpdateNameContainer=()=>{
         const res = await updateName(token,newName);
         dispatch(update_user_info({name :'name' ,value: newName}));
         console.log(res);
-
+        if(res.data.msg==="성공"){
+                history.replace(Paths.ajoonamu.account);
+        }
     }
 
     return(

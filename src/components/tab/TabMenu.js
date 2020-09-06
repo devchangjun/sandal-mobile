@@ -22,14 +22,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const TabMenu = ({ tabs, index, onChange }) => {
+const TabMenu = ({ tabs, index, onChange,isPush }) => {
     const classes = useStyles();
     const history = useHistory();
 
     const onClickTab = (url) => {
         if (url !== undefined) {
-            history.replace(url);
-            console.log('푸쉬');
+            isPush ? history.push(url) : history.replace(url);
         }
     };
 
@@ -63,6 +62,7 @@ const TabMenu = ({ tabs, index, onChange }) => {
 TabMenu.defaultProps = {
     tabs: null,
     index: 0,
+    isPush : false,
     onChange: () => console.warn(null),
 };
 

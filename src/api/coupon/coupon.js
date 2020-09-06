@@ -1,3 +1,6 @@
+import axios from 'axios';
+import {Paths} from '../../paths';
+
 const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 const cp_init = [
     {
@@ -44,3 +47,18 @@ export const getCoupons = async () => {
     await sleep(500); // 0.5초 쉬고
     return cp_init; // list 배열
   };
+
+// 내 쿠폰
+export const getMyCoupons = async (token) =>{
+    const req = Paths.api +'user/coupon/list_my';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    console.log(result.data.query);
+    return result.data.query;
+    
+}

@@ -3,6 +3,20 @@ import styles from './Coupon.module.scss';
 import DownCoupon from 'components/svg/coupon/down.svg';
 
 const CouponItem = (props) => {
+    const { 
+        cp_datetime,
+        cp_end,
+        cp_id,
+        cp_minimum,
+        cp_price,
+        cp_start,
+        cp_subject,
+        cp_target,
+        cp_use,
+        cp_use_date,
+        cz_id,
+        user_id,
+    } = props.item;
     return (
         <div className={styles['coupon-item']}>
             <div className={props.check ? styles['down'] : styles['not-down']}>
@@ -10,10 +24,10 @@ const CouponItem = (props) => {
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
-                    <CouponEventName event_name={props.item.event_name} />
-                    <CouponSale sale={props.item.sale} />
-                    <CouponEventSub sub_name={props.item.sub_name} />
-                    <CouponDate date={props.item.date} />
+                    <CouponEventName event_name={cp_id} />
+                    <CouponSale sale={cp_price} />
+                    <CouponEventSub sub_name={cp_subject} />
+                    <CouponDate date={cp_datetime} />
                 </div>
             </div>
         </div>

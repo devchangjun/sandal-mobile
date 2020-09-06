@@ -23,7 +23,6 @@ const AuthTimer = ({start}) => {
     const timeFormat = (time) => {
         const m = Math.floor(time / 60).toString()
         let s = (time % 60).toString()
-        console.log(`${m}분 ${s}초`);
         if (s.length === 1) s = `0${s}`
         return `${m}:${s}`
       }

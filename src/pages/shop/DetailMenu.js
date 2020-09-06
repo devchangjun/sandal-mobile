@@ -11,7 +11,7 @@ function DetailMenu({match,location}){
     console.log(query);
     return(
         <>
-        <DetailContainer menu_name ={query.menu}/>
+        <DetailContainer menu_name ={query.item_id}/>
         </>
 
     )

@@ -10,7 +10,7 @@ import UseCouponItemList from 'components/coupon/UseCouponItemList';
 import BottomNav from 'components/nav/BottomNav';
 import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
-import {getCoupons} from '../../api/coupon/coupon';
+import {getCoupons,getMyCoupons} from '../../api/coupon/coupon';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 
@@ -35,22 +35,19 @@ const tabInit = [
 
 const CouponConatiner = ({ tab='0' }) => {
 
-    const myCouponTitle = useRef(null);
-    const history = useHistory();
 
+    const history = useHistory();
+    const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
     const [index, setIndex] = React.useState(parseInt(tab));
     const [myCoupon ,setMyCoupon] = useState(null);
+    const [show, setShow] = useState(false);
 
     const onScroll = useCallback(e => {
         if (index === 0) {
             const scrollTop = ('scroll', e.srcElement.scrollingElement.scrollTop);
-            if (scrollTop > 250) {
-                myCouponTitle.current.classList.add(cx('shadow'));
-            }
-            else {
-                myCouponTitle.current.classList.remove(cx('shadow'));
-            }
+            if (scrollTop > 210) setShow(true)
+            if (scrollTop<250) setShow(false)
         }
     }, [index]);
 
@@ -63,7 +60,9 @@ const CouponConatiner = ({ tab='0' }) => {
     }
     const getMyCouponList = async () => {
         setLoading(true);
-        const res = await getCoupons();
+        const token = sessionStorage.getItem("access_token");
+        const res = await getMyCoupons(token);
+        console.log(res);
         setMyCoupon(res);
         setLoading(false);
     };
@@ -72,8 +71,10 @@ const CouponConatiner = ({ tab='0' }) => {
     useEffect(()=>{
         console.log(myCoupon);
         getMyCouponList();
-
     },[])
+    useEffect(()=>{
+        setShow(false);        
+    },[index])
 
     useEffect(() => {
 
@@ -89,6 +90,9 @@ const CouponConatiner = ({ tab='0' }) => {
         
             <Loading open={loading} />
             <TitleBar title={'쿠폰함'} />
+            <div className={cx('title',{show:show})}> 
+                 내 쿠폰
+            </div>
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cx('container')}>
                 <SwipeableViews
@@ -112,7 +116,7 @@ const CouponConatiner = ({ tab='0' }) => {
                             </Button>
                         </div>
                         <div
-                            className={cx('sticky-title', 'pd-box')}
+                            className={cx('coupon-title', 'pd-box')}
                             ref={myCouponTitle}
                         >
                             내 쿠폰

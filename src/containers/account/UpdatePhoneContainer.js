@@ -3,7 +3,6 @@ import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import SignNormalInput from 'components/sign/SignNormalInput';
-
 import Button from 'components/button/Button';
 import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/sign/Check';

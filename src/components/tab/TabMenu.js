@@ -49,6 +49,8 @@ const TabMenu = ({ tabs, index, onChange }) => {
             TabIndicatorProps={{
                 style: {
                     backgroundColor: '#000',
+                    height:'4px',
+                    borderRadius:'100px'
                 },
             }}
             className={classes.tabs}

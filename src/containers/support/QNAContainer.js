@@ -61,7 +61,10 @@ const QNAContainer = ({ tab = 'send' }) => {
         */
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
-        const res = await requestQNAStore(token, state);
+        if(token){
+            const res = await requestQNAStore(token, state);
+            console.log(res);
+        }
         setLoading(false);
     }, [state]);
     const onChange = (e) => dispatch(e.target);
@@ -78,7 +81,9 @@ const QNAContainer = ({ tab = 'send' }) => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             const res = await requestQNAList(token);
+            console.log(res);
             const { qnas } = res;
+            console.log(qnas);
             setQnaList(qnas);
         } else {
             alert('토큰이 없습니다.');
@@ -100,8 +105,7 @@ const QNAContainer = ({ tab = 'send' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={true}
-                    
+                    animateHeight={qnaList.length!==0?true:false}
                 >
                     <div>
                         <QNASend

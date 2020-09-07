@@ -17,7 +17,14 @@ const OrderDetailContainer = () => (
                     <DetailOrderItem />
                     <DetailOrderItem />
                 </div>
-                <div className={styles['title']}>배달 정보</div>
+                <div className={cx('title','between')}>
+                        <div>  
+                        배달 정보
+                        </div>
+                        <div className={styles['order-type']}>
+                            예약주문
+                        </div>
+                    </div>
                 <div className={styles['list']}>
                     <UserInfo value1={'김종완'} value2={'서울특별시 구로구 구로동 557, 삼성빌딩 407호'} value3={'010-8885-7406'} />
                 </div>

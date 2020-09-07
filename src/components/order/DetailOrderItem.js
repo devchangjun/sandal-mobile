@@ -14,10 +14,10 @@ const DetailOrderItem =()=>{
                 </div>
                 <div className={styles['menu-options']}>
                     <div className={styles['addition']}>
-                            추가 옵션 없음
+                            추가 옵션: 없음
                     </div>
                     <div className={styles['counter']}>
-                        수량 100개
+                        수량: 100개
                     </div>
                 </div>  
                 <div className={styles['menu-price']}>

@@ -16,7 +16,7 @@ const tabInit = [
     },
     {
         url: `${Paths.ajoonamu.shop}?menu=1`,
-        name: '택배주문'
+        name: '택배배송'
     },
 ]
 

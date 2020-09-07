@@ -61,9 +61,15 @@ const CouponConatiner = ({ tab='0' }) => {
     const getMyCouponList = async () => {
         setLoading(true);
         const token = sessionStorage.getItem("access_token");
-        const res = await getMyCoupons(token);
-        console.log(res);
-        setMyCoupon(res);
+        console.log(token);
+        if (token) {
+            const res = await getMyCoupons(token);
+            console.log(res);
+            setMyCoupon(res);
+        }
+        else{
+            console.log("토큰 없음");
+        }
         setLoading(false);
     };
 
@@ -142,7 +148,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            <UseCouponItemList />
+                            {/* <UseCouponItemList /> */}
                         </div>
                     </div>
                 </SwipeableViews>

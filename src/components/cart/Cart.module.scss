@@ -84,6 +84,21 @@
     }
 }
 
-    .pd-box{
-        padding: $padding-all;
-    }
+.cart_link{
+    position:fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom :108px;
+    right: 24px;
+    z-index:999;
+    width: 64px;
+    height: 64px;
+    border-radius: 100px;
+    background-color:#fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+ .pd-box{
+    padding: $padding-all;
+}

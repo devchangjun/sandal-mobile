@@ -20,7 +20,7 @@ function App() {
 
   const existJWT = useCallback(() => {
     const token = sessionStorage.getItem("access_token");
-    if (token !== null && token !== undefined) {
+    if (token) {
       dispatch(get_user_info(token));
     }
   }, [dispatch]);

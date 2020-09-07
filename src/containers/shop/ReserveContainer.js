@@ -10,6 +10,7 @@ import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/modal/PreferModal';
 import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
+import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from "react-swipeable-views";
 import {getCustomMenuList} from '../../api/menu/menu';
 
@@ -173,6 +174,7 @@ const ReserveContainer = ({ tab='0'}) => {
                 onChangeDesireQune={onChangeDesireQune}
             />
             <BottomNav></BottomNav>
+            <CartLink/>
         </>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect,useCallback, useContext} from 'react';
 import { Paths } from 'paths';
 import Title from 'components/titlebar/Title';
 import styles from './HomeContainer.module.scss';
@@ -6,8 +6,10 @@ import BestMenuItemList from 'components/item/BestMenuItemList';
 import HomeSlick from './HomeSlick';
 import TabMenu from 'components/tab/TabMenu';
 import BannerImg from 'components/svg/banner/subBanner1.png';
-// import { useSelector } from 'react-redux';
 import BottomNav from 'components/nav/BottomNav';
+import Loading from 'components/asset/Loading';
+import {getMainMenuList} from '../../../api/menu/menu';
+import { MenuList } from '@material-ui/core';
 
 const tabInit = [
     {
@@ -23,10 +25,42 @@ const tabInit = [
 
 const HomeContainer = () => {
 
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [error , setError] = useState(false);
+    const [menuList, setMenuList] = useState(null);
+
+    const getMainMenu = async()=>{
+        setLoading(true);
+        const token = sessionStorage.getItem("access_token");
+        if(token){  
+            const res = await getMainMenuList(token);
+            console.log(res);
+            setMenuList(res);
+            setSuccess(true);
+        }
+        else{
+            setError(true);
+        }
+        setLoading(false);
+    }
+    const renderBestMenu =useCallback(()=>{
+        console.log(menuList);
+        return(
+                <BestMenuItemList menuList={menuList}/>
+        )
+    },[menuList]);
+
+    useEffect(()=>{
+        getMainMenu();
+    },[])
+
+    
     return (
         <>
             <Title/>
             <TabMenu tabs={tabInit} index={0} isPush={true}/>
+    
             <div className={styles['container']}>
                 <div className={styles['carousel']}>
                     <HomeSlick />
@@ -34,7 +68,12 @@ const HomeContainer = () => {
                 <Banner title={"건강 단체 도시락/베이커리 아주나무"}subtitle={"건강한 단체 도시락/베이커리로 모두 fresh하게! "}/>
                 <div className={styles['menu-list']}>
                 <h3 className={styles["menu-list-title"]}>베스트 메뉴</h3>
-                    <BestMenuItemList />
+                {loading ? <Loading open={loading}/> :
+                    <>{
+                        success && renderBestMenu()
+                    }
+                    </>
+                }
                 </div>
             </div>
             <BottomNav></BottomNav>

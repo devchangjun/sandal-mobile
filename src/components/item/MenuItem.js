@@ -8,7 +8,7 @@ import { numberFormat } from "../../lib/formatter";
 const cx = classNames.bind(styles);
 
 const MenuItem = (props) => {
-    const {menu_name,menu_price} = props;
+
     return (
         <div className={styles['menu-item']}>
             <div className={styles['menu-img']}>
@@ -16,11 +16,11 @@ const MenuItem = (props) => {
             </div>
             <div className={cx('menu-info','pd-box')}>
                 <div className={styles['menu-name']}>
-                   {menu_name}
+                   {props.item_name}
                     </div>
                 <div className={styles['menu-price']}>
-                {numberFormat(menu_price)}
-                    </div>
+               {numberFormat(props.item_price)}
+                </div>
             </div>
         </div>
     )

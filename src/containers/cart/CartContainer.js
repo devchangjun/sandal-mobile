@@ -46,7 +46,7 @@ const CartContainer = () => {
         setNotEstm(true);
     };
 
-    // const { user } = useSelector(state => state.auth);
+
 
     //마운트 될 때 만 함수 생성.
     const onCartList = useCallback(async () => {

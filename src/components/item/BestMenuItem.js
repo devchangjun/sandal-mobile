@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import styles from './BestMenu.module.scss';
 import { ButtonBase } from '@material-ui/core';
 import { numberFormat } from '../../lib/formatter';
+import MenuItemImage1 from 'components/svg/menu/menuitem1.png';
 
 const MenuDetailLink = styled(NavLink)`
     text-decoration: none;
@@ -13,19 +14,18 @@ const MenuDetailLink = styled(NavLink)`
 `;
 
 //홈 메뉴 아이템 컴포넌트
-const BestMenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
+const BestMenuItem = (props) => {
     // item_id 로 경로 줘야함
     return (
-        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?item_id=${menuTitle}`}>
+        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?item_id=${props.item_id}`}>
             <div className={styles['menu-item']}>
                 <ButtonBase>
-                    <MenuImg src={src} />
+                    <MenuImg src={MenuItemImage1} />
                 </ButtonBase>
                 <div className={styles['pd-box']}>
                     <div className={styles['menu-info']}>
-                        <MenuTitle menuTitle={menuTitle} />
-                        {/* <MenuText menuText={menuText} /> */}
-                        <MenuPrice menuPrice={menuPrice} />
+                        <MenuTitle menuTitle={props.item_name} />
+                        <MenuPrice menuPrice={props.item_price} />
                     </div>
                 </div>
             </div>

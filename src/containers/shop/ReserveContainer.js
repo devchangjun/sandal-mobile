@@ -13,6 +13,9 @@ import BottomNav from 'components/nav/BottomNav';
 import SwipeableViews from "react-swipeable-views";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper.scss';
+import cn from 'classnames/bind';
+
+const cx = cn.bind(styles);
 const tabInit = [
     {
         url:`${Paths.ajoonamu.shop}?menu=0`,
@@ -44,6 +47,7 @@ const ReserveContainer = ({ tab='0'}) => {
     const [result, setResult] = React.useState(false); // 예약주문 요청시 결과값.
     const [title ,setTitle] = React.useState('추천메뉴');
     const [index, setIndex] = React.useState(parseInt(tab));
+    const [test ,setSwiper] = React.useState(null);
 
     const onChangeTabIndex =(e,value) =>{
         setIndex(value);
@@ -53,29 +57,29 @@ const ReserveContainer = ({ tab='0'}) => {
         history.replace(`${Paths.ajoonamu.shop}?menu=${index}`)
     }
 
-    const onChangeTitle = useCallback(()=>{
-        if(index===0){
-            setTitle("추천메뉴");
-        }
-        else if(index===1){
-            setTitle("메뉴1");
-        }
-        else if(index===2){
-            setTitle("메뉴2");
-        }
-        else if(index===3){
-            setTitle("메뉴3");
-        }
-    },[index])
+    // const onChangeTitle = useCallback(()=>{
+    //     if(index===0){
+    //         setTitle("추천메뉴");
+    //     }
+    //     else if(index===1){
+    //         setTitle("메뉴1");
+    //     }
+    //     else if(index===2){
+    //         setTitle("메뉴2");
+    //     }
+    //     else if(index===3){
+    //         setTitle("메뉴3");
+    //     }
+    // },[index])
 
     useEffect(()=>{
         console.log(tab);
         setIndex(parseInt(tab));
     },[tab])
 
-    useEffect(() => {
-        onChangeTitle();
-    }, [onChangeTitle])
+    // useEffect(() => {
+    //     onChangeTitle();
+    // }, [onChangeTitle])
 
     //맞춤 주문하기 버튼 클릭
     const handleOpen = () => setOpen(true);
@@ -104,30 +108,47 @@ const ReserveContainer = ({ tab='0'}) => {
 
     return (
         <>
-            {/* <TitleBar title={title} /> */}
+            <TitleBar title={title} />
             <Swiper
              spaceBetween={50}
-         slidesPerView={3}
-         freeMode={true}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
+             slidesPerView={4}
+             freeMode={true}
+             onSlideChange={(swiper) => console.log(swiper)}
+            //  onSwiper={(swiper) => {
+            //     // const s = swiper;
+            //     // setSwiper(swiper)}
+            //  }
+             onClick={(swiper)=>{
+            setIndex(swiper.clickedIndex);
+          }}
           className={styles['tab-list']}
+          slideToClickedSlide={true}
         >
-    <SwiperSlide className={styles['tab-item']}>
-            추천메뉴 
+    <SwiperSlide className={cx('tab-item',{line:index===0})}>
+             추천메뉴
       </SwiperSlide>
-      <SwiperSlide>
-            추천메뉴 
+      <SwiperSlide className={cx('tab-item',{line:index===1})}>
+             메뉴1
       </SwiperSlide>
-      <SwiperSlide>
-            추천메뉴 
+      <SwiperSlide className={cx('tab-item',{line:index===2})}>
+          메뉴2
       </SwiperSlide>
-      <SwiperSlide>
-            추천메뉴 
+      <SwiperSlide className={cx('tab-item',{line:index===3})}>
+
+            메뉴3 
       </SwiperSlide>
-      <SwiperSlide>
-            추천메뉴 
+      <SwiperSlide className={cx('tab-item',{line:index===4})}>
+
+            메뉴4 
       </SwiperSlide>
+      <SwiperSlide className={cx('tab-item',{line:index===5})}>
+
+            메뉴5
+      </SwiperSlide>
+      <SwiperSlide className={cx('tab-item',{line:index===6})}>
+            메뉴6 
+      </SwiperSlide>
+
 
             </Swiper>
             <div className={styles['container']}>
@@ -163,6 +184,33 @@ const ReserveContainer = ({ tab='0'}) => {
                                 msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
                                 src={true}
                                 isButton={false}
+                            />
+                        </div>
+                        <div>
+                            <Message
+                                msg={
+                                    '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                                }
+                                isButton={false}
+                                src={true}
+                            />
+                        </div>
+                        <div>
+                            <Message
+                                msg={
+                                    '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                                }
+                                isButton={false}
+                                src={true}
+                            />
+                        </div>
+                        <div>
+                            <Message
+                                msg={
+                                    '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                                }
+                                isButton={false}
+                                src={true}
                             />
                         </div>
                         <div>

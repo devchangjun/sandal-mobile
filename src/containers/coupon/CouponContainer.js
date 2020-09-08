@@ -40,7 +40,7 @@ const CouponConatiner = ({ tab='0' }) => {
     const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
     const [success,setSuccess] = useState(false);
-    const [erorr,setError] = useState(false);
+    const [error,setError] = useState(false);
 
     const [index, setIndex] = React.useState(parseInt(tab));
     const [myCoupon ,setMyCoupon] = useState([]);
@@ -110,7 +110,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={success? true : false}
+                    animateHeight={ (success|| error) ? true : false}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>

@@ -13,6 +13,7 @@ import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from "react-swipeable-views";
 import {getCustomMenuList} from '../../api/menu/menu';
+import TabTests from '../../components/tab/SwiperTabs';
 
 const tabInit = [
     {
@@ -47,7 +48,8 @@ const ReserveContainer = ({ tab='0'}) => {
     const [index, setIndex] = useState(parseInt(tab));
     const [customMenuList ,setCustomMenuList] = useState(null);
 
-    const onChangeTabIndex =(e,value) =>{
+    const onChangeTabIndex =(value) =>{
+        console.log(value);
         setIndex(value);
     }
     const onChangeSwiperIndex =(index)=>{
@@ -113,8 +115,8 @@ const ReserveContainer = ({ tab='0'}) => {
     return (
         <>
             <Loading open={loading} />
+            <TabTests idx={index} onChange={onChangeTabIndex}/>
             <TitleBar title={title} />
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>
                     <SwipeableViews

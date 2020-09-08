@@ -111,8 +111,9 @@ const ReserveContainer = ({ tab='0'}) => {
          freeMode={true}
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
+          className={styles['tab-list']}
         >
-      <SwiperSlide className={styles['tab-item']}>
+    <SwiperSlide className={styles['tab-item']}>
             추천메뉴 
       </SwiperSlide>
       <SwiperSlide>
@@ -127,7 +128,7 @@ const ReserveContainer = ({ tab='0'}) => {
       <SwiperSlide>
             추천메뉴 
       </SwiperSlide>
-            {/* <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} /> */}
+
             </Swiper>
             <div className={styles['container']}>
                 <div className={styles['pd-box']}>

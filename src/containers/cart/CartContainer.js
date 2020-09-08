@@ -52,6 +52,7 @@ const CartContainer = () => {
     const onCartList = useCallback(async () => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
+        if(token){
         const res = await getCartList(token);
         let len = Object.keys(res).length;
         let list = [];
@@ -62,6 +63,7 @@ const CartContainer = () => {
         setCost(res.delivery_cost);
         setCartList(list);
         setAllChecked(true); //나중에 빼야함
+    }
         setLoading(false);
     }, []);
 

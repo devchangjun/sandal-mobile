@@ -170,7 +170,7 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <Button
-                    title={'주문하기'}
+                    title={`${numberFormat(total)}원 주문하기`}
                     onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>

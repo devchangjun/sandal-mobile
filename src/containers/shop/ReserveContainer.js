@@ -56,10 +56,10 @@ const ReserveContainer = ({ tab='0'}) => {
         if (budget === 0) return;
         console.log('맞춤주문 시작');
         setOpen(false);
-        getCustomList();
+        setCustomList();
     };
 
-    const getCustomList = async () => {
+    const setCustomList = async () => {
         setLoading(true);
         console.log(loading);
         const res = await getCustomMenuList();
@@ -106,7 +106,7 @@ const ReserveContainer = ({ tab='0'}) => {
             const id = categorys[index].ca_id;
             const title = categorys[index].ca_name;
             if(id!==0) getMenuItemList(id);
-            // setTitle(title);
+            setTitle(title);
 
         }
     },[index,categorys]);

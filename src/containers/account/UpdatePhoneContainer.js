@@ -1,4 +1,5 @@
 import React,{useRef,useEffect,useState,useCallback} from 'react';
+import {useHistory} from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import SignAuthInput from 'components/sign/SignAuthInput';
@@ -11,6 +12,7 @@ import Toast from 'components/message/Toast';
 const cx = classNames.bind(styles);
 
 const UpdatePhoneContainer = () => {
+    const history = useHistory();
     const random = useRef(496696);
     const [toast , setToast] = useState(false);
     const [phone, setPhone] = useState('');
@@ -22,6 +24,13 @@ const UpdatePhoneContainer = () => {
     const [start_timer ,setStartTimer] = useState(false);
     const [success , setSuccess] = useState(false);
 
+
+    useEffect(()=>{
+        const token =sessionStorage.getItem("access_token");
+        if(!token){
+            history.replace("/");
+        }
+    },[])
 
     //인증번호 발송
     const onClickSendAuth = () => {

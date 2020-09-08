@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
+import {useHistory} from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
@@ -9,10 +9,18 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 const UpdatePasswordContainer = () => {
+    const history = useHistory();
     const [password, setPassword] = useState('');
     const [new_password, setNewPassword] = useState('');
     const [new_password_confirm, setNewPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
+
+    useEffect(()=>{
+        const token =sessionStorage.getItem("access_token");
+        if(!token){
+            history.replace("/");
+        }
+    },[])
 
     const onChangePassword = (e) => {
         setPassword(e.target.value);

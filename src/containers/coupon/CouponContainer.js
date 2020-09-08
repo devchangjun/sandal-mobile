@@ -39,8 +39,11 @@ const CouponConatiner = ({ tab='0' }) => {
     const history = useHistory();
     const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
+    const [success,setSuccess] = useState(false);
+    const [erorr,setError] = useState(false);
+
     const [index, setIndex] = React.useState(parseInt(tab));
-    const [myCoupon ,setMyCoupon] = useState(null);
+    const [myCoupon ,setMyCoupon] = useState([]);
     const [show, setShow] = useState(false);
 
     const onScroll = useCallback(e => {
@@ -66,9 +69,11 @@ const CouponConatiner = ({ tab='0' }) => {
             const res = await getMyCoupons(token);
             console.log(res);
             setMyCoupon(res);
+            setSuccess(true);
         }
         else{
             console.log("토큰 없음");
+            setError(true);
         }
         setLoading(false);
     };
@@ -105,7 +110,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={myCoupon ? true : false}
+                    animateHeight={success? true : false}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>
@@ -128,7 +133,7 @@ const CouponConatiner = ({ tab='0' }) => {
                             내 쿠폰
                         </div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            {myCoupon ?
+                            {myCoupon.length!==0?
                             <CouponItemList check={false} cp_list={myCoupon}/>
                             :
                             <Message
@@ -138,17 +143,17 @@ const CouponConatiner = ({ tab='0' }) => {
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                        {myCoupon ?
+                        {myCoupon.length!==0 ?
                             <CouponItemList check={true}  cp_list={myCoupon}/>
                             :
                             <Message
-                                msg={"보유하고 있는 쿠폰이 없습니다"}/>
+                                msg={"받을 수 있는 쿠폰이 존재하지 않습니다."}/>
                             }
                         </div>
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            {/* <UseCouponItemList /> */}
+                            <UseCouponItemList />
                         </div>
                     </div>
                 </SwipeableViews>

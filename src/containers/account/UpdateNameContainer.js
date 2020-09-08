@@ -19,6 +19,13 @@ const UpdateNameContainer=()=>{
     const onChageNewName =(e) => setNewName(e.target.value);
     
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        const token =sessionStorage.getItem("access_token");
+        if(!token){
+            history.replace("/");
+        }
+    },[])
     
     useEffect(()=>{
         const token = sessionStorage.getItem("access_token");

@@ -8,12 +8,12 @@ import { IconButton } from '@material-ui/core';
 
 // 메인 로고 이미지
 
-const TitleBar = ({ title, sub, alt, onClick, children }) => {
+const TitleBar = ({ title, sub, alt, onClick, children,isHome }) => {
     return (
 
         <div className={styles['title-bar']}>
             <div className={styles['item']}>
-                <BackButton />
+                <BackButton isHome={isHome}/>
                 <Title title={title} />
                 <div className={styles['empty']}>{children}</div>
             </div>
@@ -29,9 +29,11 @@ const Title = ({ title }) => {
     );
 };
 
-const BackButton = () => {
+const BackButton = ({isHome}) => {
     const history = useHistory();
-    const onClickBack = () => history.goBack();
+    const onClickBack = () =>{
+        isHome ? history.push('/') : history.goBack();
+    } 
     return (
         <div className={styles['back']}>
             <div className={styles['pd-box']}>
@@ -48,6 +50,7 @@ const BackButton = () => {
 
 TitleBar.defaultProps = {
     sub: false,
+    isHome: false,
     onClick: () => console.warn('null'),
 };
 

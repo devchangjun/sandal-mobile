@@ -1,4 +1,4 @@
-import React, {useCallback } from 'react';
+import React, {useCallback,useEffect } from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -40,6 +40,9 @@ const MyPageContainer = () => {
         history.push(Paths.ajoonamu.account);
     },[history]);
 
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[])
 
     return (
         <>

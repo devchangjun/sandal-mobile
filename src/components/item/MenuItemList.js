@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './MenuItem.module.scss';
 import MenuItem from './MenuItem';
 
-const MenuItemList= ({menuList})=>{
+const MenuItemList= ({menuList,onClick})=>{
     const list = menuList.map(menu =>{
         return <MenuItem
         ca_id ={menu.ca_id}
@@ -19,7 +19,10 @@ const MenuItemList= ({menuList})=>{
         item_taxmny={menu.item_taxmny}
         item_vatmny={menu.item_vatmny}
         updated_at={menu.updated_at}
-        key={menu.item_id}/>
+        key={menu.item_id}
+        onClick={()=>onClick(menu.item_id)}
+        />
+    
         
     })
     return (

@@ -22,23 +22,9 @@ const DetailContainer = ({ item_id }) => {
     const [loading, setLoading] = useState(false);
     const [success ,setSuccess]= useState(false);
     const [error, setError] =useState(false);
-
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
-    const onClickBack = useCallback(() => history.goBack(),[history]);
-    const onClickOptionItem = (id) => {
-        console.log(id);
-        const newOptionItem = menu.options.map((item) => {
-            if (item.option_id === id) {
-                item.check = !item.check;
-            }
-            return item;
-        });
-        setMenu(
-            {...menu},
-            {options : newOptionItem}
-         );
-    };
+    const onClickBack = () => history.goBack();
     const onClickCart =  useCallback(async () => {
         setLoading(true);
         setSuccess(false);
@@ -60,6 +46,7 @@ const DetailContainer = ({ item_id }) => {
     const onDecrement = useCallback(() => {
         if (quanity > 1) setQuanity(quanity - 1);
     }, [quanity]);
+
     const onIncrement = useCallback(() => {
         setQuanity(quanity + 1);
     }, [quanity]);
@@ -69,7 +56,6 @@ const DetailContainer = ({ item_id }) => {
         const token = sessionStorage.getItem("access_token");
         if(token){
             const res = await getMenuInfo(token,item_id)
-            console.log(res);
             setMenu(res);
             setSuccess(true);
         }
@@ -78,13 +64,26 @@ const DetailContainer = ({ item_id }) => {
 
     },[item_id]);
 
+    const onClickOptionItem = (id) => {
+        const newOptionItem = menu.options.map((item) => {
+            if (item.option_id === id) {
+                item.check = !item.check;
+            }
+            return item;
+        });
+        setMenu(
+            {...menu},
+            {options : newOptionItem}
+         );
+    };
+
     useEffect(()=>{
         getMenu();
     },[getMenu])
 
-
     useEffect(()=>{
         menu && setOptionItem();
+        
     },[menu,setOptionItem])
     return (
         <>

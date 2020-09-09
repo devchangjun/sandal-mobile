@@ -1,5 +1,4 @@
 import React, {useEffect, useCallback } from 'react';
-import ScrollToTop from 'components/scrollTop/ScrollToTop';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
@@ -12,7 +11,7 @@ import {
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
     Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone
 } from 'pages';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 function App() {
 
@@ -31,8 +30,6 @@ function App() {
   
   return (
     <div className="App">
-
-      <ScrollToTop>
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
         <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
@@ -43,10 +40,8 @@ function App() {
         <Route path={Paths.ajoonamu.account} component={Account}></Route>
         <Route path={Paths.ajoonamu.address} component={Address} ></Route>
         <Route path={Paths.ajoonamu.mypage} component={MyPage} ></Route>
-        <Switch>
-          <Route path={`${Paths.ajoonamu.shop}/:tab/:value`} exact component={DetailMenu}></Route>
-          <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
-        </Switch>
+        <Route path={Paths.ajoonamu.product} exact component={DetailMenu}></Route>
+        <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
         <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
         <Route path={Paths.ajoonamu.order_list} component={OrderList}></Route>
@@ -61,8 +56,6 @@ function App() {
         <Route path={Paths.ajoonamu.update_name} component={UpdateName}></Route>
         <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
         <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
-
-      </ScrollToTop>
     </div>
   );
 }

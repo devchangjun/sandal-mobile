@@ -56,14 +56,16 @@ const OrderListContainer = ({ tab = '0' }) => {
         setLoading(false);
 
     }
+
+    const onClickOrderItem = useCallback((order_id)=>{
+        console.log(order_id);
+        history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
+    },[history]);
+
+
     useEffect(()=>{
         getOrderItems();
     },[])
-
-    const onClickOrderItem =(order_id)=>{
-        console.log(order_id);
-        history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
-    }
 
 
 

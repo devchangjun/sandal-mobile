@@ -19,6 +19,7 @@ import { ButtonBase } from '@material-ui/core';
 const cx = classNames.bind(styles);
 
 const CartContainer = () => {
+    
     const history = useHistory();
     const [open, setOpen] = useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = useState(false); //전체선택
@@ -45,8 +46,6 @@ const CartContainer = () => {
         setEstm(false);
         setNotEstm(true);
     };
-
-
 
     //마운트 될 때 만 함수 생성.
     const onCartList = useCallback(async () => {

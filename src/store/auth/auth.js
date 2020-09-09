@@ -39,8 +39,6 @@ export function* auth_saga() {
     yield takeEvery(GET_USERINFO, get_user_info_saga);
 }
 
-
-
 const auth = handleActions(
     {
         [GET_USERINFO]: (state, action) => ({

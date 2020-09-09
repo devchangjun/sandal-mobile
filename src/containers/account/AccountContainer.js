@@ -23,13 +23,7 @@ const AccountContainer = () => {
     const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
     const onClickUpdatePhone =()=>history.push(Paths.ajoonamu.update_phone);
     const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
-
-    useEffect(() => {
-        if (user === null) {
-            history.replace(Paths.index);
-        }
-    }, [user, history]);
-
+    
     const onClickLogout = useCallback(async () => {
 
         const token = sessionStorage.getItem('access_token');
@@ -40,7 +34,19 @@ const AccountContainer = () => {
             dispatch(logout());
             history.replace(Paths.index);
         }
+
     },[dispatch,history]);
+
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[])
+
+    useEffect(() => {
+        if (user === null) {
+            history.replace(Paths.index);
+        }
+    }, [user, history]);
+
 
 
     const render = () => (

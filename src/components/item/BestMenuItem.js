@@ -17,7 +17,7 @@ const MenuDetailLink = styled(NavLink)`
 const BestMenuItem = (props) => {
     // item_id 로 경로 줘야함
     return (
-        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?item_id=${props.item_id}`}>
+        <MenuDetailLink to={`${Paths.ajoonamu.product}?item_id=${props.item_id}`}>
             <div className={styles['menu-item']}>
                 <ButtonBase>
                     <MenuImg src={MenuItemImage1} />

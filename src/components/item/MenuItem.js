@@ -9,8 +9,10 @@ const cx = classNames.bind(styles);
 
 const MenuItem = (props) => {
 
+
+
     return (
-        <div className={styles['menu-item']}>
+        <div className={styles['menu-item']} onClick={props.onClick}>
             <div className={styles['menu-img']}>
                 <img src={IMG} className={styles['img']} alt="메뉴" />
             </div>

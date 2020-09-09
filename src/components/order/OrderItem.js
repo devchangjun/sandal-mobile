@@ -6,23 +6,22 @@ import { numberFormat } from "../../lib/formatter";
 // 전제척인 주문 메뉴 아이템
 const OrderItem = (props) => {
     const {
-        // id,
-        // items,
-        // order_id,
+        id,
+        items,
+        order_id,
         total_price, 
-        // send_cost,
-        // cp_price,
-        // point_price,
-        // receipt_price
+        send_cost,
+        cp_price,
+        point_price,
+        receipt_price
     } = props;
     return (
-        <div className={styles['order-item']}>
+        <div className={styles['order-item']} onClick={props.onClick}>
             <div className={styles['item']}>
                 <div className={styles['menu']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['date']}>
-                            2020-05-01(목) 24:59:59
-                            {/* {order_id} */}
+                            {order_id}
                         </div>
                         <div className={styles['list']}>
                             <OrderMenuItemList />
@@ -34,10 +33,11 @@ const OrderItem = (props) => {
                     <div className={styles['pd-box']}>
 
                         <div className={styles['total']}>
-                            <span>결제금액</span>{numberFormat(total_price)}원
+                            <span>결제금액</span>{numberFormat(receipt_price)}원
                           </div>
                         <div className={styles['sub']}>
-                            주문금액 60,000원 + 배송비 6,000원
+                            주문금액 {numberFormat(total_price)}원 + 배송비 {numberFormat(send_cost)}원 - <br/>
+                            포인트 할인 {numberFormat(point_price)}원 + 쿠폰 할인 {numberFormat(cp_price)}원<br/>
                           </div>
                     </div>
                 </div>

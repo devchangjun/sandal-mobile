@@ -2,18 +2,14 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import produce from 'immer';
-
 import { Paths }from 'paths';
-
 import { ButtonBase } from '@material-ui/core';
-
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import PointModal from 'components/modal/PointModal';
 import CouponModal from 'components/modal/CouponModal';
 import PaymentModal from 'components/modal/PaymentModal';
 import OrderCheck from 'components/svg/order/OrderCheck';
-
 import styles from './Order.module.scss';
 
 const cx = classNames.bind(styles);
@@ -92,6 +88,7 @@ const OrderContainer = () => {
     const [couponList, setCouponList] = React.useState(cp_init);
     const [payment, setPayment] = React.useState('만나서 직접 결제');
     const [toggle , setToggle ] = React.useState(false);
+
     const onClickToggle =()=>setToggle(!toggle);
 
     const onClickPayment = (payment) => {
@@ -112,6 +109,7 @@ const OrderContainer = () => {
     const onClickOrder = () => {
         history.push(`${Paths.ajoonamu.order_complete}?order_number=${1234567890}`);
     }
+
 
     return (
         <>

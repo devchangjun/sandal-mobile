@@ -81,9 +81,7 @@ const QNAContainer = ({ tab = 'send' }) => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             const res = await requestQNAList(token);
-            console.log(res);
             const { qnas } = res;
-            console.log(qnas);
             setQnaList(qnas);
         } else {
             alert('토큰이 없습니다.');

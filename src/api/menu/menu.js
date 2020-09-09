@@ -172,7 +172,6 @@ export const getMenuList =async (token, id)=>{
         },
     };
     const result = await axios.get(req, config);
-    console.log(result.data.query.items);
     return result.data.query.items;
 }
 
@@ -185,7 +184,6 @@ export const getMainMenuList = async (token) =>{
         },
     };
     const result = await axios.get(req, config);
-    console.log(result.data.query.items);
     return result.data.query.items;
 }
 
@@ -198,7 +196,5 @@ export const getMenuInfo = async (token,item_id) =>{
         },
     };
     const result = await axios.get(req, config);
-
-    console.log(result.data.query);
     return result.data.query;
 }

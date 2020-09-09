@@ -13,7 +13,6 @@ export default () => {
         const res = await requestEventList();
         setList(res);
         setLoading(false);
-        console.log(res);
     }, []);
 
     useEffect(() => {

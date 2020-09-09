@@ -1,40 +1,36 @@
-import React,{useEffect,useState} from 'react';
+import React from 'react';
 import styles from './SwiperTab.module.scss';
 import SwipeableTabs from 'react-swipeable-tabs';
+
  
-const TestTabs =({idx,categorys,onChange})=> {
-
-    const [items, setItems] = useState(categorys.map(category => category.ca_name))
-
-    useEffect(()=>{
-
-    },[])
- 
+const SwiperTab =({idx,categorys,onChange})=> {
+    
     return (
-      <div className={styles['tab']}>
-        <div className={styles['items']}>
-      <SwipeableTabs
-        noFirstLeftPadding={false}
-        noLastRightPadding={false}
-        fitItems={false}
-        alignCenter={true}
-        borderWidthRatio={1}
-        activeItemIndex={idx}
-        onItemClick={(item, index) => onChange(index)}
-        items={items}
-        borderPosition="bottom"
-        borderThickness={2}
-        itemClassName={styles['item']}
-        borderColor="#222"
-        activeStyle={{
-          color: '#000'
-        }}
-      />
-      </div>
-      </div>
+        <div className={styles['tab']}>
+            <div className={styles['items']}>
+                <SwipeableTabs
+                    noFirstLeftPadding={false}
+                    noLastRightPadding={false}
+                    fitItems={false}
+                    alignCenter={true}
+                    borderWidthRatio={1}
+                    activeItemIndex={idx}
+                    onItemClick={(item, index) => onChange(index)}
+                    items={categorys.map((category) => <Tab ca_name ={category.ca_name}/>)}
+                    borderPosition="bottom"
+                    borderThickness={4}
+                    itemClassName={styles['item']}
+                    borderColor="#222"
+                    activeStyle={{
+                        color: '#000',
+                    }}
+                />
+            </div>
+        </div>
     );  
 }
 
+const Tab = ({ca_name}) => <>{ca_name} </>
 
 
-export default TestTabs;
+export default SwiperTab;

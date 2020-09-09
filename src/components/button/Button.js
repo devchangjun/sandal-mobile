@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Button.module.scss';
 import classNames from 'classnames/bind';
-import { ButtonBase } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 

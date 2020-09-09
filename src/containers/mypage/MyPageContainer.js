@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useCallback } from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -15,24 +15,15 @@ import { numberFormat } from '../../lib/formatter';
 
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
-import Loading from '../../components/asset/Loading';
 
 const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
-
-    const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const history = useHistory();
-    const onClickLogin = () => {
-        history.push(Paths.ajoonamu.signin);
-    };
-    const onClickAccount = () => {
-        history.push(Paths.ajoonamu.account);
-    };
-    const onClickLogout = async () => {
-        setLoading(true);
+
+    const onClickLogout = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
         const res = await localLogout(token);
         sessionStorage.removeItem('access_token');
@@ -40,12 +31,18 @@ const MyPageContainer = () => {
             dispatch(logout());
             history.push(Paths.index);
         }
-        setLoading(false);
-    };
+    },[dispatch,history]);
+
+    const onClickLogin =useCallback(() => {
+        history.push(Paths.ajoonamu.signin);
+    },[history]);
+    const onClickAccount = useCallback(() => {
+        history.push(Paths.ajoonamu.account);
+    },[history]);
+
 
     return (
         <>
-            <Loading open={loading} />
             <TitleBar title={'마이페이지'} />
             <div className={styles['container']}>
                 <Button

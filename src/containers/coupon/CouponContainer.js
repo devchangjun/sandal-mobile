@@ -10,7 +10,7 @@ import UseCouponItemList from 'components/coupon/UseCouponItemList';
 import BottomNav from 'components/nav/BottomNav';
 import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
-import {getCoupons,getMyCoupons} from '../../api/coupon/coupon';
+import {getMyCoupons} from '../../api/coupon/coupon';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 
@@ -54,35 +54,28 @@ const CouponConatiner = ({ tab='0' }) => {
         }
     }, [index]);
 
-    const onChangeTabIndex =(e,value) =>{
-        setIndex(value);
-    }
-    const onChangeSwiperIndex =(index)=>{
+    const onChangeTabIndex =(e,value) =>setIndex(value);
+    const onChangeSwiperIndex =useCallback((index)=>{
         setIndex(index);
         history.replace(`${Paths.ajoonamu.coupon}?tab=${index}`);
-    }
+    },[history]);
     const getMyCouponList = async () => {
         setLoading(true);
         const token = sessionStorage.getItem("access_token");
-        console.log(token);
         if (token) {
             const res = await getMyCoupons(token);
-            console.log(res);
             setMyCoupon(res);
             setSuccess(true);
         }
-        else{
-            console.log("토큰 없음");
-            setError(true);
-        }
+        else setError(true);
         setLoading(false);
     };
 
 
     useEffect(()=>{
-        console.log(myCoupon);
         getMyCouponList();
     },[])
+
     useEffect(()=>{
         setShow(false);        
     },[index])
@@ -110,7 +103,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={ (success|| error) ? true : false}
+                    animateHeight={ (success && !error) ? true : false}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>

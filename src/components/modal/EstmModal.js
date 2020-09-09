@@ -89,6 +89,7 @@ const EstmModal = (props) => {
         receiver_email: '',
     });
     const [estmFile, setEstmFile] = useState(null);
+    
     const onStateChange = useCallback((e) => dispatch(e.target), []);
     const sendEstimate = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');

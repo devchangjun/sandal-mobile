@@ -1,66 +1,25 @@
 /*global kakao*/
 import React,{ useEffect } from 'react';
 import classNames from 'classnames/bind';
-
-import { markerdata } from './data';
-
 import Back from 'components/svg/header/Back';
 import LinkButtom from 'components/button/LinkButton';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Slide from '@material-ui/core/Slide';
-
 import MarkerImg from './MarkerImg.svg';
 import styles from './MapModal.module.scss';
-
 const cx = classNames.bind(styles);
 
 
-
-//test commit
-const useStyles = makeStyles((theme) => ({
-    appBar: {
-        position: 'relative',
-        textAlign: 'center',
-        backgroundColor: 'white',
-        color: 'black',
-        boxShadow: 'none',
-        fontSize: 10
-    },
-    title: {
-        textAlign: 'center',
-        width: '100%',
-        fontSize:14
-    },
-    toolbar: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-    } ,
-    content : {
-        padding :0,
-        paddingLeft :24,
-        paddingRight : 24,
-        flex : "0 0 auto"
-    },
-    sub:{
-        fontSize:10
-    }
-}));
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//     return <Slide direction="up" ref={ref} {...props} />;
+// });
 
 const FullScreenDialog = (props) => {
+    
     const [jibun,setJibun] = React.useState('서울특별시 구로구 구로동 557, 삼성빌딩 407호');
     const [road ,setRoad] = React.useState('새말로v9길 46, 삼성빌딩 407호');
 
     useEffect(() => {
-        console.log(props.open);
         mapScript();
-    }, []);
+    }, [props]);
 
     
     const mapScript = () => {
@@ -78,8 +37,8 @@ const FullScreenDialog = (props) => {
             imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
-            markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+            // markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
 
 
         // 마커 정보를 가지고 뷰에 띄울 마커 생성
@@ -88,7 +47,7 @@ const FullScreenDialog = (props) => {
             image:markerImage
         });
 
-        const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+        // const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
         marker.setMap(map);
 
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {

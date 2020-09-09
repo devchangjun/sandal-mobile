@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import classnames from 'classnames/bind'
 
 import FixButton from '../button/Button';

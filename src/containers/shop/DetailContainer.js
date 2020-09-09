@@ -17,7 +17,6 @@ const cx = classNames.bind(styles);
 
 const DetailContainer = ({ item_id }) => {
     const history = useHistory();
-    const onClickBack = () => history.goBack();
 
     const [menu ,setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -26,7 +25,7 @@ const DetailContainer = ({ item_id }) => {
 
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
-
+    const onClickBack = useCallback(() => history.goBack(),[history]);
     const onClickOptionItem = (id) => {
         console.log(id);
         const newOptionItem = menu.options.map((item) => {
@@ -40,7 +39,7 @@ const DetailContainer = ({ item_id }) => {
             {options : newOptionItem}
          );
     };
-    const onClickCart =  async () => {
+    const onClickCart =  useCallback(async () => {
         setLoading(true);
         setSuccess(false);
         const token  =sessionStorage.getItem("access_token");
@@ -51,12 +50,12 @@ const DetailContainer = ({ item_id }) => {
         }
         setLoading(false);
         history.push(Paths.ajoonamu.cart);
-    };
-    const setOptionItem =()=>{
+    },[history,item_id,options,quanity]);
+
+    const setOptionItem =useCallback(()=>{
         const add_option = menu.options.filter(option => option.check).map((option =>option.option_id));
         setOptions(add_option);
-
-    }
+    },[menu]);
 
     const onDecrement = useCallback(() => {
         if (quanity > 1) setQuanity(quanity - 1);
@@ -65,7 +64,7 @@ const DetailContainer = ({ item_id }) => {
         setQuanity(quanity + 1);
     }, [quanity]);
 
-    const getMenu = async ()=>{
+    const getMenu =  useCallback (async ()=>{
         setLoading(true);
         const token = sessionStorage.getItem("access_token");
         if(token){
@@ -77,18 +76,16 @@ const DetailContainer = ({ item_id }) => {
         else setError(true);
         setLoading(false);
 
-    }
+    },[item_id]);
+
     useEffect(()=>{
         getMenu();
-    },[])
-    useEffect(()=>{
-        console.log("옵션 바뀜");
-        console.log(options);
-    },[options])
+    },[getMenu])
+
 
     useEffect(()=>{
         menu && setOptionItem();
-    },[menu])
+    },[menu,setOptionItem])
     return (
         <>
             {loading ? (
@@ -96,7 +93,7 @@ const DetailContainer = ({ item_id }) => {
             ) : (
                 <>
                     {
-                        success && 
+                        (success && !error) && 
                         <div className={styles['container']}>
                             <div className={styles['menu-img']}>
                                 <img

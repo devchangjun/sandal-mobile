@@ -10,7 +10,6 @@ export const getCartList = async (token) => {
         },
     };
     const res = await axios.get(req, config);
-    console.log(res.data.query);
     return res.data.query;
 };
 
@@ -28,6 +27,5 @@ export const addCartItem =async (token,item_id,item_options, item_quanity)=>{
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.post(req, form_data);
-    console.log(res)
     return res;
 }

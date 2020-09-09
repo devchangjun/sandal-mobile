@@ -43,7 +43,6 @@ export const localLogin = async (email, password) => {
         password: password,
     };
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
 };
 

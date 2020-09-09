@@ -3,19 +3,15 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import BottomNav from 'components/nav/BottomNav';
-
 import { localLogout, requestAgreeChange } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
-
-
 import styles from './Account.module.scss';
 import Profile from 'components/svg/sign/profile.png';
-import { stringToTel } from '../../lib/formatter';
+// import { stringToTel } from '../../lib/formatter';
 import Back from '../../components/svg/header/Back';
 
 const cn = classNames.bind(styles);
@@ -23,8 +19,10 @@ const cn = classNames.bind(styles);
 const AccountContainer = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-
     const history = useHistory();
+    const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
+    const onClickUpdatePhone =()=>history.push(Paths.ajoonamu.update_phone);
+    const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
 
     useEffect(() => {
         if (user === null) {
@@ -32,7 +30,8 @@ const AccountContainer = () => {
         }
     }, [user, history]);
 
-    const onClickLogout = async () => {
+    const onClickLogout = useCallback(async () => {
+
         const token = sessionStorage.getItem('access_token');
         const res = await localLogout(token);
         sessionStorage.removeItem('access_token');
@@ -41,16 +40,8 @@ const AccountContainer = () => {
             dispatch(logout());
             history.replace(Paths.index);
         }
-    };
-    const onClickUpdateName =()=>{
-        history.push(Paths.ajoonamu.update_name);
-    }
-    const onClickUpdatePhone =()=>{
-        history.push(Paths.ajoonamu.update_phone);
-    }
-    const onClickUpdatePassword =()=>{
-        history.push(Paths.ajoonamu.update_password);
-    }
+    },[dispatch,history]);
+
 
     const render = () => (
         <>

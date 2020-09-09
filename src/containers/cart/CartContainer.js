@@ -69,14 +69,11 @@ const CartContainer = () => {
 
     // 장바구니 리스트가 변경될 때 새로 생성.
     const onChangeTotalPrice = useCallback(() => {
-        console.log(cartList);
         setTotal(0);
         let total = 0;
         for (let i = 0; i < cartList.length; i++) {
-            console.log(cartList[i].item);
             total += cartList[i].item.item_price;
         }
-        console.log(total);
         setTotal(total);
     }, [cartList]);
 

@@ -14,24 +14,17 @@ const UpdatePasswordContainer = () => {
     const [new_password, setNewPassword] = useState('');
     const [new_password_confirm, setNewPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
+    const onChangePassword = e=> setPassword(e.target.value);
+    const onChangeNewPassword =e => setNewPassword(e.target.value);
+    const onChangeNewPasswordConfirm = e => setNewPasswordConfirm(e.target.value);
+
 
     useEffect(()=>{
         const token =sessionStorage.getItem("access_token");
-        if(!token){
-            history.replace("/");
-        }
-    },[])
+        if(!token) history.replace("/");
+    },[history])
 
-    const onChangePassword = (e) => {
-        setPassword(e.target.value);
-    };
 
-    const onChangeNewPassword = (e) => {
-        setNewPassword(e.target.value);
-    };
-    const onChangeNewPasswordConfirm = (e) => {
-        setNewPasswordConfirm(e.target.value);
-    };
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
@@ -103,7 +96,7 @@ const UpdatePasswordContainer = () => {
                 </div>
             </div>
 
-            <Button title={'확인'} toggle ={compare}/>
+            <Button title={'확인'} toggle ={compare} onClick={onClickUpdatePassword}/>
         </>
     );
 };

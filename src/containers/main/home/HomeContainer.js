@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useCallback, useContext} from 'react';
+import React,{useState,useEffect,useCallback} from 'react';
 import { Paths } from 'paths';
 import Title from 'components/titlebar/Title';
 import styles from './HomeContainer.module.scss';
@@ -9,7 +9,6 @@ import BannerImg from 'components/svg/banner/subBanner1.png';
 import BottomNav from 'components/nav/BottomNav';
 import Loading from 'components/asset/Loading';
 import {getMainMenuList} from '../../../api/menu/menu';
-import { MenuList } from '@material-ui/core';
 
 const tabInit = [
     {
@@ -35,7 +34,6 @@ const HomeContainer = () => {
         const token = sessionStorage.getItem("access_token");
         if(token){  
             const res = await getMainMenuList(token);
-            console.log(res);
             setMenuList(res);
             setSuccess(true);
         }
@@ -45,7 +43,6 @@ const HomeContainer = () => {
         setLoading(false);
     }
     const renderBestMenu =useCallback(()=>{
-        console.log(menuList);
         return(
                 <BestMenuItemList menuList={menuList}/>
         )
@@ -70,7 +67,7 @@ const HomeContainer = () => {
                 <h3 className={styles["menu-list-title"]}>베스트 메뉴</h3>
                 {loading ? <Loading open={loading}/> :
                     <>{
-                        success && renderBestMenu()
+                        (success && !error) && renderBestMenu()
                     }
                     </>
                 }

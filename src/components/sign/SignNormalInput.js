@@ -1,6 +1,5 @@
 import React,{useRef, useEffect} from 'react';
 import styles from './SignInput.module.scss';
-import AuthTimer from './AuthTimer';
 
 //인증 버튼을 포함하지 않을 input
 

@@ -72,7 +72,6 @@ const SignInContainer = () => {
 
         const { email, password } = user;
         const res = await localLogin(email, password);
-        console.log(res);
         if (res.status === 200) {
     
             //회원가입 안되있는 이메일

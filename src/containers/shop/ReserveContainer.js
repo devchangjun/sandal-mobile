@@ -14,7 +14,6 @@ import SwipeableViews from "react-swipeable-views";
 import {getCustomMenuList ,getMenuList} from '../../api/menu/menu';
 import {getCategory} from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
-import { useEventCallback } from '@material-ui/core';
 
 
 
@@ -32,7 +31,12 @@ const ReserveContainer = ({ tab='0'}) => {
     const [customMenuList, setCustomMenuList] = useState(null);
     const [menuList , setMenuList] = useState(null); 
     const [categorys, setCategorys] = useState([
-        {ca_id:0,ca_name:"추천메뉴",ca_order:0,ca_use:1},
+        {
+            ca_id:0,
+            ca_name:"추천메뉴",
+            ca_order:0,
+            ca_use:1
+        },
     ]);
 
     const onChangeTabIndex = (index) => setIndex(index);
@@ -42,31 +46,27 @@ const ReserveContainer = ({ tab='0'}) => {
     const handleClose = () => setOpen(false);
     const onChangeOrderType = (e) => setOrderType(e.target.value);
 
-    //전체 예산 입력
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
-        // if value is not blank, then test the regex
         if (e.target.value === '' || re.test(e.target.value)) {
             setBudget(e.target.value);
         }
     };
 
-    // 모달창 설정 버튼 클릭 => 맞춤 주문 설정.
-    const onCustomOrder = () => {
+    const onClickCustomOrder = () => {
         if (budget === 0) return;
-        console.log('맞춤주문 시작');
         setOpen(false);
-        setCustomList();
+        getCustomList();
     };
 
-    const setCustomList = async () => {
+    const getCustomList = useCallback(async () => {
         setLoading(true);
-        console.log(loading);
         const res = await getCustomMenuList();
         setCustomMenuList(res);
         setLoading(false);
-    };
-    const getMenuItemList = async (id)=>{
+    },[]);
+
+    const getMenuItemList = useCallback( async (id)=>{
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
         if (token) {
@@ -78,7 +78,8 @@ const ReserveContainer = ({ tab='0'}) => {
             setError(true);
         }
         setLoading(false);
-    }
+    },[]);
+
     const getCategoryList = async () => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
@@ -93,12 +94,10 @@ const ReserveContainer = ({ tab='0'}) => {
         }
         setLoading(false);
     };
+
     useEffect(() => {
         getCategoryList();
-    }, []);
-
- 
-
+    },[]);
 
     useEffect(()=>{
         history.replace(`${Paths.ajoonamu.shop}?menu=${index}`);
@@ -107,15 +106,18 @@ const ReserveContainer = ({ tab='0'}) => {
             const title = categorys[index].ca_name;
             if(id!==0) getMenuItemList(id);
             setTitle(title);
-
         }
-    },[index,categorys]);
+    },[index,history,categorys,getMenuItemList]);
+
     useEffect(()=>{
         const token = sessionStorage.getItem("access_token");
         if(!token){
             history.replace("/");
         }
-    })
+    },[history])
+
+    
+
 
 
     const renderSwiperItem =useCallback(()=>{
@@ -171,7 +173,7 @@ const ReserveContainer = ({ tab='0'}) => {
                             enableMouseEvents
                             index={index}
                             onChangeIndex={onChangeSwiperIndex}
-                            animateHeight={success ? true : false}
+                            animateHeight={ (success && !error) ? true : false}
                             children={
                                 categorys &&
                                 renderSwiperItem()
@@ -190,7 +192,7 @@ const ReserveContainer = ({ tab='0'}) => {
                     budget={budget}
                     onChangeBudget={onChangeBudget}
                     desireQuan={desireQuan}
-                    onCustomOrder={onCustomOrder}
+                    onCustomOrder={onClickCustomOrder}
                     onChangeDesireQune={onChangeDesireQune}
                 />
                 <BottomNav></BottomNav>

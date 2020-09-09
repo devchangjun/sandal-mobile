@@ -31,10 +31,7 @@ const Title = ({ title }) => {
 
 const BackButton = () => {
     const history = useHistory();
-    const onClickBack = () => {
-        console.log(history);
-        history.goBack();
-    };
+    const onClickBack = () => history.goBack();
     return (
         <div className={styles['back']}>
             <div className={styles['pd-box']}>

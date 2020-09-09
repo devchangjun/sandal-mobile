@@ -5,7 +5,16 @@ import { numberFormat } from "../../lib/formatter";
 
 // 전제척인 주문 메뉴 아이템
 const OrderItem = (props) => {
-    const {id,items,order_id,total_price, send_cost,cp_price,point_price,receipt_price} = props;
+    const {
+        // id,
+        // items,
+        // order_id,
+        total_price, 
+        // send_cost,
+        // cp_price,
+        // point_price,
+        // receipt_price
+    } = props;
     return (
         <div className={styles['order-item']}>
             <div className={styles['item']}>

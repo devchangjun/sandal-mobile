@@ -47,9 +47,9 @@ function MenuTitle({ menuTitle }) {
 }
 
 //홈 메뉴 텍스트 컴포넌트
-function MenuText({ menuText }) {
-    return <div className={styles['menu-text']}>{menuText}</div>;
-}
+// function MenuText({ menuText }) {
+//     return <div className={styles['menu-text']}>{menuText}</div>;
+// }
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {

@@ -30,7 +30,7 @@ const UpdatePhoneContainer = () => {
         if(!token){
             history.replace("/");
         }
-    },[])
+    },[history])
 
     //인증번호 발송
     const onClickSendAuth = () => {

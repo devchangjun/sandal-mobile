@@ -18,7 +18,7 @@ import TabTests from '../../components/tab/SwiperTabs';
 import {get_catergory,get_menulist} from '../../store/product/product';
 
 
-const ReserveContainer = ({menu='0'}) => {
+const ReserveContainer = ({menu=0}) => {
 
     const { categorys,items } = useSelector((state)=> state.product);
     const dispatch = useDispatch();
@@ -31,16 +31,19 @@ const ReserveContainer = ({menu='0'}) => {
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [title, setTitle] = useState('추천메뉴');
-    const [index, setIndex] = useState(parseInt(menu));
+    const [index, setIndex] = useState(menu);
     const [customMenuList, setCustomMenuList] = useState([]);
-    const onChangeTabIndex = (index) => setIndex(index);
-    const onChangeSwiperIndex = (index) => setIndex(index);
-    const onChangeDesireQune = (value) => setDesireQuan(value);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const onChangeDesireQune = (value) => setDesireQuan(value);
     const onChangeOrderType = (e) => setOrderType(e.target.value);
 
-
+    const onChangeTabIndex = (index) => {
+        history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
+    }
+    const onChangeSwiperIndex = (index) => {
+        history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
+    }
 
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
@@ -94,7 +97,6 @@ const ReserveContainer = ({menu='0'}) => {
     }, []);
 
     useEffect(() => {
-        history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
         window.scrollTo(0,0);
         if (categorys.length !== 1) {
             const title = categorys[index].ca_name;
@@ -128,6 +130,9 @@ const ReserveContainer = ({menu='0'}) => {
         },
         [items,onClickMenuItem]
     );
+    useEffect(()=>{
+        setIndex(menu);
+    },[menu])
     
     const renderSwiperItem = useCallback(() => {
         const item = categorys.map((category) => (

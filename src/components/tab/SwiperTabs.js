@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SwiperTab.module.scss';
 import SwipeableTabs from 'react-swipeable-tabs';
+import { ButtonBase ,Button} from '@material-ui/core';
 
  
 const SwiperTab =({idx,categorys,onChange})=> {
@@ -16,7 +17,7 @@ const SwiperTab =({idx,categorys,onChange})=> {
                     borderWidthRatio={1}
                     activeItemIndex={idx}
                     onItemClick={(item, index) => onChange(index)}
-                    items={categorys.map((category) => <Tab ca_name ={category.ca_name}/>)}
+                    items={categorys.map((category) => <ButtonBase><Tab ca_name ={category.ca_name}/></ButtonBase>)}
                     borderPosition="bottom"
                     borderThickness={4}
                     itemClassName={styles['item']}
@@ -30,7 +31,7 @@ const SwiperTab =({idx,categorys,onChange})=> {
     );  
 }
 
-const Tab = ({ca_name}) => <>{ca_name} </>
+const Tab = ({ca_name}) => <div className={styles['ca_name']}> {ca_name} </div>
 
 
 export default SwiperTab;

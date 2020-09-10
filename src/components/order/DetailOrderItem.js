@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './DetailOrder.module.scss';
 import IMG from '../../components/svg/menu/menuitem5.png';
+import { numberFormat } from '../../lib/formatter';
 
 const DetailOrderItem =(props)=>{
     const{item_name,item_option,item_price} = props;
@@ -22,7 +23,7 @@ const DetailOrderItem =(props)=>{
                     </div>
                 </div>  
                 <div className={styles['menu-price']}>
-                   {item_price}원
+                   {numberFormat(item_price)}원
                 </div>
             </div>
         </div>

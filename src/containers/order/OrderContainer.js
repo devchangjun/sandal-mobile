@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import produce from 'immer';
@@ -11,6 +11,9 @@ import CouponModal from 'components/modal/CouponModal';
 import PaymentModal from 'components/modal/PaymentModal';
 import OrderCheck from 'components/svg/order/OrderCheck';
 import styles from './Order.module.scss';
+import Back from 'components/svg/header/Back';
+import {getOrderCoupons} from '../../api/coupon/coupon';
+
 
 const cx = classNames.bind(styles);
 
@@ -110,6 +113,18 @@ const OrderContainer = () => {
         history.push(`${Paths.ajoonamu.order_complete}?order_number=${1234567890}`);
     }
 
+    const getUserCoupons =async()=>{
+        const token =sessionStorage.getItem("access_token");
+        if(token){
+            const res = await getOrderCoupons(token);
+            console.log(res);
+            setCouponList(res);
+        }
+    }
+
+    useEffect(()=>{
+        getUserCoupons();
+    },[])
 
     return (
         <>
@@ -198,13 +213,18 @@ const OrderContainer = () => {
                         <ButtonBase className={cx('box', 'pd-box')}>
                             <div className={cx('box', 'pd-box')} onClick={onClickCouponOpen}>
                                 <div className={styles['label']}>할인 쿠폰</div>
-                                <div className={styles['info']}>1개 보유</div>
+                                <div className={styles['info']}>1개 보유
+                                <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
+                                </div>
+                             
                             </div>
                         </ButtonBase>
                         <ButtonBase className={cx('box', 'pd-box')}>
                             <div className={cx('box', 'pd-box')} onClick={onClickPointOpen}>
                                 <div className={styles['label']}>포인트 사용</div>
-                                <div className={styles['info']}>1,000원</div>
+                                <div className={styles['info']}>1,000원
+                                <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
+                                </div>
                             </div>
                         </ButtonBase>
                     </div>

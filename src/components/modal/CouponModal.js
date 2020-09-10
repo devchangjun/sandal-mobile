@@ -1,6 +1,6 @@
 import React from 'react';
 import FixButton from 'components/button/Button';
-import SelectCouponItemList from 'components/coupon/SelectCouponItemList';
+import OrderCouponItemList from 'components/coupon/OrderCouponItemList';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -76,7 +76,7 @@ const FullScreenDialog = (props) => {
                     <div className={styles['coupon']}>
                         <div className={styles['title']}>쿠폰 선택</div>
                         <div className={styles['coupon-list']}>
-                            <SelectCouponItemList
+                            <OrderCouponItemList
                                 onClick={props.onClick}
                                 cp_list={props.list}
                             />

@@ -4,10 +4,10 @@ import {useHistory} from 'react-router-dom';
 import styles from './OrderComplete.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import DetailOrderItemList from 'components/order/DetailOrderItemList';
-import { stringToTel } from '../../lib/formatter';
 import cn from 'classnames/bind';
 import {getDetailOrderView} from '../../api/order/orderItem';
 import Loading from '../../components/asset/Loading';
+import { numberFormat ,stringToTel} from '../../lib/formatter';
 
 const cx = cn.bind(styles);
 
@@ -19,13 +19,17 @@ const OrderDetailContainer = ({order_id}) => {
     const [order_info ,setOrderInfo] = useState(null);
 
     const getOrderItemInfo = async()=>{
-        setLoading(true);
         const token = sessionStorage.getItem("access_token");
         if(token){
+           setLoading(true);
             const res = await getDetailOrderView(token,order_id);
+            console.log(res);
             setOrderInfo(res);
+            setLoading(false);
         }
-        setLoading(false);
+        else{
+            history.replace("/");
+        }
     }
 
 
@@ -91,7 +95,7 @@ const OrderDetailContainer = ({order_id}) => {
                                text={'결제방식'}
                                value={'가상계좌 입금'}
                            />
-                           <PaymentInfo text={'결제금액'} value={order_info && order_info.orders.total_price} />
+                           <PaymentInfo text={'결제금액'} value={order_info && numberFormat(order_info.orders.receipt_price)} />
                            <PaymentInfo text={'입금자명'} value={'김종완'} />
                            <PaymentInfo
                                text={'입금계좌'}

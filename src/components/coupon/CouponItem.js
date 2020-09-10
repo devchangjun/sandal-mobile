@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
 import DownCoupon from 'components/svg/coupon/down.svg';
+import { numberFormat } from "../../lib/formatter";
+import { ButtonBase } from '@material-ui/core';
 
 const CouponItem = (props) => {
     const { 
@@ -18,6 +20,7 @@ const CouponItem = (props) => {
         // user_id,
     } = props.item;
     return (
+        
         <div className={styles['coupon-item']}>
             <div className={props.check ? styles['down'] : styles['not-down']}>
                 <CouponDown check={props.check} />
@@ -37,7 +40,7 @@ function CouponEventName({ event_name }) {
     return <div className={styles['event-name']}>{event_name}</div>;
 }
 function CouponSale({ sale }) {
-    return <div className={styles['sale']}>{sale}</div>;
+    return <div className={styles['sale']}>{numberFormat(sale)}원 할인</div>;
 }
 function CouponEventSub({ sub_name }) {
     return <div className={styles['sub-name']}>{sub_name}</div>;

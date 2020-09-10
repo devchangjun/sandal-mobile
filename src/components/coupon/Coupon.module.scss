@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
 .pd-box {
-    padding: 20px;
+    padding: 24px;
     // border: 1px solid red;
 }
 .pd-side {
@@ -40,16 +40,16 @@
         }
         .info {
             width: 100%;
-            font-size: $font-size;
+            font-size: 14px;
             color: #999999;
             .event-name {
                 font-weight: bold;
                 font-size: 18px;
                 color: #333333;
-                margin: 10px 0;
+                margin-bottom :29px;
             }
             .date {
-                font-size: $font-size;
+                font-size: 14px;
                 color: #999999;
                 margin: 5px 0;
             }

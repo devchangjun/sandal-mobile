@@ -74,7 +74,7 @@ const CouponConatiner = ({ tab='0' }) => {
 
     useEffect(()=>{
         getMyCouponList();
-        window.scrollTo(0,0);
+        console.log("스크롤 초기화");
     },[])
 
     useEffect(()=>{
@@ -82,7 +82,7 @@ const CouponConatiner = ({ tab='0' }) => {
     },[index])
 
     useEffect(() => {
-
+        window.scrollTo(0,0);
         index === 0 && window.addEventListener('scroll', onScroll);
         return () => {
             window.removeEventListener('scroll', onScroll);

@@ -8,7 +8,7 @@ import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     FindEmail, FindPassword, Home, Account, Address, Reserve, DetailMenu,
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
-    Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone
+    Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage
 } from 'pages';
 import { Route,Switch } from 'react-router-dom';
 
@@ -56,6 +56,7 @@ function App() {
         <Route path={Paths.ajoonamu.update_name} component={UpdateName}></Route>
         <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
         <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
+        <Route component={ErrorPage}/>
         </Switch>
     </div>
   );

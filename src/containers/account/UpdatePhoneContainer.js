@@ -1,5 +1,7 @@
 import React,{useRef,useEffect,useState,useCallback} from 'react';
+import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import SignAuthInput from 'components/sign/SignAuthInput';
@@ -9,10 +11,15 @@ import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/sign/Check';
 import classNames from 'classnames/bind';
 import Toast from 'components/message/Toast';
+import {updatePhone} from '../../api/auth/auth';
+import {update_user_info} from '../../store/auth/auth';
+
 const cx = classNames.bind(styles);
 
 const UpdatePhoneContainer = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
+
     const random = useRef(496696);
     const [toast , setToast] = useState(false);
     const [phone, setPhone] = useState('');
@@ -54,6 +61,18 @@ const UpdatePhoneContainer = () => {
         setSuccess(auth_num === random.current);
 
     },[auth]);
+
+    
+    const onClickUpdatePhone = async()=>{
+        const token = sessionStorage.getItem("access_token");
+        const res = await updatePhone(token,phone);
+        console.log(res);
+        dispatch(update_user_info({name :'hp' ,value: phone}));
+        if(res.data.msg==="성공"){
+                history.replace(Paths.ajoonamu.account);
+        }
+    }
+    
     
     useEffect(()=>{
         onClickCompareAuth();
@@ -94,7 +113,7 @@ const UpdatePhoneContainer = () => {
                 </div>
             </div>
             <Toast on={toast} msg={"핸드폰 번호를 정확하게 기입해주세요."}/>
-            <Button title={'확인'} toggle={success}/>
+            <Button title={'확인'} toggle={success} onClick={onClickUpdatePhone}/>
         </>
     );
 };

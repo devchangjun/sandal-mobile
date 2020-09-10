@@ -6,7 +6,7 @@ import { numberFormat } from "../../lib/formatter";
 // 전제척인 주문 메뉴 아이템
 const OrderItem = (props) => {
     const {
-        id,
+        // id,
         items,
         order_id,
         total_price, 
@@ -24,7 +24,7 @@ const OrderItem = (props) => {
                             {order_id}
                         </div>
                         <div className={styles['list']}>
-                            <OrderMenuItemList />
+                            <OrderMenuItemList  items={items}/>
                         </div>
 
                     </div>
@@ -48,24 +48,27 @@ const OrderItem = (props) => {
 }
 
 //주문 메뉴 리스트
-const OrderMenuItemList = () => {
+const OrderMenuItemList = ({items}) => {
+    const list = items.map((item,index)=>(
+        <OrderMenuItem  item_name={item.item_name} item_option={item.item_option} item_price={item.item_price} key={index}/>
+    ))
+
     return (
         <div className={styles['menu-item-list']}>
-            <OrderMenuItem />
-            <OrderMenuItem />
+          {list}
         </div>
     )
 }
 
 //주문 메뉴 아이템 (개별)
-const OrderMenuItem = () => {
+const OrderMenuItem = ({item_name,item_option,item_price}) => {
     return (
         <div className={styles['menu-name']}>
             <div className={styles['name']}>
-                과일도시락 10개
+                {item_name} 1개
             </div>
             <div className={styles['options']}>
-                (추가선택 : 없음 / 비용 : 30,000원)
+                추가선택 : {item_option ? item_option: "없음"} / 비용 : {numberFormat(item_price)}원
             </div>
         </div>
     )

@@ -74,6 +74,7 @@ const CouponConatiner = ({ tab='0' }) => {
 
     useEffect(()=>{
         getMyCouponList();
+        window.scrollTo(0,0);
     },[])
 
     useEffect(()=>{

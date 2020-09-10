@@ -15,8 +15,9 @@ import CloseButton from 'components/svg/account/Close';
 const UpdateNameContainer=()=>{
     const history = useHistory();
     const [newName,setNewName] = useState('');
+    const [toggle,setToggle] = useState('');
+
     const onChageNewName =(e) => setNewName(e.target.value);
-    
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -26,9 +27,8 @@ const UpdateNameContainer=()=>{
         }
     },[history])
 
-    const onClickButton =()=> onChangeName();
 
-    const onChangeName = async()=>{
+    const onClickUpdateName = async()=>{
         const token = sessionStorage.getItem("access_token");
         const res = await updateName(token,newName);
         dispatch(update_user_info({name :'name' ,value: newName}));
@@ -36,6 +36,10 @@ const UpdateNameContainer=()=>{
                 history.replace(Paths.ajoonamu.account);
         }
     }
+    const onClickClear =()=>{
+        setNewName('');
+    }
+
 
     return(
             <>
@@ -44,13 +48,14 @@ const UpdateNameContainer=()=>{
                 <div className={styles['context']}>
                     <div className={styles['input']}>
                     <SignNormalInput initValue={newName} onChange={onChageNewName}/>
-                    <div className={styles['close']}>
+
+                    <div className={styles['close']} onClick={onClickClear}>
                         <CloseButton/>
                     </div>
                     </div>
                 </div>
         </div>
-        <Button title={"확인"} toggle={true} onClick={onClickButton}/>
+        <Button title={"확인"} toggle={newName.length>0} onClick={ newName.length>0 && onClickUpdateName}/>
         </>
     )
 }

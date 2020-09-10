@@ -15,7 +15,6 @@ import CloseButton from 'components/svg/account/Close';
 const UpdateNameContainer=()=>{
     const history = useHistory();
     const [newName,setNewName] = useState('');
-    const [toggle,setToggle] = useState('');
 
     const onChageNewName =(e) => setNewName(e.target.value);
     const dispatch = useDispatch();

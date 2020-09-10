@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SwiperTab.module.scss';
 import SwipeableTabs from 'react-swipeable-tabs';
-import { ButtonBase ,Button} from '@material-ui/core';
+import { ButtonBase } from '@material-ui/core';
 
  
 const SwiperTab =({idx,categorys,onChange})=> {

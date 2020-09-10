@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
 import { get_user_info } from './store/auth/auth';
-
 import { Paths } from 'paths';
 import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
@@ -11,7 +10,7 @@ import {
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
     Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone
 } from 'pages';
-import { Route } from 'react-router-dom';
+import { Route,Switch } from 'react-router-dom';
 
 function App() {
 
@@ -30,6 +29,7 @@ function App() {
   
   return (
     <div className="App">
+      <Switch>
         <Route exact={true} path={Paths.index} component={Home}></Route>
         <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
         <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
@@ -45,7 +45,7 @@ function App() {
         <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
         <Route path={Paths.ajoonamu.order} component={Order}></Route>
         <Route path={Paths.ajoonamu.order_list} component={OrderList}></Route>
-        <Route path={`${Paths.ajoonamu.order_complete}`} component={OrderComplete}></Route>
+        <Route path={Paths.ajoonamu.order_complete} component={OrderComplete}></Route>
         <Route path={Paths.ajoonamu.order_detail} component={OrderDetail}></Route>
         <Route path={Paths.ajoonamu.coupon} component={Coupon}></Route>
         <Route path={Paths.ajoonamu.find_email} component={FindEmail}></Route>
@@ -56,6 +56,7 @@ function App() {
         <Route path={Paths.ajoonamu.update_name} component={UpdateName}></Route>
         <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
         <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
+        </Switch>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import EventListContainer from '../../containers/event/EventListContainer';
 
 export default ({ match }) => {
     const post = match.params.post;
+
     return (
         <>
             <TitleBar title={'이벤트'} />

@@ -112,5 +112,11 @@ export const requestEventList = async () => {
 
 export const requestEventPost = async (id) => {
     const res = await reqItem(id);
+    try{
+    console.log(res);
     return res;
+    }
+    catch(e){
+        return e;
+    }
 }

@@ -14,7 +14,8 @@ export default ({ id }) => {
     const getEventPost = useCallback(async (id) => {
         setLoading(true);
         const res = await requestEventPost(id);
-        setEventData(res);
+        if(res!==undefined)
+            setEventData(res);
         setLoading(false);
     }, []);
 

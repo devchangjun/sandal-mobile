@@ -18,7 +18,7 @@ import TabTests from '../../components/tab/SwiperTabs';
 import {get_catergory,get_menulist} from '../../store/product/product';
 
 
-const ReserveContainer = ({menu=0}) => {
+const ReserveContainer = ({menu}) => {
 
     const { categorys,items } = useSelector((state)=> state.product);
     const dispatch = useDispatch();
@@ -93,6 +93,7 @@ const ReserveContainer = ({menu=0}) => {
 
 
     useEffect(() => {
+        console.log(menu);
         getProductList();
     }, []);
 

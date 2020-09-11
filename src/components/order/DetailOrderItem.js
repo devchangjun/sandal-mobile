@@ -30,4 +30,9 @@ const DetailOrderItem =(props)=>{
     )
 }
 
+DetailOrderItem.defaultProps={
+    item_price : 10000,
+    item_name :"과일도시락",
+}
+
 export default DetailOrderItem;

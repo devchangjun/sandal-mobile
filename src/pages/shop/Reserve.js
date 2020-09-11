@@ -7,8 +7,12 @@ function Reserve({location}) {
         ignoreQueryPrefix: true
     });
     console.log(query.menu);
+    let menu = query.menu;
+    if(menu===undefined){
+        menu='0';
+    }
     return (
-    <ReserveContainer menu={parseInt(query.menu)}/>
+    <ReserveContainer menu={parseInt(menu)}/>
     )
 }
 export default Reserve;

@@ -24,7 +24,7 @@ const OrderCompleteContainer = () => {
         <>
             <TitleBar title={'주문완료'} />
             <div className={styles['container']}>
-                <div className={styles['content']}>
+                 <div className={styles['content']}>
                     <div className={styles['title']}>
                         주문이 완료되었습니다.
                     </div>
@@ -40,7 +40,6 @@ const OrderCompleteContainer = () => {
                             <div className={styles['bank-name']}>가상계좌</div>
                             <div className={styles['bank-value']}>
                                 유효기간 2020/06/09 00:00:00
-                                {/* 유효기간 {dateToYYYYMMDD(new Date(), '/')} */}
                             </div>
                         </div>
                     </div>
@@ -85,7 +84,7 @@ const OrderCompleteContainer = () => {
                         <Button className={styles['btn']} onClick={handlePhraseOpen}>문구 서비스 신청</Button>
                         <Button className={cx('btn', { on: true })} onClick={onClickHome}>완료</Button>
                     </div>
-                </div>
+                </div> 
                 <PhraseServiceModal
                     open={phraseOpen}
                     handleClose={handlePhrasetClose}

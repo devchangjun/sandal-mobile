@@ -100,7 +100,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={ (success && !error) ? true : false}
+                    animateHeight={ (success || error) ? true : false}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>

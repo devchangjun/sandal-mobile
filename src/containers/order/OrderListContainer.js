@@ -63,6 +63,7 @@ const OrderListContainer = ({ tab = '0' }) => {
 
 
     useEffect(()=>{
+        window.scrollTo(0,0);
         getOrderItems();
     },[])
 

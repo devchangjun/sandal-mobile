@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './OrderComplete.module.scss';
@@ -20,6 +20,9 @@ const OrderCompleteContainer = () => {
     const onClickHome =()=>{
         history.push(Paths.index);
     }
+    useEffect(()=>{
+        window.scrollTo(0,0);
+    },[])
     return (
         <>
             <TitleBar title={'주문완료'} />

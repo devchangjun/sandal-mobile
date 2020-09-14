@@ -32,9 +32,7 @@ const tabInit = [
     },
 ]
 
-
 const CouponConatiner = ({ tab='0' }) => {
-
 
     const history = useHistory();
     const myCouponTitle = useRef(null);
@@ -74,7 +72,6 @@ const CouponConatiner = ({ tab='0' }) => {
 
     useEffect(()=>{
         getMyCouponList();
-        console.log("스크롤 초기화");
     },[])
 
     useEffect(()=>{
@@ -92,7 +89,6 @@ const CouponConatiner = ({ tab='0' }) => {
 
     return (
         <>
-        
             <Loading open={loading} />
             <TitleBar title={'쿠폰함'} />
             <div className={cx('title',{show:show})}> 

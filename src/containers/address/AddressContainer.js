@@ -8,6 +8,7 @@ import AddressModal from 'components/modal/AddressModal';
 import MapModal from 'components/modal/MapModal';
 import { getDeliveryList } from '../../api/address/address';
 import produce from 'immer';
+import {getCoordinates} from 'api/address/address';
 
 
 const cx = classNames.bind(styles);
@@ -21,9 +22,10 @@ const AddressContainer = () => {
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [addrs, setAddrs] = useState(''); // 검색 리스트
 
+    const [position,setPosition] = useState('');
     const [open, setOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
-    const onClickMapOpen = ()=>setMapOpen(true);
+
     const onClickMapClose = ()=>setMapOpen(false);
     const nextId = useRef(3);
     const [delivery_addrs, setDeliveryAddrs] = useState([]);
@@ -42,16 +44,22 @@ const AddressContainer = () => {
         setDeliveryAddrs(res.data.query);
     }, []);
 
-    //토큰 없으면 에러.
-    useEffect(() => {
-        onAddrList();
-    }, [onAddrList]);
+    const onClickMapOpen = ()=>{
+        getUserLocation();
+    }
 
+    const getUserLocation =async()=>{
+        const p = await getCoordinates();
+        const lat = p.coords.latitude;
+        const lng = p.coords.longitude;
+        const newState ={lat:lat,lng:lng};
+        console.log(newState);
+        setPosition(newState);
+        setMapOpen(true);
+    }
     const renderAddrList = useCallback(() => {
         return (
-            <>
                 <DeliveryItemList addrs={delivery_addrs} />
-            </>
         );
     }, [delivery_addrs]);
 
@@ -110,6 +118,13 @@ const AddressContainer = () => {
             .catch((err) => console.log(err));
     };
 
+
+    
+    //토큰 없으면 에러.
+    useEffect(() => {
+        onAddrList();
+    }, [onAddrList]);
+
     return (
         <>
             <TitleBar title={'주소설정'} />
@@ -155,7 +170,7 @@ const AddressContainer = () => {
                 onChangeDetail={onChangeDetail}
                 onInsertAddr={onClickInsertAddr}
             />
-            <MapModal open ={mapOpen} handleClose={onClickMapClose}/>
+            <MapModal open ={mapOpen} position={position}handleClose={onClickMapClose}/>
         </>
     );
 };

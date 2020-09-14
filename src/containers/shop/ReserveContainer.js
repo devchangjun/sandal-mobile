@@ -98,6 +98,7 @@ const ReserveContainer = ({menu}) => {
     }, []);
 
     useEffect(() => {
+ 
         window.scrollTo(0,0);
         if (categorys.length !== 1) {
             const title = categorys[index].ca_name;

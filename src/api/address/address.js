@@ -17,3 +17,34 @@ export const getDeliveryList = async (token) => {
     const res = await axios.get();
     return res;
 }
+
+export function getCoordinates() {
+    return new Promise(function(resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+  }
+// export function getLocation() {
+//     // geolocation 객체가 존재하는 경우
+//     if (navigator.geolocation) {
+//       // 현재위치를 가져옴
+//       navigator.geolocation.getCurrentPosition(
+//         (position) => {
+//           console.log(position)
+//           // arr.push({ lat: position.coords.latitude, long: position.coords.longitude })
+//           // 현재 위치의 위도 경도 출력
+//           console.log(`${position.coords.latitude} ${position.coords.longitude}`)
+//         },
+//         (err) => {
+//           console.error(err)
+//         },
+//         {
+//           enableHighAccuracy: false,
+//           maximumAge: 0,
+//           timeout: Infinity,
+//         }
+//       )
+//     } else {
+//       console.log('GPS를 지원하지 않습니다.')
+//     }
+//   }
+  

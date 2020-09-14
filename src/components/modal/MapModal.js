@@ -16,7 +16,8 @@ const FullScreenDialog = (props) => {
     
     const [jibun,setJibun] = React.useState('서울특별시 구로구 구로동 557, 삼성빌딩 407호');
     const [road ,setRoad] = React.useState('새말로v9길 46, 삼성빌딩 407호');
-
+    const {lat,lng} = props.position;
+ 
     useEffect(() => {
         mapScript();
     }, [props]);
@@ -26,7 +27,7 @@ const FullScreenDialog = (props) => {
         console.log("실행");
         let container = document.getElementById("map");
         let options = {
-            center: new kakao.maps.LatLng(37.624915253753194, 127.15122688059974),
+            center: new kakao.maps.LatLng(lat, lng),
             level: 5,
         };
         const map = new kakao.maps.Map(container, options);

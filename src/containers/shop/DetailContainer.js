@@ -24,6 +24,7 @@ const DetailContainer = ({ item_id }) => {
     const [error, setError] =useState(false);
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
+    const [option_total,setOptionTotal] = useState(0);
     const onClickBack = () => history.goBack();
     const onClickCart =  useCallback(async () => {
         setLoading(true);
@@ -68,6 +69,10 @@ const DetailContainer = ({ item_id }) => {
         const newOptionItem = menu.options.map((item) => {
             if (item.option_id === id) {
                 item.check = !item.check;
+                let option_price = item.option_price;
+                let new_total = option_total;
+                new_total += (item.check) ? option_price : (option_price)*-1;
+                setOptionTotal(new_total);
             }
             return item;
         });
@@ -143,7 +148,7 @@ const DetailContainer = ({ item_id }) => {
                             </div>
                             <Button
                                 title={`${quanity}개 담기(${numberFormat(
-                                    menu.item.item_price * quanity,
+                                    (menu.item.item_price * quanity) + option_total,
                                 )}원)`}
                                 onClick={onClickCart}
                                 toggle={true}

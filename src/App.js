@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
 import { get_user_info } from './store/auth/auth';
@@ -14,11 +14,13 @@ import { Route,Switch } from 'react-router-dom';
 
 function App() {
 
+  const {user} = useSelector((state)=>state.auth);
+
   const dispatch = useDispatch();
 
   const existJWT = useCallback(() => {
     const token = sessionStorage.getItem("access_token");
-    if (token) {
+    if (token && !user) {
       dispatch(get_user_info(token));
     }
   }, [dispatch]);

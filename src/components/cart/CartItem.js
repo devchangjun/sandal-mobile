@@ -44,7 +44,7 @@ const CartItem = (props) => {
                         </div>
                     </div>
                     <div className={styles['price']}>
-                        {numberFormat(item_price)} 원
+                        {numberFormat(item_price * item_quanity)} 원
                     </div>
                 </div>
             </div>

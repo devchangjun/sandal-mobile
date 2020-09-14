@@ -48,17 +48,19 @@ const CartContainer = () => {
     };
 
     //마운트 될 때 만 함수 생성.
-    const onCartList = useCallback(async () => {
+    const getCartListApi = useCallback(async () => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
         if(token){
         const res = await getCartList(token);
+        console.log(res);
         let len = Object.keys(res).length;
         let list = [];
         for (let i = 0; i < len - 1; i++) {
             list[i] = res[i];
             list[i].isChecked = false;
         }
+        console.log(list);
         setCost(res.delivery_cost);
         setCartList(list);
         setAllChecked(true); //나중에 빼야함
@@ -66,20 +68,22 @@ const CartContainer = () => {
         setLoading(false);
     }, []);
 
-    // 장바구니 리스트가 변경될 때 새로 생성.
+
     const onChangeTotalPrice = useCallback(() => {
         setTotal(0);
         let total = 0;
         for (let i = 0; i < cartList.length; i++) {
-            total += cartList[i].item.item_price;
+            let {item_price,item_quanity} = cartList[i].item;
+            total += item_price*item_quanity;
         }
+        
         setTotal(total);
     }, [cartList]);
 
     //마운트 될때만 함수 호출.
     useEffect(() => {
-        onCartList();
-    }, [onCartList]);
+        getCartListApi();
+    }, [getCartListApi]);
 
     useEffect(() => {
         onChangeTotalPrice();

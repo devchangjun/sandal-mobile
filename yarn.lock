@@ -7016,6 +7016,11 @@ just-curry-it@^3.1.0:
   resolved "https://registry.yarnpkg.com/just-curry-it/-/just-curry-it-3.1.0.tgz#ab59daed308a58b847ada166edd0a2d40766fbc5"
   integrity sha512-mjzgSOFzlrurlURaHVjnQodyPNvrHrf1TbQP2XU9NSqBtHQPuHZ+Eb6TAJP7ASeJN9h9K0KXoRTs8u6ouHBKvg==
 
+kakaojs@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/kakaojs/-/kakaojs-1.2.0.tgz#45e591df622b727495fc0976ce130b5ba540aaec"
+  integrity sha1-ReWR32IrcnSV/Al2zhMLW6VAquw=
+
 keycode@^2.1.7:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
@@ -9566,6 +9571,11 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.0, react-i
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-kakao-login@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/react-kakao-login/-/react-kakao-login-1.2.3.tgz#608d970eb985e551e9a816bee81b91b7be26b75b"
+  integrity sha512-3EvQJombS/YsRe/1jGc+J/fdSVMtlG+f/dnQG8Js01pXyWOzsC3OKetiuo2bRgcno5GLNIQ4rG7pmF1yGp1t3g==
 
 react-measure@^2.0.2:
   version "2.5.0"

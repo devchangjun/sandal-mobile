@@ -9,9 +9,25 @@ import LinkButton from 'components/button/LinkButton';
 import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 import classNames from 'classnames/bind';
-import {Kakao,Naver,Facebook} from '../../components/svg/sign/social';
+// import {KakaoLogo,NaverLogo,FacebookLogo} from '../../components/svg/sign/social';
+import {KakaoLogo,NaverLogo,FacebookLogo} from '../../components/svg/sign/social';
+import KakaoLogin from 'react-kakao-login';
+import styled from 'styled-components';
+import Axios from 'axios';
+
+
 const cx= classNames.bind(styles);
 
+
+
+
+const KakaoButton = styled(KakaoLogin)`
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 20px 0;
+`;
 
 const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
@@ -96,6 +112,13 @@ const SignInContainer = () => {
     },[user,history,dispatch])
 
 
+    const onClickKakaoLogin=async (res)=>{
+        console.log(res);
+        const token = res.response.access_token;
+        localStorage.setItem("social","kakao");
+        localStorage.setItem("access_token",token);
+    }
+
     return (
         <>
             <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
@@ -128,13 +151,20 @@ const SignInContainer = () => {
                             </div>                        
                         <div className={styles['social']}>
                             <div className={styles['sns']}>
-                                <img src={Naver} alt="naver"></img>
+                                <img src={NaverLogo} alt="naver"></img>
                             </div>
                             <div className={styles.sns}>
-                                <img src={Kakao} alt="kakao"></img>
+                            {/* <KakaoLogin
+                                    jsKey={'9f4d0e5bb1c19aed9322372dd32fbd51'}
+                                    buttonText="Kakao"
+                                    getProfile={true}
+                                    onSuccess={onClickKakaoLogin}
+
+                                /> */}
+                                <img src={KakaoLogo} alt="kakao"></img>
                             </div>
                             <div className={styles.sns}>
-                                <img src={Facebook} alt="facebook"></img>
+                                <img src={FacebookLogo} alt="facebook"></img>
                             </div>
                         </div>
                     </div>

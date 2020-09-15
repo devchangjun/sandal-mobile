@@ -87,7 +87,7 @@ const MyPageContainer = () => {
                     <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />
                     <Item text={'버전정보'} />
-                    {user && <Item text={'이용약관'} />}
+                    {user && <Item text={'이용약관'}url={`${Paths.ajoonamu.tos}?tab=0`}/>}
                 </div>
                 {user && (
                     <div className={styles['logout']} onClick={onClickLogout}>

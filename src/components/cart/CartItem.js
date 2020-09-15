@@ -33,7 +33,7 @@ const CartItem = (props) => {
                                 <div className={styles['delete']}>&times;</div>
                             </div>
                             <div className={styles['options']}>
-                                {options.map((op) => op.option_name)}
+                              추가선택: {options.length!==0? options.map((op) => op.option_name) : "없음"}
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>

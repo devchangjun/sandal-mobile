@@ -28,5 +28,6 @@ export { default as Coupon } from './coupon/Coupon';
 export { default as Support } from './support/Support';
 export { default as Notice } from './notice/Notice';
 export { default as Event } from './event/Event';
+export { default as Tos } from './tos/Tos';
 
 export {default as ErrorPage} from './error/error';

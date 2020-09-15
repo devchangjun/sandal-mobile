@@ -25,7 +25,8 @@ export const Paths = {
         coupon: '/coupon',
         support: '/support',
         notice: '/notice',
-        event: '/event'
+        event: '/event',
+        tos :'/tos',
     },
     api: 'http://devapi.ajoonamu.com/api/',
 };

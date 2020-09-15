@@ -20,7 +20,7 @@ const MenuItem = (props) => {
                    {props.item_name}
                     </div>
                 <div className={styles['menu-price']}>
-               {numberFormat(props.item_price)}
+               {numberFormat(props.item_price)}원~
                 </div>
             </div>
         </div>

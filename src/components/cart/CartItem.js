@@ -11,14 +11,13 @@ const CartItem = (props) => {
     // const { id, isChecked, handleCheckChild } = props;
     // const {item_img, item_option_id} = props.item;
     const { item_name, item_price, item_quanity } = props.item;
+    const { id } = props;
     const options = props.options;
 
-    const onClick = () => {
-        // console.log(options);
-    };
+
 
     return (
-        <div className={styles['cart-item']} onClick={onClick}>
+        <div className={styles['cart-item']}>
             <div className={styles['pd-box']}>
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
@@ -38,7 +37,10 @@ const CartItem = (props) => {
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>
                                     {/* <Counter value={3} /> */}
-                                    <Counter value={item_quanity} />
+                                    <Counter value={item_quanity}  
+                                    onIncrement={()=>props.handleIncrement(id)}
+                                    onDecrement ={()=>props.handleDecrement(id)}
+                                    />
                                 </div>
                             </div>
                         </div>

@@ -19,7 +19,6 @@ import { ButtonBase } from '@material-ui/core';
 const cx = classNames.bind(styles);
 
 const CartContainer = () => {
-    
     const history = useHistory();
     const [open, setOpen] = useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = useState(false); //전체선택
@@ -29,6 +28,27 @@ const CartContainer = () => {
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
+
+    const handleIncrement = useCallback((index) => {
+        setCartList(
+            produce(cartList,draft=>{
+                draft[index].item.item_quanity++;
+            })
+        )
+    }, [cartList],);
+
+    const handleDecrement = useCallback((index) => {
+        setCartList(
+            produce(cartList,draft=>{
+                const item_quanity = draft[index].item.item_quanity;
+                console.log(item_quanity);
+                if(item_quanity > 1){
+                 draft[index].item.item_quanity--
+                }
+            })
+        )
+    },[cartList]);
+    
 
     const handleOpen = useCallback(() => {
         setOpen(true);
@@ -51,32 +71,31 @@ const CartContainer = () => {
     const getCartListApi = useCallback(async () => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
-        if(token){
-        const res = await getCartList(token);
-        console.log(res);
-        let len = Object.keys(res).length;
-        let list = [];
-        for (let i = 0; i < len - 1; i++) {
-            list[i] = res[i];
-            list[i].isChecked = false;
+        if (token) {
+            const res = await getCartList(token);
+            console.log(res);
+            let len = Object.keys(res).length;
+            let list = [];
+            for (let i = 0; i < len - 1; i++) {
+                list[i] = res[i];
+                list[i].isChecked = false;
+            }
+            console.log(list);
+            setCost(res.delivery_cost);
+            setCartList(list);
+            setAllChecked(true); //나중에 빼야함
         }
-        console.log(list);
-        setCost(res.delivery_cost);
-        setCartList(list);
-        setAllChecked(true); //나중에 빼야함
-    }
         setLoading(false);
     }, []);
-
 
     const onChangeTotalPrice = useCallback(() => {
         setTotal(0);
         let total = 0;
         for (let i = 0; i < cartList.length; i++) {
-            let {item_price,item_quanity} = cartList[i].item;
-            total += item_price*item_quanity;
+            let { item_price, item_quanity } = cartList[i].item;
+            total += item_price * item_quanity;
         }
-        
+
         setTotal(total);
     }, [cartList]);
 
@@ -85,6 +104,9 @@ const CartContainer = () => {
         getCartListApi();
     }, [getCartListApi]);
 
+    useEffect(() => {
+        console.log(cartList);
+    }, [cartList]);
     useEffect(() => {
         onChangeTotalPrice();
     }, [onChangeTotalPrice]);
@@ -117,16 +139,19 @@ const CartContainer = () => {
     const onClickOrder = () => history.push(Paths.ajoonamu.order);
 
     const renderList = () => {
+        console.log('리렌더');
         return (
             <>
                 <div className={styles['bar']}>
-                        <div className={styles['delete']}>전체삭제</div>
+                    <div className={styles['delete']}>전체삭제</div>
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
                         allChecked={allChecked}
                         carts={cartList}
                         handleCheckChild={handleCheckChild}
+                        handleIncrement={handleIncrement}
+                        handleDecrement={handleDecrement}
                     />
                 </div>
                 <div className={styles['finally']}>
@@ -147,9 +172,12 @@ const CartContainer = () => {
                         </div>
                         <div className={styles['estm']}>
                             <ButtonBase>
-                                <div className={cx('check', { on: not_estm })} onClick={onChangeNotEstm}>
+                                <div
+                                    className={cx('check', { on: not_estm })}
+                                    onClick={onChangeNotEstm}
+                                >
                                     <div className={styles['check-box']}>
-                                        <Check on={not_estm}/>
+                                        <Check on={not_estm} />
                                     </div>
                                     <div className={styles['value']}>
                                         견적서 미발송
@@ -157,9 +185,12 @@ const CartContainer = () => {
                                 </div>
                             </ButtonBase>
                             <ButtonBase>
-                                <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
+                                <div
+                                    className={cx('check', { on: estm })}
+                                    onClick={onChangeEstm}
+                                >
                                     <div className={styles['check-box']}>
-                                        <Check  on={estm}/>
+                                        <Check on={estm} />
                                     </div>
                                     <div className={styles['value']}>
                                         견적서 발송
@@ -201,7 +232,9 @@ const CartContainer = () => {
                                 msg={'장바구니가 비었습니다.'}
                                 isButton={true}
                                 buttonName={'주문하러 가기'}
-                                onClick={()=>{history.replace(Paths.ajoonamu.shop)}}
+                                onClick={() => {
+                                    history.replace(Paths.ajoonamu.shop);
+                                }}
                             />
                         )}
                     </div>

@@ -5,12 +5,11 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 100%;
         margin-top: 30px;
-        .menu-img{
+        .menu-img {
             width: 100%;
-            @include animation(0.5s,fadeIn);
-            img{
+            @include animation(0.5s, fadeIn);
+            img {
                 width: 100%;
-                height: 168px;
             }
         }
         &:first-child {
@@ -31,11 +30,11 @@
     }
 }
 
-@include keyframe(fadeIn){
-    from{
+@include keyframe(fadeIn) {
+    from {
         filter: blur(50px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }

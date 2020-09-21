@@ -12,6 +12,7 @@ export const requestPostPhraseSerive = async (token, {
 
     formData.append('order_id', order_id);
     formData.append('sticker_logo', [sticker_logo]);
+    console.log(sticker_logo);
     formData.append('sticker_text', sticker_text);
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

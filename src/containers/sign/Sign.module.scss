@@ -116,12 +116,13 @@
 
     .sns {
         width: 100%;
-        height: 50px;
+        height: 64px;
         display: flex;
         justify-content: center;
         margin: 20px 0 20px 0;
         img {
-            width: 50px;
+            width: 64px;
+            height: 64px;
         }
     }
 }
@@ -135,18 +136,11 @@
     display: flex;
     flex-direction: column;
     background-color: #ebebeb;
-
-    label {
-        color: #777777;
-    }
-
+    
     //SMS 알림
     .sms {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        text-align: center;
         margin-top: 24px;
+        margin-left: 32px;
     }
 }
 

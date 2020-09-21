@@ -20,11 +20,11 @@ const FullScreenDialog = (props) => {
  
     useEffect(() => {
         mapScript();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
     
     const mapScript = () => {
-        console.log("실행");
         let container = document.getElementById("map");
         let options = {
             center: new kakao.maps.LatLng(lat, lng),
@@ -40,7 +40,6 @@ const FullScreenDialog = (props) => {
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             // markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
-
 
         // 마커 정보를 가지고 뷰에 띄울 마커 생성
         const marker = new kakao.maps.Marker({
@@ -134,11 +133,10 @@ const FullScreenDialog = (props) => {
 
     };
 
-
     return (
         <div>
             <div className={cx('map-modal',{on:props.open})}>
-            <div id="map" className={styles['map']} style={{ width: "100vw", height: "100vh" }}></div>
+                <div id="map" className={styles['map']} style={{ width: "100vw", height: "100vh" }}></div>
             </div>
             <div className={cx('back',{on:props.open})}>
                     <Back onClick={props.handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
@@ -146,36 +144,33 @@ const FullScreenDialog = (props) => {
             <BottomModal open={props.open} jibun={jibun} road={road}/>
         </div>
     );
-}
+};
 
-function BottomModal ({open,jibun,road}){
-    return(
-        <div className={cx('bottom-modal',{on: open})}>
+const BottomModal = ({ open, jibun, road }) => (
+    <div className={cx('bottom-modal',{on: open})}>
         <div className={styles['table']}>
             <div className={styles['addr']}>
-            <div className={styles['jibun-addr']}>
-            {jibun}
-             </div>
-             <div className={styles['road']}>
-                 <div className={styles['box']}>
-                    도로명
-                 </div>
-                <div className={styles['road-addr']}>
-                {road}
-
+                <div className={styles['jibun-addr']}>
+                {jibun}
                 </div>
-             </div>
-             <div className={styles['detail']}>
-                <input className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
-             </div>
+                <div className={styles['road']}>
+                    <div className={styles['box']}>
+                        도로명
+                    </div>
+                    <div className={styles['road-addr']}>
+                        {road}
+                    </div>
+                </div>
+                <div className={styles['detail']}>
+                    <input className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
+                </div>
             </div>
             <LinkButtom title={"이 위치로 배달지 설정"} toggle={true} />
         </div>
     </div>
-    )
-}
+);
 
-export default FullScreenDialog
+export default FullScreenDialog;
 
 
 

@@ -12,17 +12,17 @@ const cx = classNames.bind(styles);
 const OrderCouponItem = (props) => {
     const {
         cp_datetime,
-        cp_end,
+        // cp_end,
         cp_id,
-        cp_minimum,
+        // cp_minimum,
         cp_price,
-        cp_start,
+        // cp_start,
         cp_subject,
-        cp_target,
-        cp_use,
-        cp_use_date,
-        cz_id,
-        user_id,
+        // cp_target,
+        // cp_use,
+        // cp_use_date,
+        // cz_id,
+        // user_id,
         select,
     } = props.item
 

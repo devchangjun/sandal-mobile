@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SignInput.module.scss';
 import classNames from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 const cx = classNames.bind(styles);
 
 //인증 버튼을 포함한 input box
@@ -27,16 +28,15 @@ const SignAuthInput = ({
                     autoComplete="on"
                 ></input>
             </form>
-            <div
-                className={cx(
-                    'auth-btn',
+            <ButtonBase
+                className={cx('auth-btn',
                     { toggle: toggle },
                     { success: success },
                 )}
                 onClick={onClick}
             >
                 {buttonTitle}
-            </div>
+            </ButtonBase>
         </div>
     );
 };

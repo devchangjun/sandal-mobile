@@ -15,18 +15,16 @@ import SwipeableViews from "react-swipeable-views";
 import {getCustomMenuList ,getMenuList} from '../../api/menu/menu';
 import {getCategory} from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
-import {get_catergory,get_menulist} from '../../store/product/product';
+import {get_catergory, get_menulist} from '../../store/product/product';
 
 
-const ReserveContainer = ({menu}) => {
+const ReserveContainer = ({ menu }) => {
 
-    const { categorys,items } = useSelector((state)=> state.product);
+    const { categorys, items } = useSelector((state)=> state.product);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error , setError] = useState(false);
     const [budget, setBudget] = useState(0); //맞춤 가격
     const [desireQuan, setDesireQuan] = useState(0); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
@@ -38,12 +36,12 @@ const ReserveContainer = ({menu}) => {
     const onChangeDesireQune = (value) => setDesireQuan(value);
     const onChangeOrderType = (e) => setOrderType(e.target.value);
 
-    const onChangeTabIndex = (index) => {
+    const onChangeTabIndex = useCallback(index => {
         history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
-    }
-    const onChangeSwiperIndex = (index) => {
+    }, [history]);
+    const onChangeSwiperIndex = useCallback(index => {
         history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
-    }
+    }, [history]);
 
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
@@ -65,40 +63,39 @@ const ReserveContainer = ({menu}) => {
         setLoading(false);
     };
 
-    const getProductList = async () => {
+    const getProductList = useCallback(async () => {
         setLoading(true);
         const token = sessionStorage.getItem('access_token');
-        if (token && categorys.length===1) {
+        if (token && categorys.length === 1) {
             const res = await getCategory(token);
+            res.sort((a, b) => a.ca_id - b.ca_id);
+            // 카테고리를 분류 순서로 정렬.
             dispatch(get_catergory(res));
-            let arr=[];
-            for(let i=0; i<res.length;i++){
+            let arr = [];
+            for (let i = 0; i < res.length; i++) {
                 const result = await getMenuList(token, res[i].ca_id);
-                console.log(result);
-                const temp = {ca_id : res[i].ca_id, items:result}
+                const temp = { ca_id: res[i].ca_id, items: result };
                 arr.push(temp);
             }
+            arr.sort((a, b) => a.ca_id - b.ca_id);
             dispatch(get_menulist(arr));
-            setSuccess(true);
-        } else {
-            setError(true);
         }
         setLoading(false);
-    };
+    }, [categorys, dispatch]);
 
         
     const onClickMenuItem = useCallback((item_id) =>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-    },[history]); 
+    },[history]);
 
 
     useEffect(() => {
-        console.log(menu);
         getProductList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
         if (categorys.length !== 1) {
             const title = categorys[index].ca_name;
             setTitle(title);
@@ -112,24 +109,25 @@ const ReserveContainer = ({menu}) => {
         }
     }, [history]);
 
-    const renderMenuList = useCallback(
-        (ca_id) => {
-            const index = items.findIndex((item) => item.ca_id === ca_id);
-            return (
-                <>
-                    {index !== -1 ? (
-                        <MenuItemList menuList={items[index].items} onClick={onClickMenuItem}/>
-                    ) : (
-                        <Message
-                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
-                            src={true}
-                            isButton={false}
-                        />
-                    )}
-                </>
-            );
-        },
-        [items,onClickMenuItem]
+    const renderMenuList = useCallback((ca_id) => {
+        const index = items.findIndex((item) => item.ca_id === ca_id);
+        return (
+            <>
+                {index !== -1 ? (
+                    <MenuItemList
+                        menuList={items[index].items}
+                        onClick={onClickMenuItem}
+                    />
+                ) : (
+                    <Message
+                        msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                        src={true}
+                        isButton={false}
+                    />
+                )}
+            </>
+        );
+        }, [items, onClickMenuItem]
     );
     useEffect(()=>{
         setIndex(menu);
@@ -164,9 +162,7 @@ const ReserveContainer = ({menu}) => {
         return item;
     }, [categorys, customMenuList, renderMenuList]);
 
-    const render = useCallback(() => {
-  
-        return (
+    const render = useCallback(() => (
             <>
                 {loading ? (
                     <Loading open={loading} />
@@ -176,17 +172,16 @@ const ReserveContainer = ({menu}) => {
                             <SwipeableViews
                                 enableMouseEvents
                                 onChangeIndex={onChangeSwiperIndex}
-                                animateHeight={categorys.length!==1 ? true : false}
+                                animateHeight={categorys.length !== 1}
                                 index={categorys && index}
                             >
-                                {categorys&& renderSwiperItem()}
+                                {categorys && renderSwiperItem()}
                             </SwipeableViews>
                         </div>
                     </div>
                 )}
             </>
-        );
-    }, [index, loading,categorys, renderSwiperItem]);
+        ), [categorys, index, loading, onChangeSwiperIndex, renderSwiperItem]);
 
     return (
         <>
@@ -211,7 +206,6 @@ const ReserveContainer = ({menu}) => {
                 onCustomOrder={onClickCustomOrder}
                 onChangeDesireQune={onChangeDesireQune}
             />
-
             <BottomNav></BottomNav>
             <CartLink />
         </>

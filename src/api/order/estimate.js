@@ -9,14 +9,12 @@ export const requestPostEstimate = async (token, {
     const req = Paths.api + 'user/estimate';
     const formData = new FormData();
 
-    console.log(estm_email);
-
     formData.append('estm_email', estm_email);
     formData.append('estm_username', estm_username);
-    formData.append('estm_file', [estm_file]);
-    console.log(formData);
+    formData.append('estm_file', []);
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    axios.defaults.headers['Context-Type'] = 'application/json';
 
     const res = await axios.post(req, formData);
     console.log(res);

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { getCartList } from '../../api/cart/cart';
+import { deleteCartItem, getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -23,49 +23,42 @@ const CartContainer = () => {
     const [open, setOpen] = useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(false); //견적서 발송
-    const [not_estm, setNotEstm] = useState(true); // 견적서 미발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
 
-    const handleIncrement = useCallback((index) => {
+    const handleIncrement = useCallback(index => {
         setCartList(
-            produce(cartList,draft=>{
+            produce(cartList, (draft) => {
                 draft[index].item.item_quanity++;
-            })
-        )
-    }, [cartList],);
-
-    const handleDecrement = useCallback((index) => {
+            }),
+        );
+    }, [cartList]);
+    const handleDecrement = useCallback(index => {
         setCartList(
-            produce(cartList,draft=>{
+            produce(cartList, (draft) => {
                 const item_quanity = draft[index].item.item_quanity;
-                console.log(item_quanity);
-                if(item_quanity > 1){
-                 draft[index].item.item_quanity--
+                if (item_quanity > 1) {
+                    draft[index].item.item_quanity--;
                 }
-            })
-        )
-    },[cartList]);
-    
-
-    const handleOpen = useCallback(() => {
-        setOpen(true);
+            }),
+        );
+    }, [cartList]);
+    const handleDelete = useCallback(async dList => {
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            const res = await deleteCartItem(token, dList);
+            console.log(res);
+        }
+        setCartList(list => list.filter((item, index) => dList.indexOf(index) === -1))
     }, []);
-    const handleClose = useCallback(() => {
-        setOpen(false);
-    }, []);
 
-    const onChangeEstm = (e) => {
-        setEstm(true);
-        setNotEstm(false);
-    };
+    const handleOpen = useCallback(() => setOpen(true), []);
+    const handleClose = useCallback(() => setOpen(false), []);
 
-    const onChangeNotEstm = (e) => {
-        setEstm(false);
-        setNotEstm(true);
-    };
+    const onChangeEstm = useCallback(e => setEstm(true), []);
+    const onChangeNotEstm = useCallback(e => setEstm(false), []);
 
     //마운트 될 때 만 함수 생성.
     const getCartListApi = useCallback(async () => {
@@ -80,7 +73,6 @@ const CartContainer = () => {
                 list[i] = res[i];
                 list[i].isChecked = false;
             }
-            console.log(list);
             setCost(res.delivery_cost);
             setCartList(list);
             setAllChecked(true); //나중에 빼야함
@@ -89,13 +81,10 @@ const CartContainer = () => {
     }, []);
 
     const onChangeTotalPrice = useCallback(() => {
-        setTotal(0);
-        let total = 0;
-        for (let i = 0; i < cartList.length; i++) {
-            let { item_price, item_quanity } = cartList[i].item;
-            total += item_price * item_quanity;
-        }
-
+        const total = cartList.reduce((prev, { item }) => {
+            const { item_price, item_quanity } = item;
+            return prev + (item_price * item_quanity);
+        }, 0);
         setTotal(total);
     }, [cartList]);
 
@@ -104,46 +93,24 @@ const CartContainer = () => {
         getCartListApi();
     }, [getCartListApi]);
 
-    useEffect(() => {
-        console.log(cartList);
+    useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
+
+    const handleCheckChild = useCallback(e => {
+        const index = e.target.id;
+        setCartList(
+            produce(cartList, (draft) => {
+                draft[index].isChecked = !draft[index].isChecked;
+            }),
+        );
     }, [cartList]);
-    useEffect(() => {
-        onChangeTotalPrice();
-    }, [onChangeTotalPrice]);
+    const onClickOrder = useCallback(() => history.push(Paths.ajoonamu.order), [history]);
 
-    const handleCheckChild = useCallback(
-        (e) => {
-            const index = e.target.id;
-            setCartList(
-                produce(cartList, (draft) => {
-                    draft[index].isChecked = !draft[index].isChecked;
-                }),
-            );
-        },
-        [cartList],
-    );
-
-    //전체 선택인지 아닌지 여부 판단
-    // const handleAllChecked = () => {
-
-    //     for (let i = 0; i < cartList.length; i++) {
-    //         if (cartList[i].isChecked === false) {
-    //             setAllChecked(false);
-    //             return;
-    //         }
-    //     }
-    //     setAllChecked(true);
-    //     return;
-    // }
-
-    const onClickOrder = () => history.push(Paths.ajoonamu.order);
-
-    const renderList = () => {
-        console.log('리렌더');
-        return (
+    const renderList = useCallback(() => (
             <>
                 <div className={styles['bar']}>
-                    <div className={styles['delete']}>전체삭제</div>
+                    <ButtonBase className={styles['delete']}
+                        onClick={() => handleDelete(cartList.map((item, index) => index))}
+                    >전체삭제</ButtonBase>
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
@@ -152,6 +119,7 @@ const CartContainer = () => {
                         handleCheckChild={handleCheckChild}
                         handleIncrement={handleIncrement}
                         handleDecrement={handleDecrement}
+                        handleDelete={handleDelete}
                     />
                 </div>
                 <div className={styles['finally']}>
@@ -172,29 +140,19 @@ const CartContainer = () => {
                         </div>
                         <div className={styles['estm']}>
                             <ButtonBase>
-                                <div
-                                    className={cx('check', { on: not_estm })}
-                                    onClick={onChangeNotEstm}
-                                >
+                                <div className={cx('check', { on: !estm })} onClick={onChangeNotEstm}>
                                     <div className={styles['check-box']}>
-                                        <Check on={not_estm} />
+                                        <Check on={!estm} />
                                     </div>
-                                    <div className={styles['value']}>
-                                        견적서 미발송
-                                    </div>
+                                    <div className={styles['value']}>견적서 미발송</div>
                                 </div>
                             </ButtonBase>
                             <ButtonBase>
-                                <div
-                                    className={cx('check', { on: estm })}
-                                    onClick={onChangeEstm}
-                                >
+                                <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
                                     <div className={styles['check-box']}>
                                         <Check on={estm} />
                                     </div>
-                                    <div className={styles['value']}>
-                                        견적서 발송
-                                    </div>
+                                    <div className={styles['value']}>견적서 발송</div>
                                 </div>
                             </ButtonBase>
                         </div>
@@ -213,8 +171,8 @@ const CartContainer = () => {
                     isEsit={estm}
                 />
             </>
-        );
-    };
+        ), [allChecked, cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
+    );
 
     return (
         <>

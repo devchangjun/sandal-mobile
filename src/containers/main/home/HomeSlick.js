@@ -15,7 +15,7 @@ class HomeSlick extends React.Component {
             dots: false,
             infinite: true,
             autoplay: true,
-            autoplaySpeed: 2000,
+            autoplaySpeed: 5000,
             speed: 500,
             slidesToShow: 1,
             slidesToScroll: 1,

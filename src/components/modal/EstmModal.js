@@ -22,8 +22,8 @@ import styles from './EstmModal.module.scss';
 const cx = classNames.bind(styles);
 
 const useStyles = makeStyles(() => ({
-    container:{
-        paddingBottom:"73px",
+    container: {
+        paddingBottom: '73px',
     },
 
     appBar: {
@@ -53,11 +53,11 @@ const useStyles = makeStyles(() => ({
     },
     estimate: {
         marginTop: 48,
-        marginBottom:73,
-        paddingBottom:73,
+        marginBottom: 73,
+        paddingBottom: 73,
     },
     estimatePreview: {
-        width: '100%'
+        width: '100%',
     },
     sub: {
         fontSize: 10,
@@ -71,12 +71,10 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-function reducer(state, action) {
-    return {
-        ...state,
-        [action.name]: action.value,
-    };
-}
+const reducer = (state, action) => ({
+    ...state,
+    [action.name]: action.value,
+});
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -89,7 +87,7 @@ const EstmModal = (props) => {
         receiver_email: '',
     });
     const [estmFile, setEstmFile] = useState(null);
-    
+
     const onStateChange = useCallback((e) => dispatch(e.target), []);
     const sendEstimate = useCallback(async () => {
         const token = sessionStorage.getItem('access_token');
@@ -97,10 +95,10 @@ const EstmModal = (props) => {
         requestPostEstimate(token, {
             estm_email: receiver_email,
             estm_username: receiver,
-            estm_file: estmFile
+            estm_file: estmFile,
         });
-    }, [estmFile, state])
-    
+    }, [estmFile, state]);
+
     const onDownload = (ref) => {
         let position = 0;
         const doc = new jsPDF('p', 'mm');
@@ -118,11 +116,21 @@ const EstmModal = (props) => {
             while (heightLeft >= 20) {
                 position = heightLeft - imgHeight;
                 doc.addPage();
-                doc.addImage(imageData, 'PNG', 0, position, imgWidth, imgHeight);
+                doc.addImage(
+                    imageData,
+                    'PNG',
+                    0,
+                    position,
+                    imgWidth,
+                    imgHeight,
+                );
                 heightLeft -= pageHeight;
             }
             // doc.save('test.pdf');
-
+            console.log(imageData);
+            console.log(doc.output('blob'));
+            // setEstmFile(doc.output('blob'));
+            setEstmFile(imageData);
             // window.open(doc.output('bloburi'));
         });
     };
@@ -156,23 +164,37 @@ const EstmModal = (props) => {
             <div className={styles['title']}>수신자</div>
             <DialogContent className={classes.content}>
                 <div className={styles['modal-input-box']}>
-                    <input name="receiver" className={styles['modal-input']} onChange={onStateChange} />
+                    <input
+                        name="receiver"
+                        className={styles['modal-input']}
+                        onChange={onStateChange}
+                    />
                 </div>
             </DialogContent>
             <div className={styles['title']}>받을 이메일 주소</div>
             <DialogContent className={classes.content}>
                 <div className={styles['modal-input-box']}>
-                    <input naver="receiver_email" className={styles['modal-input']} onChange={onStateChange} />
+                    <input
+                        name="receiver_email"
+                        className={styles['modal-input']}
+                        onChange={onStateChange}
+                    />
                 </div>
             </DialogContent>
             {props.isEsit && (
-                <DialogContent className={`${classes.content} ${classes.estimate}`}>
+                <DialogContent
+                    className={`${classes.content} ${classes.estimate}`}
+                >
                     <ButtonBase className={classes.estimatePreview}>
                         <Estimate onDownload={onDownload} />
                     </ButtonBase>
                 </DialogContent>
             )}
-            <LinkButton on={true} onClose={props.onClick} onSubmit={sendEstimate}/>
+            <LinkButton
+                on={true}
+                onClose={props.onClick}
+                onSubmit={sendEstimate}
+            />
         </Dialog>
     );
 };

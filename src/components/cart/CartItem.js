@@ -4,17 +4,14 @@ import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
 import cart from '../svg/cart/cart.png';
 import { numberFormat } from '../../lib/formatter';
+import { IconButton } from '@material-ui/core';
+import Cross from '../svg/counter/Cross';
 
 // 메뉴이름, 추가옵션
-
 const CartItem = (props) => {
-    // const { id, isChecked, handleCheckChild } = props;
-    // const {item_img, item_option_id} = props.item;
     const { item_name, item_price, item_quanity } = props.item;
     const { id } = props;
     const options = props.options;
-
-
 
     return (
         <div className={styles['cart-item']}>
@@ -22,24 +19,25 @@ const CartItem = (props) => {
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
                         <div className={styles['item-img']}>
-                            <img src={cart} alt={item_name}></img>
+                            <img src={cart} alt={item_name} />
                         </div>
                         <div className={styles['item-info']}>
                             <div className={styles['bar']}>
-                                <div className={styles['name']}>
-                                    {item_name}
-                                </div>
-                                <div className={styles['delete']}>&times;</div>
+                                <div className={styles['name']}>{item_name}</div>
+                                <IconButton className={styles['delete']}
+                                    onClick={() => props.handleDelete([id])}
+                                >
+                                    <Cross color="#777" angle={45} />
+                                </IconButton>
                             </div>
                             <div className={styles['options']}>
-                              추가선택: {options.length!==0? options.map((op) => op.option_name) : "없음"}
+                                추가선택: {options.length !== 0 ? options.map((op) => op.option_name) : "없음"}
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>
-                                    {/* <Counter value={3} /> */}
                                     <Counter value={item_quanity}  
-                                    onIncrement={()=>props.handleIncrement(id)}
-                                    onDecrement ={()=>props.handleDecrement(id)}
+                                        onIncrement={()=>props.handleIncrement(id)}
+                                        onDecrement ={()=>props.handleDecrement(id)}
                                     />
                                 </div>
                             </div>

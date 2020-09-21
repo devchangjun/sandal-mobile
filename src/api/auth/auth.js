@@ -54,6 +54,7 @@ export const localLogin = async (email, password) => {
         password: password,
     };
     const res = await axios.post(req, form_data);
+    console.log(res);
     return res;
 };
 
@@ -63,21 +64,19 @@ export const localLogout = async (token) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post();
-    console.log(res.data);
     return res.data;
 };
 
-export const localRegister = async (email, password, password_confirm) => {
+export const localRegister = async (email, password, password_confirm, agree_marketing) => {
     const req = Paths.api + 'user/register';
     const form_data = {
-        email: email,
-        password: password,
-        password_confirm: password_confirm,
-        agree_marketing: 0,
+        email,
+        password,
+        password_confirm,
+        agree_marketing,
     };
 
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
 }
 
@@ -89,7 +88,5 @@ export const findId = async (name,hp)=>{
         hp:hp
     }
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
-
 };

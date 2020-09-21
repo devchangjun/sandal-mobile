@@ -5,6 +5,9 @@ import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import classNames from 'classnames/bind';
+import {updatePassword} from '../../api/auth/auth';
+import {useStore} from '../../hooks/useStore';
+import { Paths } from '../../paths';
 //test commit
 const cx = classNames.bind(styles);
 
@@ -17,14 +20,7 @@ const UpdatePasswordContainer = () => {
     const onChangePassword = e=> setPassword(e.target.value);
     const onChangeNewPassword =e => setNewPassword(e.target.value);
     const onChangeNewPasswordConfirm = e => setNewPasswordConfirm(e.target.value);
-
-
-    useEffect(()=>{
-        const token =sessionStorage.getItem("access_token");
-        if(!token) history.replace("/");
-    },[history])
-
-
+    const user_token = useStore();
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
@@ -45,8 +41,12 @@ const UpdatePasswordContainer = () => {
         }
     };
 
-    const onClickUpdatePassword =()=>{
-        console.log("비밀번호 변경");
+    const onClickUpdatePassword = async ()=>{
+       const res = await updatePassword(user_token,password,new_password, new_password_confirm);
+       console.log(res);
+       if(res.data.msg==='성공'){
+           history.replace(Paths.ajoonamu.account);
+       }
     }
  
 

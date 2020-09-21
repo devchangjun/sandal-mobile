@@ -9,6 +9,7 @@ import MapModal from 'components/modal/MapModal';
 import { getDeliveryList } from '../../api/address/address';
 import produce from 'immer';
 import {getCoordinates} from 'api/address/address';
+import {useStore} from '../../hooks/useStore';
 
 
 const cx = classNames.bind(styles);
@@ -17,6 +18,7 @@ const cx = classNames.bind(styles);
 // const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
 const key= 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU';
 const AddressContainer = () => {
+    const user_token = useStore();
     const [searchAddr, setSearchAddr] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
@@ -38,11 +40,11 @@ const AddressContainer = () => {
     const onChangeDetail = (e) => setDetailAddr(e.target.value);
 
     const onAddrList = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
-        const res = await getDeliveryList(token);
+       
+        const res = await getDeliveryList(user_token);
         console.log(res.data.query);
         setDeliveryAddrs(res.data.query);
-    }, []);
+    }, [user_token]);
 
     const onClickMapOpen = ()=>{
         getUserLocation();
@@ -117,8 +119,6 @@ const AddressContainer = () => {
             .then((json) => json.results.juso)
             .catch((err) => console.log(err));
     };
-
-
     
     //토큰 없으면 에러.
     useEffect(() => {

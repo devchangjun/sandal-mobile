@@ -8,27 +8,29 @@ import cn from 'classnames/bind';
 import { getDetailOrderView } from '../../api/order/orderItem';
 import Loading from '../../components/asset/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
+import {useStore} from '../../hooks/useStore';
 
 const cx = cn.bind(styles);
 
 const OrderDetailContainer = ({ order_id }) => {
     const { user } = useSelector((state) => state.auth);
+    const user_token = useStore();
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [order_info, setOrderInfo] = useState(null);
 
     const getOrderItemInfo = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
-        if (token) {
+
+        if (user_token) {
             setLoading(true);
-            const res = await getDetailOrderView(token, order_id);
+            const res = await getDetailOrderView(user_token, order_id);
             console.log(res);
             setOrderInfo(res);
             setLoading(false);
         } else {
             history.replace('/');
         }
-    }, [order_id, history]);
+    }, [order_id, history,user_token]);
 
     useEffect(() => {
         if (!order_id) {

@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom';
 import {updateName} from '../../api/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
 
+import {useStore} from '../../hooks/useStore';
 import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -14,22 +15,16 @@ import CloseButton from 'components/svg/account/Close';
 
 const UpdateNameContainer=()=>{
     const history = useHistory();
+    const user_token = useStore();
     const [newName,setNewName] = useState('');
 
     const onChageNewName =(e) => setNewName(e.target.value);
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-        const token =sessionStorage.getItem("access_token");
-        if(!token){
-            history.replace("/");
-        }
-    },[history])
-
 
     const onClickUpdateName = async()=>{
-        const token = sessionStorage.getItem("access_token");
-        const res = await updateName(token,newName);
+
+        const res = await updateName(user_token,newName);
         dispatch(update_user_info({name :'name' ,value: newName}));
         if(res.data.msg==="성공"){
                 history.replace(Paths.ajoonamu.account);
@@ -38,7 +33,6 @@ const UpdateNameContainer=()=>{
     const onClickClear =()=>{
         setNewName('');
     }
-
 
     return(
             <>

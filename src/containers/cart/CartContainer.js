@@ -15,6 +15,7 @@ import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
+import {useStore} from '../../hooks/useStore';
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +28,7 @@ const CartContainer = () => {
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
+    const user_token = useStore();
 
     const handleIncrement = useCallback(index => {
         setCartList(
@@ -46,13 +48,12 @@ const CartContainer = () => {
         );
     }, [cartList]);
     const handleDelete = useCallback(async dList => {
-        const token = sessionStorage.getItem('access_token');
-        if (token) {
-            const res = await deleteCartItem(token, dList);
+        if (user_token) {
+            const res = await deleteCartItem(user_token, dList);
             console.log(res);
         }
         setCartList(list => list.filter((item, index) => dList.indexOf(index) === -1))
-    }, []);
+    }, [user_token]);
 
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
@@ -63,9 +64,9 @@ const CartContainer = () => {
     //마운트 될 때 만 함수 생성.
     const getCartListApi = useCallback(async () => {
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        if (token) {
-            const res = await getCartList(token);
+
+        if (user_token) {
+            const res = await getCartList(user_token);
             console.log(res);
             let len = Object.keys(res).length;
             let list = [];
@@ -78,7 +79,7 @@ const CartContainer = () => {
             setAllChecked(true); //나중에 빼야함
         }
         setLoading(false);
-    }, []);
+    }, [user_token]);
 
     const onChangeTotalPrice = useCallback(() => {
         const total = cartList.reduce((prev, { item }) => {
@@ -159,7 +160,7 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <Button
-                    title={`${numberFormat(total)}원 주문하기`}
+                    title={`${numberFormat(total + delivery_cost)}원 주문하기`}
                     onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>

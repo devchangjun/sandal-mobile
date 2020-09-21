@@ -13,6 +13,7 @@ import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
 import { IconButton } from '@material-ui/core';
 import {getOrderList} from '../../api/order/orderItem';
+import {useStore} from '../../hooks/useStore';
 
 const tabInit = [
     {
@@ -31,7 +32,7 @@ const OrderListContainer = ({ tab = '0' }) => {
     const [open,setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
     const [order_list,setOrderList] = useState([]);
-    
+    const user_token = useStore();
     const history = useHistory();
     
     const handleOpen =()=>setOpen(true);
@@ -46,14 +47,12 @@ const OrderListContainer = ({ tab = '0' }) => {
     }
     const getOrderItems =async()=>{
         setLoading(true);
-        const token = sessionStorage.getItem("access_token");
-        if(token){
-            const res= await getOrderList(token);
+        if(user_token){
+            const res= await getOrderList(user_token);
             console.log(res);
             setOrderList(res);
         }
         setLoading(false);
-
     }
 
     const onClickOrderItem = useCallback((order_id)=>{

@@ -12,25 +12,27 @@ import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from "react-swipeable-views";
-import {getCustomMenuList ,getMenuList} from '../../api/menu/menu';
+import {getPreferMenuList ,getMenuList} from '../../api/menu/menu';
 import {getCategory} from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
 import {get_catergory, get_menulist} from '../../store/product/product';
+import {useStore} from '../../hooks/useStore';
 
 
 const ReserveContainer = ({ menu }) => {
 
+    const user_token = useStore();
     const { categorys, items } = useSelector((state)=> state.product);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [budget, setBudget] = useState(0); //맞춤 가격
-    const [desireQuan, setDesireQuan] = useState(0); //희망수량
+    const [desireQuan, setDesireQuan] = useState(1); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [title, setTitle] = useState('추천메뉴');
     const [index, setIndex] = useState(menu);
-    const [customMenuList, setCustomMenuList] = useState([]);
+    const [preferMenuList, setPreferMenuList] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const onChangeDesireQune = (value) => setDesireQuan(value);
@@ -58,40 +60,54 @@ const ReserveContainer = ({ menu }) => {
 
     const getCustomList = async () => {
         setLoading(true);
-        const res = await getCustomMenuList();
-        setCustomMenuList(res);
+        if(user_token){
+        const res = await getPreferMenuList(user_token);
+        console.log(res);
+        setPreferMenuList(res);
+        }
         setLoading(false);
     };
 
     const getProductList = useCallback(async () => {
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        if (token && categorys.length === 1) {
-            const res = await getCategory(token);
+
+        if (user_token && categorys.length === 1) {
+            const res = await getCategory(user_token);
             res.sort((a, b) => a.ca_id - b.ca_id);
             // 카테고리를 분류 순서로 정렬.
             dispatch(get_catergory(res));
             let arr = [];
             for (let i = 0; i < res.length; i++) {
-                const result = await getMenuList(token, res[i].ca_id);
+                const result = await getMenuList(user_token, res[i].ca_id);
                 const temp = { ca_id: res[i].ca_id, items: result };
                 arr.push(temp);
             }
             arr.sort((a, b) => a.ca_id - b.ca_id);
             dispatch(get_menulist(arr));
         }
+      
         setLoading(false);
-    }, [categorys, dispatch]);
+    }, [categorys, dispatch,user_token]);
 
         
     const onClickMenuItem = useCallback((item_id) =>{
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
     },[history]);
+    
+    const onIncrement =()=>{
+        console.log("들어옴");
+        setDesireQuan(desireQuan+1);
+        console.log(desireQuan);
+    }
+    const onDecrement =()=>{
+        if(desireQuan>1){
+        setDesireQuan(desireQuan-1);
+        }
+    }
 
 
     useEffect(() => {
         getProductList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -102,12 +118,7 @@ const ReserveContainer = ({ menu }) => {
         }
     }, [index, history, categorys]);
 
-    useEffect(() => {
-        const token = sessionStorage.getItem('access_token');
-        if (!token) {
-            history.replace('/');
-        }
-    }, [history]);
+
 
     const renderMenuList = useCallback((ca_id) => {
         const index = items.findIndex((item) => item.ca_id === ca_id);
@@ -138,10 +149,10 @@ const ReserveContainer = ({ menu }) => {
             <div key={category.ca_id}>
                 {category.ca_id === 0 ? (
                     <>
-                        {customMenuList.length !== 0 ? (
+                        {preferMenuList.length !== 0 ? (
                             <div className={styles['title']}>
                                 맞춤 메뉴
-                                <CustomItemList menuList={customMenuList} />
+                                <CustomItemList menuList={preferMenuList} />
                             </div>
                         ) : (
                             <Message
@@ -160,9 +171,12 @@ const ReserveContainer = ({ menu }) => {
             </div>
         ));
         return item;
-    }, [categorys, customMenuList, renderMenuList]);
+    }, [categorys, preferMenuList, renderMenuList]);
 
-    const render = useCallback(() => (
+    const render = useCallback(() => {
+        console.log("렌더");
+        console.log(categorys.length!==0);
+        return(
             <>
                 {loading ? (
                     <Loading open={loading} />
@@ -172,7 +186,7 @@ const ReserveContainer = ({ menu }) => {
                             <SwipeableViews
                                 enableMouseEvents
                                 onChangeIndex={onChangeSwiperIndex}
-                                animateHeight={categorys.length !== 1}
+                                animateHeight={categorys.length!==0}
                                 index={categorys && index}
                             >
                                 {categorys && renderSwiperItem()}
@@ -181,7 +195,9 @@ const ReserveContainer = ({ menu }) => {
                     </div>
                 )}
             </>
-        ), [categorys, index, loading, onChangeSwiperIndex, renderSwiperItem]);
+        )
+    }, [categorys, index, loading, onChangeSwiperIndex, renderSwiperItem]);
+
 
     return (
         <>
@@ -205,6 +221,8 @@ const ReserveContainer = ({ menu }) => {
                 desireQuan={desireQuan}
                 onCustomOrder={onClickCustomOrder}
                 onChangeDesireQune={onChangeDesireQune}
+                onIncrement={onIncrement}
+                onDecrement={onDecrement}
             />
             <BottomNav></BottomNav>
             <CartLink />

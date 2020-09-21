@@ -9,7 +9,7 @@ import CustomItem from './CustomItem';
 const CustomItemList = ({menuList}) => {
 
     const itemList = menuList.map((data) => (
-        <CustomItem datas={data.list}  key={data.id}/>
+        <CustomItem datas={data}  key={data.item_id}/>
     )
     )
     return (

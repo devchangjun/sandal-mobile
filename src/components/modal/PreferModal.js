@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { numberFormat } from "../../lib/formatter";
+import { numberFormat } from '../../lib/formatter';
 
 import FixButton from 'components/button/Button';
 
@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import DialogContent from '@material-ui/core/DialogContent';
+import Plus from '../svg/counter/cross.svg';
+import Minus from '../svg/counter/line.svg';
+import { ButtonBase } from '@material-ui/core';
 
 import styles from './PreferModal.module.scss';
 
@@ -25,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
         color: 'black',
         boxShadow: 'none',
         fontSize: 10,
-        paddingLeft:24,
-        paddingRight:24,
+        paddingLeft: 24,
+        paddingRight: 24,
     },
     title: {
         textAlign: 'center',
@@ -48,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
     sub: {
         fontSize: 10,
     },
-    close:{
-        position :"absolute",
-        left:0,
-    }
+    close: {
+        position: 'absolute',
+        left: 0,
+    },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -76,7 +79,7 @@ const FullScreenDialog = (props) => {
                             onClick={props.handleClose}
                             aria-label="close"
                             className={classes.close}
-                         >
+                        >
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
@@ -103,24 +106,30 @@ const FullScreenDialog = (props) => {
                 <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
                         <input
-                            value={numberFormat(props.budget)}
+                            value={props.budget}
                             onChange={props.onChangeBudget}
                         ></input>
-                        <div className={styles['won']}>
-                                원
-                        </div>
+                        <div className={styles['won']}>원</div>
                     </div>
                 </DialogContent>
                 <div className={styles['title']}>희망 수량</div>
                 <DialogContent className={classes.content}>
                     <div className={styles['counter']}>
-                        <div className={styles['box']} >
-                            -
-                        </div>
-                        <div className={styles['value']}>1</div>
-                        <div className={styles['box']}>
-                            +
-                        </div>
+                        <ButtonBase
+                            style={{ left: 0 }}
+                            className={styles['box']}
+                            onClick={props.onDecrement}
+                        >
+                            <img src={Minus} alt="minus" />
+                        </ButtonBase>
+                        <div className={styles['value']}>{props.desireQuan}</div>
+                        <ButtonBase
+                            style={{ right: 0 }}
+                            className={styles['box']}
+                            onClick={props.onIncrement}
+                        >
+                            <img src={Plus} alt="plus" />
+                        </ButtonBase>
                     </div>
                 </DialogContent>
 

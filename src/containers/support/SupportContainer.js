@@ -16,6 +16,7 @@ import PostList from '../../components/support/PostList';
 import { Button } from '@material-ui/core';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from 'react-swipeable-views';
+import {useStore} from '../../hooks/useStore';
 const cn = classNames.bind(styles);
 
 const tabInit = [
@@ -32,6 +33,7 @@ const tabInit = [
 const SupportContainer = ({ tab = 'notice' }) => {
     
     const history = useHistory();
+    const user_token = useStore();
     const [index ,setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
@@ -39,8 +41,6 @@ const SupportContainer = ({ tab = 'notice' }) => {
     const [faqType, setFAQType] = useState('회원가입');
     const listData = tab === 'notice' ? noticeList : faqList;
     const emptyMessage = tab === 'notice' ? "공지사항이 존재하지 않습니다." : "등록된 자주 묻는 질문이 없습니다.";
-
-
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
@@ -57,8 +57,8 @@ const SupportContainer = ({ tab = 'notice' }) => {
             공지사항 불러오기
         */
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        const res = await requestNoticeList(token);
+    
+        const res = await requestNoticeList(user_token);
         const { notices } = res;
         setNoticeList(notices);
         setLoading(false);
@@ -70,8 +70,8 @@ const SupportContainer = ({ tab = 'notice' }) => {
             faq_type에 따라 다른 리스트 불러옴
         */
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        const res = await requestFAQList(token, faq_type);
+   
+        const res = await requestFAQList(user_token, faq_type);
         setFAQList(res);
         setLoading(false);
     }, []);

@@ -9,6 +9,7 @@ import BannerImg from 'components/svg/banner/subBanner1.png';
 import BottomNav from 'components/nav/BottomNav';
 import Loading from 'components/asset/Loading';
 import {getMainMenuList} from '../../../api/menu/menu';
+import {useStore} from '../../../hooks/useStore';
 
 const tabInit = [
     {
@@ -28,12 +29,12 @@ const HomeContainer = () => {
     const [success, setSuccess] = useState(false);
     const [error , setError] = useState(false);
     const [menuList, setMenuList] = useState(null);
+    const user_token = useStore();
 
     const getMainMenu = async()=>{
         setLoading(true);
-        const token = sessionStorage.getItem("access_token");
-        if(token){  
-            const res = await getMainMenuList(token);
+        if(user_token){  
+            const res = await getMainMenuList(user_token);
             setMenuList(res);
             setSuccess(true);
         }

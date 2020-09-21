@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import produce from 'immer';
@@ -13,6 +13,9 @@ import OrderCheck from 'components/svg/order/OrderCheck';
 import styles from './Order.module.scss';
 import Back from 'components/svg/header/Back';
 import {getOrderCoupons} from '../../api/coupon/coupon';
+import {getCartList} from '../../api/cart/cart';
+import { numberFormat } from '../../lib/formatter';
+import {useStore} from '../../hooks/useStore';
 
 
 const cx = classNames.bind(styles);
@@ -79,24 +82,30 @@ const initPayment = [
 const OrderContainer = () => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
     const history = useHistory();
-    const [pointOpen, setPointOpen] = React.useState(false);
+    const user_token = useStore();
+    const [pointOpen, setPointOpen] = useState(false);
     const onClickPointOpen = () => setPointOpen(true);
     const onClickPointClose = () => setPointOpen(false);
-    const [couponOpen, setCouponOpen] = React.useState(false);
+    const [couponOpen, setCouponOpen] = useState(false);
     const onClickCouponOpen = () => setCouponOpen(true);
     const onClickCouponClose = () => setCouponOpen(false);
-    const [paymentOpen, setPaymentOpen] = React.useState(false);
+    const [paymentOpen, setPaymentOpen] = useState(false);
     const onClickPaymentOpen = () => setPaymentOpen(true);
     const onClcikPaymentClose = () => setPaymentOpen(false);
-    const [couponList, setCouponList] = React.useState(cp_init);
-    const [payment, setPayment] = React.useState('만나서 직접 결제');
-    const [toggle , setToggle ] = React.useState(false);
+
+    const [couponList, setCouponList] = useState(cp_init);
+    const [payment, setPayment] = useState('만나서 직접 결제');
+
+    const [totalPrice,setTotalPrice]  = useState(0);
+    const [toggle , setToggle ] = useState(false);
+    const [delivery_cost, setCost] = useState(0); // 배달비
 
     const onClickToggle =()=>setToggle(!toggle);
 
     const onClickPayment = (payment) => {
         setPayment(payment);
         setPaymentOpen(false);
+        sessionStorage.setItem('payment',payment);
     };
 
     const onClickSelectCoupon = (data) => {
@@ -114,17 +123,46 @@ const OrderContainer = () => {
     }
 
     const getUserCoupons =async()=>{
-        const token =sessionStorage.getItem("access_token");
-        if(token){
-            const res = await getOrderCoupons(token);
+
+        if(user_token){
+            const res = await getOrderCoupons(user_token);
             console.log(res);
             setCouponList(res);
         }
     }
 
+    const getTotalPrice = async ()=>{
+      
+        if (user_token) {
+            const res = await getCartList(user_token);
+            console.log(res);
+            let price = 0;
+            let len = Object.keys(res).length;
+       
+            for (let i = 0; i < len - 1; i++) {
+                const {item_price,item_quanity} = res[i].item;
+                console.log(res[i]);
+                price+=item_price * item_quanity;
+            }
+            setTotalPrice(price);
+            setCost(res.delivery_cost);
+
+        }
+    }
+
+    const getPayment = ()=>{
+        const payment_item = sessionStorage.getItem('payment');
+        if(payment_item){
+            setPayment(payment_item);
+        }
+        
+    }
     useEffect(()=>{
         window.scrollTo(0,0);
         getUserCoupons();
+        getTotalPrice();
+        getPayment();
+
     },[])
 
     return (
@@ -237,7 +275,7 @@ const OrderContainer = () => {
                                     <div className={cx('text')}>
                                         총 결제금액
                                     </div>
-                                    <div className={cx('cost')}>101,000원</div>
+                                    <div className={cx('cost')}>{numberFormat(totalPrice +delivery_cost)}원</div>
                                 </div>
                             </div>
                             <div className={styles['total-table']}>
@@ -247,7 +285,7 @@ const OrderContainer = () => {
                                             주문 금액
                                         </div>
                                         <div className={cx('cost')}>
-                                        100,000원
+                                        {numberFormat(totalPrice)}원
                                         </div>
                                     </div>
                                 </div>
@@ -257,7 +295,7 @@ const OrderContainer = () => {
                                             배달비용
                                         </div>
                                         <div className={cx('cost')}>
-                                        50,000원
+                                        {numberFormat(delivery_cost)}원
                                         </div>
                                     </div>
                                 </div>
@@ -292,7 +330,7 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={'101,000원 결제'} toggle={toggle} onClick={onClickOrder}/>
+            <Button title={`${numberFormat(totalPrice +delivery_cost)}원 결제`} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} />
             <CouponModal
                 open={couponOpen}

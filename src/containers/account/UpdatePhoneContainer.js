@@ -13,6 +13,7 @@ import classNames from 'classnames/bind';
 import Toast from 'components/message/Toast';
 import {updatePhone} from '../../api/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
+import {useStore} from '../../hooks/useStore';
 
 const cx = classNames.bind(styles);
 
@@ -26,19 +27,10 @@ const UpdatePhoneContainer = () => {
     const [auth, setAuth] = useState('49669');
     const onChangePhone = (e) => setPhone(e.target.value);
     const onChangeAuth = (e) => setAuth(e.target.value);
-
+    const user_token = useStore();
     const [toggle, setToggle] = useState(false);
     const [start_timer ,setStartTimer] = useState(false);
     const [success , setSuccess] = useState(false);
-
-
-    useEffect(()=>{
-        const token =sessionStorage.getItem("access_token");
-        if(!token){
-            history.replace("/");
-        }
-    },[history])
-
     //인증번호 발송
     const onClickSendAuth = () => {
         if(phone.length===0){
@@ -64,15 +56,14 @@ const UpdatePhoneContainer = () => {
 
     
     const onClickUpdatePhone = async()=>{
-        const token = sessionStorage.getItem("access_token");
-        const res = await updatePhone(token,phone);
+
+        const res = await updatePhone(user_token,phone);
         console.log(res);
         dispatch(update_user_info({name :'hp' ,value: phone}));
         if(res.data.msg==="성공"){
                 history.replace(Paths.ajoonamu.account);
         }
     }
-    
     
     useEffect(()=>{
         onClickCompareAuth();

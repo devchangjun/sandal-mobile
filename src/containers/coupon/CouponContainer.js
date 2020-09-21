@@ -13,6 +13,7 @@ import SwipeableViews from "react-swipeable-views";
 import {getMyCoupons} from '../../api/coupon/coupon';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
+import {useStore} from '../../hooks/useStore';
 
 const cx = classNames.bind(styles);
 
@@ -39,6 +40,7 @@ const CouponConatiner = ({ tab='0' }) => {
     const [loading, setLoading] = useState(false);
     const [success,setSuccess] = useState(false);
     const [error,setError] = useState(false);
+    const user_token = useStore();
 
     const [index, setIndex] = React.useState(parseInt(tab));
     const [myCoupon ,setMyCoupon] = useState([]);
@@ -59,9 +61,9 @@ const CouponConatiner = ({ tab='0' }) => {
     },[history]);
     const getMyCouponList = async () => {
         setLoading(true);
-        const token = sessionStorage.getItem("access_token");
-        if (token) {
-            const res = await getMyCoupons(token);
+
+        if (user_token) {
+            const res = await getMyCoupons(user_token);
             setMyCoupon(res);
             setSuccess(true);
         }
@@ -84,7 +86,6 @@ const CouponConatiner = ({ tab='0' }) => {
         return () => {
             window.removeEventListener('scroll', onScroll);
         };
-
     }, [index, onScroll]);
 
     return (

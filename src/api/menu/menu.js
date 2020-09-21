@@ -162,6 +162,20 @@ export const getCustomMenuList = async () => {
     return initMenu; // list 배열
 };
 
+export const getPreferMenuList = async (token)=>{
+    const req = Paths.api + `user/item/prefer?item_type=1&general_offset&general_limit&prefer_offset&prefer_limit&budget=15000&desire_quan=1000&addr1=부산`;
+  
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    console.log(result);
+    return result.data.query.items_prefer;
+}
+
 
 export const getMenuList =async (token, id)=>{
     const req = Paths.api + `user/item/list?offset&limit&ca_id=${id}`;

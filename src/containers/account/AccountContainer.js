@@ -12,12 +12,14 @@ import {update_user_info} from '../../store/auth/auth';
 import styles from './Account.module.scss';
 import Profile from 'components/svg/sign/profile.png';
 // import { stringToTel } from '../../lib/formatter';
+import {useStore} from '../../hooks/useStore';
 import Back from '../../components/svg/header/Back';
 
 const cn = classNames.bind(styles);
 
 const AccountContainer = () => {
     const { user } = useSelector((state) => state.auth);
+    const user_token = useStore();
     const dispatch = useDispatch();
     const history = useHistory();
     const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
@@ -26,8 +28,7 @@ const AccountContainer = () => {
     
     const onClickLogout = useCallback(async () => {
 
-        const token = sessionStorage.getItem('access_token');
-        const res = await localLogout(token);
+        const res = await localLogout(user_token);
         sessionStorage.removeItem('access_token');
 
         if (res.message === '로그아웃에 성공하셨습니다.') {
@@ -35,19 +36,11 @@ const AccountContainer = () => {
             history.replace(Paths.index);
         }
 
-    },[dispatch,history]);
+    },[dispatch,history,user_token]);
 
     useEffect(()=>{
         window.scrollTo(0,0);
     },[])
-
-    useEffect(() => {
-        if (user === null) {
-            history.replace(Paths.index);
-        }
-    }, [user, history]);
-
-
 
     const render = () => (
         <>
@@ -93,16 +86,16 @@ const MarketingAgree = ({ agreeMail, agreeSMS }) => {
     const [mail, setMail] = useState(agreeMail);
     const [sms, setSMS] = useState(agreeSMS);
     const dispatch = useDispatch();
+    const user_token = useStore();
 
     const sendPostAgreeChange = useCallback(async (type, value) => {
         /*
             수신 동의 변경하기.
             type과 value로 값 설정.
         */
-        const token = sessionStorage.getItem('access_token');
-        const res = await requestAgreeChange(token, type, value);
+        const res = await requestAgreeChange(user_token, type, value);
         console.log(res);
-    }, []);
+    }, [user_token]);
 
     const changeMail = useCallback(() => {
         sendPostAgreeChange('mail', !mail);

@@ -13,6 +13,7 @@ import { Paths } from '../../paths';
 import { requestQNAList, requestQNAStore } from '../../api/support/qna';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from 'react-swipeable-views';
+import {useStore} from '../../hooks/useStore';
 
 const cn = classNames.bind(styles);
 
@@ -37,6 +38,7 @@ function reducer(state, action) {
 const QNAContainer = ({ tab = 'send' }) => {
     // QNASend
     const history = useHistory();
+    const user_token  = useStore();
     const [index, setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [state, dispatch] = useReducer(reducer, {
@@ -60,13 +62,13 @@ const QNAContainer = ({ tab = 'send' }) => {
             문의하기 등록 버튼.
         */
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        if(token){
-            const res = await requestQNAStore(token, state);
+    
+        if(user_token){
+            const res = await requestQNAStore(user_token, state);
             console.log(res);
         }
         setLoading(false);
-    }, [state]);
+    }, [state,user_token]);
     const onChange = (e) => dispatch(e.target);
     const onSubmit = (e) => sendQNAItem();
     // QNASend
@@ -78,16 +80,17 @@ const QNAContainer = ({ tab = 'send' }) => {
             1:1 문의 내역 불러오기
         */
         setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        if (token) {
-            const res = await requestQNAList(token);
+
+        if (user_token) {
+            const res = await requestQNAList(user_token);
             const { qnas } = res;
             setQnaList(qnas);
         } else {
             alert('토큰이 없습니다.');
         }
         setLoading(false);
-    }, []);
+    }, [user_token]);
+    
     useEffect(() => {
         if (tab === 'list') getQNAList();
     }, [getQNAList, tab]);

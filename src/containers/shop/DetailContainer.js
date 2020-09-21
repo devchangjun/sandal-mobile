@@ -12,12 +12,12 @@ import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import {getMenuInfo} from '../../api/menu/menu';
 import {addCartItem} from '../../api/cart/cart';
-
+import {useStore} from '../../hooks/useStore';
 const cx = classNames.bind(styles);
 
 const DetailContainer = ({ item_id }) => {
     const history = useHistory();
-
+    const user_token = useStore();
     const [menu ,setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [success ,setSuccess]= useState(false);
@@ -26,18 +26,18 @@ const DetailContainer = ({ item_id }) => {
     const [options, setOptions] = useState(null);
     const [option_total,setOptionTotal] = useState(0);
     const onClickBack = () => history.goBack();
+    
     const onClickCart =  useCallback(async () => {
         setLoading(true);
         setSuccess(false);
-        const token  =sessionStorage.getItem("access_token");
-        if(token){
-            const res = await addCartItem(token,item_id,options,quanity);
+        if(user_token){
+            const res = await addCartItem(user_token,item_id,options,quanity);
             console.log(res);
             setSuccess(true);
         }
         setLoading(false);
         history.push(Paths.ajoonamu.cart);
-    },[history,item_id,options,quanity]);
+    },[history,item_id,options,quanity,user_token]);
 
     const setOptionItem =useCallback(()=>{
         const add_option = menu.options.filter(option => option.check).map((option =>option.option_id));
@@ -54,16 +54,16 @@ const DetailContainer = ({ item_id }) => {
 
     const getMenu =  useCallback (async ()=>{
         setLoading(true);
-        const token = sessionStorage.getItem("access_token");
-        if(token){
-            const res = await getMenuInfo(token,item_id)
+
+        if(user_token){
+            const res = await getMenuInfo(user_token,item_id)
             setMenu(res);
             setSuccess(true);
         }
         else setError(true);
         setLoading(false);
 
-    },[item_id]);
+    },[item_id,user_token]);
 
     const onClickOptionItem = (id) => {
         const newOptionItem = menu.options.map((item) => {

@@ -12,7 +12,6 @@ import { localLogout } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import Button from '@material-ui/core/Button';
 import { numberFormat } from '../../lib/formatter';
-
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
 
@@ -20,18 +19,18 @@ const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
     const { user } = useSelector((state) => state.auth);
+    const user_token = sessionStorage.getItem("access_token");
     const dispatch = useDispatch();
     const history = useHistory();
 
     const onClickLogout = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
-        const res = await localLogout(token);
+        const res = await localLogout(user_token);
         sessionStorage.removeItem('access_token');
         if (res.message === '로그아웃에 성공하셨습니다.') {
             dispatch(logout());
             history.push(Paths.index);
         }
-    },[dispatch,history]);
+    },[dispatch,history,user_token]);
 
     const onClickLogin =useCallback(() => {
         history.push(Paths.ajoonamu.signin);

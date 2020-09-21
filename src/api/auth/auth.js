@@ -46,6 +46,19 @@ export const updatePhone = async (token, value) => {
     return res;
 };
 
+export const updatePassword = async (token, pw_o , pw, pw_c) => {
+    const req = Paths.api + 'user/mypage/update_pw';
+    const form_data = {
+        pw_o: pw_o,
+        pw:pw,
+        pw_c:pw_c,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    return res;
+}
 export const localLogin = async (email, password) => {
     const req = Paths.api + 'user/login';
 

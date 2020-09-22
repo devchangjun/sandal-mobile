@@ -9,8 +9,8 @@ import Cross from '../svg/counter/Cross';
 
 // 메뉴이름, 추가옵션
 const CartItem = (props) => {
-    const { item_name, item_price, item_quanity } = props.item;
-    const { id } = props;
+    const { item_name, item_price, item_quanity,cart_id } = props.item;
+    const {id}  =props;
     const options = props.options;
 
     return (
@@ -25,7 +25,7 @@ const CartItem = (props) => {
                             <div className={styles['bar']}>
                                 <div className={styles['name']}>{item_name}</div>
                                 <IconButton className={styles['delete']}
-                                    onClick={() => props.handleDelete([id])}
+                                    onClick={() => props.handleDelete([cart_id])}
                                 >
                                     <Cross color="#777" angle={45} />
                                 </IconButton>

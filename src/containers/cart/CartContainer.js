@@ -47,12 +47,12 @@ const CartContainer = () => {
             }),
         );
     }, [cartList]);
-    const handleDelete = useCallback(async dList => {
+    const handleDelete = useCallback(async cart_id => {
         if (user_token) {
-            const res = await deleteCartItem(user_token, dList);
+            const res = await deleteCartItem(user_token, cart_id);
             console.log(res);
         }
-        setCartList(list => list.filter((item, index) => dList.indexOf(index) === -1))
+        setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
     }, [user_token]);
 
     const handleOpen = useCallback(() => setOpen(true), []);
@@ -110,7 +110,7 @@ const CartContainer = () => {
             <>
                 <div className={styles['bar']}>
                     <ButtonBase className={styles['delete']}
-                        onClick={() => handleDelete(cartList.map((item, index) => index))}
+                        onClick={() => handleDelete(cartList.map(({ item }) => item.cart_id))}
                     >전체삭제</ButtonBase>
                 </div>
                 <div className={styles['cart-list']}>
@@ -160,7 +160,7 @@ const CartContainer = () => {
                     </div>
                 </div>
                 <Button
-                    title={`${numberFormat(total + delivery_cost)}원 주문하기`}
+                    title={`${numberFormat(parseInt(total)+ parseInt(delivery_cost))}원 주문하기`}
                     onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>

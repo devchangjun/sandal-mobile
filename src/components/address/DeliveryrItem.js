@@ -6,11 +6,11 @@ const DeliveryrItem = (props) => {
     /* 
         최근 배달 주소를 보여줄 컴포넌트
     */
-   const {addr1,addr2,lat,lan} = props;
+   const {addr1,addr2,lat,lng} = props;
 
     //배달 받을 주소로 설정
     const onClick = () => {
-        console.log("배달지 주소로 선택합니다" +lat + lan);
+        console.log("배달지 주소로 선택합니다" +lat + lng);
     }
 
     //최근 배달 주소 삭제

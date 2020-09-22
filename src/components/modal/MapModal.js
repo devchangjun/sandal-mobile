@@ -14,10 +14,16 @@ const cx = classNames.bind(styles);
 
 const FullScreenDialog = (props) => {
     
-    const [jibun,setJibun] = React.useState('서울특별시 구로구 구로동 557, 삼성빌딩 407호');
-    const [road ,setRoad] = React.useState('새말로v9길 46, 삼성빌딩 407호');
+    const [jibun,setJibun] = React.useState('');
+    const [road ,setRoad] = React.useState('');
     const {lat,lng} = props.position;
  
+
+    const handleClose =()=>{
+        setJibun('');
+        setRoad('');
+        props.handleClose();
+    }
     useEffect(() => {
         mapScript();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -53,14 +59,7 @@ const FullScreenDialog = (props) => {
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
             // 클릭한 위도, 경도 정보를 가져옵니다 
-            // var latlng = mouseEvent.latLng;
-
-            // // 마커 위치를 클릭한 위치로 옮깁니다
-            // marker.setPosition(latlng);
-
-            // var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-            // message += '경도는 ' + latlng.getLng() + ' 입니다';
-            // console.log(message);
+     
             // var resultDiv = document.getElementById('clickLatlng');
             // //resultDiv.innerHTML = message;
 
@@ -74,6 +73,14 @@ const FullScreenDialog = (props) => {
                     //                 detailAddr + 
                     //             '</div>';
         
+
+                    var latlng = mouseEvent.latLng;
+
+                    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+                    message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+                    props.onClickPosition(latlng.getLat(), latlng.getLng());
+                    console.log(message);
                     // 마커를 클릭한 위치에 표시합니다 
                     marker.setPosition(mouseEvent.latLng);
                     marker.setMap(map);
@@ -139,14 +146,19 @@ const FullScreenDialog = (props) => {
                 <div id="map" className={styles['map']} style={{ width: "100vw", height: "100vh" }}></div>
             </div>
             <div className={cx('back',{on:props.open})}>
-                    <Back onClick={props.handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
+                    <Back onClick={handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
             </div>
-            <BottomModal open={props.open} jibun={jibun} road={road}/>
+            <BottomModal 
+            open={props.open} 
+            jibun={jibun}
+             road={road} 
+             onChange={props.onChange}
+             onClick={ ()=>props.onClick(jibun,road)}/>
         </div>
     );
 };
 
-const BottomModal = ({ open, jibun, road }) => (
+const BottomModal = ({ open, jibun, road ,detailAddr,onChange,onClick }) => (
     <div className={cx('bottom-modal',{on: open})}>
         <div className={styles['table']}>
             <div className={styles['addr']}>
@@ -162,10 +174,10 @@ const BottomModal = ({ open, jibun, road }) => (
                     </div>
                 </div>
                 <div className={styles['detail']}>
-                    <input className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
+                    <input  value={detailAddr} onChange ={onChange} className={styles['detail-input']}type="text"  placeholder="상세 주소를 입력하세요"/>
                 </div>
             </div>
-            <LinkButtom title={"이 위치로 배달지 설정"} toggle={true} />
+            <LinkButtom title={"이 위치로 배달지 설정"} toggle={true}  onClick={onClick}/> 
         </div>
     </div>
 );

@@ -275,7 +275,7 @@ const OrderContainer = () => {
                                     <div className={cx('text')}>
                                         총 결제금액
                                     </div>
-                                    <div className={cx('cost')}>{numberFormat(totalPrice +delivery_cost)}원</div>
+                                    <div className={cx('cost')}>{numberFormat(parseInt(totalPrice)+ parseInt(delivery_cost))}원</div>
                                 </div>
                             </div>
                             <div className={styles['total-table']}>

@@ -16,7 +16,8 @@ import {getOrderCoupons} from '../../api/coupon/coupon';
 import {getCartList} from '../../api/cart/cart';
 import { numberFormat } from '../../lib/formatter';
 import {useStore} from '../../hooks/useStore';
-
+import $script from 'scriptjs';
+import {user_order} from '../../api/order/order';
 
 const cx = classNames.bind(styles);
 
@@ -118,9 +119,6 @@ const OrderContainer = () => {
         );
     };
 
-    const onClickOrder = () => {
-        history.push(`${Paths.ajoonamu.order_complete}?order_number=${1234567890}`);
-    }
 
     const getUserCoupons =async()=>{
 
@@ -157,6 +155,147 @@ const OrderContainer = () => {
         }
         
     }
+
+    
+    const onClickOrder =async ()=> {
+    
+        const res = await user_order(user_token);
+        console.log(res);
+
+
+             
+    const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
+
+    $script(payple_url , ()=>{
+        /*global PaypleCpayAuthCheck*/
+
+        const getResult = function (res) {
+            alert("callback : " + res.PCD_PAY_MSG);
+          };
+          
+        console.log("결제 시작");
+
+
+
+        const pay_type = "";  //결제 수단
+        const pay_work = "PAY"; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
+        const payple_payer_id = "";
+        const buyer_no = ""; //고객 고유번호
+        const buyer_name = "박창준"; //고객 이름
+        const buyer_hp = ""; //고객 번호
+        const buyer_email = ""; //고객 이메일
+        const buy_goods = "테스트"; //구매하는 물건 이름
+        const buy_total = Number(parseInt(totalPrice)+ parseInt(delivery_cost));
+        // const buy_total = Number(parseInt(totalPrice));
+        const buy_taxtotal = 0;
+        const buy_istax = "";//과세설정 DEFAULT :Y  비과세 N
+        const order_num = ""; //주문 번호
+        const is_reguler = "";
+        const pay_year = "";
+        const pay_month = "";
+        const is_taxsave = "";
+        const simple_flag = "";
+        const card_ver = "";
+        const auth_type = "";
+        const is_direct = "";
+        const pcd_rst_ur = "";
+        const server_name = "";
+        
+         let obj = new Object();
+    
+        //#########################################################################################################################################################################
+        /*
+         * DEFAULT SET 1
+         */
+        obj.PCD_CPAY_VER = "1.0.1";								// (필수) 결제창 버전 (Default : 1.0.0)
+        obj.PCD_PAY_TYPE = pay_type;								// (필수) 결제 방법 (transfer | card)
+        obj.PCD_PAY_WORK = pay_work;								// (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
+    
+        // 카드결제 시 필수
+        obj.PCD_CARD_VER = card_ver;								// DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+        
+        //#########################################################################################################################################################################
+        /*
+         * 1. 결제자 인증 
+         * PCD_PAY_WORK : AUTH
+         */
+         	if (pay_work == 'AUTH') {
+        		obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        		obj.PCD_PAYER_NAME = buyer_name;					// (선택) 결제자 이름
+        		obj.PCD_PAYER_HP = buyer_hp;						// (선택) 결제자 휴대폰 번호
+        		obj.PCD_PAYER_EMAIL = buyer_email;					// (선택) 결제자 Email
+        		obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행여부
+        		obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        		obj.PCD_SIMPLE_FLAG = simple_flag;					// (선택) 간편결제 여부 (Y|N)
+         	}
+        
+        // /*
+        //  * 2. 결제자 인증 후 결제
+        //  * PCD_PAY_WORK : CERT | PAY
+        //  */
+    
+        // 	//## 2.1 최초결제 및 단건(일반,비회원)결제
+        	if (pay_work != 'AUTH') {
+          
+        		if (simple_flag != 'Y' || payple_payer_id == '') {
+      
+        			obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        			obj.PCD_PAYER_NAME = buyer_name;					// (선택) 결제자 이름
+        			obj.PCD_PAYER_HP = buyer_hp;						// (선택) 결제자 휴대폰 번호
+        			obj.PCD_PAYER_EMAIL = buyer_email;					// (선택) 결제자 Email
+        			obj.PCD_PAY_GOODS = buy_goods;						// (필수) 결제 상품
+        			obj.PCD_PAY_TOTAL = buy_total;						// (필수) 결제 금액
+        			obj.PCD_PAY_TAXTOTAL = buy_taxtotal;					// (선택) 부가세 (복합과세인 경우 필수)
+        			obj.PCD_PAY_ISTAX = buy_istax;						// (선택) 과세여부 (과세: Y | 비과세(면세): N)
+        			obj.PCD_PAY_OID = order_num;						// 주문번호 (미입력 시 임의 생성)
+        			obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        			obj.PCD_PAY_YEAR = pay_year;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 년도 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_PAY_MONTH = pay_month;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 월 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행 여부 (Y|N)
+            
+        		}
+          
+        		//## 2.2 간편결제 (재결제)
+          
+        		if (simple_flag == 'Y' && payple_payer_id != '') {
+      
+        			obj.PCD_SIMPLE_FLAG = 'Y';						// 간편결제 여부 (Y|N)
+        			//-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//		
+        			obj.PCD_PAYER_ID = payple_payer_id;					// 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+        			obj.PCD_PAYER_NO = buyer_no;						// (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+        			obj.PCD_PAY_GOODS = buy_goods;						// (필수) 결제 상품
+        			obj.PCD_PAY_TOTAL = buy_total;						// (필수) 결제 금액
+        			obj.PCD_PAY_TAXTOTAL = buy_taxtotal;					// (선택) 부가세(복합과세인 경우 필수)
+        			obj.PCD_PAY_ISTAX = buy_istax;						// (선택) 과세여부 (과세: Y | 비과세(면세): N)
+        			obj.PCD_PAY_OID = order_num;						// 주문번호 (미입력 시 임의 생성)
+        			obj.PCD_REGULER_FLAG = is_reguler;					// (선택) 정기결제 여부 (Y|N)
+        			obj.PCD_PAY_YEAR = pay_year;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 년도 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_PAY_MONTH = pay_month;						// (PCD_REGULER_FLAG = Y 일때 필수) [정기결제] 결제 구분 월 (PCD_REGULER_FLAG : 'Y' 일때 필수)
+        			obj.PCD_TAXSAVE_FLAG = is_taxsave;					// (선택) 현금영수증 발행 여부 (Y|N)
+            
+        		}
+    
+        	}
+    
+        /*
+         * DEFAULT SET 2
+         */
+        obj.PCD_PAYER_AUTHTYPE = 'pwd';                  // (선택) [간편결제/정기결제] 본인인증 방식
+        obj.PCD_RST_URL = 'http://devapi.ajoonamu.com/api/user/payple/order_mobile';          // (필수) 결제(요청)결과 RETURN URL
+        obj.payple_auth_file = 'http://devapi.ajoonamu.com/api/user/payple/auth';	// (필수) 가맹점이 직접 생성한 인증파일
+        obj.callbackFunction = getResult;
+        console.log(obj);
+        console.log(obj.payple_auth_file);
+    
+        console.log('dd');
+       PaypleCpayAuthCheck(obj);
+        
+    })
+
+
+    // const res  = auth_test();
+    }
+
     useEffect(()=>{
         window.scrollTo(0,0);
         getUserCoupons();
@@ -168,6 +307,7 @@ const OrderContainer = () => {
     return (
         <>
             <TitleBar title={'주문하기'} />
+       
             <div className={styles['order']}>
                 <div className={cx('title', 'pd-box')}>배달정보</div>
                 <div className={styles['table']}>
@@ -330,7 +470,8 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            <Button title={`${numberFormat(totalPrice +delivery_cost)}원 결제`} toggle={toggle} onClick={onClickOrder}/>
+            {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
+            <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(delivery_cost))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} />
             <CouponModal
                 open={couponOpen}
@@ -345,6 +486,8 @@ const OrderContainer = () => {
                 payment={payment}
                 onClick={onClickPayment}
             />
+                 {/* <script src="https://testcpay.payple.kr/js/cpay.payple.1.0.1.js"></script> */}
+            {/* <script src="https://cpay.payple.kr/js/cpay.payple.1.0.1.js"></script> */}
         </>
     );
 };

@@ -15,20 +15,29 @@ import {
     NaverLogo,
     FacebookLogo,
 } from '../../components/svg/sign/social';
-// import KakaoLogin from 'react-kakao-login';
-// import styled from 'styled-components';
+import KakaoLogin from 'react-kakao-login';
+import styled from 'styled-components';
 
 const cx = classNames.bind(styles);
 
-/*
+
 const KakaoButton = styled(KakaoLogin)`
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    margin: 20px 0 20px 0;
+    /* display: inline-block;
+  padding: 0;
+  width: auto;
+  height: 49px;
+  line-height: 49px;
+  color: #3C1E1E;
+  background-color: #FFEB00;
+  border: 1px solid red;
+  border-radius: 3px;
+  font-size: 16px;
+  text-align: center;
+ background-image : url('../../components/svg/sign/social/kakao.png') no-repeat;; */
+ border:none;
+ background-color:transparent;
 `;
-*/
+
 
 const logo = 'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
 
@@ -107,14 +116,12 @@ const SignInContainer = () => {
         }
     }, [user, history, dispatch]);
 
-    /*
     const onClickKakaoLogin = async (res) => {
         console.log(res);
         const token = res.response.access_token;
         localStorage.setItem('social', 'kakao');
         localStorage.setItem('access_token', token);
     };
-    */
 
     return (
         <>
@@ -164,13 +171,14 @@ const SignInContainer = () => {
                                 <img src={NaverLogo} alt="naver"></img>
                             </div>
                             <div className={styles['sns']}>
-                                {/* <KakaoLogin
+                                <KakaoButton
                                     jsKey={'9f4d0e5bb1c19aed9322372dd32fbd51'}
-                                    buttonText="Kakao"
+                                    buttonText="kakao"
                                     getProfile={true}
                                     onSuccess={onClickKakaoLogin}
-                                /> */}
+                                >
                                 <img src={KakaoLogo} alt="kakao"></img>
+                                </KakaoButton>
                             </div>
                             <div className={styles['sns']}>
                                 <img src={FacebookLogo} alt="facebook"></img>

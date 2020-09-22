@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './Addr.module.scss';
+import { Button } from '@material-ui/core';
+import Cross from '../svg/counter/Cross';
 
 const DeliveryrItem = (props) => {
 
@@ -13,25 +15,17 @@ const DeliveryrItem = (props) => {
         console.log("배달지 주소로 선택합니다" +lat + lng);
     }
 
-    //최근 배달 주소 삭제
-    // const onRemove = () => {
-    //     console.log("배달지 삭제");
-    // }
-
     return (
-        <div className={styles['delivery-item']} onClick={onClick}>
+        <Button className={styles['delivery-item']} onClick={onClick}>
             <div className={styles['item-box']}>
                 <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
                 <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
-            </div>
-            {/*
-                <div className={styles['item-remove']} onClick={(e) => {
-                    e.stopPropagation();
-                    onRemove()
-                }}> &times;
+                <div className={styles['item-remove']}  onClick={props.onRemove}>
+                    <Cross color="#777" angle={45} />
                 </div>
-            */}
-        </div>
+            </div>
+ 
+        </Button>
     )
 }
 const JibunAddrBox = ({ jibunAddr }) => {

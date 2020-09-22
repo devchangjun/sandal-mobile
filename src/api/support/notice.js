@@ -12,3 +12,4 @@ export const requestNoticeList = async (token) => {
     const result = await axios.get(req, config);
     return result.data.query;
 }
+

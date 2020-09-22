@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './EventListContainer.module.scss';
-import { requestEventList } from '../../api/event';
+import { requestEventList,reqEventList } from '../../api/event';
 import EventList from '../../components/event/EventList';
 import Loading from '../../components/asset/Loading';
 
@@ -11,6 +11,7 @@ export default () => {
     const getEventList = useCallback(async () => {
         setLoading(true);
         const res = await requestEventList();
+        console.log(res);
         setList(res);
         setLoading(false);
     }, []);

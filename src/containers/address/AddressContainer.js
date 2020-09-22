@@ -32,6 +32,11 @@ const AddressContainer = () => {
     const nextId = useRef(3);
     const [delivery_addrs, setDeliveryAddrs] = useState([]);
 
+
+    const onClickDeliveryItem =()=>{
+        
+    }
+
     //검색 아이템 클릭
     const onClickSearchItem = (data) => {
         setSelectAddr(data);

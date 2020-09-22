@@ -12,3 +12,8 @@ export const useStore =()=>{
     
     return user_token;
 }
+
+export const useAddr =()=>{
+    const user_addr = sessionStorage.getItem("user_addr");
+    return user_addr;
+}

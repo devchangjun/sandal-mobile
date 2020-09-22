@@ -1,9 +1,12 @@
+import axios from 'axios';
+import { Paths } from '../../paths';
 import Banner1 from '../../components/svg/event/banner1.png';
 import Banner2 from '../../components/svg/event/banner2.png';
 import Banner3 from '../../components/svg/event/banner3.png';
 import Banner4 from '../../components/svg/event/banner4.png';
 import Banner5 from '../../components/svg/event/banner5.png';
 import Image from '../../components/svg/event/event1.png';
+import { get } from 'scriptjs';
 
 const event_list = [
     {
@@ -119,4 +122,11 @@ export const requestEventPost = async (id) => {
     catch(e){
         return e;
     }
+}
+
+export const reqEventList = async()=>{
+    const req = `${Paths.api}user/event/list?offset=&limit=`;
+    axios.defaults.baseURL=req;
+    const res = await axios.get();
+    return res.data.query.events;
 }

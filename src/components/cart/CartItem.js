@@ -13,6 +13,15 @@ const CartItem = (props) => {
     const {id}  =props;
     const options = props.options;
 
+
+    const totalPrice =()=>{
+        let price = item_price * item_quanity;
+        for(let i=0 ;i<options.length;i++){
+               price+= options[i].option_price * item_quanity; // 만약 추가수량은 추가되지 않는거라면 * item_qunity 삭제
+        }
+        return price;
+    }
+
     return (
         <div className={styles['cart-item']}>
             <div className={styles['pd-box']}>
@@ -44,7 +53,7 @@ const CartItem = (props) => {
                         </div>
                     </div>
                     <div className={styles['price']}>
-                        {numberFormat(item_price * item_quanity)} 원
+                        {numberFormat(totalPrice())} 원
                     </div>
                 </div>
             </div>

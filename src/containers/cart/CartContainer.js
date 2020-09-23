@@ -82,11 +82,22 @@ const CartContainer = () => {
     }, [user_token]);
 
     const onChangeTotalPrice = useCallback(() => {
-        const total = cartList.reduce((prev, { item }) => {
+
+        let total = cartList.reduce((prev, { item }) => {
             const { item_price, item_quanity } = item;
             return prev + (item_price * item_quanity);
         }, 0);
+        
+        for(let i=0; i<cartList.length ;i++){
+            for(let j=0 ;j<cartList[i].options.length; j++){
+                const {option_price} =cartList[i].options[j];
+                total+=option_price;
+                console.log(total);
+            }
+        }
+
         setTotal(total);
+
     }, [cartList]);
 
     //마운트 될때만 함수 호출.

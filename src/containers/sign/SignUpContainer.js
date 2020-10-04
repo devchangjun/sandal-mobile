@@ -212,7 +212,6 @@ const SignUpContainer = () => {
 
     return (
         <>
-            <TitleBar title="회원가입" src={logo} alt="회원가입"></TitleBar>
             <div className={cx('container')}>
                 <div className={cx('content')}>
                     <SignAuthInput inputType={"text"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={`중복검사 ${overlap ? "확인" : ""}`} onClick={onClickOverlapCheck} success={overlap}/>

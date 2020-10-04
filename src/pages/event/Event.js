@@ -9,10 +9,8 @@ export default ({ match }) => {
 
     return (
         <>
-            <TitleBar title={'이벤트'} />
                 {post ? <EventContainer id={post} />
                 : <EventListContainer />}
-            <BottomNav />
         </>
     );
 };

@@ -71,7 +71,6 @@ const UpdatePhoneContainer = () => {
 
     return (
         <>
-            <TitleBar title={'연락처 수정'} />
             <div className={styles['container']}>
                 <div className={styles['context']}>
                     <div className={styles['input']}>

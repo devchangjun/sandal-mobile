@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
 import { deleteCartItem, getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
@@ -16,11 +17,17 @@ import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
 import {useStore} from '../../hooks/useStore';
+import { useModal } from '../../hooks/useModal';
+import { noAuthGetCartList, noAuthRemoveCartItem,noAuthUpdateCartQunaity } from '../../api/noAuth/cart';
 
 const cx = classNames.bind(styles);
 
 const CartContainer = () => {
+
     const history = useHistory();
+    const { addr1, addr2,lat,lng } = useSelector((state) => state.address);
+    const openModal = useModal();
+
     const [open, setOpen] = useState(false); //모달창 오픈
     const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(false); //견적서 발송
@@ -28,7 +35,7 @@ const CartContainer = () => {
     const [total, setTotal] = useState(0); //총 주문금액
     const [delivery_cost, setCost] = useState(0); // 배달비
     const [loading, setLoading] = useState(false);
-    const user_token = useStore();
+    const user_token = useStore(false);
 
     const handleIncrement = useCallback(index => {
         setCartList(
@@ -61,25 +68,71 @@ const CartContainer = () => {
     const onChangeEstm = useCallback(e => setEstm(true), []);
     const onChangeNotEstm = useCallback(e => setEstm(false), []);
 
-    //마운트 될 때 만 함수 생성.
+    //장바구니 들고오기
     const getCartListApi = useCallback(async () => {
-        setLoading(true);
-
+        //유저 정보가 있을때
         if (user_token) {
-            const res = await getCartList(user_token);
-            console.log(res);
-            let len = Object.keys(res).length;
-            let list = [];
-            for (let i = 0; i < len - 1; i++) {
-                list[i] = res[i];
-                list[i].isChecked = false;
+            setLoading(true);
+            console.log('장바구니 들고오기');
+            try {
+                const res = await getCartList(user_token);
+                if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
+                    openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
+                        history.push(Paths.ajoonamu.address);
+                    });
+                } else {
+                    const { query } = res.data;
+                    let len = Object.keys(query).length;
+                    let list = [];
+                    for (let i = 0; i < len - 2; i++) {
+                        list[i] = query[i];
+                        list[i].checked = false;
+                    }
+                    console.log(list);
+                    setCost(query.delivery_cost);
+                    setCartList(list);
+                }
+            } catch (e) {
+
             }
-            setCost(res.delivery_cost);
-            setCartList(list);
-            setAllChecked(true); //나중에 빼야함
+            setLoading(false);
+        } else {
+            setLoading(true);
+     
+            // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
+            setTimeout( async() => {
+                setLoading(true);
+                if (addr1) {
+                     try {
+                         const cart_id = JSON.parse(
+                             localStorage.getItem('noAuthCartId'),
+                         );
+                         const res = await noAuthGetCartList(
+                             cart_id,
+                             lat,
+                             lng,
+                             addr1,
+                         );
+                         const { query } = res.data;
+                         let len = Object.keys(query).length;
+                         let list = [];
+                         for (let i = 0; i < len - 1; i++) {
+                             list[i] = query[i];
+                             list[i].checked = false;
+                         }
+                         setCost(query.delivery_cost);
+                         setCartList(list);
+                     } catch (e) {
+
+                     }
+                     setLoading(false);
+                }
+                else {
+                    setLoading(false);
+                }
+            }, 500);
         }
-        setLoading(false);
-    }, [user_token]);
+    }, [user_token, addr1, lat,lng,history]);
 
     const onChangeTotalPrice = useCallback(() => {
 
@@ -100,12 +153,6 @@ const CartContainer = () => {
 
     }, [cartList]);
 
-    //마운트 될때만 함수 호출.
-    useEffect(() => {
-        getCartListApi();
-    }, [getCartListApi]);
-
-    useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
 
     const handleCheckChild = useCallback(e => {
         const index = e.target.id;
@@ -186,13 +233,20 @@ const CartContainer = () => {
         ), [allChecked, cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
     );
 
+        //마운트 될때만 함수 호출.
+        useEffect(() => {
+            getCartListApi();
+        }, [getCartListApi]);
+    
+        useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
+    
+
     return (
         <>
             {loading ? (
                 <Loading open={true} />
             ) : (
                 <>
-                    <TitleBar title={'장바구니'} />
                     <div className={styles['container']}>
                         {cartList.length !== 0 ? (
                             renderList()

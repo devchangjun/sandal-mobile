@@ -115,8 +115,6 @@ const OrderListContainer = ({ tab = '0' }) => {
                     </SwipeableViews>
                 </div>
             )}
-
-            <BottomNav />
             <BottomModal open={open} handleClose={handleClose} />
         </>
     );

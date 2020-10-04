@@ -10,17 +10,19 @@ const DeliveryrItem = (props) => {
     */
    const {addr1,addr2,lat,lng} = props;
 
-    //배달 받을 주소로 설정
-    const onClick = () => {
-        console.log("배달지 주소로 선택합니다" +lat + lng);
-    }
 
     return (
-        <Button className={styles['delivery-item']} onClick={onClick}>
+        <Button className={styles['delivery-item']} onClick={props.onClick}>
             <div className={styles['item-box']}>
                 <JibunAddrBox jibunAddr={addr1}></JibunAddrBox>
                 <RoadAddrBox roadAddr={addr2}></RoadAddrBox>
-                <div className={styles['item-remove']}  onClick={props.onRemove}>
+                <div className={styles['item-remove']} 
+                 onClick={(e) => {
+                    e.stopPropagation();
+                    props.onRemove();
+                }}
+                 
+                 >
                     <Cross color="#777" angle={45} />
                 </div>
             </div>

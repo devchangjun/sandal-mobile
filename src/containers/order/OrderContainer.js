@@ -306,7 +306,6 @@ const OrderContainer = () => {
 
     return (
         <>
-            <TitleBar title={'주문하기'} />
        
             <div className={styles['order']}>
                 <div className={cx('title', 'pd-box')}>배달정보</div>

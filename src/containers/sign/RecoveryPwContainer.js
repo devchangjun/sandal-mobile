@@ -63,11 +63,7 @@ const RecoveryPwContainer = () => {
 
     return (
         <>
-            <TitleBar
-                title="비밀번호 찾기"
-                src={logo}
-                alt="비밀번호 찾기"
-            ></TitleBar>
+      
             <div className={styles['container']}>
                 <div className={cx('content', 'pd-box')}>
                     <SignNormalInput

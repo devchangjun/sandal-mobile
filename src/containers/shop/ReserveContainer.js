@@ -1,6 +1,6 @@
-import React, { useState,useEffect, useCallback } from 'react';
-import {useHistory} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -12,17 +12,22 @@ import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from "react-swipeable-views";
-import {getPreferMenuList ,getMenuList} from '../../api/menu/menu';
-import {getCategory} from '../../api/category/category';
+import { getPreferMenuList, getMenuList } from '../../api/menu/menu';
+import { getCategory } from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
-import {get_catergory, get_menulist} from '../../store/product/product';
-import {useStore} from '../../hooks/useStore';
+import { get_catergory, get_menulist, add_menuitem } from '../../store/product/product';
 
+import { useScroll } from '../../hooks/useScroll';
+
+const OFFSET = 8;
+const LIMIT = 8;
 
 const ReserveContainer = ({ menu }) => {
 
-    const user_token = useStore();
-    const { categorys, items } = useSelector((state)=> state.product);
+    const { categorys, items } = useSelector((state) => state.product);
+    const { addr1 } = useSelector((state) => state.address);
+    const { store } = useSelector((state) => state.store);
+
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const history = useHistory();
@@ -31,8 +36,15 @@ const ReserveContainer = ({ menu }) => {
     const [desireQuan, setDesireQuan] = useState(1); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [title, setTitle] = useState('추천메뉴');
-    const [index, setIndex] = useState(menu);
-    const [preferMenuList, setPreferMenuList] = useState([]);
+    const [tabIndex, setTabIndex] = useState(menu);
+
+    const [preferList, setPreferMenuList] = useState([]);
+    const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
+    const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
+    const [posts, setPosts] = useState([]); //보여줄 배열
+    const [isPaging, setIsPaging] = useState(false); //페이징중인지
+    const [offset, setOffset] = useState(8);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const onChangeDesireQune = (value) => setDesireQuan(value);
@@ -45,6 +57,8 @@ const ReserveContainer = ({ menu }) => {
         history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
     }, [history]);
 
+
+    //가격 변경
     const onChangeBudget = (e) => {
         const re = /^[0-9\b]+$/;
         if (e.target.value === '' || re.test(e.target.value)) {
@@ -52,6 +66,18 @@ const ReserveContainer = ({ menu }) => {
         }
     };
 
+    //수량 변경
+    const onIncrement = useCallback(() => {
+        setDesireQuan(desireQuan + 1);
+    }, [desireQuan]);
+
+    const onDecrement = useCallback(() => {
+        if (desireQuan > 1) {
+            setDesireQuan(desireQuan - 1);
+        }
+    }, [desireQuan]);
+
+    //맞춤 주문 설정
     const onClickCustomOrder = () => {
         if (budget === 0) return;
         setOpen(false);
@@ -60,143 +86,207 @@ const ReserveContainer = ({ menu }) => {
 
     const getCustomList = async () => {
         setLoading(true);
-        if(user_token){
-        const res = await getPreferMenuList(user_token);
-        console.log(res);
-        setPreferMenuList(res);
+        try {
+            const res = await getPreferMenuList();
+            console.log(res);
+            setPreferMenuList(res);
+        }
+        catch (e) {
+
         }
         setLoading(false);
     };
 
-    const getProductList = useCallback(async () => {
+    //첫 로딩시 카테고리 받아오기
+    const getCategoryList = useCallback(async () => {
         setLoading(true);
 
-        if (user_token && categorys.length === 1) {
-            const res = await getCategory(user_token);
-            res.sort((a, b) => a.ca_id - b.ca_id);
-            // 카테고리를 분류 순서로 정렬.
-            dispatch(get_catergory(res));
-            let arr = [];
-            for (let i = 0; i < res.length; i++) {
-                const result = await getMenuList(user_token, res[i].ca_id);
-                const temp = { ca_id: res[i].ca_id, items: result };
-                arr.push(temp);
-            }
-            arr.sort((a, b) => a.ca_id - b.ca_id);
-            dispatch(get_menulist(arr));
+        //카테고리 길이가 1이면 받아오기.   
+        if (categorys.length === 1) {
+            const res = await getCategory();
+            let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
+            dispatch(get_catergory(ca_list));
         }
-      
         setLoading(false);
-    }, [categorys, dispatch,user_token]);
-
-        
-    const onClickMenuItem = useCallback((item_id) =>{
-        history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-    },[history]);
-    
-    const onIncrement =()=>{
-        console.log("들어옴");
-        setDesireQuan(desireQuan+1);
-        console.log(desireQuan);
-    }
-    const onDecrement =()=>{
-        if(desireQuan>1){
-        setDesireQuan(desireQuan-1);
-        }
-    }
-
-
-    useEffect(() => {
-        getProductList();
     }, []);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (categorys.length !== 1) {
-            const title = categorys[index].ca_name;
-            setTitle(title);
-        }
-    }, [index, history, categorys]);
 
+    //첫 로딩시 메뉴 받아오기
+    const getProductList = useCallback(async () => {
+        setLoading(true);
+        console.log('시작');
+        try {
+            // 카테고리별로 메뉴 리스트 받아오기.
+            let arr = [];
+            if (categorys.length !== 1 && store && !items) {
+                console.log('들어옴');
+                for (let i = 1; i < categorys.length; i++) {
+                    const { ca_id } = categorys[i];
+                    const result = await getMenuList(ca_id, 0, LIMIT, store.shop_id);
+                    const temp = { ca_id: ca_id, items: result.data.query.items };
+                    arr.push(temp);
+                }
+                dispatch(get_menulist(arr));
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
+        setLoading(false);
+    }, [categorys, store, items, dispatch]);
+
+    //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
+    const PageNationMenuList = useCallback(async () => {
+        if (!loading) {
+            try {
+
+                //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
+                if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
+                    setIsPaging(true);
+                    const res = await getMenuList(
+                        categorys[tabIndex].ca_id,
+                        offset,
+                        LIMIT,
+                        store.shop_id
+                    );
+
+                    const get_list = res.data.query.items;
+                    if (get_list.length !== 0) {
+                        setOffset(offset + LIMIT);
+                        dispatch(
+                            add_menuitem({
+                                ca_id: categorys[tabIndex].ca_id,
+                                items: get_list,
+                            }),
+                        );
+                    }
+                    setTimeout(() => {
+                        setIsPaging(false);
+                    }, 1000);
+                }
+            }
+            catch (e) {
+
+            }
+        }
+    }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
+
+
+
+
+
+    const onClickMenuItem = useCallback((item_id) => {
+        history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
+    }, [history]);
 
 
     const renderMenuList = useCallback((ca_id) => {
         const index = items.findIndex((item) => item.ca_id === ca_id);
         return (
             <>
-                {index !== -1 ? (
+                {items ?  (
                     <MenuItemList
                         menuList={items[index].items}
                         onClick={onClickMenuItem}
                     />
                 ) : (
-                    <Message
-                        msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
-                        src={true}
-                        isButton={false}
-                    />
-                )}
+                        <Message
+                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
+                            src={true}
+                            isButton={false}
+                        />
+                    )}
             </>
         );
-        }, [items, onClickMenuItem]
+    }, [items, onClickMenuItem]
     );
-    useEffect(()=>{
-        setIndex(menu);
-    },[menu])
-    
+
+
     const renderSwiperItem = useCallback(() => {
         const item = categorys.map((category) => (
             <div key={category.ca_id}>
                 {category.ca_id === 0 ? (
                     <>
-                        {preferMenuList.length !== 0 ? (
+                        {preferList.length !== 0 ? (
                             <div className={styles['title']}>
                                 맞춤 메뉴
-                                <CustomItemList menuList={preferMenuList} />
+                                <CustomItemList menuList={preferList} />
                             </div>
                         ) : (
-                            <Message
-                                msg={
-                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
-                                }
-                                isButton={true}
-                                onClick={handleOpen}
-                                buttonName={'맞춤 주문 하기'}
-                            />
-                        )}
+                                <Message
+                                    msg={
+                                        '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                    }
+                                    isButton={true}
+                                    onClick={handleOpen}
+                                    buttonName={'맞춤 주문 하기'}
+                                />
+                            )}
                     </>
                 ) : (
-                    <>{renderMenuList(category.ca_id)}</>
-                )}
+                    // <h1>{category.ca_id}</h1> 
+                        <>{renderMenuList(category.ca_id)}</>
+                    )}
             </div>
         ));
         return item;
-    }, [categorys, preferMenuList, renderMenuList]);
+    }, [categorys, preferList, renderMenuList,items]);
 
     const render = useCallback(() => {
-        console.log("렌더");
-        console.log(categorys.length!==0);
-        return(
+
+        return (
             <>
                 {loading ? (
                     <Loading open={loading} />
                 ) : (
-                    <div className={styles['container']}>
-                        <div className={styles['pd-box']}>
-                            <SwipeableViews
-                                enableMouseEvents
-                                onChangeIndex={onChangeSwiperIndex}
-                                animateHeight={categorys.length!==0}
-                                index={categorys && index}
-                            >
-                                {categorys && renderSwiperItem()}
-                            </SwipeableViews>
+                        <div className={styles['container']}>
+                            <div className={styles['pd-box']}>
+
+                                <SwipeableViews
+                                    enableMouseEvents
+                                    onChangeIndex={onChangeSwiperIndex}
+                                    animateHeight={true}
+                                    index={categorys && tabIndex}
+                                >
+                                    {categorys.length !== 1 && renderSwiperItem()}
+                                </SwipeableViews>
+
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
             </>
         )
-    }, [categorys, index, loading, onChangeSwiperIndex, renderSwiperItem]);
+    }, [categorys, tabIndex, loading, onChangeSwiperIndex, renderSwiperItem]);
+
+
+
+    //첫 로딩시 카테고리 셋팅
+    useEffect(() => {
+        getCategoryList();
+        window.scrollTo(0, 0);
+    }, [getCategoryList]);
+
+    // 첫 로딩시 메뉴 셋팅
+    useEffect(() => {
+        getProductList();
+    }, [getProductList])
+
+    useEffect(() => {
+        setTabIndex(menu);
+    }, [menu])
+
+    useEffect(() => {
+        items && tabIndex !== 0 && setPosts(items[tabIndex - 1].items);
+    }, [items, tabIndex]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (categorys.length !== 1) {
+            const title = categorys[tabIndex].ca_name;
+            setTitle(title);
+        }
+    }, [tabIndex, history, categorys]);
+
 
 
     return (
@@ -205,12 +295,14 @@ const ReserveContainer = ({ menu }) => {
             <TitleBar title={title} isHome={true} />
             {categorys.length !== 1 && (
                 <TabTests
-                    idx={index}
+                    idx={tabIndex}
                     onChange={onChangeTabIndex}
                     categorys={categorys}
                 />
             )}
-            {render()}
+            <>
+            {store && categorys.length!==1  && items && render()}
+            </>
             <PreferModal
                 open={open}
                 handleClose={handleClose}
@@ -224,7 +316,6 @@ const ReserveContainer = ({ menu }) => {
                 onIncrement={onIncrement}
                 onDecrement={onDecrement}
             />
-            <BottomNav></BottomNav>
             <CartLink />
         </>
     );

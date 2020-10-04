@@ -13,7 +13,6 @@ export default function ErrorContainer() {
 
     return (
         <>
-            <TitleBar title={'오류안내'} />
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['title']}>

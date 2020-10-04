@@ -162,53 +162,78 @@ export const getCustomMenuList = async () => {
     return initMenu; // list 배열
 };
 
-export const getPreferMenuList = async (token)=>{
-    const req = Paths.api + `user/item/prefer?item_type=1&general_offset&general_limit&prefer_offset&prefer_limit&budget=15000&desire_quan=1000&addr1=부산`;
-  
-    const config = {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const result = await axios.get(req, config);
-    console.log(result);
-    return result.data.query.items_prefer;
-}
 
+export const getPreferMenuList = async (
+    general_offset = 0,
+    general_limit = 100,
+    prefer_offset = 0,
+    prefer_limit = 100,
+    item_type = 1,
+    budget,
+    desire_quan,
+    addr1,
+    shop_id,
+) => {
+    const req = Paths.api + `user/item/prefer`;
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
-export const getMenuList =async (token, id)=>{
-    const req = Paths.api + `user/item/list?offset&limit&ca_id=${id}`;
     const config = {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const result = await axios.get(req, config);
-    return result.data.query.items;
-}
-
-export const getMainMenuList = async (token) =>{
-    const req = Paths.api + 'user/item/main?offset&limit&';
-    const config = {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        },
-    };
-    const result = await axios.get(req, config);
-    return result.data.query.items;
-}
-
-export const getMenuInfo = async (token,item_id) =>{
-    const req = Paths.api + `user/item/view?offset&limit&item_id=${item_id}`;
-    const config = {
-        headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${token}`,
+        params: {
+            general_offset,
+            general_limit,
+            prefer_offset,
+            prefer_limit,
+            item_type,
+            budget,
+            desire_quan,
+            addr1,
+            shop_id,
         },
     };
     const result = await axios.get(req, config);
     return result.data.query;
-}
+};
+
+export const getMenuList = async (ca_id,offset=0, limit=8,shop_id) => {
+    const req = Paths.api + 'user/item/list';
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+
+    const config = {
+        params: {
+            ca_id,
+            limit,
+            offset,
+            shop_id
+        }
+    }
+    const result = await axios.get(req, config);
+    return result;
+};
+
+export const getMainMenuList = async (ca_id=1, offset = 0, limit = 8, shop_id=46) => {
+    const req = Paths.api + 'user/item/main';
+    axios.defaults.headers.get['Context-Type'] = 'application/json';
+
+    const config = {
+        params: {
+            ca_id,
+            limit,
+            offset,
+            shop_id
+        },
+    };
+    const result = await axios.get(req, config);
+    return result;
+};
+
+
+export const getMenuInfo = async (item_id) => {
+    const req = Paths.api + `user/item/view?offset&limit&item_id=${item_id}`;
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query;
+};

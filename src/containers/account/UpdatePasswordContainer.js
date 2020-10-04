@@ -56,7 +56,6 @@ const UpdatePasswordContainer = () => {
 
     return (
         <>
-            <TitleBar title={'비밀번호 변경'} />
             <div className={styles['container']}>
                 <div className={styles['context']}>
                     <div className={styles['input']}>

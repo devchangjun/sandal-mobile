@@ -11,7 +11,7 @@ export const getCartList = async (token) => {
     };
     const res = await axios.get(req, config);
     console.log(res);
-    return res.data.query;
+    return res;
 };
 
 export const addCartItem = async (

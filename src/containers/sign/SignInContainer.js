@@ -125,7 +125,6 @@ const SignInContainer = () => {
 
     return (
         <>
-            <TitleBar title="로그인" src={logo} alt="로그인"></TitleBar>
             <div className={cx('container')}>
                 <div className={cx('content')}>
                     <SignNormalInput

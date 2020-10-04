@@ -87,7 +87,6 @@ const SupportContainer = ({ tab = 'notice' }) => {
     return (
         <>
             <Loading open={loading} />
-            <TitleBar title="고객센터" />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
                 <SwipeableViews
@@ -136,7 +135,6 @@ const SupportContainer = ({ tab = 'notice' }) => {
                     </div>
                 </SwipeableViews>
             </div>
-            <BottomNav />
         </>
     );
 };

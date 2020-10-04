@@ -47,7 +47,6 @@ const FindPasswordContainer = () => {
 
     return (
         <>
-            <TitleBar title={'비밀번호 찾기'} />
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['text']}>

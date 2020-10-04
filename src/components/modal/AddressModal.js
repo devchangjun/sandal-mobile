@@ -97,7 +97,7 @@ const AddressModal = (props) => {
                         <input className={cx('modal-input','md-top')} type="text" value={props.detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail}></input>
                 </div>
                 </DialogContent>
-                <FixButton title={"이 주소로 배달지 설정"}/>
+                <FixButton title={"이 주소로 배달지 설정"} toggle={true} onClick={props.onClick}/>
             </Dialog>
 
         </div>

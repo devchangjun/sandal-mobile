@@ -69,12 +69,7 @@ const RecoveryIdContainer = () => {
 
     return (
         <>
-            <TitleBar
-                title="아이디 찾기"
-                src={logo}
-                alt="아이디 찾기"
-            ></TitleBar>
-
+        
             <div className={styles['container']}>
                 <div className={cx('content', 'pd-box')}>
                     <SignNormalInput

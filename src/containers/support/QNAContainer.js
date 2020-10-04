@@ -99,7 +99,6 @@ const QNAContainer = ({ tab = 'send' }) => {
     return (
         <>
             <Loading open={loading} />
-            <TitleBar title="고객센터" />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cn('container', { list: tab === 'list' })}>
                 <SwipeableViews
@@ -123,7 +122,6 @@ const QNAContainer = ({ tab = 'send' }) => {
                     </div>
                 </SwipeableViews>
             </div>
-            <BottomNav />
         </>
     );
 };

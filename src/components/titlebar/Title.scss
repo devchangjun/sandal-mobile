@@ -33,9 +33,9 @@
             justify-content: space-between;
 
             .app-title-notification,
-            .app-title-location,
             .app-title-location-button {
                 display: flex;
+                align-items: center;
                 position: relative;
                 align-items: center;
                 cursor: pointer;
@@ -56,6 +56,11 @@
             }
 
             .app-title-location {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                margin:0 24px;
+                // max-width: 230px;
             }
         }
     }

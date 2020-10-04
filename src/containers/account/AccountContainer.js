@@ -44,7 +44,6 @@ const AccountContainer = () => {
 
     const render = () => (
         <>
-            <TitleBar title={'내정보'} />
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
                     <div className={cn('profile')}>
@@ -76,7 +75,6 @@ const AccountContainer = () => {
                     </Button>
                 </div>
             </div>
-            <BottomNav />
         </>
     );
     return <>{user === null ? history.push(Paths.index) : render()}</>;

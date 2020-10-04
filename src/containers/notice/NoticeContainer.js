@@ -103,7 +103,6 @@ const MyPageContainer = () => {
             <div className={styles['container']}>
                 <NoticeList onChecked={onChecked} listData={list} onRemove={onRemove}/>
             </div>
-            <BottomNav />
         </>
     );
 };

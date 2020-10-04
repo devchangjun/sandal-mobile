@@ -91,7 +91,6 @@ const CouponConatiner = ({ tab='0' }) => {
     return (
         <>
             <Loading open={loading} />
-            <TitleBar title={'쿠폰함'} />
             <div className={cx('title',{show:show})}> 
                  내 쿠폰
             </div>
@@ -149,7 +148,6 @@ const CouponConatiner = ({ tab='0' }) => {
                     </div>
                 </SwipeableViews>
             </div>
-            <BottomNav />
         </>
     );
 }

@@ -28,26 +28,27 @@ const HomeContainer = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error , setError] = useState(false);
-    const [menuList, setMenuList] = useState(null);
-    const user_token = useStore();
+    const [menuList, setMenuList] = useState([]);
+    // const user_token = useStore(false);
 
-    const getMainMenu = async()=>{
+    const getMainMenu = async () => {
         setLoading(true);
-        if(user_token){  
-            const res = await getMainMenuList(user_token);
-            setMenuList(res);
+        try{
+            const res = await getMainMenuList();
+            console.log(res);
+            const list = res.data.query.items;
+            setMenuList(list);
             setSuccess(true);
+
         }
-        else{
+        catch(e){
+            console.error(e);
             setError(true);
+
         }
         setLoading(false);
     }
-    const renderBestMenu =useCallback(()=>{
-        return(
-                <BestMenuItemList menuList={menuList}/>
-        )
-    },[menuList]);
+
 
     useEffect(()=>{
         getMainMenu();
@@ -58,7 +59,6 @@ const HomeContainer = () => {
         <>
             <Title/>
             <TabMenu tabs={tabInit} index={0} isPush={true}/>
-    
             <div className={styles['container']}>
                 <div className={styles['carousel']}>
                     <HomeSlick />
@@ -67,14 +67,13 @@ const HomeContainer = () => {
                 <div className={styles['menu-list']}>
                 <h3 className={styles["menu-list-title"]}>베스트 메뉴</h3>
                 {loading ? <Loading open={loading}/> :
-                    <>{
-                        (success && !error) && renderBestMenu()
-                    }
+                    <>
+                        {menuList.length!==0 &&   <BestMenuItemList menuList={menuList}/>}
+                    
                     </>
                 }
                 </div>
             </div>
-            <BottomNav></BottomNav>
         </>
     )
 }

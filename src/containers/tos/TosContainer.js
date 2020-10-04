@@ -31,7 +31,6 @@ const TosConatainer = ({ tab = '0' }) => {
 
     return (
         <>
-            <TitleBar title={'이용약관'} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
                 <SwipeableViews

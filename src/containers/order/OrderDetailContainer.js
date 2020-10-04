@@ -42,7 +42,6 @@ const OrderDetailContainer = ({ order_id }) => {
 
     return (
         <>
-            <TitleBar title={'주문완료'} />
             {loading ? (
                 <Loading open={loading} />
             ) : (

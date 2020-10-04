@@ -1,5 +1,5 @@
 import React from 'react';
-import {useAddr} from '../../hooks/useStore';
+import {useSelector} from 'react-redux';
 import { Paths } from 'paths';
 import './Title.scss';
 import { useHistory } from 'react-router';
@@ -12,10 +12,9 @@ import notificationBellImage from '../svg/title-bar/notification-bell.svg';
 // 헤더 밑 서브 헤더 컴포넌트
 // 헤더 폴더로 이동시켜야할지 말지 고민중
 
-const Title = ( {user_addr}) => {
+const Title = () => {
 
-    const addr= useAddr();
-
+    const {addr1} = useSelector((state)=>state.address);
     const history = useHistory();
     /* 
         사용자가 마지막으로 선택한 배달지를 
@@ -37,7 +36,7 @@ const Title = ( {user_addr}) => {
                         <img src={notificationBellImage} alt="notification-bell" />
                     </div>
                     <div className="app-title-location" onClick={onClickAddr}>
-                        {user_addr ? user_addr : '배달지를 설정해주세요'}
+                        {addr1 ? addr1 : '배달지를 설정해주세요'}
                     </div>
                     <div className="app-title-location-button">
                         <img src={locationImage} alt="location" />

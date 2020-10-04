@@ -36,7 +36,6 @@ const UpdateNameContainer=()=>{
 
     return(
             <>
-            <TitleBar title={"이름수정"}/>
           <div className={styles['container']}>
                 <div className={styles['context']}>
                     <div className={styles['input']}>

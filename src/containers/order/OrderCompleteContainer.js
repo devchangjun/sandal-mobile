@@ -25,7 +25,6 @@ const OrderCompleteContainer = () => {
     },[])
     return (
         <>
-            <TitleBar title={'주문완료'} />
             <div className={styles['container']}>
                  <div className={styles['content']}>
                     <div className={styles['title']}>

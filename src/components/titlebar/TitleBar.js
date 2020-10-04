@@ -8,16 +8,19 @@ import { IconButton } from '@material-ui/core';
 
 // 메인 로고 이미지
 
-const TitleBar = ({ title, sub, alt, onClick, children,isHome }) => {
+const TitleBar = ({ title, sub, alt, onClick, children, isHome }) => {
     return (
-
-        <div className={styles['title-bar']}>
-            <div className={styles['item']}>
-                <BackButton isHome={isHome}/>
-                <Title title={title} />
-                <div className={styles['empty']}>{children}</div>
-            </div>
-        </div>
+        <>
+            {title &&
+                <div className={styles['title-bar']}>
+                    <div className={styles['item']}>
+                        <BackButton isHome={isHome} />
+                        <Title title={title} />
+                        <div className={styles['empty']}>{children}</div>
+                    </div>
+                </div>
+            }
+        </>
     );
 };
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback ,useState} from 'react';
+import {useLocation} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
@@ -11,26 +12,178 @@ import {
     Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage,Tos
 } from 'pages';
 import { Route, Switch } from 'react-router-dom';
+import ModalContainer from './containers/assets/ModalContainer';
+import TitleBar from './components/titlebar/TitleBar';
+import BottomNav from './components/nav/BottomNav';
+
+import { noAuthGetNearStore } from './api/noAuth/store';
+import { getActiveAddr } from './api/address/address';
+import { getNearStore } from './api/store/store';
+import {useInit} from './hooks/useStore';
 
 function App() {
 
     const dispatch = useDispatch();
-    
+    const initStore = useInit();
+    const location = useLocation();
 
-    const existJWT = useCallback(() => {
-        const token = sessionStorage.getItem("access_token");
+
+        const GetInfo = async () => {
+        const token = sessionStorage.getItem('access_token');
         if (token) {
             dispatch(get_user_info(token));
+            const res = await getActiveAddr(token);
+            if(res){
+                const {lat,lng,addr1,addr2,post_num} = res;
+                const near_store = await getNearStore(lat, lng, addr1);
+                initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+            }
+            else{
+                initStore();
+            }
+        } else {
+            const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
+            if (noAuth) {
+                const index = noAuth.findIndex((item) => item.active === 1);
+                if (index !== -1) {
+                    const {addr1, addr2,lat,lng,post_num} = noAuth[index];
+                    const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                    initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                }
+                else{
+                    initStore();
+                }
+            }
         }
-    }, [dispatch]);
+    };
+
+    const getTitle =useCallback(()=>{
+        const {pathname}= location;
+        console.log(pathname);
+        if(pathname ==='/login'){
+            return '로그인';
+        }
+        else if(pathname==='/signup'){
+            return '회원가입'
+        }
+        else if(pathname==='/recovery'){
+            return '아이디/비밀번호찾기'
+        }
+        else if(pathname==='/recovery_id'){
+            return '아이디 찾기';
+        }
+        else if(pathname==='/recovery_pw'){
+            return '비밀번호 찾기';
+        }
+        else if(pathname==='/mypage'){
+            return '마이페이지'
+        }
+        else if(pathname==='/account'){
+            return '내정보'
+        }
+        else if(pathname==='/update_name'){
+            return '이름 수정'
+        }
+        else if(pathname==='/update_phone'){
+            return '연락처 수정'
+        }
+        else if(pathname==='/update_password'){
+            return '비밀번호 수정'
+        }
+        else if(pathname==='/address'){
+            return '주소 설정'
+        }
+        else if(pathname==='/coupon'){
+            return '쿠폰'
+        }
+        else if (pathname === '/cart') {
+            return '장바구니'
+        }
+        else if(pathname==='/order_detail'){
+            return '주문 상세보기'
+        }
+        else if(pathname.indexOf('qna') !==-1){
+            return '1:1 문의';
+        }
+        else if(pathname.indexOf('support') !==-1){
+            return '고객센터'
+        }
+        else if(pathname.indexOf('event')!==-1) {
+            return '이벤트'
+        }
+        else if(pathname ==='/tos'){
+            return '이용약관'
+        }
+
+    },[location]);
+
+    const bottomNavRender =useCallback(()=>{
+        const {pathname}= location;
+        console.log(pathname);
+      
+        //샵 추가
+        if(pathname ==='/'){
+            return  <BottomNav/>
+        }
+        else if(pathname==='/mypage'){
+            return  <BottomNav/>
+
+        }
+        else if(pathname==='/account'){
+            return  <BottomNav/>
+
+        }
+        else if(pathname==='/coupon'){
+            return  <BottomNav/>
+
+        }
+        else if(pathname==='/shop'){
+            return  <BottomNav/>
+
+        }
+        else if(pathname==='/order_list'){
+            return  <BottomNav/>
+
+        }
+        else if(pathname.indexOf('qna') !==-1){
+            return  <BottomNav/>
+
+        }
+        else if(pathname.indexOf('support') !==-1){
+            return  <BottomNav/>
+
+        }
+        else if(pathname.indexOf('event')!==-1) {
+            return  <BottomNav/>
+
+        }
+        
+        else {
+            return null;
+        }
+    
+
+    },[location]);
+
+
+    
+
+
+
+
 
     useEffect(() => {
-        existJWT();
-    }, [existJWT])
+        GetInfo();
+    }, [])
 
+    
+    useEffect(()=>{
+        getTitle();
+    },[getTitle])
 
     return (
         <div className="App">
+            <TitleBar title={getTitle()}/>
             <Switch>
                 <Route exact={true} path={Paths.index} component={Home}></Route>
                 <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
@@ -61,6 +214,8 @@ function App() {
                 <Route path={Paths.ajoonamu.tos} component={Tos}></Route>
                 <Route component={ErrorPage}/>
             </Switch>
+            <ModalContainer />
+            {bottomNavRender()}
         </div>
     );
 };

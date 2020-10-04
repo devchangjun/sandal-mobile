@@ -15,7 +15,6 @@ const FindEmailContainer =({email})=>{
     }
     return(
         <>
-        <TitleBar title={"아이디 찾기"}/>
         <div className={styles['container']}>
             <div className={styles['content']}>
                 <div className={styles['text']}>

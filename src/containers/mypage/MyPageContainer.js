@@ -45,7 +45,6 @@ const MyPageContainer = () => {
 
     return (
         <>
-            <TitleBar title={'마이페이지'} />
             <div className={styles['container']}>
                 <Button
                     className={styles['user-info']}
@@ -96,7 +95,6 @@ const MyPageContainer = () => {
                     </div>
                 )}
             </div>
-            <BottomNav />
         </>
     );
 };

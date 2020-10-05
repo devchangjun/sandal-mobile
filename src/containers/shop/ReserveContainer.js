@@ -100,7 +100,6 @@ const ReserveContainer = ({ menu }) => {
     };
 
     const getCustomList = async () => {
-        setLoading(true);
         try {
             const res = await getPreferMenuList();
             console.log(res);
@@ -109,7 +108,6 @@ const ReserveContainer = ({ menu }) => {
         catch (e) {
 
         }
-        setLoading(false);
     };
 
     //첫 로딩시 카테고리 받아오기
@@ -119,6 +117,7 @@ const ReserveContainer = ({ menu }) => {
         if (categorys.length === 1) {
             try{
                 const res = await getCategory();
+                console.log(res);
                 let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
                 dispatch(get_catergory(ca_list));
             }
@@ -129,9 +128,9 @@ const ReserveContainer = ({ menu }) => {
         }
     }, []);
 
-
     //첫 로딩시 메뉴 받아오기
     const getProductList = useCallback(async () => {
+        console.log('설마 이걸 다시 받아오냐');
         setLoading(true);
         console.log('시작');
         try {
@@ -142,13 +141,12 @@ const ReserveContainer = ({ menu }) => {
                 for (let i = 1; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
                     const result = await getMenuList(ca_id, 0, LIMIT, store.shop_id);
+                    console.log(result);
                     const temp = { ca_id: ca_id, items: result.data.query.items };
                     arr.push(temp);
                 }
                 dispatch(get_menulist(arr));
             }
-
-  
         }
         catch (e) {
             console.error(e);
@@ -159,12 +157,10 @@ const ReserveContainer = ({ menu }) => {
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
-            // setLoading(true);
             try {
                 console.log('페이지네이션 실행')
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
-                    setIsPaging(true);
                     const res = await getMenuList(
                         categorys[tabIndex].ca_id,
                         offset,
@@ -174,7 +170,10 @@ const ReserveContainer = ({ menu }) => {
 
                     const get_list = res.data.query.items;
                     if (get_list.length !== 0) {
+                        setIsPaging(true);
+                        console.log('페이지네이션 오프셋 갱신');
                         setOffset(offset + LIMIT);
+
                         dispatch(
                             add_menuitem({
                                 ca_id: categorys[tabIndex].ca_id,
@@ -190,14 +189,14 @@ const ReserveContainer = ({ menu }) => {
             catch (e) {
 
             }
-            // setLoading(false);
         }
     }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
 
 
     const onClickMenuItem = useCallback((item_id) => {
         history.push(`${Paths.ajoonamu.product}?item_id=${item_id}`);
-    }, [history]);
+        sessionStorage.setItem('offset', offset);
+    }, [history,offset]);
 
 
     const renderMenuList = useCallback((ca_id) => {
@@ -206,7 +205,7 @@ const ReserveContainer = ({ menu }) => {
             <>
                 {items ?  (
                     <MenuItemList
-                        menuList={items[index].items}
+                        menuList={items[index].items.slice(0,offset)}
                         onClick={onClickMenuItem}
                     />
                 ) : (
@@ -257,46 +256,66 @@ const ReserveContainer = ({ menu }) => {
     useEffect(() => {
         getCategoryList();
         window.scrollTo(0, 0);
-    }, [getCategoryList]);
+    }, []);
+
+    
 
     // 첫 로딩시 메뉴 셋팅
     useEffect(() => {
+        if(!isPaging){
         getProductList();
-    }, [getProductList])
+        }
+    }, [getProductList,isPaging])
 
     
     //탭 바뀌었을때 오프셋 갱신
     useEffect(() => {
+        console.log('탭 바뀌엇을때 오프셋 갱신')
         setOffset(OFFSET);
     }, [tabIndex]);
 
     useEffect(() => {
         setTabIndex(menu);
     }, [menu])
+    
     useEffect(()=>{
         console.log('오프셋바뀜');
         console.log(offset);
     },[offset])
 
 
-    // useEffect(() => {
-    //     setLoading(true);
-    //     setTimeout(() => {
-    //         const url = JSON.parse(sessionStorage.getItem('url'));
-    //         if (url) {
-    //             //이전 페이지가 상품페이지라면 오프셋 유지.
-    //             if (url.prev === '/product') {
-    //                 const OS = sessionStorage.getItem('offset');
-    //                 if (OS) {
-    //                     setOffset(parseInt(OS));
-    //                 }
-    //             }
-    //         }
-    //         setLoading(false);
-    //     }, 100);
-    // }, []);
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            const url = JSON.parse(sessionStorage.getItem('url'));
+            if (url) {
+                //이전 페이지가 상품페이지라면 오프셋 유지.
+                if (url.prev === '/product') {
+                    const OS = sessionStorage.getItem('offset');
+                    if (OS) {
+                        setOffset(parseInt(OS));
+                    }
+                }
+            }
+        setLoading(false);
+        }, 100);
+    }, []);
 
-
+    //로딩 완료 되었을 때 스크롤 위치로 이동.
+    useEffect(() => {
+        setTimeout(()=>{
+            const scrollTop = sessionStorage.getItem('scrollTop');
+            const url = JSON.parse(sessionStorage.getItem('url'));
+            console.log(url);
+            if (url) {
+                //이전 주소가 상품페이지라면 스크롤 유지
+                if (url.prev === '/product') {
+                    // alert(`${scrollTop}으로 유지`);
+                    window.scrollTo(0, scrollTop);
+                }
+            }
+        },100)
+    }, []);
 
     useEffect(() => {
         items && tabIndex !== 0 && setPosts(items[tabIndex - 1].items);
@@ -328,7 +347,7 @@ const ReserveContainer = ({ menu }) => {
                             categorys={categorys}
                         />
                     )}
-            {loading ? <Loading open={true} /> :
+                 {loading ? <Loading open={true} /> :
                 <>
                     <div className={styles['container']}>
                         <SwipeableViews

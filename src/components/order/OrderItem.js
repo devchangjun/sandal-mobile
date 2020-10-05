@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Order.module.scss';
 import { numberFormat } from "../../lib/formatter";
+import { ButtonBase } from '@material-ui/core';
 
 
 // 전제척인 주문 메뉴 아이템
@@ -18,7 +19,7 @@ const OrderItem = (props) => {
         receipt_price
     } = props;
     return (
-        <div className={styles['order-item']} onClick={props.onClick}>
+        <ButtonBase className={styles['order-item']} onClick={props.onClick}>
             <div className={styles['item']}>
                 <div className={styles['menu']}>
                     <div className={styles['pd-box']}>
@@ -44,7 +45,7 @@ const OrderItem = (props) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </ButtonBase>
 
     )
 }

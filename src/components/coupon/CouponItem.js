@@ -6,29 +6,29 @@ import { numberFormat } from "../../lib/formatter";
 const CouponItem = (props) => {
     const { 
         cp_datetime,
-        // cp_end,
+        cp_end,
         cp_id,
-        // cp_minimum,
+        cp_minimum,
         cp_price,
-        // cp_start,
+        cp_start,
         cp_subject,
-        // cp_target,
-        // cp_use,
-        // cp_use_date,
-        // cz_id,
-        // user_id,
+        cp_target,
+        cp_use,
+        cp_use_date,
+         cz_id,
+        user_id,
     } = props.item;
     return (
         
         <div className={styles['coupon-item']}>
             <div className={props.check ? styles['down'] : styles['not-down']}>
-                <CouponDown check={props.check} />
+                {/* <CouponDown check={props.check} /> */}
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
-                    <CouponEventName event_name={cp_id} />
+                    <CouponEventName event_name={cp_subject} />
                     <CouponSale sale={cp_price} />
-                    <CouponEventSub sub_name={cp_subject} />
+                    <CouponEventSub sub_name={cp_target} />
                     <CouponDate date={cp_datetime} />
                 </div>
             </div>

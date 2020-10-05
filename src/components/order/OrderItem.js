@@ -5,8 +5,10 @@ import { numberFormat } from "../../lib/formatter";
 
 // 전제척인 주문 메뉴 아이템
 const OrderItem = (props) => {
+
     const {
         // id,
+        receipt_time,
         items,
         order_id,
         total_price, 
@@ -21,7 +23,7 @@ const OrderItem = (props) => {
                 <div className={styles['menu']}>
                     <div className={styles['pd-box']}>
                         <div className={styles['date']}>
-                            {order_id}
+                            {receipt_time}
                         </div>
                         <div className={styles['list']}>
                             <OrderMenuItemList  items={items}/>

@@ -1,4 +1,5 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState,useCallback ,useRef} from 'react';
+import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import produce from 'immer';
@@ -18,53 +19,10 @@ import { numberFormat } from '../../lib/formatter';
 import {useStore} from '../../hooks/useStore';
 import $script from 'scriptjs';
 import {user_order} from '../../api/order/order';
+import {noAuthGetCartList} from  '../../api/noAuth/cart';
 
 const cx = classNames.bind(styles);
 
-const cp_init = [
-    {
-        cp_id: 1,
-        event_name: '첫 주문 3,000원 할인 쿠폰',
-        sale: '3000원',
-        sub_name: '첫주문시 사용',
-        date: '2020-05-10 ~ 2020-06-10 까지',
-        select: false,
-    },
-
-    {
-        cp_id: 2,
-        event_name: '첫 주문 3,000원 할인 쿠폰',
-        sale: '4000원',
-        sub_name: '첫 주문시 사용',
-        date: '2020-05-10 ~ 2020-06-10 까지',
-        select: false,
-    },
-
-    {
-        cp_id: 3,
-        event_name: '첫 주문 3,000원 할인 쿠폰',
-        sale: '4000원',
-        sub_name: '첫 주문시 사용',
-        date: '2020-05-10 ~ 2020-06-10 까지',
-        select: false,
-    },
-    {
-        cp_id: 4,
-        event_name: '첫 주문 3,000원 할인 쿠폰',
-        sale: '4000원',
-        sub_name: '첫 주문시 사용',
-        date: '2020-05-10 ~ 2020-06-10 까지',
-        select: false,
-    },
-    {
-        cp_id: 5,
-        event_name: '첫 주문 3,000원 할인 쿠폰',
-        sale: '4000원',
-        sub_name: '첫 주문시 사용',
-        date: '2020-05-10 ~ 2020-06-10 까지',
-        select: false,
-    },
-];
 const initPayment = [
     {
         payment: '신용카드',
@@ -83,7 +41,9 @@ const initPayment = [
 const OrderContainer = () => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
     const history = useHistory();
-    const user_token = useStore();
+    const { addr1,addr2,lat,lng } = useSelector(state => state.address);
+    const user_token = useStore(false);
+    const [loading,setLoading] = useState(false);
     const [pointOpen, setPointOpen] = useState(false);
     const onClickPointOpen = () => setPointOpen(true);
     const onClickPointClose = () => setPointOpen(false);
@@ -94,12 +54,26 @@ const OrderContainer = () => {
     const onClickPaymentOpen = () => setPaymentOpen(true);
     const onClcikPaymentClose = () => setPaymentOpen(false);
 
-    const [couponList, setCouponList] = useState(cp_init);
+    const [couponList, setCouponList] = useState([]);
     const [payment, setPayment] = useState('만나서 직접 결제');
 
     const [totalPrice,setTotalPrice]  = useState(0);
     const [toggle , setToggle ] = useState(false);
-    const [delivery_cost, setCost] = useState(0); // 배달비
+    const [dlvCost, setDlvCost] = useState(0); // 배달비
+
+    const [dlvMemo, setDlvMemo] = useState(''); //배달메모
+    const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
+    const [orderMemoCheck, setOrderMemoCheck] = useState(false);
+    const [orderMemo, setOrderMemo] = useState(''); //주문메모
+    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
+    const [point_price, setPointPrice] = useState(0); //포인트 할인
+
+    const order_id = useRef(null);
+    const [cp_price, setCpPrice] = useState(0); //쿠폰할인
+    const [cp_id ,setCpId] = useState(null); //쿠폰 번호
+    const [date, setDate] = useState(new Date());
+    const [hours ,setHours]  = useState('09');
+    const [minite ,setMinite] = useState('00');
 
     const onClickToggle =()=>setToggle(!toggle);
 
@@ -123,30 +97,90 @@ const OrderContainer = () => {
     const getUserCoupons =async()=>{
 
         if(user_token){
-            const res = await getOrderCoupons(user_token);
-            console.log(res);
-            setCouponList(res);
-        }
-    }
-
-    const getTotalPrice = async ()=>{
-      
-        if (user_token) {
-            const res = await getCartList(user_token);
-            console.log(res);
-            let price = 0;
-            let len = Object.keys(res).length;
-       
-            for (let i = 0; i < len - 1; i++) {
-                const {item_price,item_quanity} = res[i].item;
-                console.log(res[i]);
-                price+=item_price * item_quanity;
+            try{
+                const res = await getOrderCoupons(user_token);
+                console.log(res);
+                setCouponList(res);
             }
-            setTotalPrice(price);
-            setCost(res.delivery_cost);
-
+            catch(e){
+                console.error(e);
+            }
+     
         }
     }
+
+    //총 주문금액 구하기 (장바구니 조회해서 가져옴);
+    const getTotalPrice = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getCartList(user_token);
+                if (res.data.msg === 'success') {
+                    let price = 0;
+                    const { query } = res.data;
+                    let len = Object.keys(query).length;
+                    for (let i = 0; i < len - 2; i++) {
+                        const { item, options } = query[i];
+                        
+                        price +=
+                            parseInt(item.item_price) *
+                            parseInt(item.item_quanity);
+
+                        for (let j = 0; j < options.length; j++) {
+                            const { option_price } = options[j];
+                            price +=
+                                parseInt(option_price) *
+                                parseInt(item.item_quanity);
+                        }
+                    }
+
+                    if (query.PCD_PAYER_ID === null) {
+                        
+                        SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
+                    } else {
+                        SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
+                    }
+                    setTotalPrice(price);
+                    setDlvCost(query.delivery_cost);
+                }
+            } catch (e) {
+                
+            }
+        }
+        else {
+            try {
+                if(addr1){
+                const cart_id = JSON.parse(
+                    localStorage.getItem('noAuthCartId'),
+                );
+                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);                
+                const { query } = res.data;
+                let len = Object.keys(query).length;
+                let price = 0;
+
+                for (let i = 0; i < len - 1; i++) {
+                    const { item, options } = query[i];
+                    price +=
+                        parseInt(item.item_price) * parseInt(item.item_quanity);
+
+                    for (let j = 0; j < options.length; j++) {
+                        const { option_price } = options[j];
+                        price +=
+                            parseInt(option_price) *
+                            parseInt(item.item_quanity);
+                    }
+                }
+                setDlvCost(query.delivery_cost);
+                setTotalPrice(price);
+            }
+            } catch (e) {
+                
+            }
+
+        }
+        setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[user_token,addr1]);
 
     const getPayment = ()=>{
         const payment_item = sessionStorage.getItem('payment');
@@ -185,7 +219,7 @@ const OrderContainer = () => {
         const buyer_hp = ""; //고객 번호
         const buyer_email = ""; //고객 이메일
         const buy_goods = "테스트"; //구매하는 물건 이름
-        const buy_total = Number(parseInt(totalPrice)+ parseInt(delivery_cost));
+        const buy_total = Number(parseInt(totalPrice)+ parseInt(dlvCost));
         // const buy_total = Number(parseInt(totalPrice));
         const buy_taxtotal = 0;
         const buy_istax = "";//과세설정 DEFAULT :Y  비과세 N
@@ -312,7 +346,7 @@ const OrderContainer = () => {
                 <div className={styles['table']}>
                     <div className={cx('text-info')}>
                         <div className={styles['info']}>
-                            서울특별시 구로구 구로동 557
+                        {addr1}
                         </div>
                     </div>
                     <div className={cx('text-info')}>
@@ -414,7 +448,7 @@ const OrderContainer = () => {
                                     <div className={cx('text')}>
                                         총 결제금액
                                     </div>
-                                    <div className={cx('cost')}>{numberFormat(parseInt(totalPrice)+ parseInt(delivery_cost))}원</div>
+                                    <div className={cx('cost')}>{numberFormat(parseInt(totalPrice)+ parseInt(dlvCost))}원</div>
                                 </div>
                             </div>
                             <div className={styles['total-table']}>
@@ -434,7 +468,7 @@ const OrderContainer = () => {
                                             배달비용
                                         </div>
                                         <div className={cx('cost')}>
-                                        {numberFormat(delivery_cost)}원
+                                        {numberFormat(dlvCost)}원
                                         </div>
                                     </div>
                                 </div>
@@ -470,7 +504,7 @@ const OrderContainer = () => {
                 </div>
             </div>
             {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
-            <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(delivery_cost))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
+            <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(dlvCost))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} />
             <CouponModal
                 open={couponOpen}

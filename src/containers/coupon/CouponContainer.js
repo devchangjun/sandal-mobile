@@ -6,11 +6,11 @@ import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
+import DownCouponList from 'components/coupon/DownCouponList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
-import BottomNav from 'components/nav/BottomNav';
 import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
-import {getMyCoupons} from '../../api/coupon/coupon';
+import {getMyCoupons,getDownloadCpList,downloadCoupon,couponInput} from '../../api/coupon/coupon';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 import {useStore} from '../../hooks/useStore';
@@ -43,7 +43,9 @@ const CouponConatiner = ({ tab='0' }) => {
     const user_token = useStore();
 
     const [index, setIndex] = React.useState(parseInt(tab));
-    const [myCoupon ,setMyCoupon] = useState([]);
+    const [cp_list ,setCpList] = useState([]);
+    const [user_input_cp, setUserInputCp] = useState('');
+    const [down_cp_list, setDownCpList] = useState([]);
     const [show, setShow] = useState(false);
 
     const onScroll = useCallback(e => {
@@ -63,17 +65,43 @@ const CouponConatiner = ({ tab='0' }) => {
         setLoading(true);
 
         if (user_token) {
-            const res = await getMyCoupons(user_token);
-            setMyCoupon(res);
-            setSuccess(true);
+            try{
+                const res = await getMyCoupons(user_token);
+                setCpList(res);
+                setSuccess(true);
+            }
+  
+            catch(e){
+                console.error(e);
+                setError(true);
+            }
         }
-        else setError(true);
         setLoading(false);
     };
 
+        // 다운로드 가능한 쿠폰 리스트
+        const getDownCouponList = async () => {
+            setLoading(true);
+            if (user_token) {
+                try{
+                    const res = await getDownloadCpList(user_token);
+                    console.log(res);
+                    setDownCpList(res);
+                }
+                catch(e){
+                    console.error(e);
+                }
+            
+            }
+            setLoading(false);
+        };
+    
 
     useEffect(()=>{
         getMyCouponList();
+    },[])
+    useEffect(()=>{
+        getDownCouponList();
     },[])
 
     useEffect(()=>{
@@ -100,7 +128,7 @@ const CouponConatiner = ({ tab='0' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={ (success || error) ? true : false}
+                    animateHeight={true}
                 >
                     <div>
                         <div className={cx('coupon-title', 'pd-box')}>
@@ -123,18 +151,25 @@ const CouponConatiner = ({ tab='0' }) => {
                             내 쿠폰
                         </div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                            {myCoupon.length!==0?
-                            <CouponItemList check={false} cp_list={myCoupon}/>
+                            {cp_list.length!==0?
+                            <CouponItemList cp_list={cp_list}/>
                             :
                             <Message
                                 msg={"보유하고 있는 쿠폰이 없습니다"}/>
                             }
+
+                            {/* {down_cp_list.length !== 0 ?
+                                <DownCouponList check={true} cp_list={down_cp_list} />
+                                :
+                                <Message
+                                    msg={"받을 수 있는 쿠폰이 존재하지 않습니다."} />
+                            } */}
                         </div>
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
-                        {myCoupon.length!==0 ?
-                            <CouponItemList check={true}  cp_list={myCoupon}/>
+                        {down_cp_list.length!==0 ?
+                            <DownCouponList check={true}  cp_list={down_cp_list}/>
                             :
                             <Message
                                 msg={"받을 수 있는 쿠폰이 존재하지 않습니다."}/>

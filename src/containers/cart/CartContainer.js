@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
-import { deleteCartItem, getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
@@ -18,6 +17,7 @@ import Loading from '../../components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
 import {useStore} from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
+import { getCartList, deleteCartItem,updateCartQunaity } from '../../api/cart/cart';
 import { noAuthGetCartList, noAuthRemoveCartItem,noAuthUpdateCartQunaity } from '../../api/noAuth/cart';
 
 const cx = classNames.bind(styles);
@@ -54,12 +54,46 @@ const CartContainer = () => {
             }),
         );
     }, [cartList]);
-    const handleDelete = useCallback(async cart_id => {
-        if (user_token) {
-            const res = await deleteCartItem(user_token, cart_id);
-            console.log(res);
-        }
+    const handleDelete = useCallback(cart_id => {
+   
+        openModal('이 상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
+            if (user_token) {
+                try {
+                    const res = await deleteCartItem(user_token, cart_id);
+                    console.log(res);
+
+                }
+                catch (e) {
+
+                }
+            }
+            else {
+                try {
+                    const res = await noAuthRemoveCartItem(cart_id);
+                    const cart_ids = JSON.parse(
+                        localStorage.getItem('noAuthCartId'),
+                    );
+                    const newState = cart_ids.filter(
+                        (v) => parseInt(v) !== parseInt(cart_id),
+                    );
+                    localStorage.setItem(
+                        'noAuthCartId',
+                        JSON.stringify(newState),
+                    );
+                    setCartList((list) =>
+                        list.filter(
+                            ({ item }) =>
+                                cart_id.indexOf(item.cart_id) === -1,
+                        ),
+                    );
+                } catch (e) {
+
+                }
+            }
         setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
+        },true);
+               
+   
     }, [user_token]);
 
     const handleOpen = useCallback(() => setOpen(true), []);
@@ -162,7 +196,38 @@ const CartContainer = () => {
             }),
         );
     }, [cartList]);
-    const onClickOrder = useCallback(() => history.push(Paths.ajoonamu.order), [history]);
+    
+    const onClickOrder = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await updateCartQunaity(
+                        user_token,
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {
+
+            }
+        } else {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await noAuthUpdateCartQunaity(
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {
+
+            }
+        }
+        setLoading(false);
+        history.push(Paths.ajoonamu.order);
+    }, [user_token, cartList, history]);
 
     const renderList = useCallback(() => (
             <>
@@ -257,7 +322,7 @@ const CartContainer = () => {
                                 isButton={true}
                                 buttonName={'주문하러 가기'}
                                 onClick={() => {
-                                    history.replace(Paths.ajoonamu.shop);
+                                    history.replace(`${Paths.ajoonamu.shop}?menu=1`);
                                 }}
                             />
                         )}

@@ -52,8 +52,6 @@ export const useAddr = () => {
     const user_addr = sessionStorage.getItem('user_addr');
     return user_addr;
 };
-
-
 export const useInit = () => {
     const dispatch = useDispatch();
     const initStore  = (addr1=null,addr2=null,lat=null,lng=null, post_num=null,near_store=null)=>{

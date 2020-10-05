@@ -39,22 +39,30 @@ const tabReducer = (state, action) => {
     switch (action.type) {
         case 'HOME':
             return {
-                ...state,
                 home: true,
+                coupon: false,
+                order: false,
+                mypage: false,
             };
         case 'COUPON':
             return {
-                ...state,
+                home: false,
                 coupon: true,
+                order: false,
+                mypage: false,
             };
         case 'ORDER':
             return {
-                ...state,
+                home: false,
+                coupon: false,
                 order: true,
+                mypage: false,
             };
         case 'MYPAGE':
             return {
-                ...state,
+                home: false,
+                coupon: false,
+                order: false,
                 mypage: true,
             };
         default:
@@ -64,28 +72,29 @@ const tabReducer = (state, action) => {
 
 const BottomNav = (props) => {
     const [tab, dispatchTab] = useReducer(tabReducer, initState);
+    const {location} = props;
 
     const onUpdateTab = useCallback(() => {
-        if (props.match.path === '/' ||
-            props.match.path.indexOf('notice') !== -1) {
+        console.log(location.pathname);
+        if(location.pathname==='/' || location.pathname==='/shop'){
             dispatchTab({ type: 'HOME' });
-        } else if (props.match.path.indexOf('coupon') !== -1) {
-            dispatchTab({ type: 'COUPON' });
-        } else if (props.match.path.indexOf('order_list') !== -1) {
-            dispatchTab({ type: 'ORDER' });
-        } else if (
-            props.match.path.indexOf('mypage') !== -1 ||
-            props.match.path.indexOf('account') !== -1 ||
-            props.match.path.indexOf('support') !== -1 ||
-            props.match.path.indexOf('event') !== -1
-        ) {
-            dispatchTab({ type: 'MYPAGE' });
+        }
+        else if(location.pathname==='/coupon'){
+            dispatchTab({type:'COUPON'})
+        }
+        else if(location.pathname==='/mypage' || location.pathname==='/account' || location.pathname.indexOf('support') !==-1 || location.pathname.indexOf('event')!==-1){
+            dispatchTab({type:'MYPAGE'})
+        }
+        else if(location.pathname==='/order_list'){
+            dispatchTab({type:'ORDER'})
+
         }
     }, [props]);
 
     useEffect(() => {
         onUpdateTab();
     }, [onUpdateTab]);
+
 
     const history = useHistory();
 
@@ -97,7 +106,7 @@ const BottomNav = (props) => {
         setOpen(false);
     };
     const handleChange = () => {
-        console.log('체인지');
+        // console.log('체인지');
     };
     const onClickHome = () => {
         history.push(Paths.index);

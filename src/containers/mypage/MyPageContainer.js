@@ -14,22 +14,31 @@ import Button from '@material-ui/core/Button';
 import { numberFormat } from '../../lib/formatter';
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
+import {useInit} from '../../hooks/useStore';
 
 const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
+    const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
     const user_token = sessionStorage.getItem("access_token");
     const dispatch = useDispatch();
     const history = useHistory();
 
     const onClickLogout = useCallback(async () => {
-        const res = await localLogout(user_token);
-        sessionStorage.removeItem('access_token');
-        if (res.message === '로그아웃에 성공하셨습니다.') {
-            dispatch(logout());
-            history.push(Paths.index);
+        try{
+            const res = await localLogout(user_token);
+            sessionStorage.removeItem('access_token');
+            if (res.message === '로그아웃에 성공하셨습니다.') {
+                dispatch(logout());
+                initStore();
+                history.push(Paths.index);
+            }
         }
+        catch(e){
+            console.error(e);
+        }
+
     },[dispatch,history,user_token]);
 
     const onClickLogin =useCallback(() => {

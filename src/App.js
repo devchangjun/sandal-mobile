@@ -20,9 +20,11 @@ import { noAuthGetNearStore } from './api/noAuth/store';
 import { getActiveAddr } from './api/address/address';
 import { getNearStore } from './api/store/store';
 import {useInit} from './hooks/useStore';
+import { useUrl } from './hooks/useStore';
 
 function App() {
 
+    useUrl();
     const dispatch = useDispatch();
     const initStore = useInit();
     const location = useLocation();
@@ -59,7 +61,6 @@ function App() {
 
     const getTitle =useCallback(()=>{
         const {pathname}= location;
-        console.log(pathname);
         if(pathname ==='/login'){
             return '로그인';
         }
@@ -93,6 +94,9 @@ function App() {
         else if(pathname==='/address'){
             return '주소 설정'
         }
+        else if(pathname==='/order'){
+            return '주문하기'
+        }
         else if(pathname==='/coupon'){
             return '쿠폰'
         }
@@ -119,8 +123,6 @@ function App() {
 
     const bottomNavRender =useCallback(()=>{
         const {pathname}= location;
-        console.log(pathname);
-      
         //샵 추가
         if(pathname ==='/'){
             return  <BottomNav/>

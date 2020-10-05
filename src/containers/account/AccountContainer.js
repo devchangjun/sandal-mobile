@@ -11,13 +11,16 @@ import { logout } from '../../store/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
 import styles from './Account.module.scss';
 import Profile from 'components/svg/sign/profile.png';
-// import { stringToTel } from '../../lib/formatter';
+import { stringToTel } from '../../lib/formatter';
 import {useStore} from '../../hooks/useStore';
 import Back from '../../components/svg/header/Back';
+import {useInit} from '../../hooks/useStore';
 
 const cn = classNames.bind(styles);
 
 const AccountContainer = () => {
+const initStore = useInit();
+
     const { user } = useSelector((state) => state.auth);
     const user_token = useStore();
     const dispatch = useDispatch();
@@ -28,13 +31,20 @@ const AccountContainer = () => {
     
     const onClickLogout = useCallback(async () => {
 
-        const res = await localLogout(user_token);
-        sessionStorage.removeItem('access_token');
-
-        if (res.message === '로그아웃에 성공하셨습니다.') {
-            dispatch(logout());
-            history.replace(Paths.index);
+        try{
+            const res = await localLogout(user_token);
+            sessionStorage.removeItem('access_token');
+    
+            if (res.message === '로그아웃에 성공하셨습니다.') {
+                dispatch(logout());
+                initStore();
+                history.replace(Paths.index);
+            }
         }
+        catch(e){
+            console.error(e);
+        }
+  
 
     },[dispatch,history,user_token]);
 
@@ -57,9 +67,7 @@ const AccountContainer = () => {
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
-                    {/* <Item text={'핸드폰번호'} value={"010-1234-1234"}  onClick={onClickUpdatePhone}/> */}
-                    {/* <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/> */}
-                    <Item text={'핸드폰번호'} value={user && user.hp}  onClick={onClickUpdatePhone}/>
+                    <Item text={'핸드폰번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
                     <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
                 </div>

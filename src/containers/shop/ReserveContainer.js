@@ -8,19 +8,32 @@ import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message'
 import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/modal/PreferModal';
-import BottomNav from 'components/nav/BottomNav';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from "react-swipeable-views";
 import { getPreferMenuList, getMenuList } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
+import TabMenu from '../../components/tab/TabMenu';
 import { get_catergory, get_menulist, add_menuitem } from '../../store/product/product';
 
 import { useScroll } from '../../hooks/useScroll';
+import {useStore} from '../../hooks/useStore';
 
 const OFFSET = 8;
 const LIMIT = 8;
+
+const tabInit = [
+    {
+        url:`${Paths.ajoonamu.order_list}?tab=0`,
+        name: '예약주문'
+    },
+    {
+        url:`${Paths.ajoonamu.order_list}?tab=1`,
+        name: '배달주문'
+    },
+];
+
 
 const ReserveContainer = ({ menu }) => {
 
@@ -40,10 +53,12 @@ const ReserveContainer = ({ menu }) => {
 
     const [preferList, setPreferMenuList] = useState([]);
     const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
+
     const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
     const [posts, setPosts] = useState([]); //보여줄 배열
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
+
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -99,15 +114,19 @@ const ReserveContainer = ({ menu }) => {
 
     //첫 로딩시 카테고리 받아오기
     const getCategoryList = useCallback(async () => {
-        setLoading(true);
 
         //카테고리 길이가 1이면 받아오기.   
         if (categorys.length === 1) {
-            const res = await getCategory();
-            let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
-            dispatch(get_catergory(ca_list));
+            try{
+                const res = await getCategory();
+                let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
+                dispatch(get_catergory(ca_list));
+            }
+         
+            catch(e){
+                console.error(e);
+            }
         }
-        setLoading(false);
     }, []);
 
 
@@ -128,6 +147,8 @@ const ReserveContainer = ({ menu }) => {
                 }
                 dispatch(get_menulist(arr));
             }
+
+  
         }
         catch (e) {
             console.error(e);
@@ -138,8 +159,9 @@ const ReserveContainer = ({ menu }) => {
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
+            // setLoading(true);
             try {
-
+                console.log('페이지네이션 실행')
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (tabIndex !== 0 && categorys.length !== 1 && items && store) {
                     setIsPaging(true);
@@ -168,11 +190,9 @@ const ReserveContainer = ({ menu }) => {
             catch (e) {
 
             }
+            // setLoading(false);
         }
     }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
-
-
-
 
 
     const onClickMenuItem = useCallback((item_id) => {
@@ -232,33 +252,6 @@ const ReserveContainer = ({ menu }) => {
         return item;
     }, [categorys, preferList, renderMenuList,items]);
 
-    const render = useCallback(() => {
-
-        return (
-            <>
-                {loading ? (
-                    <Loading open={loading} />
-                ) : (
-                        <div className={styles['container']}>
-                            <div className={styles['pd-box']}>
-
-                                <SwipeableViews
-                                    enableMouseEvents
-                                    onChangeIndex={onChangeSwiperIndex}
-                                    animateHeight={true}
-                                    index={categorys && tabIndex}
-                                >
-                                    {categorys.length !== 1 && renderSwiperItem()}
-                                </SwipeableViews>
-
-                            </div>
-                        </div>
-                    )}
-            </>
-        )
-    }, [categorys, tabIndex, loading, onChangeSwiperIndex, renderSwiperItem]);
-
-
 
     //첫 로딩시 카테고리 셋팅
     useEffect(() => {
@@ -271,9 +264,39 @@ const ReserveContainer = ({ menu }) => {
         getProductList();
     }, [getProductList])
 
+    
+    //탭 바뀌었을때 오프셋 갱신
+    useEffect(() => {
+        setOffset(OFFSET);
+    }, [tabIndex]);
+
     useEffect(() => {
         setTabIndex(menu);
     }, [menu])
+    useEffect(()=>{
+        console.log('오프셋바뀜');
+        console.log(offset);
+    },[offset])
+
+
+    // useEffect(() => {
+    //     setLoading(true);
+    //     setTimeout(() => {
+    //         const url = JSON.parse(sessionStorage.getItem('url'));
+    //         if (url) {
+    //             //이전 페이지가 상품페이지라면 오프셋 유지.
+    //             if (url.prev === '/product') {
+    //                 const OS = sessionStorage.getItem('offset');
+    //                 if (OS) {
+    //                     setOffset(parseInt(OS));
+    //                 }
+    //             }
+    //         }
+    //         setLoading(false);
+    //     }, 100);
+    // }, []);
+
+
 
     useEffect(() => {
         items && tabIndex !== 0 && setPosts(items[tabIndex - 1].items);
@@ -286,37 +309,58 @@ const ReserveContainer = ({ menu }) => {
             setTitle(title);
         }
     }, [tabIndex, history, categorys]);
+    //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
+    useEffect(() => {
+        if (isScrollEnd && !isPaging) {
+            PageNationMenuList();
+        }
+    }, [isScrollEnd]);
 
 
 
     return (
         <>
-            {loading && <Loading open={loading} />}
-            <TitleBar title={title} isHome={true} />
-            {categorys.length !== 1 && (
-                <TabTests
-                    idx={tabIndex}
-                    onChange={onChangeTabIndex}
-                    categorys={categorys}
-                />
-            )}
-            <>
-            {store && categorys.length!==1  && items && render()}
-            </>
-            <PreferModal
-                open={open}
-                handleClose={handleClose}
-                itemType={orderType}
-                onChangeType={onChangeOrderType}
-                budget={budget}
-                onChangeBudget={onChangeBudget}
-                desireQuan={desireQuan}
-                onCustomOrder={onClickCustomOrder}
-                onChangeDesireQune={onChangeDesireQune}
-                onIncrement={onIncrement}
-                onDecrement={onDecrement}
-            />
-            <CartLink />
+          <TitleBar title={title} isHome={true} />
+                    {categorys.length !== 1 && (
+                        <TabTests
+                            idx={tabIndex}
+                            onChange={onChangeTabIndex}
+                            categorys={categorys}
+                        />
+                    )}
+            {loading ? <Loading open={true} /> :
+                <>
+                    <div className={styles['container']}>
+                        <SwipeableViews
+                            enableMouseEvents
+                            onChangeIndex={onChangeSwiperIndex}
+                            animateHeight={!isPaging}
+                            index={tabIndex}
+                            className={styles['test']}
+                        >
+                        {items && renderSwiperItem()}
+                        </SwipeableViews>
+
+                    </div>
+                    <PreferModal
+                        open={open}
+                        handleClose={handleClose}
+                        itemType={orderType}
+                        onChangeType={onChangeOrderType}
+                        budget={budget}
+                        onChangeBudget={onChangeBudget}
+                        desireQuan={desireQuan}
+                        onCustomOrder={onClickCustomOrder}
+                        onChangeDesireQune={onChangeDesireQune}
+                        onIncrement={onIncrement}
+                        onDecrement={onDecrement}
+                    />
+                    <CartLink />
+
+                </>
+
+            }
+
         </>
     );
 

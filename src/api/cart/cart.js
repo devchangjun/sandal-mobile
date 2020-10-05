@@ -10,9 +10,8 @@ export const getCartList = async (token) => {
         },
     };
     const res = await axios.get(req, config);
-    console.log(res);
     return res;
-};
+}
 
 export const addCartItem = async (
     token,
@@ -20,7 +19,6 @@ export const addCartItem = async (
     item_options,
     item_quanity,
 ) => {
-    console.log(item_options);
     const req = Paths.api + 'user/cart';
     const form_data = {
         item_id: item_id,
@@ -42,5 +40,19 @@ export const deleteCartItem = async (token, cart_id) => {
     const res = await axios.delete(req, {
         data: form_data
     });
+    return res;
+}
+
+export const updateCartQunaity = async(token ,cart_id,item_quanity)=>{
+    
+    const req = Paths.api + 'user/cart/quanity';
+    const form_data = {
+        cart_id,
+        item_quanity,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
     return res;
 }

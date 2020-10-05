@@ -9,6 +9,7 @@ import { getDetailOrderView } from '../../api/order/orderItem';
 import Loading from '../../components/asset/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 import {useStore} from '../../hooks/useStore';
+import { ButtonBase } from '@material-ui/core';
 
 const cx = cn.bind(styles);
 
@@ -20,16 +21,21 @@ const OrderDetailContainer = ({ order_id }) => {
     const [order_info, setOrderInfo] = useState(null);
 
     const getOrderItemInfo = useCallback(async () => {
+        setLoading(true);
 
         if (user_token) {
-            setLoading(true);
-            const res = await getDetailOrderView(user_token, order_id);
-            console.log(res);
-            setOrderInfo(res);
-            setLoading(false);
-        } else {
-            history.replace('/');
-        }
+            try{
+                const res = await getDetailOrderView(user_token, order_id);
+                console.log(res);
+                setOrderInfo(res);
+            }
+    
+            catch(e){
+
+            }
+        } 
+        setLoading(false);
+
     }, [order_id, history,user_token]);
 
     useEffect(() => {
@@ -57,7 +63,9 @@ const OrderDetailContainer = ({ order_id }) => {
                         </div>
                         <div className={cx('title', 'between')}>
                             <div>배달 정보</div>
-                            <div className={styles['order-type']}>예약주문</div>
+                            <div className={styles['order-type']}>
+                                {order_info && order_info.orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}                                
+                            </div>
                         </div>
                         <div className={styles['list']}>
                             <UserInfo
@@ -81,7 +89,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                     order_info && order_info.orders.shop_name
                                 }
                                 value2={
-                                    order_info && order_info.orders.shop_addr1
+                                    order_info && `${order_info.orders.shop_addr1} ${order_info.orders.shop_addr2}`
                                 }
                                 value3={
                                     order_info &&
@@ -97,35 +105,30 @@ const OrderDetailContainer = ({ order_id }) => {
                             />
                             <PaymentInfo
                                 text={'주문일시'}
-                                value={'2020-00-00 12:59:59'}
+                                value={order_info && order_info.orders.receipt_time}
                             />
                             <PaymentInfo
                                 text={'결제방식'}
-                                value={'가상계좌 입금'}
+                                value={order_info && order_info.payinfo.pp_pg}
                             />
                             <PaymentInfo
                                 text={'결제금액'}
                                 value={
                                     order_info &&
-                                    numberFormat(
+                                    `${(numberFormat(
                                         order_info.orders.receipt_price,
-                                    )
+                                    ))}
+                                    원
+                                    `
                                 }
                             />
-                            <PaymentInfo text={'입금자명'} value={'김종완'} />
-                            <PaymentInfo
-                                text={'입금계좌'}
-                                value={'국민은행 12345-67-89000 아주나무'}
-                            />
-                            <PaymentInfo
-                                text={'가상계좌 유효기간'}
-                                value={'2020년 06월 09일 00:00:00'}
-                            />
+                            <PaymentInfo text={'입금자명'} value={user &&user.name} />
+                   
                         </div>
                         <div className={styles['button-box']}>
-                            <div className={styles['cancle-btn']}>
+                            <ButtonBase className={styles['cancle-btn']}>
                                 주문 취소하기
-                            </div>
+                            </ButtonBase>
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,8 @@ import {getMyCoupons,getDownloadCpList,downloadCoupon,couponInput} from '../../a
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 import {useStore} from '../../hooks/useStore';
+import { useModal } from '../../hooks/useModal';
+import produce from 'immer';
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +37,7 @@ const tabInit = [
 
 const CouponConatiner = ({ tab='0' }) => {
 
+    const openModal = useModal();
     const history = useHistory();
     const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -47,6 +50,9 @@ const CouponConatiner = ({ tab='0' }) => {
     const [user_input_cp, setUserInputCp] = useState('');
     const [down_cp_list, setDownCpList] = useState([]);
     const [show, setShow] = useState(false);
+
+
+    const onChangeUserInputCp = (e) => setUserInputCp(e.target.value);
 
     const onScroll = useCallback(e => {
         if (index === 0) {
@@ -79,23 +85,74 @@ const CouponConatiner = ({ tab='0' }) => {
         setLoading(false);
     };
 
-        // 다운로드 가능한 쿠폰 리스트
-        const getDownCouponList = async () => {
+    // 다운로드 가능한 쿠폰 리스트
+    const getDownCouponList = async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getDownloadCpList(user_token);
+                console.log(res);
+                setDownCpList(res);
+            }
+            catch (e) {
+                console.error(e);
+            }
+
+        }
+        setLoading(false);
+    };
+
+    const callCouponDownload = useCallback(
+        async (cz_id) => {
             setLoading(true);
-            if (user_token) {
-                try{
-                    const res = await getDownloadCpList(user_token);
-                    console.log(res);
-                    setDownCpList(res);
+            try {
+                const res = await downloadCoupon(user_token, cz_id);
+                if (
+                    res.data.msg === '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
+                ) {
+                    openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
+                } else {
+                    openModal('다운로드 성공했습니다.', res.data.msg);
                 }
-                catch(e){
-                    console.error(e);
-                }
-            
+                const idx = down_cp_list.findIndex(
+                    (item) => item.cz_id === cz_id,
+                );
+                setDownCpList(
+                    produce(down_cp_list, (draft) => {
+                        draft[idx].check = true;
+                    }),
+                );
+            } catch (e) {
+
             }
             setLoading(false);
-        };
+        },
+        [user_token, down_cp_list, openModal],
+    );
     
+    const inputCoupon = useCallback(async () => {
+        if (user_input_cp === '') {
+            return;
+        }
+        setLoading(true);
+        try {
+            const res = await couponInput(user_token, user_input_cp);
+            console.log(res);
+            if (res.data.msg === '성공') {
+                openModal('쿠폰 등록이 완료되었습니다.');
+            }
+            else if(res.data.msg==='이미 발급된 쿠폰입니다.'){
+                openModal(res.data.msg);
+            }
+            else if (res.data.msg==="해당 쿠폰번호에 맞는 쿠폰이 존재하지 않습니다."){
+                openModal(res.data.msg);
+            }
+        } catch (e) {
+            
+        }
+
+        setLoading(false);
+    }, [user_token, user_input_cp, openModal]);
 
     useEffect(()=>{
         getMyCouponList();
@@ -138,9 +195,11 @@ const CouponConatiner = ({ tab='0' }) => {
                             <input
                                 className={styles['code-input']}
                                 type="text"
+                                value={user_input_cp}
+                                onChange={onChangeUserInputCp}
                                 placeholder={'쿠폰 코드를 입력하세요'}
                             />
-                            <Button className={styles['submit-btn']}>
+                            <Button className={styles['submit-btn']} onClick={inputCoupon}>
                                 쿠폰등록
                             </Button>
                         </div>
@@ -158,18 +217,12 @@ const CouponConatiner = ({ tab='0' }) => {
                                 msg={"보유하고 있는 쿠폰이 없습니다"}/>
                             }
 
-                            {/* {down_cp_list.length !== 0 ?
-                                <DownCouponList check={true} cp_list={down_cp_list} />
-                                :
-                                <Message
-                                    msg={"받을 수 있는 쿠폰이 존재하지 않습니다."} />
-                            } */}
                         </div>
                     </div>
                     <div>
                         <div className={cx('coupon-list', 'pd-box')}>
                         {down_cp_list.length!==0 ?
-                            <DownCouponList check={true}  cp_list={down_cp_list}/>
+                            <DownCouponList check={true}  cp_list={down_cp_list} onClick={callCouponDownload}/>
                             :
                             <Message
                                 msg={"받을 수 있는 쿠폰이 존재하지 않습니다."}/>

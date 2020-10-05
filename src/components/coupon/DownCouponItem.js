@@ -54,7 +54,7 @@ function CouponDate({ start, end }) {
 }
 function CouponDown({ check }) {
     return (
-        <>{!check ? <img src={DownCoupon} alt="다운" /> : <CouponCheck />}</>
+        <>{!check ? <img src={DownCoupon} alt="다운" /> : <CouponCheck select={true} />}</>
     );
 }
 

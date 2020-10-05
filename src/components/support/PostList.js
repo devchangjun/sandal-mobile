@@ -29,7 +29,8 @@ const PostItem = ({ postData }) => {
                 </div>
                 <Back rotate="270deg"/>
             </Button>
-            <div className={cn('content')}>{body}{answer}</div>
+            <div className={styles['content']} dangerouslySetInnerHTML={{ __html: body}} />
+
         </li>
     )
 }

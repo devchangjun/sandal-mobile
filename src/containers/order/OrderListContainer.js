@@ -31,6 +31,8 @@ const OrderListContainer = ({ tab = '0' }) => {
     const [open,setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
     const [order_list,setOrderList] = useState([]);
+    const [dlvList ,setDlvList] =useState([]);
+    const [reserveList,setReserveList] = useState([]);
     const user_token = useStore();
     const history = useHistory();
     
@@ -49,7 +51,9 @@ const OrderListContainer = ({ tab = '0' }) => {
         if(user_token){
             const res= await getOrderList(user_token);
             console.log(res);
-            setOrderList(res);
+            const temp = res.orders.filter((item) =>item.info.order_type==='reserve');
+            console.log(temp);
+            setOrderList(res.orders);
         }
         setLoading(false);
     }

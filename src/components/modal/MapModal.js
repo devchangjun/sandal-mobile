@@ -7,11 +7,6 @@ import MarkerImg from './MarkerImg.svg';
 import styles from './MapModal.module.scss';
 const cx = classNames.bind(styles);
 
-
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-// });
-
 const FullScreenDialog = (props) => {
     
     const [jibun,setJibun] = React.useState('');
@@ -24,12 +19,14 @@ const FullScreenDialog = (props) => {
         setRoad('');
         props.handleClose();
     }
+
+
     useEffect(() => {
         mapScript();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
     
+
     const mapScript = () => {
         let container = document.getElementById("map");
         let options = {
@@ -37,7 +34,7 @@ const FullScreenDialog = (props) => {
             level: 5,
         };
         const map = new kakao.maps.Map(container, options);
-        const geocoder = new kakao.maps.services.Geocoder();
+
 
         var imageSrc = MarkerImg,
             imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
@@ -46,6 +43,7 @@ const FullScreenDialog = (props) => {
         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             // markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
+
 
         // 마커 정보를 가지고 뷰에 띄울 마커 생성
         const marker = new kakao.maps.Marker({
@@ -56,6 +54,15 @@ const FullScreenDialog = (props) => {
         // const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
         marker.setMap(map);
 
+        firstSetting(lng,lat ,function (result,status){
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(result);
+                setJibun(result[0].address.address_name );
+                if(!!result[0].road_address){
+                    setRoad(result[0].road_address.address_name);
+                }
+            }   
+        })
         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
             // 클릭한 위도, 경도 정보를 가져옵니다 
@@ -65,14 +72,7 @@ const FullScreenDialog = (props) => {
 
             searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    // var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-                    // detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
-                    
-                    // var content = '<div class="bAddr">' +
-                    //                 '<span class="title">법정동 주소정보</span>' + 
-                    //                 detailAddr + 
-                    //             '</div>';
-        
+                    console.log(result);
 
                     var latlng = mouseEvent.latLng;
 
@@ -80,7 +80,7 @@ const FullScreenDialog = (props) => {
                     message += '경도는 ' + latlng.getLng() + ' 입니다';
 
                     props.onClickPosition(latlng.getLat(), latlng.getLng());
-                    console.log(message);
+                    // console.log(message);
                     // 마커를 클릭한 위치에 표시합니다 
                     marker.setPosition(mouseEvent.latLng);
                     marker.setMap(map);
@@ -99,10 +99,18 @@ const FullScreenDialog = (props) => {
         });
 
         function searchDetailAddrFromCoords(coords, callback) {
+            let geocoder = new kakao.maps.services.Geocoder();
             // 좌표로 법정동 상세 주소 정보를 요청합니다
+
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+            console.log(coords.getLng());
         }
         
+        function firstSetting (lng,lat ,callback){
+            let geocoder = new kakao.maps.services.Geocoder();
+            geocoder.coord2Address(lng ,lat, callback);
+
+        }
 
         // 나중에 가게 정보 받아올때 띄워야 할 마커
         // markerdata.forEach((el) => {

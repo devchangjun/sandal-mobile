@@ -64,7 +64,7 @@ const OrderDetailContainer = ({ order_id }) => {
                         <div className={cx('title', 'between')}>
                             <div>배달 정보</div>
                             <div className={styles['order-type']}>
-                                {order_info && order_info.orders.info.order_type ==='reserve' ? '배달주문' : '예약주문'}                                
+                                {order_info && order_info.orders.info.order_type ==='reserve' ? '예약주문' : '배달주문'}                                
                             </div>
                         </div>
                         <div className={styles['list']}>
@@ -114,12 +114,7 @@ const OrderDetailContainer = ({ order_id }) => {
                             <PaymentInfo
                                 text={'결제금액'}
                                 value={
-                                    order_info &&
-                                    `${(numberFormat(
-                                        order_info.orders.receipt_price,
-                                    ))}
-                                    원
-                                    `
+                                    order_info &&`${(numberFormat(order_info.orders.receipt_price))}원`
                                 }
                             />
                             <PaymentInfo text={'입금자명'} value={user &&user.name} />

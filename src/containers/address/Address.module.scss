@@ -38,6 +38,8 @@
         flex-direction: column;
     }
     .location-btn {
+        width: 100%;
+        font-size:16px;
         border: 1px solid $main-color;
         display: flex;
         border-radius: 10px;

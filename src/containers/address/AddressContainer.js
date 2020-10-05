@@ -22,6 +22,7 @@ import { modalOpen } from '../../store/modal';
 import { getNearStore } from '../../api/store/store';
 import { noAuthGetNearStore } from '../../api/noAuth/store';
 import {useInit} from '../../hooks/useStore';
+import { ButtonBase } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -119,7 +120,6 @@ const AddressContainer = () => {
         const lat = p.coords.latitude;
         const lng = p.coords.longitude;
         const newState = { lat: lat, lng: lng };
-        console.log(newState);
         setPosition(newState);
         setLoading(false);
         setMapOpen(true);
@@ -153,8 +153,6 @@ const AddressContainer = () => {
 
     // 좌표 변경
     const onClickPosition = useCallback((lat, lng) => {
-        console.log(lat);
-        console.log(lng);
         setPosition({ lat: lat, lng: lng });
     }, []);
 
@@ -489,12 +487,12 @@ const AddressContainer = () => {
                             </div>
                         </div>
                         <div className={styles['pd-box']}>
-                            <div
+                            <ButtonBase
                                 className={cx('location-btn')}
                                 onClick={onClickMapOpen}
                             >
-                                현위치로 주소 설정
-                            </div>
+                                현 위치로 주소 설정
+                            </ButtonBase>
                         </div>
                         <div className={styles['recently-title']}>
                             최근 배달 주소

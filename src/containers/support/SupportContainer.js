@@ -33,7 +33,6 @@ const tabInit = [
 const SupportContainer = ({ tab = 'notice' }) => {
     
     const history = useHistory();
-    const user_token = useStore();
     const [index ,setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
@@ -57,10 +56,15 @@ const SupportContainer = ({ tab = 'notice' }) => {
             공지사항 불러오기
         */
         setLoading(true);
-    
-        const res = await requestNoticeList(user_token);
-        const { notices } = res;
-        setNoticeList(notices);
+        try{
+            const res = await requestNoticeList(0,1000);
+            const { notices } = res;
+            setNoticeList(notices);
+        }
+       
+        catch(e){
+            console.error(e);
+        }   
         setLoading(false);
     }, []);
 
@@ -69,10 +73,15 @@ const SupportContainer = ({ tab = 'notice' }) => {
             자주 묻는 질문 불러오기.
             faq_type에 따라 다른 리스트 불러옴
         */
+       try{
         setLoading(true);
-   
-        const res = await requestFAQList(user_token, faq_type);
+        const res = await requestFAQList(faq_type);
         setFAQList(res);
+       }
+       catch(e){
+           console.error(e);
+       }
+     
         setLoading(false);
     }, []);
 

@@ -20,6 +20,8 @@ import {useStore} from '../../hooks/useStore';
 import $script from 'scriptjs';
 import {user_order} from '../../api/order/order';
 import {noAuthGetCartList} from  '../../api/noAuth/cart';
+import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
+import Loading from '../../components/asset/Loading';
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +36,7 @@ const initPayment = [
         payment: '휴대폰 결제',
     },
     {
-        payment: '만나서 직접 결제',
+        payment: '페이플 카드결제',
     },
 ];
 
@@ -55,9 +57,9 @@ const OrderContainer = () => {
     const onClcikPaymentClose = () => setPaymentOpen(false);
 
     const [couponList, setCouponList] = useState([]);
-    const [payment, setPayment] = useState('만나서 직접 결제');
+    const [payment, setPayment] = useState('페이플 카드결제');
 
-    const [totalPrice,setTotalPrice]  = useState(0);
+    const [totalPrice,setTotalPrice]  = useState(0); //총 주문금액
     const [toggle , setToggle ] = useState(false);
     const [dlvCost, setDlvCost] = useState(0); // 배달비
 
@@ -74,6 +76,14 @@ const OrderContainer = () => {
     const [date, setDate] = useState(new Date());
     const [hours ,setHours]  = useState('09');
     const [minite ,setMinite] = useState('00');
+
+    
+    const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
+    const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
+    const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
+    const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
+
+
 
     const onClickToggle =()=>setToggle(!toggle);
 
@@ -111,6 +121,7 @@ const OrderContainer = () => {
 
     //총 주문금액 구하기 (장바구니 조회해서 가져옴);
     const getTotalPrice = useCallback(async () => {
+        console.log('gd');
         setLoading(true);
         if (user_token) {
             try {
@@ -150,10 +161,14 @@ const OrderContainer = () => {
         else {
             try {
                 if(addr1){
+                    console.log('여긴 들어오냐');
+                console.log(addr1);
                 const cart_id = JSON.parse(
                     localStorage.getItem('noAuthCartId'),
                 );
-                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);                
+                console.log('비회원장바구니');
+                const res = await noAuthGetCartList(cart_id, lat, lng, addr1);     
+                console.log(res);           
                 const { query } = res.data;
                 let len = Object.keys(query).length;
                 let price = 0;
@@ -333,13 +348,39 @@ const OrderContainer = () => {
     useEffect(()=>{
         window.scrollTo(0,0);
         getUserCoupons();
-        getTotalPrice();
         getPayment();
+        const memo = JSON.parse(localStorage.getItem('requestMemo'));
+        if (memo) {
+            if (memo.dlvMemo !== false) {
+                setDlvMemoCheck(true);
+                setDlvMemo(memo.dlvMemo);
+            }
+            if (memo.orderMemo !== false) {
+                setOrderMemoCheck(true);
+                setOrderMemo(memo.orderMemo);
+            }
+        }
 
     },[])
 
+    useEffect(()=>{
+        getTotalPrice();
+    },[getTotalPrice])
+    useEffect(() => {
+        console.log('gd');
+        localStorage.setItem(
+            'requestMemo',
+            JSON.stringify({
+                dlvMemo: dlvMemoCheck && dlvMemo,
+                orderMemo: orderMemoCheck && orderMemo,
+            }),
+        );
+    }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
+
+
     return (
         <>
+            <Loading open={loading} />
        
             <div className={styles['order']}>
                 <div className={cx('title', 'pd-box')}>배달정보</div>
@@ -387,28 +428,32 @@ const OrderContainer = () => {
                             주문 요청사항
                         </div>
                         <div className={styles['save']}>
-                            <input className={styles['check']} type="checkbox" id="check1"></input>
-                            <label className={styles['label']} htmlFor="check1">
-                            자동저장
-                            </label>
+                             <SquareCheckBox
+                                id={'order'}
+                                text={'자동저장'}
+                                check={orderMemoCheck}
+                                onChange={onChangeOrderCheck}
+                            />
                         </div>
                     </div>
                     <div className={cx('value', 'mg-bot')}>
-                        <input type="text" className={styles['input']}></input>
+                        <input type="text" className={styles['input']} value={dlvMemo} onChange={onChangeDeleveryMemo}></input>
                     </div>
                     <div className={styles['input-save']}>
                         <div className={styles['input-title']}>
                             배달 요청사항
                         </div>
                         <div className={styles['save']}>
-                        <input className={styles['check']} type="checkbox" id="check2"></input>
-                            <label className={styles['label']} htmlFor="check2">
-                            자동저장
-                            </label>
+                            <SquareCheckBox
+                                id={'dlv'}
+                                text={'자동저장'}
+                                check={dlvMemoCheck}
+                                onChange={onChangeDlvCheck}
+                            />
                         </div>
                     </div>
                     <div className={styles['value']}>
-                        <input type="text" className={styles['input']}></input>
+                        <input type="text" className={styles['input']} value={orderMemo} onChange={onChangeOrderMemo}></input>
                     </div>
                 </div>
                 <div className={cx('title', 'pd-box')}>결제방법</div>
@@ -421,25 +466,28 @@ const OrderContainer = () => {
                     </div>
  
                 </div>
-                <div className={styles['order-info']}>
-                        <ButtonBase className={cx('box', 'pd-box')}>
-                            <div className={cx('box', 'pd-box')} onClick={onClickCouponOpen}>
-                                <div className={styles['label']}>할인 쿠폰</div>
-                                <div className={styles['info']}>1개 보유
-                                <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
-                                </div>
-                             
-                            </div>
-                        </ButtonBase>
-                        <ButtonBase className={cx('box', 'pd-box')}>
-                            <div className={cx('box', 'pd-box')} onClick={onClickPointOpen}>
-                                <div className={styles['label']}>포인트 사용</div>
-                                <div className={styles['info']}>1,000원
-                                <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
-                                </div>
-                            </div>
-                        </ButtonBase>
-                    </div>
+                {user_token &&
+                           <div className={styles['order-info']}>
+                           <ButtonBase className={cx('box', 'pd-box')}>
+                               <div className={cx('box', 'pd-box')} onClick={onClickCouponOpen}>
+                                   <div className={styles['label']}>할인 쿠폰</div>
+                                   <div className={styles['info']}>{couponList.length}개보유
+                                   <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
+                                   </div>
+                                
+                               </div>
+                           </ButtonBase>
+                           <ButtonBase className={cx('box', 'pd-box')}>
+                               <div className={cx('box', 'pd-box')} onClick={onClickPointOpen}>
+                                   <div className={styles['label']}>포인트 사용</div>
+                                   <div className={styles['info']}>{numberFormat(point_price)}원
+                                   <Back rotate="180deg" strokeWidth={1.5} stroke={"#707070"} width={18} height={18}/>
+                                   </div>
+                               </div>
+                           </ButtonBase>
+                       </div>
+                }
+     
                 <div className={cx('table', 'pd-box', 'bg-color', 'pd-top')}>
                     <div className={cx('total-order')}>
                         <div className={cx('item')}>
@@ -472,26 +520,30 @@ const OrderContainer = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={cx('text-cost', 'info')}>
-                                    <div className={cx('pd-in', 'text-cost')}>
-                                        <div className={cx('text')}>
-                                            쿠폰 할인
+                                {user_token &&
+                                    <>
+                                        <div className={cx('text-cost', 'info')}>
+                                            <div className={cx('pd-in', 'text-cost')}>
+                                                <div className={cx('text')}>
+                                                    쿠폰 할인
                                         </div>
-                                        <div className={cx('cost')}>
-                                        -3,000원
+                                                <div className={cx('cost')}>
+                                                    -{numberFormat(cp_price)}원
                                         </div>
-                                    </div>
-                                </div>
-                                <div className={cx('text-cost', 'info')}>
-                                    <div className={cx('pd-in', 'text-cost')}>
-                                        <div className={cx('text')}>
-                                            포인트 할인
+                                            </div>
                                         </div>
-                                        <div className={cx('cost')}>
-                                        -1,000원
+                                        <div className={cx('text-cost', 'info')}>
+                                            <div className={cx('pd-in', 'text-cost')}>
+                                                <div className={cx('text')}>
+                                                    포인트 할인
                                         </div>
-                                    </div>
-                                </div>
+                                                <div className={cx('cost')}>
+                                                    -{numberFormat(point_price)}원
+                                        </div>
+                                            </div>
+                                        </div>
+                                    </>}
+                
                             </div>
                         </div>
                     </div>

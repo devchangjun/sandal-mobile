@@ -21,19 +21,16 @@ const SignCompleteContainer = ({ name }) => {
         history.push(Paths.ajoonamu.signin);
     }
     return (
-        <>
-            <TitleBar title={"회원가입"} src={logo} alt={"회원가입"} />
-            <div className={cx('container','center')}>
-                   <div className={cx('content','pd-none')}>
-                    <div className={styles['success-img']}>
-                    <img src ={Complete} alt={"축하합니다"}/>
-                    </div>
-                    <SignComplete mainTitle={`축하합니다 ${name}님`} subTitle={"아주나무 딜리버리 회원가입이 완료 되었습니다. "} 
-                    text={"이메일 회원가입을 하신 회원님께서는 가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다."} />
-                        <Button title={"로그인"} onClick={onClickLogin} toggle={true}></Button>
+        <div className={cx('container', 'center')}>
+            <div className={cx('content', 'pd-none')}>
+                <div className={styles['success-img']}>
+                    <img src={Complete} alt={"축하합니다"} />
                 </div>
+                <SignComplete mainTitle={`축하합니다 ${name}님`} subTitle={"아주나무 딜리버리 회원가입이 완료 되었습니다. "}
+                    text={"이메일 회원가입을 하신 회원님께서는 가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다."} />
+                <Button title={"로그인"} onClick={onClickLogin} toggle={true}></Button>
             </div>
-        </>
+        </div>
     )
 }
 

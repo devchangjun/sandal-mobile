@@ -67,13 +67,22 @@ function App() {
         else if(pathname==='/signup'){
             return '회원가입'
         }
+        else if(pathname==='/complete'){
+            return '회원가입'
+        }
         else if(pathname==='/recovery'){
             return '아이디/비밀번호찾기'
         }
         else if(pathname==='/recovery_id'){
             return '아이디 찾기';
         }
+        else if(pathname==='/find_email'){
+            return '아이디 찾기';
+        }
         else if(pathname==='/recovery_pw'){
+            return '비밀번호 찾기';
+        }
+        else if(pathname==='/find_password'){
             return '비밀번호 찾기';
         }
         else if(pathname==='/mypage'){

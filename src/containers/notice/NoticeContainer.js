@@ -5,10 +5,10 @@ import TitleBar from '../../components/titlebar/TitleBar';
 import NoticeList from '../../components/notice/NoticeList';
 import BottomNav from '../../components/nav/BottomNav';
 
-import { reqNoticeReadAll,reqNoticeList,reqNoticeRead,reqNoticeDelete } from '../../api/notice';
+import { reqNoticeReadAll, reqNoticeList, reqNoticeRead, reqNoticeDelete } from '../../api/notice';
 import Loading from '../../components/asset/Loading';
 import styles from './NoticeContainer.module.scss';
-import {useStore} from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
 const cn = classnames.bind(styles);
 
 const MyPageContainer = () => {
@@ -34,7 +34,15 @@ const MyPageContainer = () => {
                 return not_id === item.not_id ? { ...item, not_read_datetime: not_read_datetime } : item;
             }),
         );
-       await reqNoticeRead(user_token,not_id);
+        if (user_token) {
+            try {
+                await reqNoticeRead(user_token, not_id);
+
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
     }, [user_token]);
 
     const onAllChecked = useCallback(async () => {
@@ -53,8 +61,16 @@ const MyPageContainer = () => {
             list.map((item) => {
                 return { ...item, not_read_datetime: not_read_datetime };
             }),
-        ); 
-         await reqNoticeReadAll(user_token);
+        );
+        if (user_token) {
+            try {
+                await reqNoticeReadAll(user_token);
+
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
     }, []);
     const confirmChecked = useCallback(() => {
         const result = list.findIndex((item) => !item.not_read_datetime);
@@ -62,18 +78,34 @@ const MyPageContainer = () => {
     }, [list]);
 
 
-    const onRemove = useCallback(async (not_id) =>{
+    const onRemove = useCallback(async (not_id) => {
         setLoading(true);
-        const res = await reqNoticeDelete(user_token,not_id);
-        console.log(res);
-        setList((list) => list.filter(item => item.not_id !==not_id));
+        if (user_token) {
+            try {
+                const res = await reqNoticeDelete(user_token, not_id);
+                console.log(res);
+                setList((list) => list.filter(item => item.not_id !== not_id));
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
         setLoading(false);
-    },[user_token]);
+    }, [user_token]);
     const getNoticeList = useCallback(async () => {
         setLoading(true);
-        const res = await reqNoticeList(user_token);
-        console.log(res.notification);
-        setList(res.notification);
+        if (user_token) {
+            try {
+                const res = await reqNoticeList(user_token);
+                console.log(res.notification);
+                setList(res.notification);
+            }
+            catch (e) {
+                console.error(e);
+
+            }
+        }
+
         setLoading(false);
     }, []);
 
@@ -101,7 +133,7 @@ const MyPageContainer = () => {
                 </div>
             </TitleBar>
             <div className={styles['container']}>
-                <NoticeList onChecked={onChecked} listData={list} onRemove={onRemove}/>
+                <NoticeList onChecked={onChecked} listData={list} onRemove={onRemove} />
             </div>
         </>
     );

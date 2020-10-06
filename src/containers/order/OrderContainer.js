@@ -551,7 +551,7 @@ const OrderContainer = () => {
                 </div>
             </div>
             {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
-            <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(dlvCost))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
+            <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(dlvCost) - parseInt(point_price) - parseInt(cp_price))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
             <PointModal open={pointOpen} handleClose={onClickPointClose} user_point ={user && user.point} onChange={setPointPrice} point_price={point_price}/>
             <CouponModal
                 open={couponOpen}

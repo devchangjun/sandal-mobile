@@ -170,19 +170,20 @@ const CartContainer = () => {
 
     const onChangeTotalPrice = useCallback(() => {
 
+    
+
         let total = cartList.reduce((prev, { item }) => {
             const { item_price, item_quanity } = item;
             return prev + (item_price * item_quanity);
         }, 0);
-        
-        for(let i=0; i<cartList.length ;i++){
-            for(let j=0 ;j<cartList[i].options.length; j++){
-                const {option_price} =cartList[i].options[j];
-                total+=option_price;
-                console.log(total);
+
+        for (let i = 0; i < cartList.length; i++) {
+            const { options, item } = cartList[i];
+            for (let j = 0; j < options.length; j++) {
+                const { option_price } = options[j];
+                total += option_price * item.item_quanity;
             }
         }
-
         setTotal(total);
 
     }, [cartList]);

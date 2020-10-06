@@ -21,7 +21,7 @@ const tabInit = [
     },
     {
         url:`${Paths.ajoonamu.order_list}?tab=1`,
-        name: '배달주문'
+        name: '택배주문'
     },
 ];
 
@@ -51,9 +51,9 @@ const OrderListContainer = ({ tab = '0' }) => {
         if(user_token){
             const res= await getOrderList(user_token);
             console.log(res);
-            const temp = res.orders.filter((item) =>item.info.order_type==='reserve');
-            console.log(temp);
-            setOrderList(res.orders);
+            const reserve = res.orders.filter((item) =>item.info.order_type==='reserve');
+            console.log(reserve);
+            setReserveList(reserve);
         }
         setLoading(false);
     }
@@ -90,8 +90,8 @@ const OrderListContainer = ({ tab = '0' }) => {
                         animateHeight={true}
                     >
                         <div className={styles['pd-box']}>
-                            {order_list.length!==0 ? (
-                                <OrderItemList order_list={order_list}  onClick={onClickOrderItem}/>
+                            {reserveList.length!==0 ? (
+                                <OrderItemList order_list={reserveList}  onClick={onClickOrderItem}/>
                             ) : (
                                 <Message
                                     src={true}

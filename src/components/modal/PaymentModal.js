@@ -91,7 +91,7 @@ const FullScreenDialog = (props) => {
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <div className={styles['title']}>결제 방법 선택</div>
+                <div className={styles['title']}>결제 방법을 선택해주세요.</div>
                 <div className={styles['container']}>{list}</div>
                 <FixButton title={'확인'} onClick={() => props.onClick(payment)} toggle={true}/>
             </Dialog>

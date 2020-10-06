@@ -7,9 +7,9 @@ import { Paths }from 'paths';
 import { ButtonBase } from '@material-ui/core';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import PointModal from 'components/modal/PointModal';
-import CouponModal from 'components/modal/CouponModal';
-import PaymentModal from 'components/modal/PaymentModal';
+import PointModal from '../../components/modal/PointModal';
+import CouponModal from '../../components/modal/CouponModal';
+import PaymentModal from '../../components/modal/PaymentModal';
 import OrderCheck from 'components/svg/order/OrderCheck';
 import styles from './Order.module.scss';
 import Back from 'components/svg/header/Back';
@@ -43,6 +43,7 @@ const initPayment = [
 const OrderContainer = () => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
     const history = useHistory();
+    const {user} = useSelector(state=>state.auth);
     const { addr1,addr2,lat,lng } = useSelector(state => state.address);
     const user_token = useStore(false);
     const [loading,setLoading] = useState(false);
@@ -58,6 +59,7 @@ const OrderContainer = () => {
 
     const [couponList, setCouponList] = useState([]);
     const [payment, setPayment] = useState('페이플 카드결제');
+    
 
     const [totalPrice,setTotalPrice]  = useState(0); //총 주문금액
     const [toggle , setToggle ] = useState(false);
@@ -68,21 +70,19 @@ const OrderContainer = () => {
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState(''); //주문메모
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
-    const [point_price, setPointPrice] = useState(0); //포인트 할인
 
     const order_id = useRef(null);
+    const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id ,setCpId] = useState(null); //쿠폰 번호
     const [date, setDate] = useState(new Date());
     const [hours ,setHours]  = useState('09');
     const [minite ,setMinite] = useState('00');
 
-    
     const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
     const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
-
 
 
     const onClickToggle =()=>setToggle(!toggle);
@@ -92,16 +92,11 @@ const OrderContainer = () => {
         setPaymentOpen(false);
         sessionStorage.setItem('payment',payment);
     };
-
-    const onClickSelectCoupon = (data) => {
-        const index = couponList.findIndex((c) => c.cp_id === data);
-        console.log(index);
-        setCouponList(
-            produce(couponList, (draft) => {
-                draft[index].select = !draft[index].select;
-            }),
-        );
-    };
+    const onClickCouponSelect =(cp_price,cp_id,cp_list)=>{
+        setCpPrice(cp_price);
+        setCpId(cp_id);
+        setCouponList(cp_list);
+    }
 
 
     const getUserCoupons =async()=>{
@@ -557,12 +552,12 @@ const OrderContainer = () => {
             </div>
             {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
             <Button title={`${numberFormat( parseInt(totalPrice)+ parseInt(dlvCost))}원 결제`} toggle={toggle} onClick={onClickOrder}/>
-            <PointModal open={pointOpen} handleClose={onClickPointClose} />
+            <PointModal open={pointOpen} handleClose={onClickPointClose} user_point ={user && user.point} onChange={setPointPrice} point_price={point_price}/>
             <CouponModal
                 open={couponOpen}
                 handleClose={onClickCouponClose}
-                onClick={onClickSelectCoupon}
                 list={couponList}
+                onClick={onClickCouponSelect}
             />
             <PaymentModal
                 open={paymentOpen}

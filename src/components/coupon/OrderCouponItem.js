@@ -12,13 +12,13 @@ const cx = classNames.bind(styles);
 const OrderCouponItem = (props) => {
     const {
         cp_datetime,
-        // cp_end,
+        cp_end,
         cp_id,
         // cp_minimum,
         cp_price,
-        // cp_start,
+        cp_start,
         cp_subject,
-        // cp_target,
+        cp_target,
         // cp_use,
         // cp_use_date,
         // cz_id,
@@ -27,16 +27,16 @@ const OrderCouponItem = (props) => {
     } = props.item
 
     return (
-        <ButtonBase className={cx('coupon-item', { select: select})} onClick={()=>props.onClick(props.id)}>
+        <ButtonBase className={cx('coupon-item', { select: select})} onClick={props.onClick}>
             <div className={styles['check']}>
                 <OrderCouponCheck select={select} />
             </div>
             <div className={styles['info']}>
                 <div className={styles['pd-box']}>
-                    <OrderCouponEventName event_name={cp_id} />
+                    <OrderCouponEventName event_name={cp_subject} />
                     <OrderCouponSale sale={cp_price} />
-                    <OrderCouponEventSub sub_name={cp_subject} />
-                    <OrderCouponDate date={cp_datetime} />
+                    <OrderCouponEventSub sub_name={cp_target} />
+                    <OrderCouponDate date={`${cp_start} ~ ${cp_end}까지`} />
                 </div>
             </div>
         </ButtonBase>

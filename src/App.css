@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Apple SD Gothic Neo';
+    font-family: "애플 SD 산돌고딕 Neo", "Apple SD Gothic Neo", 나눔고딕, "NanumGothic", "맑은 고딕", "Malgun Gothic", Ngothic, sans-serif;
+
     -webkit-tap-highlight-color: transparent;
 }
 a {

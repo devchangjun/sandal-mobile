@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Sign.module.scss';
@@ -20,7 +20,6 @@ import styled from 'styled-components';
 import { useModal } from '../../hooks/useModal';
 import { isEmailForm } from '../../lib/formatChecker';
 import {useInit} from '../../hooks/useStore';
-
 
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
@@ -78,11 +77,7 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const { email, password } = user;
     const [toggle, setToggle] = useState(false);
-
-    useEffect(() => {
-        const btnToggle = email.length !== 0 && password.length !== 0 ? true : false;
-        setToggle(btnToggle);
-    }, [email, password]);
+    const {succeed} = useSelector((state)=>state.auth);
 
     const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -155,11 +150,17 @@ const SignInContainer = () => {
         localStorage.setItem('access_token', token);
     };
 
-    useEffect(()=>{
-        if(user){
-            history.replace('/');
-        }
-    },[])
+
+    useEffect(() => {
+        const btnToggle = email.length !== 0 && password.length !== 0 ? true : false;
+        setToggle(btnToggle);
+    }, [email, password]);
+
+    // useEffect(()=>{
+    //     if(succeed){
+    //         history.replace('/');
+    //     }
+    // },[succeed])
     return (
         <>
             <div className={cx('container')}>

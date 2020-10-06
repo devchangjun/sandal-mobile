@@ -12,9 +12,9 @@ const MenuItem = (props) => {
     return (
 
         <div className={styles['menu-item']} onClick={props.onClick}>
-            {/* <div className={styles['menu-img']}>
+            <div className={styles['menu-img']}>
                 <img src={IMG} className={styles['img']} alt="메뉴" />
-            </div> */}
+            </div>
             <div className={cx('menu-info','pd-box')}>
                 <div className={styles['menu-name']}>
                    {props.item_name}

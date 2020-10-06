@@ -23,7 +23,7 @@ export function getCoordinates() {
 
 export const insertAddress = async (
     token,
-    post_num,
+    post_num=null,
     addr1,
     addr2,
     extra,
@@ -33,7 +33,7 @@ export const insertAddress = async (
     const req = Paths.api + `user/delivery`;
 
     const form_data = {
-        post_num: post_num,
+        post_num:post_num,
         addr1: addr1,
         addr2: addr2,
         extra: 0,
@@ -43,6 +43,7 @@ export const insertAddress = async (
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
+    console.log(res);
     return res;
 };
 

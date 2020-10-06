@@ -17,7 +17,13 @@ import {
 } from '../../components/svg/sign/social';
 import KakaoLogin from 'react-kakao-login';
 import styled from 'styled-components';
+import { useModal } from '../../hooks/useModal';
+import { isEmailForm } from '../../lib/formatChecker';
+import {useInit} from '../../hooks/useStore';
 
+
+import { getActiveAddr } from '../../api/address/address';
+import { getNearStore } from '../../api/store/store';
 const cx = classNames.bind(styles);
 
 
@@ -64,6 +70,9 @@ const userReducer = (state, action) => {
 };
 
 const SignInContainer = () => {
+    
+    const initStore = useInit();
+    const openModal = useModal();
     const history = useHistory();
     const dispatch = useDispatch();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
@@ -93,29 +102,52 @@ const SignInContainer = () => {
     const onClickRecovery = useCallback(() => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
-    const onClickLogin = useCallback(async () => {
-        const { email, password } = user;
-        const res = await localLogin(email, password);
-        if (res.status === 200) {
-            //회원가입 안되있는 이메일
-            if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                alert('회원가입 되어있지 않은 이메일입니다.');
-            }
-            //비밀번호가 틀렸을 때
-            else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                alert('비밀번호가 틀렸습니다.');
-            }
-            //로그인 성공 했을 때.
-            else if (res.data.access_token) {
-                sessionStorage.setItem('access_token', res.data.access_token);
-                dispatch(get_user_info(res.data.access_token));
-                history.push(Paths.index);
-            }
-        } else {
-            alert('이메일 혹은 패스워드를 확인해주세요');
-        }
-    }, [user, history, dispatch]);
 
+    const onClickLogin = useCallback(async () => {
+        if (!isEmailForm(email)) {
+            openModal('이메일이 형식에 맞지 않습니다!', '확인 후 다시 작성해 주세요.');
+        } else {
+            try {
+                const res = await localLogin(email, password);
+                if (res.status === 200) {
+                    // 회원가입 안되있는 이메일
+                    if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
+                    }
+                    // 비밀번호가 틀렸을 때
+                    else if (res.data.msg === '비밀번호가 틀렸습니다.') {
+                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.');
+                    }
+                    // 탈퇴한 이메일일 때.
+                    else if (res.data.msg === '탈퇴한 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
+                    }
+                    // 로그인 성공 했을 때.
+                    else if (res.data.access_token) {
+                        //토큰 넘겨 유저정보 디스패치
+                        dispatch(get_user_info(res.data.access_token));
+                        const active_addr = await getActiveAddr(res.data.access_token);
+                        sessionStorage.setItem('access_token', res.data.access_token);
+                        if(active_addr){
+                           const {lat,lng,addr1,addr2,post_num} = active_addr;
+                            const near_store = await getNearStore(lat,lng,addr1);
+                            initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                        }
+                        else{
+                            initStore();
+                        }
+                        const url = JSON.parse(sessionStorage.getItem('url'));
+                        history.replace(url.prev);
+                    }
+                } else {
+                    openModal('로그인에 실패하였습니다.', '이메일 혹은 패스워드를 확인해주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+                history.replace(Paths.index);
+            }
+        }
+    }, [history, dispatch, email, password, openModal]);
     const onClickKakaoLogin = async (res) => {
         console.log(res);
         const token = res.response.access_token;

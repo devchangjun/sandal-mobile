@@ -46,6 +46,7 @@ function App() {
         } else {
             const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
             if (noAuth) {
+                console.log('배달지 설정');
                 const index = noAuth.findIndex((item) => item.active === 1);
                 if (index !== -1) {
                     const {addr1, addr2,lat,lng,post_num} = noAuth[index];

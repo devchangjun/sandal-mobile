@@ -15,12 +15,12 @@ import { stringToTel } from '../../lib/formatter';
 import {useStore} from '../../hooks/useStore';
 import Back from '../../components/svg/header/Back';
 import {useInit} from '../../hooks/useStore';
+import {noAuthGetNearStore} from '../../api/noAuth/store';
 
 const cn = classNames.bind(styles);
 
-const AccountContainer = () => {
-const initStore = useInit();
-
+const AccountContainer = () => {    
+    const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
     const user_token = useStore();
     const dispatch = useDispatch();
@@ -30,22 +30,29 @@ const initStore = useInit();
     const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
     
     const onClickLogout = useCallback(async () => {
-
         try{
             const res = await localLogout(user_token);
             sessionStorage.removeItem('access_token');
-    
             if (res.message === '로그아웃에 성공하셨습니다.') {
                 dispatch(logout());
                 initStore();
                 history.replace(Paths.index);
+
+                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                if(noAuthAddrs){
+                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
+                    if(index!==-1){
+                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
+                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                    }
+                }
+
             }
         }
         catch(e){
             console.error(e);
         }
-  
-
     },[dispatch,history,user_token]);
 
     useEffect(()=>{

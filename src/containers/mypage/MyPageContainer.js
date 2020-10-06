@@ -15,6 +15,7 @@ import { numberFormat } from '../../lib/formatter';
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
 import {useInit} from '../../hooks/useStore';
+import {noAuthGetNearStore} from '../../api/noAuth/store';
 
 const cx = classNames.bind(styles);
 
@@ -33,6 +34,16 @@ const MyPageContainer = () => {
                 dispatch(logout());
                 initStore();
                 history.push(Paths.index);
+
+                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                if(noAuthAddrs){
+                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
+                    if(index!==-1){
+                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
+                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                    }
+                }
             }
         }
         catch(e){

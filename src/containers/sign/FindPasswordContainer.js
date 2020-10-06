@@ -1,13 +1,21 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import {Paths} from 'paths';
+import {useHistory} from 'react-router-dom';
 import styles from './Find.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import SignNormalInput from 'components/sign/SignNormalInput';
-import Button from 'components/button/Button';
-
+import Button from '../../components/button/Button';
+import {useModal} from '../../hooks/useModal';
+import {changePw} from '../../api/auth/auth';
 const cx = classNames.bind(styles);
 
 const FindPasswordContainer = () => {
+    const openModal = useModal();
+    const history = useHistory();
+    const [email,setEmail] = useState('');
+    const [hp ,setHp] = useState('');
+    const [name ,setName] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirm, setPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
@@ -37,13 +45,49 @@ const FindPasswordContainer = () => {
             }
         }
     };
-    const onClickChangePassword =()=>{
-        console.log("비번 변경");
+    const onClickChangePassword =async()=>{
+        try{   
+            const res = await changePw(email,name,hp,password,password_confirm);
+            console.log(res);
+            if(res.data.msg==='성공'){
+                openModal('비밀번호가 성공적으로 변경되었습니다.','새로운 비밀번호로 로그인해주세요.',
+                ()=> {
+                    history.replace(Paths.ajoonamu.signin);
+                    sessionStorage.removeItem('find_user');
+                    }   
+                );
+                
+            }
+
+        }
+        catch(e){
+            openModal('잘못된 접근입니다.','');
+        }
     }
+
+    useEffect(()=>{
+        const find_user = JSON.parse(sessionStorage.getItem('find_user'));
+        console.log(find_user);
+        if(find_user){
+            const {email,name,hp} = find_user;
+            setEmail(email);
+            setName(name);
+            setHp(hp);
+        }
+        else{
+            openModal('잘못된 접근입니다.','',()=>history.replace('/'))
+        }
+    },[])
 
     useEffect(() => {
         matchPassword();
     }, [matchPassword]);
+
+    useEffect(()=>{
+        return()=>{
+            console.log('언마운트');
+        }
+    },[])
 
     return (
         <>

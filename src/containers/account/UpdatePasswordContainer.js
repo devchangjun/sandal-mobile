@@ -8,11 +8,13 @@ import classNames from 'classnames/bind';
 import {updatePassword} from '../../api/auth/auth';
 import {useStore} from '../../hooks/useStore';
 import { Paths } from '../../paths';
+import {useModal} from '../../hooks/useModal';
 //test commit
 const cx = classNames.bind(styles);
 
 const UpdatePasswordContainer = () => {
     const history = useHistory();
+    const openModal =useModal();
     const [password, setPassword] = useState('');
     const [new_password, setNewPassword] = useState('');
     const [new_password_confirm, setNewPasswordConfirm] = useState('');
@@ -42,11 +44,17 @@ const UpdatePasswordContainer = () => {
     };
 
     const onClickUpdatePassword = async ()=>{
-       const res = await updatePassword(user_token,password,new_password, new_password_confirm);
-       console.log(res);
-       if(res.data.msg==='성공'){
-           history.replace(Paths.ajoonamu.account);
+       try{
+        const res = await updatePassword(user_token,password,new_password, new_password_confirm);
+        console.log(res);
+        if(res.data.msg==='성공'){
+            history.replace(Paths.ajoonamu.account);
+        }
        }
+       catch(e){
+           openModal('비밀번호를 확인해주세요','현재 비밀번호가 일치하지 않습니다.');
+       }
+      
     }
  
 

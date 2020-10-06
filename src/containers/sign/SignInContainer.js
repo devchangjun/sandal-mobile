@@ -155,6 +155,11 @@ const SignInContainer = () => {
         localStorage.setItem('access_token', token);
     };
 
+    useEffect(()=>{
+        if(user){
+            history.replace('/');
+        }
+    },[])
     return (
         <>
             <div className={cx('container')}>

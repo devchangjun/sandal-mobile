@@ -4,7 +4,7 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
-import SignComplete from 'components/sign/SignComplete';
+import SignComplete from '../../components/sign/SignComplete';
 
 const cx= classNames.bind(styles);
 
@@ -22,8 +22,6 @@ const RecoveryContainer = () => {
     }
 
     return (
-        <>
-            <TitleBar title="아이디/비밀번호 찾기" src={logo} alt="아이디/비밀번호 찾기"></TitleBar>
             <div className={cx('container')}>
                 <div className={cx('content','pd-box')}>
                     <div className={styles['box']}>
@@ -33,7 +31,6 @@ const RecoveryContainer = () => {
                 </div>
 
             </div>
-        </>
     )
 }
 

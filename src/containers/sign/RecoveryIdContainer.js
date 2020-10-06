@@ -10,6 +10,7 @@ import classNames from 'classnames/bind';
 import { findId } from '../../api/auth/auth';
 import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/sign/Check';
+import {useModal} from '../../hooks/useModal';
 const cx = classNames.bind(styles);
 
 const logo =
@@ -17,7 +18,7 @@ const logo =
 
 const RecoveryIdContainer = () => {
     const history = useHistory();
-
+    const openModal = useModal();
     const random = useRef(496696);
     const [userName, setUserName] = useState('김보건');
     const [userPhone, setUserPhone] = useState('01072128994');
@@ -63,7 +64,7 @@ const RecoveryIdContainer = () => {
         } else if (
             res.data.msg === '해당 이름과 전화번호에 일치하는 계정이 없습니다.'
         ) {
-            alert('해당 이름과 전화번호에 일치하는 계정이 없습니다.');
+            openModal('해당 이름과 전화번호에 일치하는 계정이 없습니다.');
         }
     };
 

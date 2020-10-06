@@ -10,17 +10,21 @@ import classNames from 'classnames/bind';
 import { useHistory } from 'react-router';
 import AuthTimer from 'components/sign/AuthTimer';
 import Check from 'components/svg/sign/Check';
+import {findPw} from '../../api/auth/auth';
+import {useModal} from '../../hooks/useModal';
 const cx = classNames.bind(styles);
 
 const logo =
     'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
 
 const RecoveryPwContainer = () => {
+
+    const openModal = useModal();
     const history = useHistory();
     const random = useRef(496696);
     const [name, setName] = useState('김보건');
     const [email, setEmail] = useState('cuzi.kbg@gmail.com');
-    const [phone, setPhone] = useState('01072128994');
+    const [hp, setHp] = useState('01072128994');
     const [auth, setAuth] = useState('49669');
     const [toggle, setToggle] = useState(false);
     const [success , setSuccess] = useState(false);
@@ -28,7 +32,7 @@ const RecoveryPwContainer = () => {
 
     const onChangeName = (e) => setName(e.target.value);
     const onChangeEmail = (e) => setEmail(e.target.value);
-    const onChangePhone = (e) => setPhone(e.target.value);
+    const onChangePhone = (e) => setHp(e.target.value);
     const onChangeAuth = (e) => setAuth(e.target.value);
 
 
@@ -55,10 +59,22 @@ const RecoveryPwContainer = () => {
         setTimeout(()=>setStartTimer(true),0);
     }
 
+    const onClickComplete= async()=>{
 
-
-    const onClickComplete=()=>{
-        history.push(Paths.ajoonamu.find_password);
+        try{
+            const res = await findPw(email,name,hp);
+            console.log(res);
+            if(res.data.msg==='성공'){
+                const find_user = {
+                    email, name, hp
+                }
+                sessionStorage.setItem('find_user' , JSON.stringify(find_user));
+                history.push(Paths.ajoonamu.find_password);
+            }
+        }
+        catch(e){
+            console.error(e);
+        }
     }
 
     return (
@@ -79,7 +95,7 @@ const RecoveryPwContainer = () => {
                     <SignAuthInput
                         placeholder={'휴대폰번호'}
                         inputType={''}
-                        initValue={phone}
+                        initValue={hp}
                         buttonTitle={
                             toggle ? '인증번호 재발송' : '인증번호 발송'
                         }

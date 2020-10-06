@@ -103,3 +103,24 @@ export const findId = async (name,hp)=>{
     const res = await axios.post(req, form_data);
     return res;
 };
+
+export const findPw = async (email,name,hp)=>{
+    const req =Paths.api +'user/find_pw';
+    const form_data = {
+        email,name,hp
+    }
+    const res = await axios.post(req, form_data);
+    return res;
+}
+
+
+
+export const changePw = async (email,name,hp,pw,pw_c)=>{
+    const req =Paths.api +'user/change_pw';
+    const form_data = {
+        email,name,hp,pw,pw_c
+    }
+    const res = await axios.post(req, form_data);
+    return res;
+}
+

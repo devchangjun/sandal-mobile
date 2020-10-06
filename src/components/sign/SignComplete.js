@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './SignComplete.module.scss';
 
 import classNames from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -19,11 +20,11 @@ const SignComplete =({mainTitle,subTitle,text , onBorder ,onClick})=>{
 
 function CompleteBox({mainTitle,subTitle,text,onBorder,onClick}) {
     return (
-        <div className={cx('item-box',{line : onBorder})} onClick={onClick}>
+        <ButtonBase className={cx('item-box',{line : onBorder})} onClick={onClick}>
             <MainTitle mainTitle={mainTitle}></MainTitle>
             <SubTitle subTitle={subTitle}></SubTitle>
             <Text text={text}></Text>
-        </div>
+        </ButtonBase>
     )
 }
 

@@ -3,6 +3,7 @@ import {Paths} from 'paths';
 import {useHistory} from 'react-router-dom';
 import styles from './Find.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
+import { ButtonBase } from '@material-ui/core';
 
 const FindEmailContainer =({email})=>{
     const history = useHistory();
@@ -25,12 +26,12 @@ const FindEmailContainer =({email})=>{
                 </div>
             </div>
             <div className={styles['btn-box']}>
-                <div className={styles['btn']} onClick={onClickLogin}>
+                <ButtonBase className={styles['btn']} onClick={onClickLogin}>
                         로그인
-                </div>
-                <div className={styles['btn']} onClick={onClickFindPw}>
+                </ButtonBase>
+                <ButtonBase className={styles['btn']} onClick={onClickFindPw}>
                         비밀번호찾기
-                </div>
+                </ButtonBase>
             </div>
         </div>
         </>

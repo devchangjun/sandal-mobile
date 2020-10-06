@@ -9,8 +9,9 @@ import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-
+import {useModal} from '../../hooks/useModal';
 import CheckBox from 'components/checkbox/CheckBox';
+import { isEmailForm } from '../../lib/formatChecker';
 
 const cx = classNames.bind(styles);
 
@@ -103,6 +104,7 @@ const checkReducer = (state, action) => {
 };
 
 const SignUpContainer = () => {
+    const openModal = useModal();
     const history = useHistory();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const { email, password, password_confirm } = user;
@@ -186,24 +188,30 @@ const SignUpContainer = () => {
         }
     }, [password, password_confirm, compare]);
     const onClickOverlapCheck = useCallback(async () => {
+        if (!isEmailForm(email)) {
+            openModal('이메일이 형식에 맞지 않습니다!', '확인 후 다시 작성해 주세요.');
+        }
+        else{
+
         if (overlap) {
-            alert('이미 중복 확인 되었습니다.');
+            openModal('이미 중복 확인 되었습니다.');
         } else if (email !== "") {
             const res = await localLogin(email);
             if (res.data.msg === "비밀번호가 틀렸습니다.") {
-                alert("이미 존재하는 이메일 입니다.");
+                openModal("이미 존재하는 이메일 입니다.");
             } else {
-                alert("중복 확인 되었습니다.");
+                openModal("사용가능한 이메일 입니다.");
                 setOverlap(true);
             }
         } else {
-            alert("이메일을 입력해 주세요.");
+            openModal("이메일을 입력해 주세요.");
         }
+     }
     }, [email, overlap])
     const onClickSignUp = useCallback(async () => {
         const res = await localRegister(email, password, password_confirm, check3);
         if (res.data.msg === "존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.") {
-            alert("이미 존재하는 이메일 입니다.");
+            openModal("이미 존재하는 이메일 입니다.");
         }
         else if (res.data.status === "success") {
             history.push(`${Paths.ajoonamu.complete}?name=${email}`);

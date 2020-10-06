@@ -19,11 +19,14 @@ const FullScreenDialog = (props) => {
         setRoad('');
         props.handleClose();
     }
-
-
     useEffect(() => {
         mapScript();
-    }, [props]);
+    }, []);
+
+
+    // useEffect(() => {
+    //     mapScript();
+    // }, [props]);
 
     
 
@@ -35,6 +38,7 @@ const FullScreenDialog = (props) => {
         };
         const map = new kakao.maps.Map(container, options);
 
+        const geocoder = new kakao.maps.services.Geocoder();
 
         var imageSrc = MarkerImg,
             imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
@@ -72,12 +76,13 @@ const FullScreenDialog = (props) => {
 
             searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    console.log(result);
+                    // console.log(result);
 
                     var latlng = mouseEvent.latLng;
 
                     var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
                     message += '경도는 ' + latlng.getLng() + ' 입니다';
+                    console.log(message);
 
                     props.onClickPosition(latlng.getLat(), latlng.getLng());
                     // console.log(message);
@@ -99,15 +104,11 @@ const FullScreenDialog = (props) => {
         });
 
         function searchDetailAddrFromCoords(coords, callback) {
-            let geocoder = new kakao.maps.services.Geocoder();
-            // 좌표로 법정동 상세 주소 정보를 요청합니다
-
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-            console.log(coords.getLng());
+            // console.log(coords.getLng());
         }
         
         function firstSetting (lng,lat ,callback){
-            let geocoder = new kakao.maps.services.Geocoder();
             geocoder.coord2Address(lng ,lat, callback);
 
         }

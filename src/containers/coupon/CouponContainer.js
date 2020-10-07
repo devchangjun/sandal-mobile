@@ -136,10 +136,10 @@ const CouponConatiner = ({ tab = '0' }) => {
                 openModal('쿠폰 등록이 완료되었습니다.');
             }
             else if (res.data.msg === '이미 발급된 쿠폰입니다.') {
-                openModal(res.data.msg);
+                openModal('쿠폰번호를 확인해주세요',res.data.msg);
             }
             else if (res.data.msg === "해당 쿠폰번호에 맞는 쿠폰이 존재하지 않습니다.") {
-                openModal(res.data.msg);
+                openModal('쿠폰번호를 확인해주세요', res.data.msg);
             }
         } catch (e) {
 

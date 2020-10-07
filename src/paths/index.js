@@ -28,5 +28,5 @@ export const Paths = {
         event: '/event',
         tos :'/tos',
     },
-    api: 'http://devapi.ajoonamu.com/api/',
+    api: 'https://api.ajoonamu.com/api/',
 };

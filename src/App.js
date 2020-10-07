@@ -23,12 +23,10 @@ import {useInit} from './hooks/useStore';
 import { useUrl } from './hooks/useStore';
 
 function App() {
-
     useUrl();
     const dispatch = useDispatch();
     const initStore = useInit();
     const location = useLocation();
-
 
         const GetInfo = async () => {
         const token = sessionStorage.getItem('access_token');

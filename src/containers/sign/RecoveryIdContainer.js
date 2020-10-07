@@ -20,9 +20,9 @@ const RecoveryIdContainer = () => {
     const history = useHistory();
     const openModal = useModal();
     const random = useRef(496696);
-    const [userName, setUserName] = useState('김보건');
-    const [userPhone, setUserPhone] = useState('01072128994');
-    const [userAuth, setUserAuth] = useState('49669');
+    const [userName, setUserName] = useState('');
+    const [userPhone, setUserPhone] = useState('');
+    const [userAuth, setUserAuth] = useState('');
     const [toggle, setToggle] = useState(false);
     const [success, setSuccess] = useState(false);
     const [start_timer ,setStartTimer] = useState(false);

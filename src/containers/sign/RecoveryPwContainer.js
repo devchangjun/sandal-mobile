@@ -22,10 +22,10 @@ const RecoveryPwContainer = () => {
     const openModal = useModal();
     const history = useHistory();
     const random = useRef(496696);
-    const [name, setName] = useState('김보건');
-    const [email, setEmail] = useState('cuzi.kbg@gmail.com');
-    const [hp, setHp] = useState('01072128994');
-    const [auth, setAuth] = useState('49669');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [hp, setHp] = useState('');
+    const [auth, setAuth] = useState('');
     const [toggle, setToggle] = useState(false);
     const [success , setSuccess] = useState(false);
     const [start_timer ,setStartTimer] = useState(false);

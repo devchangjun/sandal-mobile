@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
 
-const URL = 'http://www.juso.go.kr/addrlink/addrLinkApi.do';
+const URL = 'https://www.juso.go.kr/addrlink/addrLinkApi.do';
 const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 
 

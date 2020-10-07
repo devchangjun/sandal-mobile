@@ -7,7 +7,7 @@ import styles from './Address.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import DeliveryItemList from 'components/address/DeliveryItemList';
-import { AiOutlineSearch } from 'react-icons/ai';
+import { BsSearch } from 'react-icons/bs';
 import AddressModal from '../../components/modal/AddressModal';
 import MapModal from '../../components/modal/MapModal';
 import Loading from '../../components/asset/Loading';
@@ -159,14 +159,11 @@ const AddressContainer = () => {
     //검색 하기
     const onChangeSearch = async () => {
         if (searchAddr === '') {
-            alert('검색어를 입력해주세요.');
             return;
         } else {
-            setLoading(true);
             const result = await callSearchApi();
             setSearchList(result);
             console.log(result);
-            setLoading(false);
         }
     };
 
@@ -452,6 +449,146 @@ const AddressContainer = () => {
         }
     };
 
+
+
+        //최근 주소지에 추가
+        const onClickMapInsertAddr = async (jibun,detail,lat,lng) => {
+            console.log("ㅎㅇ");
+            if (jibun === '') {
+                openMessage(
+                    false,
+                    '주소가 선택되지 않았습니다.',
+                    '주소를 선택해주세요.',
+                );
+            } else if (detail === '') {
+                openMessage(
+                    false,
+                    '상세 주소를 입력해주세요',
+                    '상세주소가 입력되지 않았습니다.',
+                );
+            } else {
+                openMessage(
+                    true,
+                    '이 주소로 배달지를 설정하시겠습니까?',
+                    '',
+                    async () => {
+                        if (user_token) {
+                                try {
+                                    const res = await insertAddress(
+                                        user_token,
+                                        0,
+                                        jibun,
+                                        detail,
+                                        0,
+                                        lat,
+                                        lng,
+                                    );
+                                    if (res.data.msg === '성공') {
+                                        const near_store = await getNearStore(
+                                            lat,
+                                            lng,
+                                            jibun,
+                                        );
+
+                                        initStore(
+                                            jibun,
+                                            detail,
+                                            lat,
+                                            lng,
+                                            0,
+                                            near_store.data.query,
+                                        );
+                                        callDeliveryList();
+                                        setMapOpen(false);
+                                    } else {
+                                        openMessage(
+                                            false,
+                                            res.data.msg,
+                                            '주변 매장정보를 확인해 주세요.',
+                                        );
+                                    }
+                                } catch (e) {
+                                    setLoading(false);
+                                }
+                        }
+                        //비회원 
+                        else {
+                     
+                            try{
+                                const near_store = await noAuthGetNearStore(lat, lng, jibun);
+                                if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
+                                    openMessage(
+                                        false,
+                                        near_store.data.msg,
+                                        '주변 매장정보를 확인해 주세요.',
+                                    );
+                                }
+
+                                //배달 가능한 지역이라면
+                                else{
+                                    //비회원일시 로컬스토리지에서 아이템을 들고온다.
+                                    const noAuthAddrs = JSON.parse(
+                                        localStorage.getItem('noAuthAddrs'),
+                                    );
+                                    //로컬 스토리지에 아이템이 있을시.
+                                    if (noAuthAddrs) {
+                                        //모든 활성화를 0으로 초기화
+                                        noAuthAddrs.map(
+                                            (item) => (item.active = 0),
+                                        );
+                                        //새로운 주소를 푸쉬
+                                        noAuthAddrs.push({
+                                            addr1: jibun,
+                                            addr2: detail,
+                                            lat: lat,
+                                            lng: lng,
+                                            post_num: 0,
+                                            active: 1,
+                                        });
+                                        localStorage.setItem(
+                                            'noAuthAddrs',
+                                            JSON.stringify(
+                                                noAuthAddrs.reverse(),
+                                            ),
+                                        );
+                                    }
+                                    //로컬스토리지에 아이템이 없을시.
+                                    else {
+                                        localStorage.setItem(
+                                            'noAuthAddrs',
+                                            JSON.stringify([
+                                                {
+                                                    addr1: jibun,
+                                                    addr2: detail,
+                                                    lat: lat,
+                                                    lng: lng,
+                                                    post_num: 0,
+                                                    active: 1,
+                                                },
+                                            ]),
+                                        );
+                                    }
+                                    //모든 작업이 완료 되었다면. 리덕스에 좌표정보저장, 추가된 배열로 상태 업데이트
+                                    const test2 = JSON.parse(
+                                        localStorage.getItem('noAuthAddrs'),
+                                    );
+                                    initStore(jibun, detail, lat, lng, 0,near_store.data.query);
+                                    setDeliveryList(test2);
+                                    setMapOpen(false);
+                                }
+                            }
+
+                            catch(e){
+                                
+                            }
+                           
+                        }
+                    },
+                );
+            }
+        };
+    
+
     useEffect(() => {
         callDeliveryList();
     }, [callDeliveryList]);
@@ -483,7 +620,7 @@ const AddressContainer = () => {
                                 className={cx('search-btn')}
                                 onClick={handleClickOpen}
                             >
-                                <AiOutlineSearch />
+                                <BsSearch />
                             </div>
                         </div>
                         <div className={styles['pd-box']}>
@@ -525,10 +662,8 @@ const AddressContainer = () => {
                     />
                     <MapModal
                         open={mapOpen}
-                        detailAddr={detailAddr}
                         position={position}
-                        onClick={onClickDeliveryAddrInsert}
-                        onChange={onChangeDetailAddr}
+                        onClick={onClickMapInsertAddr}
                         handleClose={onClickMapClose}
                         onClickPosition={onClickPosition}
                     />

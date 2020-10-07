@@ -35,6 +35,7 @@ export const noAuth_order = async (
         delivery_req_time,
     };
     axios.defaults.headers.post['Context-Type'] = 'application/json';
+    console.log(form_data);
     const res = await axios.post(req, form_data);
     return res;
 };

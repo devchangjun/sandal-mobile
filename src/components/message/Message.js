@@ -7,7 +7,7 @@ import { ButtonBase } from '@material-ui/core';
 //맞춤 주문시 보여줄 컴포넌트
 const Message = ({ src, msg, onClick, isButton, buttonName }) => {
     return (
-        <div className={styles['reserve-custom-order']}>
+        <div className={styles['msg']}>
             {src && (
                 <div className={styles['icon']}>
                     <img src={NoMenu} alt={''}></img>

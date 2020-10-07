@@ -26,11 +26,25 @@
             display: flex;
             flex-direction: row;
             margin-bottom: 8px;
+            .user-name{
+                font-size: 16px;
+                font-weight: bold;
+                color:#333;
+                margin-bottom: 8px;
+            }
+            &.address {
+                display: block;
+                .info{
+                    font-size: 16px;
+                }
+                
+            }
             .text {
                 width: 450px;
                 font-size: $font-size;
             }
             .info {
+                font-size: 14px;
                 width: 100%;
                 margin-bottom: 8px;
                 // font-size: $font-size;

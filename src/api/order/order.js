@@ -3,22 +3,53 @@ import { Paths } from '../../paths';
 
 export const user_order = async (
     token,
-//     order_type,
-//     cp_id,
-//     order_memo,
-//     delivery_memo,
+    order_type,
+    order_memo,
+    delivery_memo,
+    delivery_req_time,
+    cp_id,
+    point_price=0,
+    
 ) => {
     const req = Paths.api + 'user/order';
-
-    const form_data = {
-        order_type: 'reserve',
-        order_memo: '빨리좀',
-        delivery_memo: '주세요',
-    };
-
+    let form_data ;
+    if (cp_id === null) {
+        console.log('cp_id없음');
+        form_data = {
+            order_type: 'reserve',
+            order_memo: order_memo,
+            delivery_memo: delivery_memo,
+            delivery_req_time: delivery_req_time,
+            point_price:point_price,
+        };
+    }
+    else{
+        form_data = {
+            order_type: 'reserve',
+            order_memo: order_memo,
+            delivery_memo: delivery_memo,
+            delivery_req_time: delivery_req_time,
+            cp_id :cp_id,
+            point_price:point_price,
+        };
+    }
+    console.log(form_data);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
-
     const res = await axios.post(req, form_data);
+    return res;
+};
+
+
+
+export const order_cancle = async (token, order_id) => {
+    const req = Paths.api + 'user/order/cancel';
+
+    const form_data = {
+        order_id: order_id,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const res = await axios.put(req, form_data);
     return res;
 };

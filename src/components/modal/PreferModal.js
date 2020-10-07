@@ -1,9 +1,5 @@
-import React from 'react';
-
-import { numberFormat } from '../../lib/formatter';
-
+import React ,{useState, useCallback}from 'react';
 import FixButton from 'components/button/Button';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,6 +12,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Plus from '../svg/counter/cross.svg';
 import Minus from '../svg/counter/line.svg';
 import { ButtonBase } from '@material-ui/core';
+import { numberFormat,stringNumberToInt } from '../../lib/formatter';
+import { onlyNumberListener } from '../../lib/formatChecker';
 
 import styles from './PreferModal.module.scss';
 
@@ -64,19 +62,60 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const FullScreenDialog = (props) => {
     const classes = useStyles();
 
+    const [budget, setBudget] = useState(0);
+    const [desireQuan, setDesireQuan] = useState(1); //희망수량
+    const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
+
+    const onChangeOrderType = (e) => setOrderType(e.target.value);
+
+    const onChangeBudget = (e) => {
+        const value = stringNumberToInt(e.target.value);
+        console.log(value);
+        if (isNaN(value)) {
+            setBudget(0);
+        } else {
+            setBudget(value);
+        }
+    };
+
+    //수량 변경
+    const onIncrement = useCallback(() => {
+        setDesireQuan(desireQuan + 1);
+    }, [desireQuan]);
+
+    const onDecrement = useCallback(() => {
+        if (desireQuan > 1) {
+            setDesireQuan(desireQuan - 1);
+        }
+    }, [desireQuan]);
+
+    const onClickOk = () => {
+
+        props.onCustomOrder(budget,desireQuan);
+        setOrderType('reserve');
+        setBudget(0);
+        setDesireQuan(1);
+    };
+    const handleClose =()=>{
+        setOrderType('reserve');
+        setBudget(0);
+        setDesireQuan(1);
+        props.handleClose();
+    }
+
     return (
         <div>
             <Dialog
                 fullScreen
                 open={props.open}
-                onClose={props.handleClose}
+                onClose={handleClose}
                 TransitionComponent={Transition}
             >
                 <AppBar className={classes.appBar}>
                     <Toolbar className={classes.toolbar}>
                         <IconButton
                             color="inherit"
-                            onClick={props.handleClose}
+                            onClick={handleClose}
                             aria-label="close"
                             className={classes.close}
                         >
@@ -93,8 +132,8 @@ const FullScreenDialog = (props) => {
                     <div className={styles['modal-input-box']}>
                         <form>
                             <select
-                                value={props.itemType}
-                                onChange={props.onChangeType}
+                                value={orderType}
+                                onChange={onChangeOrderType}
                             >
                                 <option value="reserve">예약주문</option>
                                 <option value="delivery">배달주문</option>
@@ -105,10 +144,9 @@ const FullScreenDialog = (props) => {
                 <div className={styles['title']}>전체 예산</div>
                 <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
-                        <input
-                            value={props.budget}
-                            onChange={props.onChangeBudget}
-                        ></input>
+                        <input value={numberFormat(budget)} 
+                        onKeyDown={onlyNumberListener}
+                        onChange={onChangeBudget}></input>
                         <div className={styles['won']}>원</div>
                     </div>
                 </DialogContent>
@@ -118,26 +156,24 @@ const FullScreenDialog = (props) => {
                         <ButtonBase
                             style={{ left: 0 }}
                             className={styles['box']}
-                            onClick={props.onDecrement}
+                            onClick={onDecrement}
                         >
                             <img src={Minus} alt="minus" />
                         </ButtonBase>
-                        <div className={styles['value']}>{props.desireQuan}</div>
+                        <div className={styles['value']}>
+                            {desireQuan}
+                        </div>
                         <ButtonBase
                             style={{ right: 0 }}
                             className={styles['box']}
-                            onClick={props.onIncrement}
+                            onClick={onIncrement}
                         >
                             <img src={Plus} alt="plus" />
                         </ButtonBase>
                     </div>
                 </DialogContent>
 
-                <FixButton
-                    title={'확인'}
-                    onClick={props.onCustomOrder}
-                    toggle={true}
-                />
+                <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
             </Dialog>
         </div>
     );

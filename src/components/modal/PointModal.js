@@ -111,7 +111,10 @@ const FullScreenDialog = (props) => {
                     <div className={styles['point-input-box']}>
                         <div className={styles['title']}>사용할 포인트</div>
                         <div className={styles['modal-input-box']}>
-                            <input className={styles['point-input']} onKeyDown={onlyNumberListener} value={numberFormat(point_price)} onChange={onChangePointPrice}></input>
+                            <input className={styles['point-input']}
+                             onKeyDown={onlyNumberListener} 
+                             value={numberFormat(point_price)} 
+                             onChange={onChangePointPrice}></input>
                             <div className={styles['point-img']}>P</div>
                         </div>
                         <div className={styles['sub-title']}>

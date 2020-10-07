@@ -11,6 +11,9 @@ const FullScreenDialog = (props) => {
     
     const [jibun,setJibun] = React.useState('');
     const [road ,setRoad] = React.useState('');
+    const [detail,setDetail] = React. useState('');
+
+    const onChangeDetail =(e)=>setDetail(e.target.value);
     const {lat,lng} = props.position;
  
 
@@ -161,8 +164,9 @@ const FullScreenDialog = (props) => {
             open={props.open} 
             jibun={jibun}
              road={road} 
-             onChange={props.onChange}
-             onClick={ ()=>props.onClick(jibun,road)}/>
+             detailAddr={detail}
+             onChange={onChangeDetail}
+             onClick={ ()=>props.onClick(jibun,detail,lat,lng)}/>
         </div>
     );
 };

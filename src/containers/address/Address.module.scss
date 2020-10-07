@@ -23,12 +23,12 @@
             width: 24px;
             height: 24px;
             position: absolute;
-            right: 30px;
+            right: 40px;
             top: 50%;
             transform: translateY(-50%);
             svg {
-                width: 100%;
-                height: 100%;
+                width: 24px;
+                height: 24px;
                 fill: $main-color;
             }
         }

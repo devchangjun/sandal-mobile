@@ -86,9 +86,11 @@ const FullScreenDialog = (props) => {
         );
         if(trueIndex===index){
             setCpPrice(0);
+            setCpId(null);
         }
         else{
             setCpPrice(cp_price);
+            setCpId(cp_id);
         }
     },[cp_list]);
 

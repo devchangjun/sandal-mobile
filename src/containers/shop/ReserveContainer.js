@@ -47,9 +47,6 @@ const ReserveContainer = ({ menu }) => {
     const [open, setOpen] = useState(false);
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [budget, setBudget] = useState(0); //맞춤 가격
-    const [desireQuan, setDesireQuan] = useState(1); //희망수량
-    const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
     const [title, setTitle] = useState('추천메뉴');
     const [tabIndex, setTabIndex] = useState(menu);
 
@@ -63,8 +60,6 @@ const ReserveContainer = ({ menu }) => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const onChangeDesireQune = (value) => setDesireQuan(value);
-    const onChangeOrderType = (e) => setOrderType(e.target.value);
 
     const onChangeTabIndex = useCallback(
         (index) => {
@@ -78,40 +73,20 @@ const ReserveContainer = ({ menu }) => {
         },
         [history],
     );
-
-    //가격 변경
-    const onChangeBudget = (e) => {
-        const re = /^[0-9\b]+$/;
-        if (e.target.value === '' || re.test(e.target.value)) {
-            setBudget(e.target.value);
-        }
-    };
-
-    //수량 변경
-    const onIncrement = useCallback(() => {
-        setDesireQuan(desireQuan + 1);
-    }, [desireQuan]);
-
-    const onDecrement = useCallback(() => {
-        if (desireQuan > 1) {
-            setDesireQuan(desireQuan - 1);
-        }
-    }, [desireQuan]);
-
     //맞춤 주문 설정
-    const onClickCustomOrder = () => {
-        if (budget === 0) return;
+    const onClickCustomOrder = async (budget ,desireQuan) => {
         setOpen(false);
-        getCustomList();
+        setLoading(true);
+        try {
+            const res = await getPreferMenuList(0, 100, 0, 100, 1, budget, desireQuan, addr1, store.shop_id);
+            console.log(res);
+            setPreferMenuList(res.items_prefer);
+            setGeneralMenuList(res.items_general);
+
+        } catch (e) {}
+        setLoading(false);
     };
 
-    const getCustomList = async () => {
-        try {
-            const res = await getPreferMenuList();
-            console.log(res);
-            setPreferMenuList(res);
-        } catch (e) {}
-    };
 
     //첫 로딩시 카테고리 받아오기
     const getCategoryList = useCallback(async () => {
@@ -238,10 +213,17 @@ const ReserveContainer = ({ menu }) => {
                 {category.ca_id === 0 ? (
                     <>
                         {preferList.length !== 0 ? (
+                            <>
                             <div className={styles['title']}>
                                 맞춤 메뉴
-                                <CustomItemList menuList={preferList} />
                             </div>
+                            <MenuItemList menuList={preferList} 
+                            onClick={onClickMenuItem}
+                            
+                            />
+                            
+                            </>
+
                         ) : (
                             <Message
                                 msg={
@@ -372,15 +354,8 @@ const ReserveContainer = ({ menu }) => {
                             <PreferModal
                                 open={open}
                                 handleClose={handleClose}
-                                itemType={orderType}
-                                onChangeType={onChangeOrderType}
-                                budget={budget}
-                                onChangeBudget={onChangeBudget}
-                                desireQuan={desireQuan}
                                 onCustomOrder={onClickCustomOrder}
-                                onChangeDesireQune={onChangeDesireQune}
-                                onIncrement={onIncrement}
-                                onDecrement={onDecrement}
+                          
                             />
                             <CartLink />
                         </>

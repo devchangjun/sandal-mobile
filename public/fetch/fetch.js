@@ -261,14 +261,8 @@ function Body() {
                 this.headers.set('content-type', 'text/plain;charset=UTF-8');
             } else if (this._bodyBlob && this._bodyBlob.type) {
                 this.headers.set('content-type', this._bodyBlob.type);
-            } else if (
-                support.searchParams &&
-                URLSearchParams.prototype.isPrototypeOf(body)
-            ) {
-                this.headers.set(
-                    'content-type',
-                    'application/x-www-form-urlencoded;charset=UTF-8',
-                );
+            } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+                this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
             }
         }
     };
@@ -301,9 +295,8 @@ function Body() {
                     return Promise.resolve(
                         this._bodyArrayBuffer.buffer.slice(
                             this._bodyArrayBuffer.byteOffset,
-                            this._bodyArrayBuffer.byteOffset +
-                                this._bodyArrayBuffer.byteLength,
-                        ),
+                            this._bodyArrayBuffer.byteOffset + this._bodyArrayBuffer.byteLength
+                        )
                     );
                 } else {
                     return Promise.resolve(this._bodyArrayBuffer);
@@ -323,9 +316,7 @@ function Body() {
         if (this._bodyBlob) {
             return readBlobAsText(this._bodyBlob);
         } else if (this._bodyArrayBuffer) {
-            return Promise.resolve(
-                readArrayBufferAsText(this._bodyArrayBuffer),
-            );
+            return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer));
         } else if (this._bodyFormData) {
             throw new Error('could not read FormData body as text');
         } else {
@@ -356,9 +347,7 @@ function normalizeMethod(method) {
 
 function Request(input, options) {
     if (!(this instanceof Request)) {
-        throw new TypeError(
-            'Please use the "new" operator, this DOM object constructor cannot be called as a function.',
-        );
+        throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
     }
 
     options = options || {};
@@ -406,7 +395,7 @@ function Request(input, options) {
                 // If it already exists then set the value with the current time
                 this.url = this.url.replace(
                     reParamSearch,
-                    '$1_=' + new Date().getTime(),
+                    '$1_=' + new Date().getTime()
                 );
             } else {
                 // Otherwise add a new '_' parameter to the end with the current time
@@ -435,7 +424,7 @@ function decode(body) {
                 var value = split.join('=').replace(/\+/g, ' ');
                 form.append(
                     decodeURIComponent(name),
-                    decodeURIComponent(value),
+                    decodeURIComponent(value)
                 );
             }
         });
@@ -462,9 +451,7 @@ Body.call(Request.prototype);
 
 function Response(bodyInit, options) {
     if (!(this instanceof Response)) {
-        throw new TypeError(
-            'Please use the "new" operator, this DOM object constructor cannot be called as a function.',
-        );
+        throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
     }
     if (!options) {
         options = {};
@@ -625,9 +612,7 @@ function fetch(input, init) {
             };
         }
 
-        xhr.send(
-            typeof request._bodyInit === 'undefined' ? null : request._bodyInit,
-        );
+        xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit);
     });
 }
 

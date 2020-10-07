@@ -33,7 +33,7 @@ const MyPageContainer = () => {
             if (res.message === '로그아웃에 성공하셨습니다.') {
                 dispatch(logout());
                 initStore();
-                history.push(Paths.index);
+                history.replace(Paths.index);
 
                 const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
                 if(noAuthAddrs){

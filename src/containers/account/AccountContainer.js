@@ -22,7 +22,7 @@ const cn = classNames.bind(styles);
 const AccountContainer = () => {    
     const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
-    const user_token = useStore();
+    const user_token = sessionStorage.getItem("access_token");
     const dispatch = useDispatch();
     const history = useHistory();
     const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
@@ -36,7 +36,6 @@ const AccountContainer = () => {
             if (res.message === '로그아웃에 성공하셨습니다.') {
                 dispatch(logout());
                 initStore();
-                history.replace(Paths.index);
 
                 const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
                 if(noAuthAddrs){
@@ -47,6 +46,8 @@ const AccountContainer = () => {
                         initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
                     }
                 }
+                history.replace(Paths.index);
+
 
             }
         }
@@ -92,7 +93,7 @@ const AccountContainer = () => {
             </div>
         </>
     );
-    return <>{user === null ? history.push(Paths.index) : render()}</>;
+    return <>{user === null ? history.replace(Paths.index) : render()}</>;
 };
 
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {

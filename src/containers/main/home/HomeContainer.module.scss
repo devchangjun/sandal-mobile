@@ -11,29 +11,9 @@
     }
     .banner {
         width: 100%;
-        border: 0px solid rgb(246, 246, 246);
-        background-color: rgb(253, 253, 253);
-        flex-direction: column;
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
+        cursor: pointer;
         img {
             width: 100%;
-        }
-        .title {
-            font-size: 14px;
-            margin: 10px 0 10px 0;
-            font-weight: bold;
-        }
-        .sub-title {
-            margin: 10px 0 10px 0;
-            font-size: 12px;
-            color: #999999;
-        }
-        .text {
-            font-size: 26px;
-            font-weight: bold;
         }
     }
 }

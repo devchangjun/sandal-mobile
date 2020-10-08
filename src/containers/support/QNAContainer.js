@@ -3,9 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './QNAContainer.module.scss';
 import classNames from 'classnames/bind';
 
-import TitleBar from '../../components/titlebar/TitleBar';
 import TabMenu from '../../components/tab/TabMenu';
-import BottomNav from '../../components/nav/BottomNav';
 import QNASend from '../../components/support/QNASend';
 import QNAList from '../../components/support/QNAList';
 
@@ -13,7 +11,7 @@ import { Paths } from '../../paths';
 import { requestQNAList, requestQNAStore } from '../../api/support/qna';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from 'react-swipeable-views';
-import {useStore} from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
 
 const cn = classNames.bind(styles);
 
@@ -38,7 +36,7 @@ function reducer(state, action) {
 const QNAContainer = ({ tab = 'send' }) => {
     // QNASend
     const history = useHistory();
-    const user_token  = useStore();
+    const user_token = useStore();
     const [index, setIndex] = useState(0);
     const [loading, setLoading] = useState(false);
     const [state, dispatch] = useReducer(reducer, {
@@ -53,7 +51,7 @@ const QNAContainer = ({ tab = 'send' }) => {
     };
     const onChangeSwiperIndex = (index) => {
         setIndex(index);
-        const tab= (index===0) ? 'send' : 'list';
+        const tab = index === 0 ? 'send' : 'list';
         history.replace(`${Paths.ajoonamu.support}/qna/${tab}`);
     };
 
@@ -62,13 +60,13 @@ const QNAContainer = ({ tab = 'send' }) => {
             문의하기 등록 버튼.
         */
         setLoading(true);
-    
-        if(user_token){
+
+        if (user_token) {
             const res = await requestQNAStore(user_token, state);
             console.log(res);
         }
         setLoading(false);
-    }, [state,user_token]);
+    }, [state, user_token]);
     const onChange = (e) => dispatch(e.target);
     const onSubmit = (e) => sendQNAItem();
     // QNASend
@@ -90,7 +88,7 @@ const QNAContainer = ({ tab = 'send' }) => {
         }
         setLoading(false);
     }, [user_token]);
-    
+
     useEffect(() => {
         if (tab === 'list') getQNAList();
     }, [getQNAList, tab]);
@@ -105,7 +103,7 @@ const QNAContainer = ({ tab = 'send' }) => {
                     enableMouseEvents
                     index={index}
                     onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={qnaList.length!==0?true:false}
+                    animateHeight={qnaList.length !== 0 ? true : false}
                 >
                     <div>
                         <QNASend

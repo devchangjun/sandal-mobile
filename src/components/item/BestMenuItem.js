@@ -1,25 +1,20 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import { Paths } from 'paths';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
 import styles from './BestMenu.module.scss';
 import { ButtonBase } from '@material-ui/core';
 import { numberFormat } from '../../lib/formatter';
 import MenuItemImage1 from 'components/svg/menu/menuitem1.png';
 
-const MenuDetailLink = styled(NavLink)`
-    text-decoration: none;
-    color: black;
-    margin: 10px;
-`;
 
 //홈 메뉴 아이템 컴포넌트
 const BestMenuItem = (props) => {
+
+    const history = useHistory();
     // item_id 로 경로 줘야함
     return (
-        <MenuDetailLink to={`${Paths.ajoonamu.product}?item_id=${props.item_id}`}>
-            <div className={styles['menu-item']}>
-                <ButtonBase>
+            <li className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
+                <ButtonBase className={styles['btn-base']}>
                     <MenuImg src={MenuItemImage1} />
                 </ButtonBase>
                 <div className={styles['pd-box']}>
@@ -28,8 +23,8 @@ const BestMenuItem = (props) => {
                         <MenuPrice menuPrice={props.item_price} />
                     </div>
                 </div>
-            </div>
-        </MenuDetailLink>
+            </li>
+        // </MenuDetilLink>
     );
 };
 

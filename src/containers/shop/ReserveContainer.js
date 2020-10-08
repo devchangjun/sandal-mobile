@@ -14,7 +14,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { getPreferMenuList, getMenuList } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
-import TabMenu from '../../components/tab/TabMenu';
+import produce from 'immer';
 import {
     get_catergory,
     get_menulist,
@@ -22,7 +22,7 @@ import {
 } from '../../store/product/product';
 
 import { useScroll } from '../../hooks/useScroll';
-import { useStore } from '../../hooks/useStore';
+import { Drafts } from '@material-ui/icons';
 
 const OFFSET = 8;
 const LIMIT = 8;
@@ -39,6 +39,7 @@ const tabInit = [
 ];
 
 const ReserveContainer = ({ menu }) => {
+
     const { categorys, items } = useSelector((state) => state.product);
     const { addr1 } = useSelector((state) => state.address);
     const { store } = useSelector((state) => state.store);
@@ -54,7 +55,6 @@ const ReserveContainer = ({ menu }) => {
     const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
 
     const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
-    const [posts, setPosts] = useState([]); //보여줄 배열
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
 
@@ -91,12 +91,11 @@ const ReserveContainer = ({ menu }) => {
     //첫 로딩시 카테고리 받아오기
     const getCategoryList = useCallback(async () => {
         //카테고리 길이가 1이면 받아오기.
-        if (categorys.length === 1) {
+        if (categorys.length === 0) {
             try {
                 const res = await getCategory();
                 console.log(res);
-                let ca_list = res.filter((item) => item.ca_id !== 12); //이거 나중에 뺴야함.
-                dispatch(get_catergory(ca_list));
+                dispatch(get_catergory(res));
             } catch (e) {
                 console.error(e);
             }
@@ -111,9 +110,9 @@ const ReserveContainer = ({ menu }) => {
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
-            if (categorys.length !== 1 && store && !items) {
+            if (categorys.length !== 0 && store && !items) {
                 console.log('들어옴');
-                for (let i = 1; i < categorys.length; i++) {
+                for (let i = 0; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
                     const result = await getMenuList(
                         ca_id,
@@ -144,16 +143,17 @@ const ReserveContainer = ({ menu }) => {
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (
                     tabIndex !== 0 &&
-                    categorys.length !== 1 &&
+                    categorys.length !== 0 &&
                     items &&
                     store
                 ) {
                     const res = await getMenuList(
-                        categorys[tabIndex].ca_id,
+                        categorys[tabIndex-1].ca_id,
                         offset,
                         LIMIT,
                         store.shop_id,
                     );
+                    console.log(res);
 
                     const get_list = res.data.query.items;
                     if (get_list.length !== 0) {
@@ -163,10 +163,13 @@ const ReserveContainer = ({ menu }) => {
 
                         dispatch(
                             add_menuitem({
-                                ca_id: categorys[tabIndex].ca_id,
+                                ca_id: categorys[tabIndex-1].ca_id,
                                 items: get_list,
                             }),
                         );
+                    }
+                    else{
+                        console.log('받아온 아이템 없음');
                     }
                     setTimeout(() => {
                         setIsPaging(false);
@@ -184,65 +187,25 @@ const ReserveContainer = ({ menu }) => {
         [history, offset],
     );
 
-    const renderMenuList = useCallback(
-        (ca_id) => {
-            const index = items.findIndex((item) => item.ca_id === ca_id);
-            return (
-                <>
-                    {items ? (
-                        <MenuItemList
-                            menuList={items[index].items.slice(0, offset)}
-                            onClick={onClickMenuItem}
-                        />
-                    ) : (
-                        <Message
-                            msg={'추천드릴 메뉴 구성이 존재하지 않습니다.'}
-                            src={true}
-                            isButton={false}
-                        />
-                    )}
-                </>
-            );
-        },
-        [items, onClickMenuItem],
-    );
-
     const renderSwiperItem = useCallback(() => {
-        const item = categorys.map((category) => (
+        const item = categorys.map((category, index) => (
             <div key={category.ca_id}>
-                {category.ca_id === 0 ? (
-                    <>
-                        {preferList.length !== 0 ? (
-                            <>
-                            <div className={styles['title']}>
-                                맞춤 메뉴
-                            </div>
-                            <MenuItemList menuList={preferList} 
-                            onClick={onClickMenuItem}
-                            
-                            />
-                            
-                            </>
-
-                        ) : (
-                            <Message
-                                msg={
-                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
-                                }
-                                isButton={true}
-                                onClick={handleOpen}
-                                buttonName={'맞춤 주문 하기'}
-                            />
-                        )}
-                    </>
+                {items[index].items.length!==0 ? (
+                    <MenuItemList
+                        menuList={items[index].items.slice(0, offset)}
+                        onClick={onClickMenuItem}
+                    />
                 ) : (
-                    // <h1>{category.ca_id}</h1>
-                    <>{renderMenuList(category.ca_id)}</>
+                    <Message
+                        msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
+                        src={true}
+                        isButton={false}
+                    />
                 )}
             </div>
         ));
         return item;
-    }, [categorys, preferList, renderMenuList, items]);
+    }, [categorys, items,onClickMenuItem,offset]);
 
     //첫 로딩시 카테고리 셋팅
     useEffect(() => {
@@ -306,14 +269,15 @@ const ReserveContainer = ({ menu }) => {
     }, []);
 
     useEffect(() => {
-        items && tabIndex !== 0 && setPosts(items[tabIndex - 1].items);
-    }, [items, tabIndex]);
-
-    useEffect(() => {
         window.scrollTo(0, 0);
-        if (categorys.length !== 1) {
-            const title = categorys[tabIndex].ca_name;
-            setTitle(title);
+        if (categorys.length !== 0) {
+            if(tabIndex===0) {
+                setTitle('추천메뉴');
+            }
+            else{
+                const title = categorys[tabIndex-1].ca_name;
+                setTitle(title);
+            }
         }
     }, [tabIndex, history, categorys]);
     //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
@@ -333,11 +297,18 @@ const ReserveContainer = ({ menu }) => {
                 <>
                     {store ? (
                         <>
-                            {categorys.length !== 1 && (
+                            {categorys.length !== 0 && (
                                 <TabTests
                                     idx={tabIndex}
                                     onChange={onChangeTabIndex}
-                                    categorys={categorys}
+                                    categorys ={
+                                        produce(categorys, draft=>{
+                                            draft.unshift({
+                                                ca_name:'추천메뉴'
+                                            })
+                                        })
+
+                                    }
                                 />
                             )}
                             <div className={styles['container']}>
@@ -348,6 +319,30 @@ const ReserveContainer = ({ menu }) => {
                                     index={tabIndex}
                                     className={styles['test']}
                                 >
+                                    <>
+                                        {preferList.length !== 0 ? (
+                                            <div>
+                                                <div
+                                                    className={styles['title']}
+                                                >
+                                                    맞춤 메뉴
+                                                </div>
+                                                <MenuItemList
+                                                    menuList={preferList}
+                                                    onClick={onClickMenuItem}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <Message
+                                                msg={
+                                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                                }
+                                                isButton={true}
+                                                onClick={handleOpen}
+                                                buttonName={'맞춤 주문 하기'}
+                                            />
+                                        )}
+                                    </>
                                     {items && renderSwiperItem()}
                                 </SwipeableViews>
                             </div>
@@ -355,7 +350,6 @@ const ReserveContainer = ({ menu }) => {
                                 open={open}
                                 handleClose={handleClose}
                                 onCustomOrder={onClickCustomOrder}
-                          
                             />
                             <CartLink />
                         </>

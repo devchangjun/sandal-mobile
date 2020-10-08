@@ -111,6 +111,9 @@ function App() {
         else if (pathname === '/cart') {
             return '장바구니'
         }
+        else if(pathname==='/order_complete'){
+            return '주문완료'
+        }
         else if(pathname==='/order_detail'){
             return '주문 상세보기'
         }

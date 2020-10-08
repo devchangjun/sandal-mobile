@@ -14,6 +14,7 @@ import produce from 'immer';
 
 
 import styles from './Coupon.module.scss';
+import  Message from '../message/Message';
 
 const useStyles = makeStyles((theme) => ({
     container:{
@@ -102,6 +103,7 @@ const FullScreenDialog = (props) => {
         props.handleClose();
     }
 
+
     return (
         <div>
             <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition} className={classes.container}>
@@ -119,10 +121,17 @@ const FullScreenDialog = (props) => {
                     <div className={styles['coupon']}>
                         <div className={styles['title']}>쿠폰 선택</div>
                         <div className={styles['coupon-list']}>
-                            <OrderCouponItemList
-                                onClick={onClickSelectCoupon}
-                                cp_list={cp_list}
-                            />
+                            {cp_list.length!==0 ? 
+                                   <OrderCouponItemList
+                                   onClick={onClickSelectCoupon}
+                                   cp_list={cp_list}
+                               />
+                               :
+                               <Message
+                                msg={"보유하고 있는 쿠폰이 없습니다."}
+                                />
+                            }   
+                     
                         </div>
                     </div>
                 </div>

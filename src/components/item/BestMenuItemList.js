@@ -23,9 +23,9 @@ const BestMenuItemList = ({menuList}) => {
     )
     )
     return (
-        <div className={styles['menu-list']}>
+        <ul className={styles['menu-list']}>
             {list}
-        </div>
+        </ul>
 
     )
 }

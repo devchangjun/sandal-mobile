@@ -40,7 +40,7 @@ const OrderItem = (props) => {
                           </div>
                         <div className={styles['sub']}>
                             주문금액 {numberFormat(total_price)}원 + 배송비 {numberFormat(send_cost)}원 - <br/>
-                            포인트 할인 {numberFormat(point_price)}원 + 쿠폰 할인 {numberFormat(cp_price)}원<br/>
+                            포인트 할인 {numberFormat(point_price)}원 - 쿠폰 할인 {numberFormat(cp_price)}원<br/>
                           </div>
                     </div>
                 </div>

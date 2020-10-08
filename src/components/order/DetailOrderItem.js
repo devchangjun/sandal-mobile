@@ -19,7 +19,7 @@ const DetailOrderItem =(props)=>{
                             추가 옵션: {item_option ? item_option : "없음"}
                     </div>
                     <div className={styles['counter']}>
-                        수량: 1개
+                        수량: 1개 
                     </div>
                 </div>  
                 <div className={styles['menu-price']}>

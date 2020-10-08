@@ -1,34 +1,19 @@
 import produce from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 
-const GET_CATEGORY = 'product/GET_CATEGORY';
-const GET_MENULIST = 'product/GET_MENULIST';
-const ADD_MENUITEM = 'product/ADD_MENUITEM';
+const GET_MENULIST = 'bestmenu/GET_MENULIST';
+const ADD_MENUITEM = 'bestmenu/ADD_MENUITEM';
 
-export const get_catergory = createAction(GET_CATEGORY);
 export const get_menulist = createAction(GET_MENULIST);
 export const add_menuitem = createAction(ADD_MENUITEM);
 
 const initState = {
-    // categorys: [
-    //     {
-    //         ca_id: 0,
-    //         ca_name: '추천메뉴',
-    //         ca_order: 0,
-    //         ca_use: 1,
-    //     },
-    // ],
-    categorys:[],
     items: null,
-    name: 'test',
 };
 
-const product = handleActions(
+const bestmenu = handleActions(
     {
-        [GET_CATEGORY]: (state, action) => ({
-            ...state,
-            categorys: state.categorys.concat(action.payload),
-        }),
+
         [GET_MENULIST]: (state, action) => ({
             ...state,
             items: action.payload,
@@ -61,4 +46,4 @@ const product = handleActions(
     initState,
 );
 
-export default product;
+export default bestmenu;

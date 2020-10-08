@@ -118,6 +118,11 @@
                 font-size:16px;
                 margin: 0 5px;
                 color: $main-color;
+                &.status{
+                    border:1px solid #EBEBEB;
+                    background-color: #FFF;
+                    color:#222;
+                }
             }
         }
     }

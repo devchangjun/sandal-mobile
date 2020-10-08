@@ -1,10 +1,16 @@
 /*global kakao*/
-import React,{ useEffect } from 'react';
+import React,{ useEffect,useRef } from 'react';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/Back';
 import LinkButtom from 'components/button/LinkButton';
 import MarkerImg from './MarkerImg.svg';
 import styles from './MapModal.module.scss';
+import logo from  './location.png';
+import { ButtonBase } from '@material-ui/core';
+
+//api
+import { getCoordinates } from '../../api/address/address';
+
 const cx = classNames.bind(styles);
 
 const FullScreenDialog = (props) => {
@@ -24,14 +30,20 @@ const FullScreenDialog = (props) => {
     }
     useEffect(() => {
         mapScript();
-    }, []);
+    }, [lat,lng]);
 
+
+    const resetLocation = async ()=>{
+        const p = await getCoordinates();
+        const lat = p.coords.latitude;
+        const lng = p.coords.longitude;
+        props.onClickPosition(lat,lng);
+    }
 
     // useEffect(() => {
     //     mapScript();
     // }, [props]);
 
-    
 
     const mapScript = () => {
         let container = document.getElementById("map");
@@ -97,6 +109,9 @@ const FullScreenDialog = (props) => {
                     if(!!result[0].road_address){
                         setRoad(result[0].road_address.address_name);
                     }
+                    else{
+                        setRoad('');
+                    }
         
                     // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
                     // infowindow.setContent(content);
@@ -149,7 +164,6 @@ const FullScreenDialog = (props) => {
         //     });
 
         // });
-
     };
 
     return (
@@ -160,6 +174,7 @@ const FullScreenDialog = (props) => {
             <div className={cx('back',{on:props.open})}>
                     <Back onClick={handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
             </div>
+            <MyLocation onClick={resetLocation} open={props.open}/>
             <BottomModal 
             open={props.open} 
             jibun={jibun}
@@ -194,6 +209,15 @@ const BottomModal = ({ open, jibun, road ,detailAddr,onChange,onClick }) => (
         </div>
     </div>
 );
+
+function MyLocation ( {onClick,open}){
+
+    return(
+        <ButtonBase className={cx('location',{on:open})} onClick={onClick}>
+            <img src={logo} alt="logo"></img>
+        </ButtonBase>
+    )
+}
 
 export default FullScreenDialog;
 

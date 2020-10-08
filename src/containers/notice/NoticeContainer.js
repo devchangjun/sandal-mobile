@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import classnames from 'classnames/bind';
 import { Button } from '@material-ui/core';
 import TitleBar from '../../components/titlebar/TitleBar';
@@ -9,15 +10,24 @@ import { reqNoticeReadAll, reqNoticeList, reqNoticeRead, reqNoticeDelete } from 
 import Loading from '../../components/asset/Loading';
 import styles from './NoticeContainer.module.scss';
 import { useStore } from '../../hooks/useStore';
+
+/*  store   */
+import {get_notice, remove_notice , read_notice, read_all_notice} from '../../store/notice/notice';
+
 const cn = classnames.bind(styles);
 
-const MyPageContainer = () => {
+const NoticeContainer = () => {
 
     const user_token = useStore();
+
+    const dispatch = useDispatch();
+    const {notice} = useSelector((state)=>state.notice);
     const [list, setList] = useState([]);
     const [availableTotal, setAvailableTotal] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
+    //하나 체크
     const onChecked = useCallback(async (not_id) => {
         let today = new Date();
 
@@ -45,6 +55,7 @@ const MyPageContainer = () => {
         }
     }, [user_token]);
 
+    //전체읽기    
     const onAllChecked = useCallback(async () => {
         let today = new Date();
 
@@ -58,9 +69,7 @@ const MyPageContainer = () => {
         const not_read_datetime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
         console.log(not_read_datetime);
         setList((list) =>
-            list.map((item) => {
-                return { ...item, not_read_datetime: not_read_datetime };
-            }),
+            list.map((item) => {return { ...item, not_read_datetime: not_read_datetime };}),
         );
         if (user_token) {
             try {
@@ -72,12 +81,16 @@ const MyPageContainer = () => {
             }
         }
     }, []);
+
+    //전체 체크됐는지.
     const confirmChecked = useCallback(() => {
         const result = list.findIndex((item) => !item.not_read_datetime);
         setAvailableTotal(result !== -1);
     }, [list]);
 
 
+
+    //삭제
     const onRemove = useCallback(async (not_id) => {
         setLoading(true);
         if (user_token) {
@@ -85,6 +98,8 @@ const MyPageContainer = () => {
                 const res = await reqNoticeDelete(user_token, not_id);
                 console.log(res);
                 setList((list) => list.filter(item => item.not_id !== not_id));
+                dispatch(remove_notice(not_id));
+
             }
             catch (e) {
                 console.error(e);
@@ -92,6 +107,8 @@ const MyPageContainer = () => {
         }
         setLoading(false);
     }, [user_token]);
+
+    //들고오기
     const getNoticeList = useCallback(async () => {
         setLoading(true);
         if (user_token) {
@@ -99,19 +116,20 @@ const MyPageContainer = () => {
                 const res = await reqNoticeList(user_token);
                 console.log(res.notification);
                 setList(res.notification);
+                dispatch(get_notice(res.notification));
             }
             catch (e) {
                 console.error(e);
 
             }
         }
-
         setLoading(false);
     }, []);
 
     useEffect(() => {
         getNoticeList();
     }, [getNoticeList]);
+
     useEffect(() => {
         confirmChecked();
     }, [confirmChecked]);
@@ -139,4 +157,4 @@ const MyPageContainer = () => {
     );
 };
 
-export default MyPageContainer;
+export default NoticeContainer;

@@ -16,8 +16,9 @@ const tabInit = [
         name: '예약주문'
     },
     {
-        url: `${Paths.ajoonamu.shop}?menu=1`,
-        name: '택배배송'
+        url :'/',
+        // url: `${Paths.ajoonamu.shop}?menu=1`,
+        name: '기업조식'
     },
 ]
 
@@ -29,6 +30,7 @@ const HomeContainer = () => {
     const [error , setError] = useState(false);
     const [menuList, setMenuList] = useState([]);
 
+
     const getMainMenu = async () => {
         setLoading(true);
         try{
@@ -37,7 +39,6 @@ const HomeContainer = () => {
             const list = res.data.query.items;
             setMenuList(list);
             setSuccess(true);
-
         }
         catch(e){
             console.error(e);
@@ -46,7 +47,6 @@ const HomeContainer = () => {
         }
         setLoading(false);
     }
-
 
     useEffect(()=>{
         getMainMenu();

@@ -31,6 +31,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            .notice{
+                // border:1px solid red;
+                width: 24px; height: 24px;
+                box-sizing: border-box;
+            }
 
             .app-title-notification,
             .app-title-location-button {
@@ -45,6 +50,7 @@
             .app-title-location-button > img {
                 width: 24px; height: 24px;
             }
+     
 
             .app-title-notification.unread::after {
                 content: '';

@@ -126,17 +126,15 @@ const SupportLink = styled(Link)`
 `;
 
 const Item = ({ text, url }) => {
-    return (
-        <SupportLink to={url}>
-            <Button className={styles['pd-box']}>
-                <div className={styles['item']}>{text}</div>
-            </Button>
-        </SupportLink>
+    const history=  useHistory();
+        return (
+        <Button className={styles['pd-box']} onClick={
+            url ? ()=> history.push(url) : ()=>{}
+        }>
+         <div className={styles['item']}>{text}</div>
+        </Button>
     );
 };
 
-Item.defaultProps = {
-    url: "/"
-};
 
 export default MyPageContainer;

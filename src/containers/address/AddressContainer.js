@@ -1,28 +1,36 @@
 /*global kakao*/
 
+//hooks
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import {useInit} from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
 
+//style
 import styles from './Address.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
+
+//components
+import TitleBar from 'components/titlebar/TitleBar';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { BsSearch } from 'react-icons/bs';
 import AddressModal from '../../components/modal/AddressModal';
-import MapModal from '../../components/modal/MapModal';
+import MapModal from '../../components/kakao_map/MapModal';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
+import { ButtonBase } from '@material-ui/core';
 
+//lib
 import produce from 'immer';
+//api
 import { getCoordinates } from 'api/address/address';
-import { useStore } from '../../hooks/useStore';
 import { insertAddress, searchAddress,selectAddress,getDeliveryList ,deleteAddr } from '../../api/address/address';
-
-import { modalOpen } from '../../store/modal';
 import { getNearStore } from '../../api/store/store';
 import { noAuthGetNearStore } from '../../api/noAuth/store';
-import {useInit} from '../../hooks/useStore';
-import { ButtonBase } from '@material-ui/core';
+
+//store
+import { modalOpen } from '../../store/modal';
+
 
 const cx = classNames.bind(styles);
 
@@ -153,6 +161,7 @@ const AddressContainer = () => {
 
     // 좌표 변경
     const onClickPosition = useCallback((lat, lng) => {
+        console.log('좌표 변경 완료',lat,lng);
         setPosition({ lat: lat, lng: lng });
     }, []);
 

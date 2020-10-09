@@ -198,7 +198,7 @@ const SignInContainer = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className={styles['sns-box']}>
+                    <div className={styles['sns-box']}>
                         <div className={styles['social-login']}>
                             <div className={styles['text']}>간편 로그인</div>
                             <div className={styles['line']}></div>
@@ -209,7 +209,7 @@ const SignInContainer = () => {
                             </div>
                             <div className={styles['sns']}>
                                 <KakaoButton
-                                    jsKey={'9f4d0e5bb1c19aed9322372dd32fbd51'}
+                                    jsKey={'122df6d8b0bf2538b90ad7183a949975'}
                                     buttonText="kakao"
                                     getProfile={true}
                                     onSuccess={onClickKakaoLogin}
@@ -221,9 +221,8 @@ const SignInContainer = () => {
                                 <img src={FacebookLogo} alt="facebook"></img>
                             </div>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
-                <DatePicker/>
             </div>
         </>
     );

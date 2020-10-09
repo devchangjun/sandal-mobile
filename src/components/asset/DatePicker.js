@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ko from 'date-fns/locale/ko';
 import DatePicker from 'react-datepicker';
 import styles from './DatePicker.module.scss';
@@ -7,7 +7,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const CustomDatePicker = () => {
     const [date, setDate] = useState(new Date());
- 
 
     return (
         <>
@@ -18,11 +17,10 @@ const CustomDatePicker = () => {
                 selected={date}
                 onChange={(date) => setDate(date)}
                 className={styles['test']}
-                // withPortal
                 popperModifiers={{
-                    preventOverflow:{
-                        enabled:false,
-                    }
+                    preventOverflow: {
+                        enabled: false,
+                    },
                 }}
             />
         </>

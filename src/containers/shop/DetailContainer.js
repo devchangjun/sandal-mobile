@@ -201,7 +201,7 @@ const DetailContainer = ({ item_id }) => {
                                     </div>
                                     <div className={styles['cost-count']}>
                                         <div className={styles['cost']}>
-                                            {menu && numberFormat(menu.item.item_price * quanity)}원
+                                            {menu && numberFormat(menu.item.item_price)}원
                                             
                                         </div>
                                         <div className={styles['count']}>

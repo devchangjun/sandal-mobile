@@ -1,29 +1,42 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
+//styles
 import classNames from 'classnames/bind';
+import styles from './Order.module.scss';
+
+//lib
 import produce from 'immer';
 import { Paths } from 'paths';
+import $script from 'scriptjs';
+import { numberFormat } from '../../lib/formatter';
+import { onlyNumberListener } from '../../lib/formatChecker';
+
+//componenst
 import { ButtonBase } from '@material-ui/core';
-import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
+//modal
 import PointModal from '../../components/modal/PointModal';
 import CouponModal from '../../components/modal/CouponModal';
 import PaymentModal from '../../components/modal/PaymentModal';
+
+//components
 import OrderCheck from 'components/svg/order/OrderCheck';
-import styles from './Order.module.scss';
+import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
+import Loading from '../../components/asset/Loading';
 import Back from 'components/svg/header/Back';
-import { getOrderCoupons } from '../../api/coupon/coupon';
-import { getCartList } from '../../api/cart/cart';
-import { numberFormat } from '../../lib/formatter';
+import DatePicker from '../../components/asset/DatePicker';
+
+//hooks
 import { useStore } from '../../hooks/useStore';
-import $script from 'scriptjs';
+
+//api
 import { user_order} from '../../api/order/order';
 import { noAuth_order} from '../../api/noAuth/order';
 import { noAuthGetCartList } from '../../api/noAuth/cart';
-import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
-import Loading from '../../components/asset/Loading';
-import { onlyNumberListener } from '../../lib/formatChecker';
+import { getOrderCoupons } from '../../api/coupon/coupon';
+import { getCartList } from '../../api/cart/cart';
 
 const cx = classNames.bind(styles);
 
@@ -219,7 +232,7 @@ const OrderContainer = () => {
                 'reserve',
                 orderMemo,
                 dlvMemo,
-                '2020-10-07 12:23:34', //delivery_req_time
+                delivery_req_time,
                 cp_id,
                 point_price,
                 
@@ -244,7 +257,7 @@ const OrderContainer = () => {
                 'reserve',
                 orderMemo,
                 dlvMemo,
-                '2020-10-07 12:23:34', //delivery_req_time
+                delivery_req_time
             );
             console.log(res);
             order_id.current = res.data.query;
@@ -370,15 +383,20 @@ const OrderContainer = () => {
                 <div className={styles['table']}>
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
-                            {user ? <div className={styles['user-name']}> {user.name}</div> : 
-                               <input
-                               type="text"
-                                value={noAuthName}
-                                onChange={onChangeName}
-                               className={cx('input', 'normal')}
-                               placeholder="이름을 입력하세요."
-                           /> 
-                            }
+                            {user ? (
+                                <div className={styles['user-name']}>
+                                    {' '}
+                                    {user.name}
+                                </div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    value={noAuthName}
+                                    onChange={onChangeName}
+                                    className={cx('input', 'normal')}
+                                    placeholder="이름을 입력하세요."
+                                />
+                            )}
                         </div>
                     </div>
                     <div className={cx('text-info', 'address')}>
@@ -417,7 +435,49 @@ const OrderContainer = () => {
                         </div>
                     </div>
                 </div>
+                <div className={cx('title', 'pd-box')}>배달 요청 시간</div>
+                <div className={cx('date-picker', 'pd-box')}>
+                    <div className={styles['date']}>
+                        <DatePicker  date={date} setDate={setDate}/>
+                    </div>
+                    <div className={styles['time']}>
+                    <div className={styles['second']}>
+                        <select
+                            name="hours"
+                            onChange={(e) => {
+                                setHours(e.target.value);
+                            }}
+                        >
+                            {[...new Array(22).keys()]
+                                .splice(9, 13)
+                                .map((item) => (
+                                    <option value={item} key={item}>
+                                        {(item >= 12 ? '오후 ' : '오전 ') +
+                                            (item > 12 ? item - 12 : item) +
+                                            '시'}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
 
+                    <div className={styles['second']}>
+                        <select
+                            name="minute"
+                            onChange={(e) => {
+                                setMinite(e.target.value);
+                            }}
+                        >
+                            <option value="00">00분</option>
+                            <option value="10">10분</option>
+                            <option value="20">20분</option>
+                            <option value="30">30분</option>
+                            <option value="40">40분</option>
+                            <option value="50">50분</option>
+                        </select>
+                    </div>
+                    </div>
+     
+                </div>
                 <div className={cx('title', 'pd-box')}>요청사항</div>
                 <div className={cx('table', 'pd-box')}>
                     <div className={styles['input-save']}>

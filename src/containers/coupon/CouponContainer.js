@@ -5,15 +5,15 @@ import styles from './Coupon.module.scss';
 import classNames from 'classnames/bind';
 
 //components
-import TabMenu from 'components/tab/TabMenu';
-import CouponItemList from 'components/coupon/CouponItemList';
-import DownCouponList from 'components/coupon/DownCouponList';
-import UseCouponItemList from 'components/coupon/UseCouponItemList';
+import TabMenu from '../../components/tab/TabMenu';
+import CouponItemList from '../../components/coupon/CouponItemList';
+import DownCouponList from '../../components/coupon/DownCouponList';
+import UseCouponItemList from '../../components/coupon/UseCouponItemList';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 import { Button } from '@material-ui/core';
 import SwipeableViews from "react-swipeable-views";
-import BottomModal from 'components/nav/BottomModal';
+import BottomModal from '../../components/nav/BottomModal';
 import TitleBar from '../../components/titlebar/TitleBar';
 
 import date from 'components/svg/title-bar/date.svg';
@@ -171,7 +171,6 @@ const CouponConatiner = ({ tab = '0' }) => {
         const {pathname,search} =location; 
         if(pathname==='/coupon'){
             if(search.indexOf('tab=2')!==-1){
-                console.log('쿠폰 사용내역');
                 return(
                     <IconButton onClick={handleOpen}>
                     <img src={date} alt="date" />

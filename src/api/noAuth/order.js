@@ -33,6 +33,7 @@ export const noAuth_order = async (
         order_memo,
         delivery_memo,
         delivery_req_time,
+        device :"mobile"
     };
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     console.log(form_data);

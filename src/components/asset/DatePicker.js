@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ko from 'date-fns/locale/ko';
 import DatePicker from 'react-datepicker';
 import styles from './DatePicker.module.scss';
 import './DatePicker.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const CustomDatePicker = () => {
-    const [date, setDate] = useState(new Date());
+const CustomDatePicker = (props) => {
+    const {date, setDate} = props;
     return (
         <div className={styles['date-picker']}>
             <DatePicker

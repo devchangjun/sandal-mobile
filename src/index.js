@@ -26,7 +26,7 @@ ReactDOM.render(
         </BrowserRouter>
     </Provider>,
 
-    document.getElementById('ajoonamy'),
+    document.getElementById('ajoonamu'),
 );
 
 // If you want your app to work offline and load faster, you can change

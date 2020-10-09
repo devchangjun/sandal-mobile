@@ -8,9 +8,12 @@ import styles from './EventContainer.module.scss';
 import Loading from '../../components/asset/Loading';
 import { DBImageFormat } from '../../lib/formatter';
 import { useModal } from '../../hooks/useModal';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 export default ({ id }) => {
     const openModal = useModal();
+    const history = useHistory();
     
     const [loading, setLoading] = useState(false);
     const [eventData, setEventData] = useState({});
@@ -20,7 +23,12 @@ export default ({ id }) => {
         try {
             const res = await requestEventPost(id);
             if (res.data.msg === '성공') {
-                setEventData(res.data.query.event);
+                if (res.data.query.event) {
+                    setEventData(res.data.query.event);
+                } else {
+                    openModal('지워지거나 없는 게시물입니다.', '다시 시도 해주세요.');    
+                    history.push(Paths.index);
+                }
             } else {
                 openModal('이벤트 내용을 가져오는데 오류가 발생했습니다.', '잠시 후 재시도 해주세요.');
             }
@@ -28,7 +36,7 @@ export default ({ id }) => {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
         setLoading(false);
-    }, [openModal]);
+    }, [openModal, history]);
 
     useEffect(() => {
         getEventPost(parseInt(id));

@@ -1,6 +1,4 @@
 import React from 'react';
-import TitleBar from 'components/titlebar/TitleBar';
-import BottomNav from 'components/nav/BottomNav';
 import EventContainer from '../../containers/event/EventContainer';
 import EventListContainer from '../../containers/event/EventListContainer';
 
@@ -9,8 +7,8 @@ export default ({ match }) => {
 
     return (
         <>
-                {post ? <EventContainer id={post} />
-                : <EventListContainer />}
+            {post ? <EventContainer id={post} />
+            : <EventListContainer />}
         </>
     );
 };

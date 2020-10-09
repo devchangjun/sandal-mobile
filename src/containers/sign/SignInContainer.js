@@ -8,7 +8,11 @@ import styled from 'styled-components';
 //components
 import SignNormalInput from 'components/sign/SignNormalInput';
 import LinkButton from 'components/button/LinkButton';
-import { KakaoLogo, NaverLogo, FacebookLogo } from '../../components/svg/sign/social';
+import {
+    KakaoLogo,
+    NaverLogo,
+    FacebookLogo,
+} from '../../components/svg/sign/social';
 import KakaoLogin from 'react-kakao-login';
 import DatePicker from '../../components/asset/DatePicker';
 
@@ -17,9 +21,9 @@ import { isEmailForm } from '../../lib/formatChecker';
 
 //hooks
 import { useModal } from '../../hooks/useModal';
-import {useInit} from '../../hooks/useStore';
+import { useInit } from '../../hooks/useStore';
 import { useHistory } from 'react-router-dom';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 ///api
 import { getActiveAddr } from '../../api/address/address';
@@ -30,7 +34,6 @@ import { localLogin } from '../../api/auth/auth';
 import { get_user_info } from '../../store/auth/auth';
 
 const cx = classNames.bind(styles);
-
 
 const KakaoButton = styled(KakaoLogin)`
     /* display: inline-block;
@@ -45,12 +48,12 @@ const KakaoButton = styled(KakaoLogin)`
   font-size: 16px;
   text-align: center;
  background-image : url('../../components/svg/sign/social/kakao.png') no-repeat;; */
- border:none;
- background-color:transparent;
+    border: none;
+    background-color: transparent;
 `;
 
-
-const logo = 'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
+const logo =
+    'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
 
 const initialUserState = {
     email: '',
@@ -75,7 +78,6 @@ const userReducer = (state, action) => {
 };
 
 const SignInContainer = () => {
-    
     const initStore = useInit();
     const openModal = useModal();
     const history = useHistory();
@@ -83,7 +85,7 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const { email, password } = user;
     const [toggle, setToggle] = useState(false);
-    const {succeed} = useSelector((state)=>state.auth);
+    const { succeed } = useSelector((state) => state.auth);
 
     const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -106,41 +108,79 @@ const SignInContainer = () => {
 
     const onClickLogin = useCallback(async () => {
         if (!isEmailForm(email)) {
-            openModal('이메일이 형식에 맞지 않습니다!', '확인 후 다시 작성해 주세요.');
+            openModal(
+                '이메일이 형식에 맞지 않습니다!',
+                '확인 후 다시 작성해 주세요.',
+            );
         } else {
             try {
                 const res = await localLogin(email, password);
                 if (res.status === 200) {
                     // 회원가입 안되있는 이메일
-                    if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
-                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
+                    if (
+                        res.data.msg === '회원가입 되어있지 않은 이메일입니다.'
+                    ) {
+                        openModal(
+                            res.data.msg,
+                            '아이디를 다시 한 번 확인해 주세요.',
+                        );
                     }
                     // 비밀번호가 틀렸을 때
                     else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.');
+                        openModal(
+                            res.data.msg,
+                            '비밀번호를 다시 한 번 확인해 주세요.',
+                        );
                     }
                     // 탈퇴한 이메일일 때.
                     else if (res.data.msg === '탈퇴한 이메일입니다.') {
-                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
+                        openModal(
+                            res.data.msg,
+                            '아이디를 다시 한 번 확인해 주세요.',
+                        );
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
-                        const active_addr = await getActiveAddr(res.data.access_token);
-                        sessionStorage.setItem('access_token', res.data.access_token);
-                        if(active_addr){
-                           const {lat,lng,addr1,addr2,post_num} = active_addr;
-                            const near_store = await getNearStore(lat,lng,addr1);
-                            initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
-                        }
-                        else{
+                        const active_addr = await getActiveAddr(
+                            res.data.access_token,
+                        );
+                        sessionStorage.setItem(
+                            'access_token',
+                            res.data.access_token,
+                        );
+                        if (active_addr) {
+                            const {
+                                lat,
+                                lng,
+                                addr1,
+                                addr2,
+                                post_num,
+                            } = active_addr;
+                            const near_store = await getNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
+                        } else {
                             initStore();
                         }
                         history.replace('/');
                     }
                 } else {
-                    openModal('로그인에 실패하였습니다.', '이메일 혹은 패스워드를 확인해주세요.');
+                    openModal(
+                        '로그인에 실패하였습니다.',
+                        '이메일 혹은 패스워드를 확인해주세요.',
+                    );
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -155,9 +195,9 @@ const SignInContainer = () => {
         localStorage.setItem('access_token', token);
     };
 
-
     useEffect(() => {
-        const btnToggle = email.length !== 0 && password.length !== 0 ? true : false;
+        const btnToggle =
+            email.length !== 0 && password.length !== 0 ? true : false;
         setToggle(btnToggle);
     }, [email, password]);
 
@@ -186,13 +226,22 @@ const SignInContainer = () => {
                         />
                     </div>
                     <div className={styles['link-table']}>
-                        <div className={styles['table-cell']} onClick={onClickSignup}>
+                        <div
+                            className={styles['table-cell']}
+                            onClick={onClickSignup}
+                        >
                             <div className={styles['sub-text']}>회원가입</div>
                         </div>
-                        <div className={styles['table-cell']} onClick={onClickRecovery}>
+                        <div
+                            className={styles['table-cell']}
+                            onClick={onClickRecovery}
+                        >
                             <div className={styles['sub-text']}>아이디찾기</div>
                         </div>
-                        <div className={styles['table-cell']} onClick={onClickRecovery}>
+                        <div
+                            className={styles['table-cell']}
+                            onClick={onClickRecovery}
+                        >
                             <div className={styles['sub-text']}>
                                 비밀번호찾기
                             </div>

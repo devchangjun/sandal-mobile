@@ -35,6 +35,7 @@ import {kakaoLogin} from '../../api/social';
 import { get_user_info } from '../../store/auth/auth';
 
 const cx = classNames.bind(styles);
+const {Kakao} = window;
 
 const KakaoButton = styled(KakaoLogin)`
     /* display: inline-block;
@@ -199,6 +200,20 @@ const SignInContainer = () => {
         console.log(test);
     };
 
+
+    const kakaoLoginClickHanler =()=>{
+
+        window.location='http://devapi.ajoonamu.com/api/user/kakao?device=mobile';
+        // const url = "https://kauth.kakao.com/oauth/authorize?client_id=122df6d8b0bf2538b90ad7183a949975&redirect_uri=http://localhost:3000/login&response_type=code";
+        // window.location=url;
+        // Kakao.Auth.login({
+        //     success: function(authObj,test){
+        //         console.log('성공');
+        //         console.log(authObj);
+        //         console.log(test);
+        //     }
+        // })
+    }
     useEffect(() => {
         const btnToggle =
             email.length !== 0 && password.length !== 0 ? true : false;
@@ -261,6 +276,8 @@ const SignInContainer = () => {
                                 <img src={NaverLogo} alt="naver"></img>
                             </div>
                             <div className={styles['sns']}>
+                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHanler}></img>
+                                {/* 
                                 <KakaoButton
                                     jsKey={'122df6d8b0bf2538b90ad7183a949975'}
                                     buttonText="kakao"
@@ -268,7 +285,7 @@ const SignInContainer = () => {
                                     onSuccess={onClickKakaoLogin}
                                 >
                                 <img src={KakaoLogo} alt="kakao"></img>
-                                </KakaoButton>
+                                </KakaoButton> */}
                             </div>
                             <div className={styles['sns']}>
                                 <img src={FacebookLogo} alt="facebook"></img>

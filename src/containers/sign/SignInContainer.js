@@ -228,7 +228,7 @@ const SignInContainer = () => {
                         </div>
                     </div> */}
                 </div>
-                <DatePicker/>
+                {/* <DatePicker/> */}
             </div>
         </>
     );

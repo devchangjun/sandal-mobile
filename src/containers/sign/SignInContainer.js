@@ -52,9 +52,6 @@ const KakaoButton = styled(KakaoLogin)`
     background-color: transparent;
 `;
 
-const logo =
-    'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
-
 const initialUserState = {
     email: '',
     password: '',
@@ -187,7 +184,8 @@ const SignInContainer = () => {
                 history.replace('/');
             }
         }
-    }, [history, dispatch, email, password, openModal]);
+    }, [email, openModal, password, dispatch, history, initStore]);
+
     const onClickKakaoLogin = async (res) => {
         console.log(res);
         const token = res.response.access_token;
@@ -217,6 +215,19 @@ const SignInContainer = () => {
             email.length !== 0 && password.length !== 0 ? true : false;
         setToggle(btnToggle);
     }, [email, password]);
+
+    useEffect(() => {
+        const kepressEvent = e => {
+            if (e.key === 'Enter') {
+                onClickLogin();
+            }
+        };
+        document.addEventListener('keypress', kepressEvent, true);
+        return () => {
+            document.removeEventListener('keypress', kepressEvent, true);
+        }
+    }, [onClickLogin]);
+
 
     return (
         <>

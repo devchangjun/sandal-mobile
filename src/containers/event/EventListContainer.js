@@ -14,7 +14,6 @@ export default () => {
         setLoading(true);
         try {
             const res = await requestEventList();
-            console.log(res);
             if (res.data.msg === '성공') {
                 setList(res.data.query.events);
             } else {

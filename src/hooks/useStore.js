@@ -13,7 +13,6 @@ export const useStore = (isReplace = true) => {
     const openModal = useModal();
 
     useEffect(() => {
-        console.log(history);
         if (!user_token && isReplace) {
             openModal(
                 '로그인이 필요한 서비스입니다.',

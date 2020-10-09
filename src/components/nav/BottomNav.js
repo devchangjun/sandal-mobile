@@ -75,19 +75,19 @@ const BottomNav = (props) => {
     const {location} = props;
 
     const onUpdateTab = useCallback(() => {
-        console.log(location.pathname);
-        if(location.pathname==='/' || location.pathname==='/shop'){
+        if (location.pathname === '/' || location.pathname === '/shop') {
             dispatchTab({ type: 'HOME' });
-        }
-        else if(location.pathname==='/coupon'){
-            dispatchTab({type:'COUPON'})
-        }
-        else if(location.pathname==='/mypage' || location.pathname==='/account' || location.pathname.indexOf('support') !==-1 || location.pathname.indexOf('event')!==-1){
-            dispatchTab({type:'MYPAGE'})
-        }
-        else if(location.pathname==='/order_list'){
-            dispatchTab({type:'ORDER'})
-
+        } else if (location.pathname === '/coupon') {
+            dispatchTab({ type: 'COUPON' });
+        } else if (
+            location.pathname === '/mypage' ||
+            location.pathname === '/account' ||
+            location.pathname.indexOf('support') !== -1 ||
+            location.pathname.indexOf('event') !== -1
+        ) {
+            dispatchTab({ type: 'MYPAGE' });
+        } else if (location.pathname === '/order_list') {
+            dispatchTab({ type: 'ORDER' });
         }
     }, [props]);
 

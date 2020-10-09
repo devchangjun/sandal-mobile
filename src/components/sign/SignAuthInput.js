@@ -15,6 +15,7 @@ const SignAuthInput = ({
     placeholder,
     toggle,
     success,
+    input_disabled, button_disabled
 }) => {
     return (
         <div className={styles['sign-input']}>
@@ -26,7 +27,8 @@ const SignAuthInput = ({
                     placeholder={placeholder}
                     onChange={onChange}
                     autoComplete="on"
-                ></input>
+                    disabled={input_disabled}
+                />
             </form>
             <ButtonBase
                 className={cx('auth-btn',
@@ -34,6 +36,8 @@ const SignAuthInput = ({
                     { success: success },
                 )}
                 onClick={onClick}
+                disableRipple={button_disabled}
+                disabled={button_disabled}
             >
                 {buttonTitle}
             </ButtonBase>

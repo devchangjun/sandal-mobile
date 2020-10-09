@@ -20,7 +20,6 @@ const HomeSlick = () => {
     const getBannerList = useCallback(async () => {
         try {
             const res = await requestBannerList();
-            console.log(res);
             if (res.data.msg === '성공') {
                 setList(res.data.query);
                 dispatch({ end: res.data.query.length });

@@ -119,18 +119,22 @@ const CouponConatiner = ({ tab = '0' }) => {
     };
 
     const callCouponDownload = useCallback(
-        async (cz_id) => {
+        async (cp) => {
             try {
-                const res = await downloadCoupon(user_token, cz_id);
+                const res = await downloadCoupon(user_token, cp.cz_id);
+                console.log(res);
                 if (
                     res.data.msg === '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
                 ) {
                     openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
+
                     openModal('다운로드 성공했습니다.', res.data.msg);
+                    const newState = cp_list.concat(cp);
+                    setCpList(newState);
                 }
                 const idx = down_cp_list.findIndex(
-                    (item) => item.cz_id === cz_id,
+                    (item) => item.cz_id === cp.cz_id,
                 );
                 setDownCpList(
                     produce(down_cp_list, (draft) => {
@@ -153,6 +157,7 @@ const CouponConatiner = ({ tab = '0' }) => {
             console.log(res);
             if (res.data.msg === '성공') {
                 openModal('쿠폰 등록이 완료되었습니다.');
+                getMyCouponList();
             }
             else if (res.data.msg === '이미 발급된 쿠폰입니다.') {
                 openModal('쿠폰번호를 확인해주세요',res.data.msg);

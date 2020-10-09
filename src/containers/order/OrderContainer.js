@@ -337,7 +337,7 @@ const OrderContainer = () => {
                 'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-            // PaypleCpayAuthCheck(obj);
+            PaypleCpayAuthCheck(obj);
         });
 
         // const res  = auth_test();

@@ -1,75 +1,79 @@
-import React,{useEffect,useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styles from './OrderList.module.scss';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import OrderItemList from '../../components/order/OrderItemList';
 import BottomModal from 'components/nav/BottomModal';
-import SwipeableViews from "react-swipeable-views";
+import SwipeableViews from 'react-swipeable-views';
 import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
 import { IconButton } from '@material-ui/core';
-import {getOrderList} from '../../api/order/orderItem';
-import {useStore} from '../../hooks/useStore';
+import { getOrderList } from '../../api/order/orderItem';
+import { useStore } from '../../hooks/useStore';
 
 const tabInit = [
     {
-        url:`${Paths.ajoonamu.order_list}?tab=0`,
-        name: '예약주문'
+        url: `${Paths.ajoonamu.order_list}?tab=0`,
+        name: '예약주문',
     },
     {
-        url:`${Paths.ajoonamu.order_list}?tab=1`,
-        name: '택배주문'
+        url: `${Paths.ajoonamu.order_list}?tab=1`,
+        name: '택배주문',
     },
 ];
 
 const OrderListContainer = ({ tab = '0' }) => {
-
     const [loading, setLoading] = useState(false);
-    const [open,setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
-    const [order_list,setOrderList] = useState([]);
-    const [dlvList ,setDlvList] =useState([]);
-    const [reserveList,setReserveList] = useState([]);
+    const [order_list, setOrderList] = useState([]);
+    const [dlvList, setDlvList] = useState([]);
+    const [reserveList, setReserveList] = useState([]);
     const user_token = useStore();
     const history = useHistory();
-    
-    const handleOpen =()=>setOpen(true);
-    const handleClose =()=>setOpen(false);
 
-    const onChangeTabIndex =(e,value) =>{
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const onChangeTabIndex = (e, value) => {
         setIndex(value);
-    }
-    const onChangeSwiperIndex =(index)=>{
+    };
+    const onChangeSwiperIndex = (index) => {
         setIndex(index);
         history.replace(`${Paths.ajoonamu.order_list}?tab=${index}`);
-    }
-    const getOrderItems =async()=>{
+    };
+    const getOrderItems = async () => {
         setLoading(true);
-        if(user_token){
-            const res= await getOrderList(user_token);
+        if (user_token) {
+            const res = await getOrderList(user_token);
+            console.log('주문내역 확인');
             console.log(res);
-            const reserve = res.orders.filter((item) =>item.info.order_type==='reserve');
-            console.log(reserve);
-            setReserveList(reserve);
+            if (res.data.query.length !== 0) {
+                const { orders } = res.data.query;
+                const reserve = orders.filter(
+                    (item) => item.info.order_type === 'reserve',
+                );
+                setReserveList(reserve);
+            }
         }
         setLoading(false);
-    }
+    };
 
-    const onClickOrderItem = useCallback((order_id)=>{
-        console.log(order_id);
-        history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
-    },[history]);
+    const onClickOrderItem = useCallback(
+        (order_id) => {
+            console.log(order_id);
+            history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
+        },
+        [history],
+    );
 
-
-    useEffect(()=>{
+    useEffect(() => {
         // window.scrollTo(0,0);
         getOrderItems();
-    },[])
-
-
+    }, []);
 
     return (
         <>
@@ -90,8 +94,11 @@ const OrderListContainer = ({ tab = '0' }) => {
                         animateHeight={true}
                     >
                         <div className={styles['pd-box']}>
-                            {reserveList.length!==0 ? (
-                                <OrderItemList order_list={reserveList}  onClick={onClickOrderItem}/>
+                            {reserveList.length !== 0 ? (
+                                <OrderItemList
+                                    order_list={reserveList}
+                                    onClick={onClickOrderItem}
+                                />
                             ) : (
                                 <Message
                                     src={true}

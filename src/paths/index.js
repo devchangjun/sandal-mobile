@@ -27,6 +27,7 @@ export const Paths = {
         notice: '/notice',
         event: '/event',
         tos :'/tos',
+        oauth:'/oauth'
     },
     api: 'http://devapi.ajoonamu.com/api/',
     storage: 'http://devapi.ajoonamu.com/storage/'

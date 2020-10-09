@@ -8,7 +8,7 @@ import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     FindEmail, FindPassword, Home, Account, Address, Reserve, DetailMenu,
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
-    Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage,Tos
+    Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage,Tos,OAuth
 } from 'pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -40,7 +40,7 @@ function App() {
     const location = useLocation();
 
 
-        const GetInfo = async () => {
+    const GetInfo = async () => {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             dispatch(get_user_info(token));
@@ -234,6 +234,7 @@ function App() {
                 <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
                 <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
                 <Route path={Paths.ajoonamu.tos} component={Tos}></Route>
+                <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
                 <Route component={ErrorPage}/>
             </Switch>
             <ModalContainer />

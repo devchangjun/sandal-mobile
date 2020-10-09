@@ -11,7 +11,6 @@ import styles from './Address.module.scss';
 import classNames from 'classnames/bind';
 
 //components
-import TitleBar from 'components/titlebar/TitleBar';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { BsSearch } from 'react-icons/bs';
 import AddressModal from '../../components/modal/AddressModal';
@@ -20,8 +19,6 @@ import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 import { ButtonBase } from '@material-ui/core';
 
-//lib
-import produce from 'immer';
 //api
 import { getCoordinates } from 'api/address/address';
 import { insertAddress, searchAddress,selectAddress,getDeliveryList ,deleteAddr } from '../../api/address/address';

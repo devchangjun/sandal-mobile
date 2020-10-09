@@ -22,7 +22,6 @@ import {
 } from '../../store/product/product';
 
 import { useScroll } from '../../hooks/useScroll';
-import { Drafts } from '@material-ui/icons';
 
 const OFFSET = 8;
 const LIMIT = 8;

@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import classnames from 'classnames/bind'
 
 import FixButton from '../button/Button';
 import ImportLogo from '../svg/phrase/ImportLogo';
+import DefaultLogo from '../svg/modal/Logo.svg'
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,6 +18,7 @@ import styles from './PhraseServiceModal.module.scss';
 import { ButtonBase } from '@material-ui/core';
 import PhraseTemplateList from '../asset/PhraseTemplateList';
 import { requestPostPhraseSerive } from '../../api/order/sticker';
+import { useModal } from '../../hooks/useModal';
 
 const cn = classnames.bind(styles);
 
@@ -62,21 +64,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const InputLogo = ({ handleChange }) => {
     const [image, setImage] = useState(null);
     const handleImageChange = (e) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const URL = reader.result;
-            setImage(URL);
-        }
         if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0]);
-            handleChange(e.target.files[0]);
+            handleChange(e.target.files);
+            setImage(e.target.files[0].name); // 파일 상태 업데이트
         }
     };
 
     return (
         <div className={styles['input-area']}>
             <ButtonBase className={cn('input-logo', 'input-box')}>
-                <input id="import-logo" className={styles['filebox']} type="file" onChange={handleImageChange}/>
+                <input
+                    id="import-logo"
+                    className={styles['filebox']}
+                    type="file"
+                    accept="image/gif, image/jpeg, image/png, image/svg"
+                    onChange={handleImageChange}
+                />
                 <label className={styles['label']} htmlFor="import-logo" style={{ backgroundImage: 'url(' + image + ')'}}>
                     {!image && <div className={styles['add']}>
                         <div className={styles['import']}>
@@ -92,21 +95,61 @@ const InputLogo = ({ handleChange }) => {
 const InputPhrase = ({ handleChange }) => {
     return (
         <div className={styles['input-area']}>
-            <textarea
-                className={cn('input-phrase', 'input-box')}
-                onChange={handleChange} />
-        </div>
+        <textarea
+            className={cn('input-phrase', 'input-box')}
+            onChange={e => handleChange(e.target.value)}
+        />
+    </div>
     )
 }
-const InputPreview = () => {
+const InputPreview = ({ template, logo, phrase }) => {
+    const [preview, setPreview] = useState(null);
+    const state = {};
+    switch (template) {
+        case 0:
+            state.image = 'top'; state.text = 'bottom';
+            break;
+        case 1:
+            state.image = 'bottom'; state.text = 'top'; 
+            break;
+        case 2:
+            state.image = 'left'; state.text = 'right'; 
+            break;
+        default:
+            state.image = 'right'; state.text = 'left'; 
+            break;
+    }
+    useEffect(() => {
+        if (logo) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+                const base64 = reader.result;
+                if (base64) {
+                    setPreview(base64.toString()); // 파일 base64 상태 업데이트
+                }
+            }
+            reader.readAsDataURL(logo[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+        }
+    }, [logo])
     return (
         <div className={styles['input-area']}>
-            <ButtonBase className={cn('input-preview', 'input-box')}>
-                
+            <ButtonBase disabled className={cn('input-preview', 'input-box')}>
+                <div className={cn('circle', 'preview_out')}>
+                    <div className={cn('circle', 'preview_in')}>
+                        <div className={cn('box', 'image', state.image)}>
+                            <img className={styles['logo']} src={preview ? preview : DefaultLogo} alt="미리보기 로고" />
+                            <p className={styles['name']}>아주나무 드림</p>
+                        </div>
+                        <div className={cn('box', 'text', state.text)}>
+                            <p className={styles['phrase']}>{phrase}</p>
+                        </div>
+                    </div>
+                </div>
             </ButtonBase>
         </div>
-    )
-}
+    );
+};
 const GuideTemplate = ({ title, children }) => (
     <div className={styles['guide']}>
         <h3 className={styles['title']}>{title}</h3>
@@ -116,8 +159,9 @@ const GuideTemplate = ({ title, children }) => (
     </div>
 );
 
-export default ({ open, handleClose }) => {
+export default ({ open, handleClose, order_number, token }) => {
     const classes = useStyles();
+    const openModal = useModal();
     
     const [template, setTemplate] = useState(0);
     const [logo, setLogo] = useState(null);
@@ -131,22 +175,29 @@ export default ({ open, handleClose }) => {
     ];
 
     const onSubmit = useCallback(async () => {
-        /*
-            문구 서비스 신청하기
-        */
-        const token = sessionStorage.getItem('access_token');
-        if (token && logo && phrase) {
-            const res = await requestPostPhraseSerive(token, {
-                order_id: '1595924261-3598512',
-                sticker_logo: logo,
-                sticker_text: phrase
-            });
-            console.log(res);
-            handleClose();
-        } else { 
-            alert('토큰이 없습니다.');
+        if (!logo) {
+            openModal('로고 이미지가 없습니다!', '로고 이미지를 첨부해 주셔야 합니다.');
+        } else if (phrase === '') {
+            openModal('입력하실 문구가 없습니다!', '서비스 받을 문구를 입력해 주셔야 합니다.');
+        } else {
+            try {
+                const res = await requestPostPhraseSerive(token, {
+                    order_id: order_number,
+                    sticker_logo: logo,
+                    sticker_text: phrase
+                });
+                console.log(res);
+                if (res.data.msg === '성공') {
+                    openModal('문구서비스가 신청되었습니다!', '고객님이 원하시는 문구를 작성해 드리겠습니다.');
+                    handleClose();
+                } else {
+                    openModal('예기치 못한 에러가 발생했습니다!', '다시 시도해 주세요.');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 다시 시도해 주세요.');
+            }
         }
-    }, [handleClose, logo, phrase]);
+    }, [logo, phrase, order_number, token, openModal, handleClose]);
     
     return (
         <div>

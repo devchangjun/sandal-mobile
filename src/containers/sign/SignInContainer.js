@@ -14,8 +14,6 @@ import {
     FacebookLogo,
 } from '../../components/svg/sign/social';
 import KakaoLogin from 'react-kakao-login';
-import DatePicker from '../../components/asset/DatePicker';
-
 //lib
 import { isEmailForm } from '../../lib/formatChecker';
 

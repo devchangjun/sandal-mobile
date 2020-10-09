@@ -53,13 +53,21 @@
         .date-cell{
             margin-top: 10px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             height: 50px;
             margin-bottom: 50px;
             .box{
+                display: flex;
                 width: 100%;
                 height: 50px;
-                border: 1px solid #dbdebd;
+            }
+            .line{
+                width: 10px;
+                margin: 0 10px;
+                height: 1px;
+                background-color: #999999;
             }
         }
 

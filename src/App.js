@@ -3,7 +3,6 @@ import {useLocation} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
-import { get_user_info } from './store/auth/auth';
 import { Paths } from 'paths';
 import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
@@ -12,21 +11,34 @@ import {
     Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage,Tos
 } from 'pages';
 import { Route, Switch } from 'react-router-dom';
+
+//components
 import ModalContainer from './containers/assets/ModalContainer';
 import TitleBar from './components/titlebar/TitleBar';
 import BottomNav from './components/nav/BottomNav';
+import date from 'components/svg/title-bar/date.svg';
+import { IconButton } from '@material-ui/core';
 
+
+//api
 import { noAuthGetNearStore } from './api/noAuth/store';
 import { getActiveAddr } from './api/address/address';
 import { getNearStore } from './api/store/store';
+
+//hooks
 import {useInit} from './hooks/useStore';
 import { useUrl } from './hooks/useStore';
+
+//store
+import { get_user_info } from './store/auth/auth';
+
 
 function App() {
     useUrl();
     const dispatch = useDispatch();
     const initStore = useInit();
     const location = useLocation();
+
 
         const GetInfo = async () => {
         const token = sessionStorage.getItem('access_token');
@@ -102,11 +114,11 @@ function App() {
         else if(pathname==='/address'){
             return '주소 설정'
         }
+        else if(pathname==='/order_list'){
+            return '주문내역'
+        }
         else if(pathname==='/order'){
             return '주문하기'
-        }
-        else if(pathname==='/coupon'){
-            return '쿠폰'
         }
         else if (pathname === '/cart') {
             return '장바구니'
@@ -131,6 +143,7 @@ function App() {
         }
 
     },[location]);
+
 
     const bottomNavRender =useCallback(()=>{
         const {pathname}= location;
@@ -179,11 +192,6 @@ function App() {
     },[location]);
 
 
-    
-
-
-
-
 
     useEffect(() => {
         GetInfo();
@@ -196,7 +204,8 @@ function App() {
 
     return (
         <div className="App">
-            <TitleBar title={getTitle()}/>
+            <TitleBar title={getTitle()}>
+             </TitleBar>
             <Switch>
                 <Route exact={true} path={Paths.index} component={Home}></Route>
                 <Route path={Paths.ajoonamu.signin} component={Signin}></Route>

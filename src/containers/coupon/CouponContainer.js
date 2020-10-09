@@ -1,21 +1,35 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useLocation } from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
+
+//components
 import TabMenu from 'components/tab/TabMenu';
 import CouponItemList from 'components/coupon/CouponItemList';
 import DownCouponList from 'components/coupon/DownCouponList';
 import UseCouponItemList from 'components/coupon/UseCouponItemList';
-import { Button } from '@material-ui/core';
-import SwipeableViews from "react-swipeable-views";
-import { getMyCoupons, getDownloadCpList, downloadCoupon, couponInput } from '../../api/coupon/coupon';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
+import { Button } from '@material-ui/core';
+import SwipeableViews from "react-swipeable-views";
+import BottomModal from 'components/nav/BottomModal';
+import TitleBar from '../../components/titlebar/TitleBar';
+
+import date from 'components/svg/title-bar/date.svg';
+import { IconButton } from '@material-ui/core';
+
+//api
+import { getMyCoupons, getDownloadCpList, downloadCoupon, couponInput } from '../../api/coupon/coupon';
+
+//hooks
+import produce from 'immer';
+
+//lib
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
-import produce from 'immer';
+
+
 
 const cx = classNames.bind(styles);
 
@@ -38,6 +52,7 @@ const tabInit = [
 const CouponConatiner = ({ tab = '0' }) => {
 
     const openModal = useModal();
+    const location = useLocation();
     const history = useHistory();
     const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -51,6 +66,10 @@ const CouponConatiner = ({ tab = '0' }) => {
     const [down_cp_list, setDownCpList] = useState([]);
     const [show, setShow] = useState(false);
 
+
+    const [open,setOpen] = useState(false);
+    const handleOpen =()=>setOpen(true);
+    const handleClose =()=>setOpen(false);
 
     const onChangeUserInputCp = (e) => setUserInputCp(e.target.value);
 
@@ -147,12 +166,32 @@ const CouponConatiner = ({ tab = '0' }) => {
     }, [user_token, user_input_cp, openModal]);
 
 
+
+    const getChild= useCallback(()=>{
+        const {pathname,search} =location; 
+        if(pathname==='/coupon'){
+            if(search.indexOf('tab=2')!==-1){
+                console.log('쿠폰 사용내역');
+                return(
+                    <IconButton onClick={handleOpen}>
+                    <img src={date} alt="date" />
+                  </IconButton>
+                )
+            }
+        }
+
+    },[location]);
+   
+
     useEffect(() => {
         getMyCouponList();
     }, [])
     useEffect(() => {
         getDownCouponList();
     }, [])
+    useEffect(()=>{
+        getChild();
+    },[getChild])
 
     useEffect(() => {
         setShow(false);
@@ -169,12 +208,19 @@ const CouponConatiner = ({ tab = '0' }) => {
 
     return (
         <>
-            {loading ? <Loading open={true} /> :
+            <TitleBar title={'쿠폰'}>
+                {getChild()}
+            </TitleBar>
+            {loading ? (
+                <Loading open={true} />
+            ) : (
                 <>
-                    <div className={cx('title', { show: show })}>
-                        내 쿠폰
-                    </div>
-                    <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
+                    <div className={cx('title', { show: show })}>내 쿠폰</div>
+                    <TabMenu
+                        tabs={tabInit}
+                        index={index}
+                        onChange={onChangeTabIndex}
+                    />
                     <div className={cx('container')}>
                         <SwipeableViews
                             enableMouseEvents
@@ -194,31 +240,46 @@ const CouponConatiner = ({ tab = '0' }) => {
                                         onChange={onChangeUserInputCp}
                                         placeholder={'쿠폰 코드를 입력하세요'}
                                     />
-                                    <Button className={styles['submit-btn']} onClick={inputCoupon}>
+                                    <Button
+                                        className={styles['submit-btn']}
+                                        onClick={inputCoupon}
+                                    >
                                         쿠폰등록
-                                 </Button>
+                                    </Button>
                                 </div>
-                                <div className={cx('coupon-title', 'pd-box')} ref={myCouponTitle}>
+                                <div
+                                    className={cx('coupon-title', 'pd-box')}
+                                    ref={myCouponTitle}
+                                >
                                     내 쿠폰
                                 </div>
                                 <div className={cx('coupon-list', 'pd-box')}>
-                                    {cp_list.length !== 0 ?
+                                    {cp_list.length !== 0 ? (
                                         <CouponItemList cp_list={cp_list} />
-                                        :
+                                    ) : (
                                         <Message
-                                            msg={"보유하고 있는 쿠폰이 없습니다"} />
-                                    }
-
+                                            msg={
+                                                '보유하고 있는 쿠폰이 없습니다'
+                                            }
+                                        />
+                                    )}
                                 </div>
                             </div>
                             <div>
                                 <div className={cx('coupon-list', 'pd-box')}>
-                                    {down_cp_list.length !== 0 ?
-                                        <DownCouponList check={true} cp_list={down_cp_list} onClick={callCouponDownload} />
-                                        :
+                                    {down_cp_list.length !== 0 ? (
+                                        <DownCouponList
+                                            check={true}
+                                            cp_list={down_cp_list}
+                                            onClick={callCouponDownload}
+                                        />
+                                    ) : (
                                         <Message
-                                            msg={"받을 수 있는 쿠폰이 존재하지 않습니다."} />
-                                    }
+                                            msg={
+                                                '받을 수 있는 쿠폰이 존재하지 않습니다.'
+                                            }
+                                        />
+                                    )}
                                 </div>
                             </div>
                             <div>
@@ -229,8 +290,8 @@ const CouponConatiner = ({ tab = '0' }) => {
                         </SwipeableViews>
                     </div>
                 </>
-            }
-
+            )}
+        <BottomModal open={open} handleClose={handleClose} />
         </>
     );
 }

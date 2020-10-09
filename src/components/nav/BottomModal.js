@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './BottomModal.module.scss';
 import LinkButtom from 'components/button/LinkButton';
 import classNames from 'classnames/bind';
+import DatePicker from '../asset/DatePicker';
 
 const cx = classNames.bind(styles);
 
@@ -29,10 +30,14 @@ const BottomModal = ({open,handleClose}) => {
                     </div>
                     <div className={styles['date-cell']}>
                         <div className={styles['box']}>
-
+                        <DatePicker/>
                         </div>
-                        <div className={styles['box']}>
+                        <div className={styles['line']}
+                        
+                        ></div>
 
+                        <div className={styles['box']}>
+                        <DatePicker/>
                         </div>
                     </div>
                     <LinkButtom title={"조회"} toggle={true} />

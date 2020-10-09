@@ -7,10 +7,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const CustomDatePicker = () => {
     const [date, setDate] = useState(new Date());
- 
-
     return (
-        <>
+        <div className={styles['date-picker']}>
             <DatePicker
                 locale={ko}
                 dateFormat="yyyy-MM-dd"
@@ -18,15 +16,14 @@ const CustomDatePicker = () => {
                 selected={date}
                 onChange={(date) => setDate(date)}
                 className={styles['test']}
-                // withPortal
                 popperModifiers={{
                     preventOverflow:{
                         enabled:false,
                     }
                 }}
             />
-        </>
+
+        </div>
     );
 };
-
 export default CustomDatePicker;

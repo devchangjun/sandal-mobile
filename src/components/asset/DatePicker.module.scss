@@ -1,8 +1,18 @@
 html{
   body{
-    .test{
-      border:1px solid red;
-      height: 56px;
+    .date-picker{
+      .test{
+        width: 100%;
+        border:1px solid #EBEBEB;
+        border-radius: 10px;
+        height: 56px;
+        padding-left: 15px;
+        font-size: 14px;
+
+        background: url('../svg/title-bar/date.svg') no-repeat 90% 50% #fff;
+     background-size: 24px 24px;
+      }
     }
+
   }
 }

@@ -121,10 +121,10 @@ export const secondsToMMSS = (second) => {
     }`;
 };
 
-export const stringToTel = (str) =>
-    str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3');
+export const stringToTel = str => str ? str.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3')
+    : '';
 // string을 전화번호 표현(구분자 '-' 추가)으로 변경
-export const telToString = (tel) => tel.replace('-', '');
+export const telToString = tel => tel ? tel.replace('-', '') : '';
 // 전화번호 표현을 string으로 변경
 
 const STORAGE_URL = Paths.storage;

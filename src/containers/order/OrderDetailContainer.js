@@ -72,8 +72,10 @@ const OrderDetailContainer = ({ order_id }) => {
                                 value1={order && order.info.s_name}
                                 value2={order && `${order.s_addr1} ${order.s_addr2}` }
                                 value3={order && stringToTel(order.info.s_hp)}
+                                value4={`배달요청시간 : ${order && order.info.delivery_req_time}`}
                             />
                         </div>
+      
                         <div className={styles['title']}>주문정보</div>
                         <div className={styles['list']}>
                             <UserInfo
@@ -97,6 +99,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                 }
                             />
                         </div>
+             
                         <div className={styles['title']}>결제정보</div>
                         <div className={styles['list']}>
                             <PaymentInfo
@@ -138,11 +141,12 @@ const OrderDetailContainer = ({ order_id }) => {
     );
 };
 
-const UserInfo = ({ value1, value2, value3 }) => (
+const UserInfo = ({ value1, value2, value3 ,value4}) => (
     <>
         <div className={styles['name']}>{value1}</div>
         <div className={styles['user-info']}>{value2}</div>
         <div className={styles['user-info']}>{value3}</div>
+        <div className={styles['user-info']}>{value4}</div>
     </>
 );
 

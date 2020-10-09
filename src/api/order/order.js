@@ -21,6 +21,7 @@ export const user_order = async (
             delivery_memo: delivery_memo,
             delivery_req_time: delivery_req_time,
             point_price:point_price,
+            device :"mobile"
         };
     }
     else{
@@ -31,6 +32,7 @@ export const user_order = async (
             delivery_req_time: delivery_req_time,
             cp_id :cp_id,
             point_price:point_price,
+            device :"mobile"
         };
     }
     console.log(form_data);

@@ -78,9 +78,7 @@
                 margin-bottom: 0;
             }
         }
-        .date-picker {
-            border: 0px solid black;
-        }
+   
         .input-save {
             // font-size: $font-size;
             font-size: 16px;
@@ -162,6 +160,46 @@
                 }
             }
         }
+    }
+
+    .date-picker{
+        padding: 26px 24px;
+        .date{
+            width: 100%;
+            margin-bottom: 15px;
+            input{
+                border-radius :0 !important;
+            }
+        }
+        .time{
+            display: flex;
+            select {
+                border: 1px solid #dbdbdb;
+                outline: none;
+                height: 56px;
+                padding: 0;
+                width: 100%;
+
+                padding-left: 15px;
+            }
+    
+            .second {
+                &:first-child{
+                    margin-right: 15px;
+
+                }
+                width: 100%;
+                // border:1px solid red;
+                input {
+                    border: 1px solid #dbdbdb;
+                    box-sizing: border-box;
+                    outline: none;
+                    font-size: 1.5rem;
+                    height: 48px;
+                }
+            }
+        }
+     
     }
 
     .order-info {

@@ -29,6 +29,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { localLogin } from '../../api/auth/auth';
+import {kakaoLogin} from '../../api/social';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
@@ -193,6 +194,9 @@ const SignInContainer = () => {
         const token = res.response.access_token;
         localStorage.setItem('social', 'kakao');
         localStorage.setItem('access_token', token);
+
+        const test = await kakaoLogin();
+        console.log(test);
     };
 
     useEffect(() => {

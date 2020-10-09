@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ko from 'date-fns/locale/ko';
 import DatePicker from 'react-datepicker';
 import styles from './DatePicker.module.scss';
@@ -17,12 +17,11 @@ const CustomDatePicker = () => {
                 onChange={(date) => setDate(date)}
                 className={styles['test']}
                 popperModifiers={{
-                    preventOverflow:{
-                        enabled:false,
-                    }
+                    preventOverflow: {
+                        enabled: false,
+                    },
                 }}
             />
-
         </div>
     );
 };

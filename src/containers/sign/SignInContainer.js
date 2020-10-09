@@ -8,7 +8,7 @@ import styled from 'styled-components';
 //components
 import SignNormalInput from 'components/sign/SignNormalInput';
 import LinkButton from 'components/button/LinkButton';
-import {  KakaoLogo, NaverLogo, FacebookLogo} from '../../components/svg/sign/social';
+import { KakaoLogo, NaverLogo, FacebookLogo } from '../../components/svg/sign/social';
 import KakaoLogin from 'react-kakao-login';
 import DatePicker from '../../components/asset/DatePicker';
 
@@ -161,11 +161,6 @@ const SignInContainer = () => {
         setToggle(btnToggle);
     }, [email, password]);
 
-    // useEffect(()=>{
-    //     if(succeed){
-    //         history.replace('/');
-    //     }
-    // },[succeed])
     return (
         <>
             <div className={cx('container')}>

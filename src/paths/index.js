@@ -29,4 +29,5 @@ export const Paths = {
         tos :'/tos',
     },
     api: 'https://api.ajoonamu.com/api/',
+    storage: 'https://api.ajoonamu.com/storage/'
 };

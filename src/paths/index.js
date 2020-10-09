@@ -28,6 +28,6 @@ export const Paths = {
         event: '/event',
         tos :'/tos',
     },
-    api: 'https://api.ajoonamu.com/api/',
-    storage: 'https://api.ajoonamu.com/storage/'
+    api: 'http://devapi.ajoonamu.com/api/',
+    storage: 'http://devapi.ajoonamu.com/storage/'
 };

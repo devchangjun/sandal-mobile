@@ -1,3 +1,5 @@
+import { Paths } from "../paths";
+
 export function stringNumberToInt(strNumber) {
     // 구분자가 들어간 수치 데이터를 숫자로 변경
     if (strNumber !== undefined && strNumber !== null) {
@@ -125,7 +127,7 @@ export const stringToTel = (str) =>
 export const telToString = (tel) => tel.replace('-', '');
 // 전화번호 표현을 string으로 변경
 
-const STORAGE_URL = 'http://devapi.ajoonamu.com/storage/';
+const STORAGE_URL = Paths.storage;
 export const DBImageFormat = (url) => {
     if (typeof url === 'string') {
         const URL_FORMAT = url

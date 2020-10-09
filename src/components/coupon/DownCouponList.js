@@ -5,7 +5,8 @@ import DownCouponItem from './DownCouponItem';
 const DownCouponItemList = ({cp_list ,onClick}) => {
     
     const list = cp_list.map((cp) => (
-        <DownCouponItem key={cp.cz_id} item={cp} check={cp.check}  onClick={() => onClick(cp.cz_id)}/>
+        <DownCouponItem key={cp.cz_id} item={cp} check={cp.check}  onClick={() => 
+            onClick(cp)}/>
     ));
 
     return (<div className={styles['downcoupon-list']}>{list}</div>);

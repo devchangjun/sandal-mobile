@@ -1,6 +1,7 @@
 import React,{useEffect} from 'react';
 import qs from 'qs';
 
+import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 
 //api
@@ -17,6 +18,8 @@ import { get_user_info } from '../../store/auth/auth';
 
 const OAuth =({match,location})=>{
 
+
+    const history = useHistory();
     const dispatch = useDispatch();
     const initStore = useInit();
 
@@ -26,20 +29,50 @@ const OAuth =({match,location})=>{
     });
 
     const GetInfo = async (access_token) => {
-  
         if (access_token) {
-            dispatch(get_user_info(access_token));
-            const res = await getActiveAddr(access_token);
-            if(res){
-                const {lat,lng,addr1,addr2,post_num} = res;
-                const near_store = await getNearStore(lat, lng, addr1);
-                initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+            try {
+                dispatch(get_user_info(access_token));
+                const res = await getActiveAddr(access_token);
+                if (res) {
+                    const { lat, lng, addr1, addr2, post_num } = res;
+                    const near_store = await getNearStore(lat, lng, addr1);
+                    initStore(
+                        addr1,
+                        addr2,
+                        lat,
+                        lng,
+                        post_num,
+                        near_store.data.query,
+                    );
+                } else {
+                    initStore();
+                }
+                sessionStorage.setItem('access_token',access_token);
+
+                history.replace('/');
+            } catch (e) {
+                history.replace('/error');
             }
-            else{
-                initStore();
-            }
-        } 
+        }
     };
+
+    const Register =async(email,name,register_type)=>{
+        try{
+            const res = await socialRegister(email,name,register_type);
+            console.log('소셜 회원가입');
+            console.log(res);
+            if(res.data.access_token){
+                dispatch(get_user_info(res.data.access_token));
+                sessionStorage.setItem('access_token',res.data.access_token);
+                initStore();
+                history.replace('/');
+            }
+            history.replace('/');
+        }
+        catch(e){
+            history.replace('/error');
+        }
+    }
 
     useEffect(()=>{
         const {email,access_token,register_type,name} = query;
@@ -48,10 +81,9 @@ const OAuth =({match,location})=>{
             GetInfo(access_token);
         }
         else if(type==='register'){
-            socialRegister(email,name,register_type);
+            Register(email,name,register_type);
         }   
     },[])
-
 
     return(
         <>

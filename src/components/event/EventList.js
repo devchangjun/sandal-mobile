@@ -5,12 +5,14 @@ import Message from '../message/Message';
 
 import { Paths } from '../../paths';
 import styles from './EventList.module.scss';
+import { DBImageFormat } from '../../lib/formatter';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
 
 const EventListItem = ({ event }) => (
     <li className={styles['list-element']}>
         <ButtonBase className={styles['preview']}>
             <Link className={styles['link']} to={`${Paths.ajoonamu.event}/${event.id}`}>
-                <img className={styles['banner']} src={event.banner} alt="banner" />
+                <ErrorCoverImage className={styles['banner']} src={DBImageFormat(event.images)} alt="banner" />
             </Link>
         </ButtonBase>
     </li>

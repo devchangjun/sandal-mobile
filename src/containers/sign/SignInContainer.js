@@ -1,28 +1,34 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
 import { Paths } from 'paths';
-import { useHistory } from 'react-router-dom';
+// styles
 import styles from './Sign.module.scss';
-import SignNormalInput from 'components/sign/SignNormalInput';
-import TitleBar from 'components/titlebar/TitleBar';
-import LinkButton from 'components/button/LinkButton';
-import { localLogin } from '../../api/auth/auth';
-import { get_user_info } from '../../store/auth/auth';
 import classNames from 'classnames/bind';
-// import {KakaoLogo,NaverLogo,FacebookLogo} from '../../components/svg/sign/social';
-import {
-    KakaoLogo,
-    NaverLogo,
-    FacebookLogo,
-} from '../../components/svg/sign/social';
-import KakaoLogin from 'react-kakao-login';
 import styled from 'styled-components';
-import { useModal } from '../../hooks/useModal';
-import { isEmailForm } from '../../lib/formatChecker';
-import {useInit} from '../../hooks/useStore';
 
+//components
+import SignNormalInput from 'components/sign/SignNormalInput';
+import LinkButton from 'components/button/LinkButton';
+import {  KakaoLogo, NaverLogo, FacebookLogo} from '../../components/svg/sign/social';
+import KakaoLogin from 'react-kakao-login';
+import DatePicker from '../../components/asset/DatePicker';
+
+//lib
+import { isEmailForm } from '../../lib/formatChecker';
+
+//hooks
+import { useModal } from '../../hooks/useModal';
+import {useInit} from '../../hooks/useStore';
+import { useHistory } from 'react-router-dom';
+import { useDispatch,useSelector } from 'react-redux';
+
+///api
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
+import { localLogin } from '../../api/auth/auth';
+
+//store
+import { get_user_info } from '../../store/auth/auth';
+
 const cx = classNames.bind(styles);
 
 
@@ -197,7 +203,7 @@ const SignInContainer = () => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles['sns-box']}>
+                    {/* <div className={styles['sns-box']}>
                         <div className={styles['social-login']}>
                             <div className={styles['text']}>간편 로그인</div>
                             <div className={styles['line']}></div>
@@ -220,8 +226,9 @@ const SignInContainer = () => {
                                 <img src={FacebookLogo} alt="facebook"></img>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
+                <DatePicker/>
             </div>
         </>
     );

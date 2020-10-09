@@ -34,6 +34,8 @@ export const noAuthGetCartList = async (cart_id, lat, lng, addr1) => {
         },
     });
 
+
+    console.log(res);
     return res;
 };
 

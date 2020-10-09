@@ -9,6 +9,7 @@ export const getCartList = async (token) => {
             Authorization: `Bearer ${token}`,
         },
     };
+    console.log(config);
     const res = await axios.get(req, config);
     return res;
 }

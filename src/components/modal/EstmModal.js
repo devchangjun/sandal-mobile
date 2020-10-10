@@ -26,7 +26,7 @@ const cx = classNames.bind(styles);
 
 const useStyles = makeStyles(() => ({
     container: {
-        paddingBottom: '73px',
+        paddingBottom: '60px',
     },
 
     appBar: {

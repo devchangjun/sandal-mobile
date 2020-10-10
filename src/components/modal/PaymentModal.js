@@ -79,23 +79,21 @@ const FullScreenDialog = (props) => {
     ));
 
     return (
-        <div>
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton className={classes.close} color="inherit" onClick={onClickClose} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            결제 방법 선택
+        <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton className={classes.close} color="inherit" onClick={onClickClose} aria-label="close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        결제 방법 선택
                         </Typography>
-                    </Toolbar>
-                </AppBar>
-                <div className={styles['title']}>결제 방법을 선택해주세요.</div>
-                <div className={styles['container']}>{list}</div>
-                <FixButton title={'확인'} onClick={() => props.onClick(payment)} toggle={true}/>
-            </Dialog>
-        </div>
+                </Toolbar>
+            </AppBar>
+            <div className={styles['title']}>결제 방법을 선택해주세요.</div>
+            <div className={styles['container']}>{list}</div>
+            <FixButton title={'확인'} onClick={() => props.onClick(payment)} toggle={true} />
+        </Dialog>
     );
 };
 

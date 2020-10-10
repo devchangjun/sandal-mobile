@@ -31,7 +31,7 @@ import {logout} from '../../store/auth/auth';
 
 const useStyles = makeStyles((theme) => ({
     container:{
-        paddingBottom:"73px",
+        paddingBottom:"60px",
     },
     appBar: {
         position: 'relative',

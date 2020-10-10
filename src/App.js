@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback ,useState} from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {useLocation} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './App.css';
@@ -16,8 +16,6 @@ import { Route, Switch } from 'react-router-dom';
 import ModalContainer from './containers/assets/ModalContainer';
 import TitleBar from './components/titlebar/TitleBar';
 import BottomNav from './components/nav/BottomNav';
-import date from 'components/svg/title-bar/date.svg';
-import { IconButton } from '@material-ui/core';
 
 
 //api
@@ -210,7 +208,7 @@ function App() {
                 <Route exact={true} path={Paths.index} component={Home}></Route>
                 <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
                 <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
-                <Route path={Paths.ajoonamu.complete} component={SignupComplete}></Route>
+                <Route path={Paths.ajoonamu.complete + '/:email'} component={SignupComplete}></Route>
                 <Route path={Paths.ajoonamu.recovery} component={Recovery}></Route>
                 <Route path={Paths.ajoonamu.recovery_id} component={RecoveryId}></Route>
                 <Route path={Paths.ajoonamu.recovery_pw} component={RecoveryPw}></Route>

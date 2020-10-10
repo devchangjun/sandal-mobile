@@ -11,7 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import DialogContent from '@material-ui/core/DialogContent';
-import { onlyNumberListener } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
 
 import styles from './PointModal.module.scss';
@@ -112,7 +111,7 @@ const FullScreenDialog = (props) => {
                         <div className={styles['title']}>사용할 포인트</div>
                         <div className={styles['modal-input-box']}>
                             <input className={styles['point-input']}
-                             onKeyDown={onlyNumberListener} 
+                             type="number"
                              value={numberFormat(point_price)} 
                              onChange={onChangePointPrice}></input>
                             <div className={styles['point-img']}>P</div>

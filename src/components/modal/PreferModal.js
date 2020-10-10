@@ -13,7 +13,6 @@ import Plus from '../svg/counter/cross.svg';
 import Minus from '../svg/counter/line.svg';
 import { ButtonBase } from '@material-ui/core';
 import { numberFormat,stringNumberToInt } from '../../lib/formatter';
-import { onlyNumberListener } from '../../lib/formatChecker';
 
 import styles from './PreferModal.module.scss';
 
@@ -144,9 +143,10 @@ const FullScreenDialog = (props) => {
                 <div className={styles['title']}>전체 예산</div>
                 <DialogContent className={classes.content}>
                     <div className={styles['modal-input-box']}>
-                        <input value={numberFormat(budget)} 
-                        onKeyDown={onlyNumberListener}
-                        onChange={onChangeBudget}></input>
+                        <input
+                            value={numberFormat(budget)}
+                            type="number"
+                            onChange={onChangeBudget} />
                         <div className={styles['won']}>원</div>
                     </div>
                 </DialogContent>

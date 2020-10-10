@@ -46,10 +46,9 @@ const MyPageContainer = () => {
                 }
             }
         }
-        catch(e){
+        catch (e) {
             console.error(e);
         }
-
     },[dispatch,history,user_token]);
 
     const onClickLogin =useCallback(() => {

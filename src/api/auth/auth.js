@@ -109,7 +109,7 @@ export const findId = async (name, hp) => {
     const res = await axios.post(req, form_data);
     return res;
 };
-export const findPw = async (name, hp, email) => {
+export const findPw = async (email, name, hp) => {
     const req = Paths.api + 'user/find_pw';
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {

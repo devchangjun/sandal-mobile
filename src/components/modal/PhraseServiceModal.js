@@ -186,7 +186,6 @@ export default ({ open, handleClose, order_number, token }) => {
                     sticker_logo: logo,
                     sticker_text: phrase
                 });
-                console.log(res);
                 if (res.data.msg === '성공') {
                     openModal('문구서비스가 신청되었습니다!', '고객님이 원하시는 문구를 작성해 드리겠습니다.');
                     handleClose();

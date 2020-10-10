@@ -25,7 +25,9 @@ html{
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 60px;
+                padding-top: 18px;
+                padding-bottom: 18px;
+                font-size: 16px;
                 .menu-price {
                     font-weight: bold;
                 }

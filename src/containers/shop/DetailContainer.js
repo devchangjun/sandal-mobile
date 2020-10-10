@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './Detail.module.scss';
 import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
@@ -11,11 +11,12 @@ import classNames from 'classnames/bind';
 import Back from 'components/svg/header/Back';
 import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
-import {getMenuInfo} from '../../api/menu/menu';
-import {addCartItem} from '../../api/cart/cart';
-import {useStore} from '../../hooks/useStore';
+import { getMenuInfo } from '../../api/menu/menu';
+import { addCartItem } from '../../api/cart/cart';
+import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import { noAuthAddCart } from '../../api/noAuth/cart';
+import { IconButton } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
@@ -25,15 +26,12 @@ const DetailContainer = ({ item_id }) => {
     const openModal = useModal();
     const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
     const user_token = useStore(false);
-    const [menu ,setMenu] = useState(null);
+    const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
-    const [option_total,setOptionTotal] = useState(0);
+    const [option_total, setOptionTotal] = useState(0);
     const onClickBack = () => history.goBack();
-    
-
-
 
     //옵션 아이템 선택
     const setOptionItem =useCallback(()=>{
@@ -53,14 +51,9 @@ const DetailContainer = ({ item_id }) => {
         setLoading(true);
 
         try {
-            const res = await getMenuInfo(item_id)
-            console.log(res);
+            const res = await getMenuInfo(item_id);
             setMenu(res);
-        }
-
-        catch (e) {
-
-        }
+        } catch (e) {}
 
         setLoading(false);
     };
@@ -183,13 +176,13 @@ const DetailContainer = ({ item_id }) => {
                                     src={Test}
                                     alt={item_id}
                                 />
-                                <div className={styles['back']}>
+                                <IconButton className={styles['back']}>
                                     <Back
                                         onClick={onClickBack}
                                         stroke={'#fff'}
                                         strokeWidth={'3'}
                                     />
-                                </div>
+                                </IconButton>
                             </div>
                             <div className={styles['detail-view']}>
                                 <div className={styles['menu-info']}>

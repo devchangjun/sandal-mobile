@@ -17,7 +17,7 @@ import AddressModal from '../../components/modal/AddressModal';
 import MapModal from '../../components/kakao_map/MapModal';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
 import { getCoordinates } from 'api/address/address';
@@ -605,7 +605,6 @@ const AddressContainer = () => {
     },[open])
     return (
         <>
-
             {loading ? (
                 <Loading open={true} />
             ) : (
@@ -622,12 +621,12 @@ const AddressContainer = () => {
                                 onChange={onChangeSearchAddr}
                                 onKeyPress={handleKeyPress}
                             />
-                            <div
+                            <IconButton
                                 className={cx('search-btn')}
                                 onClick={handleClickOpen}
                             >
                                 <BsSearch />
-                            </div>
+                            </IconButton>
                         </div>
                         <div className={styles['pd-box']}>
                             <ButtonBase
@@ -641,15 +640,18 @@ const AddressContainer = () => {
                             최근 배달 주소
                         </div>
                         <div className={cx('addr-list', 'pd-box')}>
-                            {deliveryList.length!==0 ? 
-                             <DeliveryItemList 
-                             user_token={user_token}
-                             addrs={deliveryList} 
-                             onClick={onClickDeliveyAddr}
-                              onRemove ={onRemoveAddr}/> 
-                            :
-                            <Message msg={"최근 주소지가 없습니다."}></Message>    
-                        }
+                            {deliveryList.length !== 0 ? (
+                                <DeliveryItemList
+                                    user_token={user_token}
+                                    addrs={deliveryList}
+                                    onClick={onClickDeliveyAddr}
+                                    onRemove={onRemoveAddr}
+                                />
+                            ) : (
+                                <Message
+                                    msg={'최근 주소지가 없습니다.'}
+                                />
+                            )}
                         </div>
                     </div>
                     <AddressModal
@@ -664,7 +666,7 @@ const AddressContainer = () => {
                         selectAddr={selectAddr}
                         detailAddr={detailAddr}
                         onChangeDetail={onChangeDetailAddr}
-                        onClick= { onClickDeliveryAddrInsert}
+                        onClick={onClickDeliveryAddrInsert}
                     />
                     <MapModal
                         open={mapOpen}

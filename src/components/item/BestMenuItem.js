@@ -13,17 +13,17 @@ const BestMenuItem = (props) => {
     const history = useHistory();
     // item_id 로 경로 줘야함
     return (
-            <li className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
-                <ButtonBase className={styles['btn-base']}>
+            <ButtonBase component='li' className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
+                <div className={styles['btn-base']}>
                     <MenuImg src={MenuItemImage1} />
-                </ButtonBase>
+                </div>
                 <div className={styles['pd-box']}>
                     <div className={styles['menu-info']}>
                         <MenuTitle menuTitle={props.item_name} />
                         <MenuPrice menuPrice={props.item_price} />
                     </div>
                 </div>
-            </li>
+            </ButtonBase>
         // </MenuDetilLink>
     );
 };

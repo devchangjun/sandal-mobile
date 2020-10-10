@@ -337,6 +337,8 @@ const AddressContainer = () => {
 
                                             callDeliveryList();
                                             setOpen(false);
+                                          setSearchAddr('');
+
                                         } else {
                                             openMessage(
                                                 false,
@@ -433,6 +435,8 @@ const AddressContainer = () => {
                                         initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
                                         setDeliveryList(test2);
                                         setOpen(false);
+                                          setSearchAddr('');
+
                                     }
 
 
@@ -450,6 +454,7 @@ const AddressContainer = () => {
                             }
                         });
                     }
+
                 },
             );
         }

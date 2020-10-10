@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     title: {
         textAlign: 'center',
         width: '100%',
-        fontSize: 18
+        fontSize: 16
     },
     toolbar: {
         display: 'flex',

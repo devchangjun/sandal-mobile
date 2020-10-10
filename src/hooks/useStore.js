@@ -6,9 +6,16 @@ import { useModal } from './useModal';
 import { get_address } from '../store/address/address';
 import { get_near_store } from '../store/address/store';
 import { get_menulist } from '../store/product/product';
-import {get_break_menuList} from '../store/product/breakfast';
+import {get_break_menuList} from '../store/product/breakfast'
+import {init} from '../store/notice/notice';
 import { Paths } from '../paths';
 
+
+//스토어 초기화 해줘야할때.
+//1.로그인시 (주소초기화 , 알림창 초기화 , 가까운가게 초기화)
+//2.첫 로딩시 (비회원 주소초기화 , 알림창 초기화 ,가까운 가게 초기화)
+//3.로그아웃 시 (비회원 주소초기화 ,알림창 초기화 ,가까운 가게 초기화)
+//4. 회원탈퇴시 (비회원 주소 초기화, 알림창 초기화 ,가까운 가게 초기화)
 export const useStore = (isReplace = true) => {
     const user_token = sessionStorage.getItem('access_token');
     const history = useHistory();
@@ -59,6 +66,8 @@ export const useInit = () => {
         post_num = null,
         near_store = null,
     ) => {
+        console.log('스토어 초기화');
+        dispatch(init());
         dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
         dispatch(get_near_store(near_store));
         dispatch(get_menulist(null));

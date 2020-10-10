@@ -28,10 +28,11 @@ import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { localLogin } from '../../api/auth/auth';
 import {kakaoLogin} from '../../api/social';
+import { reqNoticeList} from '../../api/notice';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
-
+import {get_notice,read_check} from '../../store/notice/notice';
 const cx = classNames.bind(styles);
 const {Kakao} = window;
 
@@ -94,6 +95,18 @@ const SignInContainer = () => {
             password: e.target.value,
         });
     };
+    const GetNotification = async (token) => {
+
+        try {
+            const res = await reqNoticeList(token);
+            // setList(res.notification);
+            const index =res.notification.findIndex((item) =>!item.not_read_datetime);
+            dispatch(read_check(index===-1));
+            dispatch(get_notice(res.notification));
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const onClickSignup = useCallback(() => {
         history.push(Paths.ajoonamu.signup);
@@ -140,13 +153,8 @@ const SignInContainer = () => {
                     else if (res.data.access_token) {
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
-                        const active_addr = await getActiveAddr(
-                            res.data.access_token,
-                        );
-                        sessionStorage.setItem(
-                            'access_token',
-                            res.data.access_token,
-                        );
+                        const active_addr = await getActiveAddr(res.data.access_token);
+                        sessionStorage.setItem( 'access_token', res.data.access_token);
                         if (active_addr) {
                             const {
                                 lat,
@@ -171,6 +179,7 @@ const SignInContainer = () => {
                         } else {
                             initStore();
                         }
+                        GetNotification(res.data.access_token);
                         history.replace('/');
                     }
                 } else {

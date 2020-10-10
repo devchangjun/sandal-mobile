@@ -2,22 +2,38 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
+
+//styles
 import classNames from 'classnames/bind';
+import styles from './Account.module.scss';
+//components
+
+import Profile from 'components/svg/sign/profile.png';
+import Button from '@material-ui/core/Button';
+import DropoutModal from '../../components/modal/DropoutModal';
+//lib
+import { stringToTel } from '../../lib/formatter';
+import Back from '../../components/svg/header/Back';
+
+//hooks
+import {useInit} from '../../hooks/useStore';
+import {useStore} from '../../hooks/useStore';
+
+//api
+import {noAuthGetNearStore} from '../../api/noAuth/store';
 import { localLogout, requestAgreeChange } from '../../api/auth/auth';
+
+//store
 import { logout } from '../../store/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
-import styles from './Account.module.scss';
-import Profile from 'components/svg/sign/profile.png';
-import { stringToTel } from '../../lib/formatter';
-import {useStore} from '../../hooks/useStore';
-import Back from '../../components/svg/header/Back';
-import {useInit} from '../../hooks/useStore';
-import {noAuthGetNearStore} from '../../api/noAuth/store';
 
 const cn = classNames.bind(styles);
 
 const AccountContainer = () => {    
+
+    const [open ,setOpen] =useState(false);
+    const handleOpen =()=>setOpen(true);
+    const handleClose =()=>setOpen(false);
     const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
     const user_token = sessionStorage.getItem("access_token");
@@ -34,7 +50,6 @@ const AccountContainer = () => {
             if (res.message === '로그아웃에 성공하셨습니다.') {
                 dispatch(logout());
                 initStore();
-
                 const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
                 if(noAuthAddrs){
                     const index = noAuthAddrs.findIndex((item) =>item.active===1);
@@ -55,6 +70,7 @@ const AccountContainer = () => {
     },[dispatch,history,user_token]);
 
     useEffect(()=>{
+
         window.scrollTo(0,0);
     },[])
 
@@ -88,10 +104,19 @@ const AccountContainer = () => {
                         <div className={styles['pd-btn']}>로그아웃</div>
                     </Button>
                 </div>
+                <div className={styles['drop-out']}>
+                    <div className={styles['text']} onClick={handleOpen}>
+                        회원탈퇴
+                    </div>
+                    <p>회원탈퇴 신청화면으로 이동합니다.</p>
+                </div>
             </div>
+            <DropoutModal open ={open}  handleClose={handleClose}/>
         </>
     );
-    return <>{user === null ? history.replace(Paths.index) : render()}</>;
+    return <>{user === null ? ()=>{} : render()}</>;
+
+    // return <>{user === null ? history.replace(Paths.index) : render()}</>;
 };
 
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {

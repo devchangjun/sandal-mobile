@@ -31,7 +31,7 @@ Message.propTypes = {
 
 Message.defaultProps = {
     src: true,
-    msg: '아주나무',
+    msg: '샌달',
     isButton: false,
     onClick: () => console.warn('onClick no defined'),
 };

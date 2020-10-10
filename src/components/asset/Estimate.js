@@ -11,15 +11,23 @@ const EstimateArea = styled.div`
     overflow: hidden;
     box-sizing: border-box;
     position: relative;
+    
+    &:hover {        
+        &::after {
+            opacity: 0
+        }
+    }
     &::after {
-        // content: '견적서 미리보기';
+        transition: opacity .2s ease-in-out;
+        content: '견적서 미리보기';
         display: flex;
         justify-content: center;
         align-items: center;
+        left: 0; top: 0;
         position: absolute;
         color: #222;
         font-size: 16px;
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: rgba(0, 0, 0, 0.2);
         width: 100%; height: 100%;
     }
 `;
@@ -116,7 +124,7 @@ const ref = React.createRef();
 
 export default ({
     onDownload,
-    company = '아주나무',
+    company = '샌달',
     created = new Date(),
     products = [
         {

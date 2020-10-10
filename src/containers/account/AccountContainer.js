@@ -3,9 +3,7 @@ import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
-import BottomNav from 'components/nav/BottomNav';
 import { localLogout, requestAgreeChange } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import {update_user_info} from '../../store/auth/auth';
@@ -107,8 +105,7 @@ const MarketingAgree = ({ agreeMail, agreeSMS }) => {
             수신 동의 변경하기.
             type과 value로 값 설정.
         */
-        const res = await requestAgreeChange(user_token, type, value);
-        console.log(res);
+        await requestAgreeChange(user_token, type, value);
     }, [user_token]);
 
     const changeMail = useCallback(() => {

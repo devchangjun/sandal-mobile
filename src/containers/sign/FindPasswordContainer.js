@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import {Paths} from 'paths';
-import {useHistory} from 'react-router-dom';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
 import styles from './Find.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import classNames from 'classnames/bind';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import Button from '../../components/button/Button';
-import {useModal} from '../../hooks/useModal';
-import {changePw} from '../../api/auth/auth';
+import { useModal } from '../../hooks/useModal';
+import { changePw } from '../../api/auth/auth';
+import { isPasswordForm } from '../../lib/formatChecker';
 const cx = classNames.bind(styles);
 
 const FindPasswordContainer = () => {
@@ -45,59 +45,61 @@ const FindPasswordContainer = () => {
             }
         }
     };
-    const onClickChangePassword =async()=>{
-        try{   
-            const res = await changePw(email,name,hp,password,password_confirm);
-            console.log(res);
-            if(res.data.msg==='성공'){
-                openModal('비밀번호가 성공적으로 변경되었습니다.','새로운 비밀번호로 로그인해주세요.',
-                ()=> {
-                    history.replace(Paths.ajoonamu.signin);
-                    sessionStorage.removeItem('find_user');
-                    }   
+    const onClickChangePassword = async () => {
+        if (isPasswordForm(password)) {
+            try {
+                const res = await changePw(
+                    email,
+                    name,
+                    hp,
+                    password,
+                    password_confirm,
                 );
-                
+                if (res.data.msg === '성공') {
+                    openModal(
+                        '비밀번호가 성공적으로 변경되었습니다.',
+                        '새로운 비밀번호로 로그인해주세요.',
+                        () => history.replace(Paths.ajoonamu.signin)
+                    );
+                } else {
+                    openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');    
+                }
+            } catch (e) {
+                openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
             }
-
+        } else {
+            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
         }
-        catch(e){
-            openModal('잘못된 접근입니다.','');
-        }
-    }
+    };
 
-    useEffect(()=>{
+    useEffect(() => {
         const find_user = JSON.parse(sessionStorage.getItem('find_user'));
-        console.log(find_user);
-        if(find_user){
-            const {email,name,hp} = find_user;
+        if (find_user) {
+            const { email, name, hp } = find_user;
             setEmail(email);
             setName(name);
             setHp(hp);
+        } else {
+            openModal('잘못된 접근입니다.', '잠시 후 다시 시도해 주세요.');
+            history.replace(Paths.ajoonamu.signin)
         }
-        else{
-            openModal('잘못된 접근입니다.','',()=>history.replace('/'))
+        return () => {
+            sessionStorage.removeItem('find_user');
         }
-    },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         matchPassword();
     }, [matchPassword]);
-
-    useEffect(()=>{
-        return()=>{
-            console.log('언마운트');
-        }
-    },[])
 
     return (
         <>
             <div className={styles['container']}>
                 <div className={styles['content']}>
                     <div className={styles['text']}>
-                        <p>
-                            인증이 완료되어 비밀번호를 새로 설정합니다.
-                            비밀번호를 잊어버리지 않게 주의하세요!
-                        </p>
+                        <p>인증이 완료되어 비밀번호를 새로 설정합니다.</p>
+                        <p>비밀번호를 잊어버리지 않게 주의하세요!</p>
                     </div>
                     <div className={styles['input']}>
                         <SignNormalInput
@@ -116,7 +118,7 @@ const FindPasswordContainer = () => {
                             className={cx('compare', {
                                 on: compare,
                                 not_view:
-                                    password.length === 0 &&
+                                    password.length === 0 ||
                                     password_confirm.length === 0,
                             })}
                         >

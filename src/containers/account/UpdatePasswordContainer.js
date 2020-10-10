@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {useHistory} from 'react-router-dom';
-import TitleBar from 'components/titlebar/TitleBar';
 import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -9,12 +8,12 @@ import {updatePassword} from '../../api/auth/auth';
 import {useStore} from '../../hooks/useStore';
 import { Paths } from '../../paths';
 import {useModal} from '../../hooks/useModal';
-//test commit
+import { isPasswordForm } from '../../lib/formatChecker';
 const cx = classNames.bind(styles);
 
 const UpdatePasswordContainer = () => {
     const history = useHistory();
-    const openModal =useModal();
+    const openModal = useModal();
     const [password, setPassword] = useState('');
     const [new_password, setNewPassword] = useState('');
     const [new_password_confirm, setNewPasswordConfirm] = useState('');
@@ -43,19 +42,29 @@ const UpdatePasswordContainer = () => {
         }
     };
 
-    const onClickUpdatePassword = async ()=>{
-       try{
-        const res = await updatePassword(user_token,password,new_password, new_password_confirm);
-        console.log(res);
-        if(res.data.msg==='성공'){
-            history.replace(Paths.ajoonamu.account);
+    const onClickUpdatePassword = async () => {
+        if (isPasswordForm(new_password)) {
+            try {
+                const res = await updatePassword(
+                    user_token,
+                    password,
+                    new_password,
+                    new_password_confirm,
+                );
+                console.log(res);
+                if (res.data.msg === '성공') {
+                    openModal('성공적으로 변경되었습니다!', '변경된 정보를 기억해 주세요.');
+                    history.replace(Paths.ajoonamu.account);
+                } else {
+                    openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
+                }
+            } catch (e) {
+                openModal('기존 비밀번호가 틀렸습니다', '기존 비밀번호를 다시 한 번 확인해 주세요.');
+            }
+        } else {
+            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
         }
-       }
-       catch(e){
-           openModal('비밀번호를 확인해주세요','현재 비밀번호가 일치하지 않습니다.');
-       }
-      
-    }
+    };
  
 
     useEffect(() => {
@@ -92,7 +101,7 @@ const UpdatePasswordContainer = () => {
                                 className={cx('compare', {
                                     on: compare,
                                     not_view:
-                                        new_password.length === 0 &&
+                                        new_password.length === 0 ||
                                         new_password_confirm.length === 0,
                                 })}
                             >

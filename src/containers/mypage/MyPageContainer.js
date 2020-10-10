@@ -51,16 +51,16 @@ const MyPageContainer = () => {
         }
     },[dispatch,history,user_token]);
 
-    const onClickLogin =useCallback(() => {
+    const onClickLogin = useCallback(() => {
         history.push(Paths.ajoonamu.signin);
-    },[history]);
+    }, [history]);
     const onClickAccount = useCallback(() => {
         history.push(Paths.ajoonamu.account);
-    },[history]);
+    }, [history]);
 
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <>
@@ -103,7 +103,7 @@ const MyPageContainer = () => {
                     <Item url={`${Paths.ajoonamu.support}/faq`} text={'자주 묻는 질문'} />
                     <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />
-                    <Item text={'버전정보'} />
+                    <Item text={'버전정보'} version />
                     {user && <Item text={'이용약관'}url={`${Paths.ajoonamu.tos}?tab=0`}/>}
                 </div>
                 {user && (
@@ -118,19 +118,19 @@ const MyPageContainer = () => {
     );
 };
 
-const SupportLink = styled(Link)`
-    & + & {
-        border-top: solid 1px #F9F9F9;
-    }
-`;
-
-const Item = ({ text, url }) => {
-    const history=  useHistory();
-        return (
-        <Button className={styles['pd-box']} onClick={
-            url ? ()=> history.push(url) : ()=>{}
-        }>
-         <div className={styles['item']}>{text}</div>
+const Item = ({ text, url, version }) => {
+    const history = useHistory();
+    return (
+        <Button
+            className={styles['pd-box']}
+            onClick={url ? () => history.push(url) : version ? () => {} : () => alert('준비중입니다.')}
+        >
+            <div className={styles['item']}>
+                {text}
+            </div>
+            {version && <div className={styles['version']}>
+                0.01 ver
+            </div>}
         </Button>
     );
 };

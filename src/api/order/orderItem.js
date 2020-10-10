@@ -35,5 +35,6 @@ export const getDetailOrderView = async (token, order_id) => {
         },
     };
     const res = await axios.get(req, config);
+    console.log(res);
     return res.data.query;
 };

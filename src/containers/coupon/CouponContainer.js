@@ -171,19 +171,18 @@ const CouponConatiner = ({ tab = '0' }) => {
 
 
 
-    const getChild= useCallback(()=>{
-        const {pathname,search} =location; 
-        if(pathname==='/coupon'){
-            if(search.indexOf('tab=2')!==-1){
-                return(
-                    <IconButton onClick={handleOpen}>
-                    <img src={date} alt="date" />
-                  </IconButton>
-                )
+    const getChild = useCallback(() => {
+        const { pathname, search } = location;
+        if (pathname === '/coupon') {
+            if (search.indexOf('tab=2') !== -1) {
+                return (
+                    <IconButton style={{ width: '40px', height: '40px' }} onClick={handleOpen}>
+                        <img src={date} alt="date" />
+                    </IconButton>
+                );
             }
         }
-
-    },[location]);
+    }, [location]);
    
 
     useEffect(() => {

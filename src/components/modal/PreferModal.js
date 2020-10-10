@@ -153,23 +153,23 @@ const FullScreenDialog = (props) => {
                 <div className={styles['title']}>희망 수량</div>
                 <DialogContent className={classes.content}>
                     <div className={styles['counter']}>
-                        <ButtonBase
+                        <IconButton
                             style={{ left: 0 }}
                             className={styles['box']}
                             onClick={onDecrement}
                         >
                             <img src={Minus} alt="minus" />
-                        </ButtonBase>
+                        </IconButton>
                         <div className={styles['value']}>
                             {desireQuan}
                         </div>
-                        <ButtonBase
+                        <IconButton
                             style={{ right: 0 }}
                             className={styles['box']}
                             onClick={onIncrement}
                         >
                             <img src={Plus} alt="plus" />
-                        </ButtonBase>
+                        </IconButton>
                     </div>
                 </DialogContent>
 

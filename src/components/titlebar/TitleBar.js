@@ -6,9 +6,7 @@ import { IconButton } from '@material-ui/core';
 
 
 
-// 메인 로고 이미지
-
-const TitleBar = ({ title, sub, alt, onClick, children, isHome }) => {
+const TitleBar = ({ title, children, isHome }) => {
     return (
         <>
             {title &&
@@ -32,11 +30,11 @@ const Title = ({ title }) => {
     );
 };
 
-const BackButton = ({isHome}) => {
+const BackButton = ({ isHome }) => {
     const history = useHistory();
-    const onClickBack = () =>{
+    const onClickBack = () => {
         isHome ? history.push('/') : history.goBack();
-    } 
+    };
     return (
         <div className={styles['back']}>
             <div className={styles['pd-box']}>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Paths } from 'paths';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './OrderComplete.module.scss';
@@ -45,7 +44,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 res = await noAuthOrderView(order_id);
             }
 
-            const { orders,payinfo } = res;
+            const { orders, payinfo } = res;
             if (orders === undefined) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',

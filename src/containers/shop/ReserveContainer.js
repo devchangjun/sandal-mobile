@@ -6,7 +6,6 @@ import styles from './Reserve.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message';
-import CustomItemList from 'components/item/CustomItemList';
 import PreferModal from 'components/modal/PreferModal';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
@@ -25,7 +24,6 @@ import { useScroll } from '../../hooks/useScroll';
 
 const OFFSET = 8;
 const LIMIT = 8;
-
 
 const ReserveContainer = ({ menu }) => {
 

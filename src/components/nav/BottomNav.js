@@ -158,7 +158,7 @@ const BottomNav = (props) => {
                                 </div>
                             </div>
                             <Link to={`${Paths.ajoonamu.shop}?menu=0`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
-                            <Link to={`${Paths.ajoonamu.shop}?menu=1`}className={styles["menu-item"]} onClick={handleClose}>택배배송</Link>
+                            <Link to={`${Paths.ajoonamu.breakfast}?menu=0`}className={styles["menu-item"]} onClick={handleClose}>기업조식</Link>
                         </div>
                         <IconButton className={styles['nav-item']} onClick={onClickOrderList}>
                             <div className={styles['icon']}>

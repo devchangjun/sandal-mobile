@@ -12,7 +12,7 @@ import styles from './NoticeContainer.module.scss';
 import { useStore } from '../../hooks/useStore';
 
 /*  store   */
-import {get_notice, remove_notice , read_notice, read_all_notice} from '../../store/notice/notice';
+import {get_notice, remove_notice , read_notice, read_all_notice,read_check} from '../../store/notice/notice';
 
 const cn = classnames.bind(styles);
 
@@ -21,7 +21,7 @@ const NoticeContainer = () => {
     const user_token = useStore();
 
     const dispatch = useDispatch();
-    const {notice} = useSelector((state)=>state.notice);
+    const {notification} = useSelector((state)=>state.notice);
     const [list, setList] = useState([]);
     const [availableTotal, setAvailableTotal] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -39,15 +39,10 @@ const NoticeContainer = () => {
         let seconds = today.getSeconds();
         const not_read_datetime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
-        setList((list) =>
-            list.map((item) => {
-                return not_id === item.not_id ? { ...item, not_read_datetime: not_read_datetime } : item;
-            }),
-        );
         if (user_token) {
             try {
                 await reqNoticeRead(user_token, not_id);
-
+                dispatch(read_notice({not_id,not_read_datetime}));
             }
             catch (e) {
                 console.error(e);
@@ -68,12 +63,11 @@ const NoticeContainer = () => {
 
         const not_read_datetime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
         console.log(not_read_datetime);
-        setList((list) =>
-            list.map((item) => {return { ...item, not_read_datetime: not_read_datetime };}),
-        );
+
         if (user_token) {
             try {
                 await reqNoticeReadAll(user_token);
+                dispatch(read_all_notice(not_read_datetime));
 
             }
             catch (e) {
@@ -84,51 +78,53 @@ const NoticeContainer = () => {
 
     //전체 체크됐는지.
     const confirmChecked = useCallback(() => {
-        const result = list.findIndex((item) => !item.not_read_datetime);
-        setAvailableTotal(result !== -1);
-    }, [list]);
-
-
+        const index = notification.findIndex((item) => !item.not_read_datetime);
+        console.log(index);
+            setAvailableTotal(index===-1);
+            dispatch(read_check(index===-1));
+  
+    }, [notification]);
 
     //삭제
     const onRemove = useCallback(async (not_id) => {
-        setLoading(true);
         if (user_token) {
             try {
                 const res = await reqNoticeDelete(user_token, not_id);
                 console.log(res);
-                setList((list) => list.filter(item => item.not_id !== not_id));
+                // setList((list) => list.filter(item => item.not_id !== not_id));
                 dispatch(remove_notice(not_id));
-
             }
             catch (e) {
                 console.error(e);
             }
         }
-        setLoading(false);
     }, [user_token]);
 
-    //들고오기
-    const getNoticeList = useCallback(async () => {
-        setLoading(true);
-        if (user_token) {
-            try {
-                const res = await reqNoticeList(user_token);
-                console.log(res.notification);
-                setList(res.notification);
-                dispatch(get_notice(res.notification));
-            }
-            catch (e) {
-                console.error(e);
+    // //들고오기
+    // const getNoticeList = useCallback(async () => {
+    //     setLoading(true);
+    //     console.log('알림 들고오기');
+    //     console.log(notification);
+    //     if (user_token) {
+    //         try {
+    //             if(notification.length===0){
+    //                 const res = await reqNoticeList(user_token);
+    //                 console.log(res.notification);
+    //                 // setList(res.notification);
+    //                 dispatch(get_notice(res.notification));
+    //             }
+    //         }
+    //         catch (e) {
+    //             console.error(e);
 
-            }
-        }
-        setLoading(false);
-    }, []);
+    //         }
+    //     }
+    //     setLoading(false);
+    // }, [notification]);
 
-    useEffect(() => {
-        getNoticeList();
-    }, [getNoticeList]);
+    // useEffect(() => {
+    //     getNoticeList();
+    // }, [getNoticeList]);
 
     useEffect(() => {
         confirmChecked();
@@ -142,7 +138,7 @@ const NoticeContainer = () => {
                 <div className={styles['total']}>
                     <Button
                         className={cn('read-btn', {
-                            available: availableTotal,
+                            available: !availableTotal,
                         })}
                         onClick={onAllChecked}
                     >
@@ -151,7 +147,7 @@ const NoticeContainer = () => {
                 </div>
             </TitleBar>
             <div className={styles['container']}>
-                <NoticeList onChecked={onChecked} listData={list} onRemove={onRemove} />
+                <NoticeList onChecked={onChecked} listData={notification} onRemove={onRemove} />
             </div>
         </>
     );

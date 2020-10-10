@@ -15,6 +15,7 @@ const cx = cn.bind(styles);
 const Title = () => {
     const { user } = useSelector((state) => state.auth);
     const { addr1 } = useSelector((state) => state.address);
+    const {notice_check} = useSelector((state)=>state.notice);
     const history = useHistory();
     /* 
         사용자가 마지막으로 선택한 배달지를 
@@ -34,7 +35,7 @@ const Title = () => {
                 <div className={styles['app-title-content']}>
                     <div className={cx('notice')}>
                         {user &&
-                               <div className={cx('app-title-notification', 'unread')} onClick={onClickNotice} >
+                               <div className={cx('app-title-notification',{unread:!notice_check})} onClick={onClickNotice} >
                                <img src={notificationBellImage} alt="notification-bell"/>
                            </div>
                         }

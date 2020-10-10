@@ -1,90 +1,76 @@
 import React, { useState, useEffect, useCallback } from 'react';
+//hooks
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useScroll } from '../../hooks/useScroll';
+
+//paths
 import { Paths } from 'paths';
-import styles from './Reserve.module.scss';
+
+//styles
+import styles from './Breakfast.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message';
-import CustomItemList from 'components/item/CustomItemList';
-import PreferModal from 'components/modal/PreferModal';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from 'react-swipeable-views';
-import { getPreferMenuList, getMenuList } from '../../api/menu/menu';
-import { getCategory } from '../../api/category/category';
 import TabTests from '../../components/tab/SwiperTabs';
-import produce from 'immer';
-import {
-    get_catergory,
-    get_menulist,
-    add_menuitem,
-} from '../../store/product/product';
 
-import { useScroll } from '../../hooks/useScroll';
+//api
+import { getBreakCategory, getBreakMenu } from '../../api/break_fast/break_fast';
+
+//store
+import {
+    get_break_category,
+    get_break_menuList,
+    add_break_menuitem,
+} from '../../store/product/breakfast';
+
 
 const OFFSET = 8;
 const LIMIT = 8;
 
 
-const ReserveContainer = ({ menu }) => {
+const BreakfastContainer = ({ menu }) => {
 
-    const { categorys, items } = useSelector((state) => state.product);
-    const { addr1 } = useSelector((state) => state.address);
+    const { categorys, items } = useSelector((state) => state.breakfast);
     const { store } = useSelector((state) => state.store);
 
     const dispatch = useDispatch();
-    const [open, setOpen] = useState(false);
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const [title, setTitle] = useState('추천메뉴');
+    const [title, setTitle] = useState('');
     const [tabIndex, setTabIndex] = useState(menu);
-
-    const [preferList, setPreferMenuList] = useState([]);
-    const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
 
     const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
 
     const onChangeTabIndex = useCallback(
         (index) => {
-            history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
+            history.push(`${Paths.ajoonamu.breakfast}?menu=${index}`);
         },
         [history],
     );
     const onChangeSwiperIndex = useCallback(
         (index) => {
-            history.push(`${Paths.ajoonamu.shop}?menu=${index}`);
+            history.push(`${Paths.ajoonamu.breakfast}?menu=${index}`);
         },
         [history],
     );
-    //맞춤 주문 설정
-    const onClickCustomOrder = async (budget ,desireQuan) => {
-        setOpen(false);
-        setLoading(true);
-        try {
-            const res = await getPreferMenuList(0, 100, 0, 100, 1, budget, desireQuan, addr1, store.shop_id);
-            console.log(res);
-            setPreferMenuList(res.items_prefer);
-            setGeneralMenuList(res.items_general);
-
-        } catch (e) {}
-        setLoading(false);
-    };
-
 
     //첫 로딩시 카테고리 받아오기
-    const getCategoryList = useCallback(async () => {
-        //카테고리 길이가 1이면 받아오기.
+    const callBreakCategoryApi = useCallback(async () => {
+        console.log('카테고리 받아오기');
+        console.log(categorys);
         if (categorys.length === 0) {
             try {
-                const res = await getCategory();
+                const res = await getBreakCategory();
                 console.log(res);
-                dispatch(get_catergory(res));
+                dispatch(get_break_category(res.data.query.categorys));
             } catch (e) {
                 console.error(e);
             }
@@ -92,7 +78,7 @@ const ReserveContainer = ({ menu }) => {
     }, []);
 
     //첫 로딩시 메뉴 받아오기
-    const getProductList = useCallback(async () => {
+    const callBreakMenuListApi = useCallback(async () => {
         console.log('설마 이걸 다시 받아오냐');
         setLoading(true);
         console.log('시작');
@@ -103,7 +89,7 @@ const ReserveContainer = ({ menu }) => {
                 console.log('들어옴');
                 for (let i = 0; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
-                    const result = await getMenuList(
+                    const result = await getBreakMenu(
                         ca_id,
                         0,
                         LIMIT,
@@ -116,7 +102,7 @@ const ReserveContainer = ({ menu }) => {
                     };
                     arr.push(temp);
                 }
-                dispatch(get_menulist(arr));
+                dispatch(get_break_menuList(arr));
             }
         } catch (e) {
             console.error(e);
@@ -131,13 +117,12 @@ const ReserveContainer = ({ menu }) => {
                 console.log('페이지네이션 실행');
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (
-                    tabIndex !== 0 &&
                     categorys.length !== 0 &&
                     items &&
                     store
                 ) {
-                    const res = await getMenuList(
-                        categorys[tabIndex-1].ca_id,
+                    const res = await getBreakMenu(
+                        categorys[tabIndex].ca_id,
                         offset,
                         LIMIT,
                         store.shop_id,
@@ -151,8 +136,8 @@ const ReserveContainer = ({ menu }) => {
                         setOffset(offset + LIMIT);
 
                         dispatch(
-                            add_menuitem({
-                                ca_id: categorys[tabIndex-1].ca_id,
+                            add_break_menuitem({
+                                ca_id: categorys[tabIndex].ca_id,
                                 items: get_list,
                             }),
                         );
@@ -198,16 +183,16 @@ const ReserveContainer = ({ menu }) => {
 
     //첫 로딩시 카테고리 셋팅
     useEffect(() => {
-        getCategoryList();
+        callBreakCategoryApi();
         window.scrollTo(0, 0);
     }, []);
 
     // 첫 로딩시 메뉴 셋팅
     useEffect(() => {
         if (!isPaging) {
-            getProductList();
+            callBreakMenuListApi();
         }
-    }, [getProductList, isPaging]);
+    }, [callBreakMenuListApi, isPaging]);
 
     //탭 바뀌었을때 오프셋 갱신
     useEffect(() => {
@@ -260,13 +245,8 @@ const ReserveContainer = ({ menu }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
         if (categorys.length !== 0) {
-            if(tabIndex===0) {
-                setTitle('추천메뉴');
-            }
-            else{
-                const title = categorys[tabIndex-1].ca_name;
-                setTitle(title);
-            }
+            const title = categorys[tabIndex].ca_name;
+            setTitle(title);
         }
     }, [tabIndex, history, categorys]);
     //스크롤 끝과 페이징중인지 확인후 페이지네이션 실행.
@@ -290,14 +270,7 @@ const ReserveContainer = ({ menu }) => {
                                 <TabTests
                                     idx={tabIndex}
                                     onChange={onChangeTabIndex}
-                                    categorys ={
-                                        produce(categorys, draft=>{
-                                            draft.unshift({
-                                                ca_name:'추천메뉴'
-                                            })
-                                        })
-
-                                    }
+                                    categorys ={categorys}
                                 />
                             )}
                             <div className={styles['container']}>
@@ -308,38 +281,9 @@ const ReserveContainer = ({ menu }) => {
                                     index={tabIndex}
                                     className={styles['test']}
                                 >
-                                    <>
-                                        {preferList.length !== 0 ? (
-                                            <div>
-                                                <div
-                                                    className={styles['title']}
-                                                >
-                                                    맞춤 메뉴
-                                                </div>
-                                                <MenuItemList
-                                                    menuList={preferList}
-                                                    onClick={onClickMenuItem}
-                                                />
-                                            </div>
-                                        ) : (
-                                            <Message
-                                                msg={
-                                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
-                                                }
-                                                isButton={true}
-                                                onClick={handleOpen}
-                                                buttonName={'맞춤 주문 하기'}
-                                            />
-                                        )}
-                                    </>
                                     {items && renderSwiperItem()}
                                 </SwipeableViews>
                             </div>
-                            <PreferModal
-                                open={open}
-                                handleClose={handleClose}
-                                onCustomOrder={onClickCustomOrder}
-                            />
                             <CartLink />
                         </>
                     ) : (
@@ -360,4 +304,4 @@ const ReserveContainer = ({ menu }) => {
         </>
     );
 };
-export default ReserveContainer;
+export default BreakfastContainer;

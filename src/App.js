@@ -6,7 +6,7 @@ import './styles/global.scss';
 import { Paths } from 'paths';
 import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
-    FindEmail, FindPassword, Home, Account, Address, Reserve, DetailMenu,
+    FindEmail, FindPassword, Home, Account, Address, Reserve, Breakfast,DetailMenu,
     Cart, Order, OrderList, OrderComplete, OrderDetail, Coupon,
     Support, Notice, Event , UpdateName,UpdatePassword,UpdatePhone,ErrorPage,Tos,OAuth
 } from 'pages';
@@ -22,6 +22,7 @@ import BottomNav from './components/nav/BottomNav';
 import { noAuthGetNearStore } from './api/noAuth/store';
 import { getActiveAddr } from './api/address/address';
 import { getNearStore } from './api/store/store';
+import { reqNoticeList} from './api/notice';
 
 //hooks
 import {useInit} from './hooks/useStore';
@@ -29,14 +30,15 @@ import { useUrl } from './hooks/useStore';
 
 //store
 import { get_user_info } from './store/auth/auth';
+import {get_notice,read_check} from './store/notice/notice';
 
 
 function App() {
     useUrl();
+
     const dispatch = useDispatch();
     const initStore = useInit();
     const location = useLocation();
-
 
     const GetInfo = async () => {
         const token = sessionStorage.getItem('access_token');
@@ -51,6 +53,7 @@ function App() {
             else{
                 initStore();
             }
+            GetNotification(token);
         } else {
             const noAuth = JSON.parse(localStorage.getItem('noAuthAddrs'));
             if (noAuth) {
@@ -65,6 +68,21 @@ function App() {
                     initStore();
                 }
             }
+        }
+    };
+
+    const GetNotification = async (token) => {
+
+        try {
+            const res = await reqNoticeList(token);
+            console.log(res.notification);
+            // setList(res.notification);
+            const index =res.notification.findIndex((item) =>!item.not_read_datetime);
+            console.log(index===-1);
+            dispatch(read_check(index===-1));
+            dispatch(get_notice(res.notification));
+        } catch (e) {
+            console.error(e);
         }
     };
 
@@ -155,15 +173,17 @@ function App() {
         }
         else if(pathname==='/account'){
             return  <BottomNav/>
-
         }
+
         else if(pathname==='/coupon'){
             return  <BottomNav/>
 
         }
         else if(pathname==='/shop'){
             return  <BottomNav/>
-
+        }
+        else if(pathname==='/breakfast'){
+            return  <BottomNav/>
         }
         else if(pathname==='/order_list'){
             return  <BottomNav/>
@@ -217,6 +237,7 @@ function App() {
                 <Route path={Paths.ajoonamu.mypage} component={MyPage} ></Route>
                 <Route path={Paths.ajoonamu.product} exact component={DetailMenu}></Route>
                 <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
+                <Route path={Paths.ajoonamu.breakfast} component={Breakfast}></Route>
                 <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
                 <Route path={Paths.ajoonamu.order} component={Order}></Route>
                 <Route path={Paths.ajoonamu.order_list} component={OrderList}></Route>

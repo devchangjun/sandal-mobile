@@ -12,6 +12,7 @@ export const Paths = {
         find_email :'/find_email',
         find_password : '/find_password',
         shop: '/shop',
+        breakfast: '/breakfast',
         product:'/product',
         mypage: '/mypage',
         account: '/account',

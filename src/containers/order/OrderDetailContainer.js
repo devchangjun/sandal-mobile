@@ -45,7 +45,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 res = await noAuthOrderView(order_id);
             }
 
-            const { orders } = res;
+            const { orders,payinfo } = res;
             if (orders === undefined) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',
@@ -57,6 +57,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 setError(true);
             } else {
                 setOrders(orders);
+                setPayinfo(payinfo);
                 setSuccess(true);
                 setError(false);
             }

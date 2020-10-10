@@ -16,6 +16,7 @@ export { default as Home } from './main/Home';
 export { default as Address } from './address/Address';
 
 export {default as Reserve} from './shop/Reserve';
+export {default as Breakfast} from './breakfast/Breakfast';
 export {default as DetailMenu} from './shop/DetailMenu'; 
 export {default as Cart} from './cart/Cart';
 export {default as Order} from './order/Order';

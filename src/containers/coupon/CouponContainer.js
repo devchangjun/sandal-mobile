@@ -28,6 +28,7 @@ import produce from 'immer';
 //lib
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
+import { calculateDate } from '../../lib/calculateDate';
 
 
 
@@ -56,8 +57,10 @@ const CouponConatiner = ({ tab = '0' }) => {
     const history = useHistory();
     const myCouponTitle = useRef(null);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [startDate, setStartDate] = useState(
+        calculateDate(new Date(), 7, 'DATE'),
+    );
+    const [endDate, setEndDate] = useState(new Date());
     const user_token = useStore();
 
     const [index, setIndex] = React.useState(parseInt(tab));
@@ -92,12 +95,8 @@ const CouponConatiner = ({ tab = '0' }) => {
             try {
                 const res = await getMyCoupons(user_token);
                 setCpList(res);
-                setSuccess(true);
-            }
-
-            catch (e) {
+            } catch (e) {
                 console.error(e);
-                setError(true);
             }
         }
         setLoading(false);
@@ -295,7 +294,13 @@ const CouponConatiner = ({ tab = '0' }) => {
                     </div>
                 </>
             )}
-        <BottomModal open={open} handleClose={handleClose} />
+            <BottomModal
+                startDate={startDate} setStartDate={setStartDate}
+                endDate={endDate} setEndDate={setEndDate}
+                open={open} handleClose={handleClose}
+                // onClick={getOrderItems}
+                onClick={() => {}}
+            />
         </>
     );
 }

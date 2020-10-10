@@ -13,6 +13,7 @@ import Loading from '../../components/asset/Loading';
 import { IconButton } from '@material-ui/core';
 import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
+import { calculateDate } from '../../lib/calculateDate';
 
 const tabInit = [
     {
@@ -29,9 +30,13 @@ const OrderListContainer = ({ tab = '0' }) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
-    const [order_list, setOrderList] = useState([]);
-    const [dlvList, setDlvList] = useState([]);
+    // const [order_list, setOrderList] = useState([]);
+    // const [dlvList, setDlvList] = useState([]);
     const [reserveList, setReserveList] = useState([]);
+    const [startDate, setStartDate] = useState(
+        calculateDate(new Date(), 7, 'DATE'),
+    );
+    const [endDate, setEndDate] = useState(new Date());
     const user_token = useStore();
     const history = useHistory();
 
@@ -48,23 +53,24 @@ const OrderListContainer = ({ tab = '0' }) => {
     const getOrderItems = async () => {
         setLoading(true);
         if (user_token) {
-            const res = await getOrderList(user_token);
-            console.log('주문내역 확인');
-            console.log(res);
-            if (res.data.query.length !== 0) {
-                const { orders } = res.data.query;
-                const reserve = orders.filter(
-                    (item) => item.info.order_type === 'reserve',
-                );
-                setReserveList(reserve);
-            }
+            const res = await getOrderList(user_token,
+                0, 100,
+                // (page - 1) * PAGE_PER_VIEW,
+                // PAGE_PER_VIEW,
+                startDate,
+                endDate,
+            );
+            const orders = res.orders ? res.orders : [];
+            const reserve = orders.filter(
+                (item) => item.info.order_type === 'reserve',
+            );
+            setReserveList(reserve);
         }
         setLoading(false);
     };
 
     const onClickOrderItem = useCallback(
         (order_id) => {
-            console.log(order_id);
             history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
         },
         [history],
@@ -125,7 +131,12 @@ const OrderListContainer = ({ tab = '0' }) => {
                     </SwipeableViews>
                 </div>
             )}
-            <BottomModal open={open} handleClose={handleClose} />
+            <BottomModal
+                startDate={startDate} setStartDate={setStartDate}
+                endDate={endDate} setEndDate={setEndDate}
+                open={open} handleClose={handleClose}
+                onClick={getOrderItems}
+            />
         </>
     );
 };

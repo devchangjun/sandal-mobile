@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './MenuItem.module.scss';
-import IMG from '../svg/menu/menuitem.png';
 import classNames from 'classnames/bind';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
+import Noimage from '../svg/noimage.png';
 
 const cx = classNames.bind(styles);
 
@@ -11,7 +12,7 @@ const MenuItem = (props) => {
     return (
         <ButtonBase className={styles['menu-item']} onClick={props.onClick}>
             <div className={styles['menu-img']}>
-                <img src={IMG} className={styles['img']} alt="메뉴" />
+                <ErrorCoverImage className={styles['img']} src={props.item_img !== "[]" ? DBImageFormat(props.item_img)[0] : Noimage} alt={"메뉴 이미지"} />
             </div>
             <div className={cx('menu-info', 'pd-box')}>
                 <div className={styles['menu-name']}>{props.item_name}</div>

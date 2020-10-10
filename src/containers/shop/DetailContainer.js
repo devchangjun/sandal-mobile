@@ -6,10 +6,9 @@ import styles from './Detail.module.scss';
 import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
-import Test from 'components/svg/cart/test.png';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/Back';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { getMenuInfo } from '../../api/menu/menu';
 import { addCartItem } from '../../api/cart/cart';
@@ -17,6 +16,8 @@ import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import { noAuthAddCart } from '../../api/noAuth/cart';
 import { IconButton } from '@material-ui/core';
+import ErrorCoverImage from '../../components/asset/ErrorCoverImage';
+import Noimage from '../../components/svg/noimage.png';
 
 const cx = classNames.bind(styles);
 
@@ -159,74 +160,78 @@ const DetailContainer = ({ item_id }) => {
         getMenu();
     },[])
 
-    useEffect(()=>{
+    useEffect(() => {
         menu && setOptionItem();
-        
-    },[menu,setOptionItem])
+    }, [menu, setOptionItem]);
+    console.log(menu);
     return (
         <>
             {loading ? (
                 <Loading open={true} />
             ) : (
                 <>
-                        <div className={styles['container']}>
-                            <div className={styles['menu-img']}>
-                                <img
-                                    className={styles['img']}
-                                    src={Test}
-                                    alt={item_id}
-                                />
-                                <IconButton className={styles['back']}>
-                                    <Back
-                                        onClick={onClickBack}
-                                        stroke={'#fff'}
-                                        strokeWidth={'3'}
-                                    />
-                                </IconButton>
-                            </div>
-                            <div className={styles['detail-view']}>
-                                <div className={styles['menu-info']}>
-                                    <div className={styles['menu-name']}>
-                                        {menu && menu.item.item_name}
-                                    </div>
-                                    <div className={styles['menu-explan']}>
-                                       {menu && menu.item.item_sub}
-                                    </div>
-                                    <div className={styles['cost-count']}>
-                                        <div className={styles['cost']}>
-                                            {menu && numberFormat(menu.item.item_price)}원
-                                            
-                                        </div>
-                                        <div className={styles['count']}>
-                                            <Counter
-                                                value={quanity}
-                                                onDecrement={onDecrement}
-                                                onIncrement={onIncrement}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={cx('title')}>추가 선택</div>
-                                <div className={styles['menu-info']}>
-                                    <div className={styles['item-text']}>
-                                        {menu && menu.options &&
-                                            <AdditionalList
-                                                itemList={menu && menu.options}
-                                                onClickAddItem={onClickOptionItem}
-                                            />
-                                        }
-                            
-                                    </div>
-                                </div>
-                            </div>
-                            <Button
-                                title={`${quanity}개 담기(${numberFormat(
-                                    (menu &&  menu.item.item_price * quanity) + (option_total * quanity),
-                                )}원)`}
-                                onClick={onClickCart}
-                                toggle={true}
+                    <div className={styles['container']}>
+                        <div className={styles['menu-img']}>
+                            <ErrorCoverImage
+                                className={styles['img']}
+                                src={
+                                    menu ? menu.item.item_img !== '[]'
+                                        ? DBImageFormat(menu.item.item_img)[0]
+                                        : Noimage: Noimage
+                                }
+                                alt={'메뉴 이미지'}
                             />
+                            <IconButton
+                                className={styles['back']}
+                                onClick={onClickBack}
+                            >
+                                <Back stroke={'#fff'} strokeWidth={'3'} />
+                            </IconButton>
                         </div>
+                        <div className={styles['detail-view']}>
+                            <div className={styles['menu-info']}>
+                                <div className={styles['menu-name']}>
+                                    {menu && menu.item.item_name}
+                                </div>
+                                <div className={styles['menu-explan']}>
+                                    {menu && menu.item.item_sub}
+                                </div>
+                                <div className={styles['cost-count']}>
+                                    <div className={styles['cost']}>
+                                        {menu &&
+                                            numberFormat(menu.item.item_price)}
+                                        원
+                                    </div>
+                                    <div className={styles['count']}>
+                                        <Counter
+                                            value={quanity}
+                                            onDecrement={onDecrement}
+                                            onIncrement={onIncrement}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={cx('title')}>추가 선택</div>
+                            <div className={styles['menu-info']}>
+                                <div className={styles['item-text']}>
+                                    {menu && menu.options && (
+                                        <AdditionalList
+                                            itemList={menu && menu.options}
+                                            onClickAddItem={onClickOptionItem}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <Button
+                            title={`${quanity}개 담기(${numberFormat(
+                                (menu && menu.item.item_price * quanity) +
+                                    option_total * quanity,
+                            )}원)`}
+                            onClick={onClickCart}
+                            toggle={true}
+                        />
+                    </div>
                 </>
             )}
         </>

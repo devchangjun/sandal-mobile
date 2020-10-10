@@ -2,15 +2,17 @@ import React from 'react';
 import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
-import cart from '../svg/cart/cart.png';
-import { numberFormat } from '../../lib/formatter';
+
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import { IconButton } from '@material-ui/core';
 import Cross from '../svg/counter/Cross';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
+import Noimage from '../svg/noimage.png';
 
 // 메뉴이름, 추가옵션
 const CartItem = (props) => {
-    const { item_name, item_price, item_quanity,cart_id } = props.item;
-    const {id}  =props;
+    const { item_name, item_price, item_quanity, cart_id, item_img } = props.item;
+    const { id } = props;
     const options = props.options;
 
 
@@ -28,7 +30,7 @@ const CartItem = (props) => {
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
                         <div className={styles['item-img']}>
-                            <img src={cart} alt={item_name} />
+                            <ErrorCoverImage className={styles['img']} src={item_img !== "[]" ? DBImageFormat(item_img)[0] : Noimage} alt={"메뉴 이미지"} />
                         </div>
                         <div className={styles['item-info']}>
                             <div className={styles['bar']}>

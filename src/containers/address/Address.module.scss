@@ -2,7 +2,6 @@
 
 .container {
     @include wireframe(40px);
-
     .title {
         font-size: 18px;
         font-weight: bold;

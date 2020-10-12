@@ -7,7 +7,6 @@ const cx = classNames.bind(styles);
 
 // fixed button
 const Button = ({ title, onClick, toggle }) => {
-
     return (
         <ButtonBase className={cx('btn', { on: toggle })} onClick={toggle ? onClick : ()=>{}}>
             {title}

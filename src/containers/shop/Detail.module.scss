@@ -10,6 +10,7 @@
     img {
         @include animation(0.5s, fadeIn);
         width: 100%;
+        height: 368px;
     }
     .back {
         z-index: 100;

@@ -29,6 +29,7 @@ import { getNearStore } from '../../api/store/store';
 import { localLogin } from '../../api/auth/auth';
 import {kakaoLogin} from '../../api/social';
 import { reqNoticeList} from '../../api/notice';
+import {getMobileOperatingSystem} from '../../api/OS/os';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
@@ -116,6 +117,16 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
+    const LoginOs =()=>{
+        const login_os = getMobileOperatingSystem();
+        console.log(login_os);
+        if(login_os ==='Android'){
+            if(typeof window.myJs !=='undefined'){
+                window.myJs.requsetToken();
+            }
+        }
+    }
+
     const onClickLogin = useCallback(async () => {
         if (!isEmailForm(email)) {
             openModal(
@@ -151,6 +162,7 @@ const SignInContainer = () => {
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
+                        LoginOs();
                         // window.myJS.requestToken();
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
@@ -207,14 +219,14 @@ const SignInContainer = () => {
     };
 
 
-    const kakaoLoginClickHanler =()=>{
+    const kakaoLoginClickHandler =()=>{
         window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
     }
 
     const naverLoginClickHandler =()=>{
         window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
-
     }
+
     useEffect(() => {
         const btnToggle =
             email.length !== 0 && password.length !== 0 ? true : false;
@@ -290,7 +302,7 @@ const SignInContainer = () => {
                                 <img src={NaverLogo} alt="naver" onClick={naverLoginClickHandler}></img>
                             </div>
                             <div className={styles['sns']}>
-                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHanler}></img>
+                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>
                                 {/* 
                                 <KakaoButton
                                     jsKey={'122df6d8b0bf2538b90ad7183a949975'}

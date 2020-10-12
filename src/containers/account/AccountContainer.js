@@ -98,9 +98,8 @@ const AccountContainer = () => {
                     agreeMail={user.agree_mail}
                     agreeSMS={user.agree_sms}
                 />
-
-                <div className={styles['logout']} onClick={onClickLogout}>
-                    <Button className={styles['logout-btn']}>
+                <div className={styles['logout']} >
+                    <Button className={styles['logout-btn']} onClick={onClickLogout}>
                         <div className={styles['pd-btn']}>로그아웃</div>
                     </Button>
                 </div>

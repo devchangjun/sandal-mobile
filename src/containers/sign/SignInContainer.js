@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { Paths } from 'paths';
+import { Paths,PROTOCOL_ENV } from 'paths';
 // styles
 import styles from './Sign.module.scss';
 import classNames from 'classnames/bind';
@@ -151,6 +151,7 @@ const SignInContainer = () => {
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
+                        // window.myJS.requestToken();
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
                         const active_addr = await getActiveAddr(res.data.access_token);
@@ -207,17 +208,12 @@ const SignInContainer = () => {
 
 
     const kakaoLoginClickHanler =()=>{
+        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
+    }
 
-        window.location='http://devapi.ajoonamu.com/api/user/kakao?device=mobile';
-        // const url = "https://kauth.kakao.com/oauth/authorize?client_id=122df6d8b0bf2538b90ad7183a949975&redirect_uri=http://localhost:3000/login&response_type=code";
-        // window.location=url;
-        // Kakao.Auth.login({
-        //     success: function(authObj,test){
-        //         console.log('성공');
-        //         console.log(authObj);
-        //         console.log(test);
-        //     }
-        // })
+    const naverLoginClickHandler =()=>{
+        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
+
     }
     useEffect(() => {
         const btnToggle =
@@ -291,7 +287,7 @@ const SignInContainer = () => {
                         </div>
                         <div className={styles['social']}>
                             <div className={styles['sns']}>
-                                <img src={NaverLogo} alt="naver"></img>
+                                <img src={NaverLogo} alt="naver" onClick={naverLoginClickHandler}></img>
                             </div>
                             <div className={styles['sns']}>
                                    <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHanler}></img>

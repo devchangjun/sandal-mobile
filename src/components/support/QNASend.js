@@ -5,7 +5,7 @@ import styles from './QNASend.module.scss';
 
 const cn = classNames.bind(styles);
 
-const QNASend = ({ state, onChange, files, setFiles, onSubmit }) => {
+const QNASend = ({ state, onChange, files, setFiles, onSubmit, isUpdate }) => {
     const { title, content, email } = state;
 
     const onChangeFiles = useCallback(e => {
@@ -60,7 +60,7 @@ const QNASend = ({ state, onChange, files, setFiles, onSubmit }) => {
             </div>
             <div className={styles['submit-area']}>
                 <Button onClick={onSubmit}>
-                    <div className={styles['submit']}>문의하기</div>
+                    <div className={styles['submit']}>{isUpdate ? "수정하기" : "문의하기"}</div>
                 </Button>
             </div>
         </div>

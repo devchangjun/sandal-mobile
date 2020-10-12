@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -105,39 +106,37 @@ const FullScreenDialog = (props) => {
 
 
     return (
-        <div>
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition} className={classes.container}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton className={classes.close} color="inherit" onClick={onClickCancle} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            할인 쿠폰
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <div className={styles['pd-box']}>
-                    <div className={styles['coupon']}>
-                        <div className={styles['title']}>쿠폰 선택</div>
-                        <div className={styles['coupon-list']}>
-                            {cp_list.length!==0 ? 
-                                   <OrderCouponItemList
-                                   onClick={onClickSelectCoupon}
-                                   cp_list={cp_list}
-                               />
-                               :
-                               <Message
-                                msg={"보유하고 있는 쿠폰이 없습니다."}
-                                />
-                            }   
-                     
-                        </div>
+        <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition} className={classes.container}>
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton className={classes.close} color="inherit" onClick={onClickCancle} aria-label="close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        할인 쿠폰
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <div className={styles['pd-box']}>
+                <div className={styles['coupon']}>
+                    <div className={styles['title']}>쿠폰 선택</div>
+                    <div className={styles['coupon-list']}>
+                        {cp_list.length!==0 ? 
+                                <OrderCouponItemList
+                                onClick={onClickSelectCoupon}
+                                cp_list={cp_list}
+                            />
+                            :
+                            <Message
+                            msg={"보유하고 있는 쿠폰이 없습니다."}
+                            />
+                        }   
+                    
                     </div>
                 </div>
-                <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
-            </Dialog>
-        </div>
+            </div>
+            <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
+        </Dialog>
     );
 };
 

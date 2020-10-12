@@ -137,6 +137,7 @@ const DetailContainer = ({ item_id }) => {
                                 () => {
                                     history.push(Paths.ajoonamu.cart);
                                 },
+                                () => {},
                                 true,
                             );
                         }
@@ -148,6 +149,7 @@ const DetailContainer = ({ item_id }) => {
                         () => {
                             history.push(Paths.ajoonamu.address);
                         },
+                        () => {},
                         true,
                     );
                 }

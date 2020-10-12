@@ -22,10 +22,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
-        paddingLeft: 24,
-        paddingRight: 24,
     },
     title: {
         textAlign: 'center',
@@ -49,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         position: 'absolute',
-        left: 0,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -100,79 +99,77 @@ const FullScreenDialog = (props) => {
     }
 
     return (
-        <div>
-            <Dialog
-                fullScreen
-                open={props.open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                            className={classes.close}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            맞춤주문
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <div className={styles['title']}>주문 종류</div>
+        <Dialog
+            fullScreen
+            open={props.open}
+            onClose={handleClose}
+            TransitionComponent={Transition}
+        >
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton
+                        color="inherit"
+                        onClick={handleClose}
+                        aria-label="close"
+                        className={classes.close}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        맞춤주문
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <div className={styles['title']}>주문 종류</div>
 
-                <DialogContent className={classes.content}>
-                    <div className={styles['modal-input-box']}>
-                        <form>
-                            <select
-                                value={orderType}
-                                onChange={onChangeOrderType}
-                            >
-                                <option value="reserve">예약주문</option>
-                                <option value="delivery">배달주문</option>
-                            </select>
-                        </form>
-                    </div>
-                </DialogContent>
-                <div className={styles['title']}>전체 예산</div>
-                <DialogContent className={classes.content}>
-                    <div className={styles['modal-input-box']}>
-                        <input
-                            value={numberFormat(budget)}
-                            type="text"
-                            onChange={onChangeBudget} />
-                        <div className={styles['won']}>원</div>
-                    </div>
-                </DialogContent>
-                <div className={styles['title']}>희망 수량</div>
-                <DialogContent className={classes.content}>
-                    <div className={styles['counter']}>
-                        <IconButton
-                            style={{ left: 0 }}
-                            className={styles['box']}
-                            onClick={onDecrement}
+            <DialogContent className={classes.content}>
+                <div className={styles['modal-input-box']}>
+                    <form>
+                        <select
+                            value={orderType}
+                            onChange={onChangeOrderType}
                         >
-                            <img src={Minus} alt="minus" />
-                        </IconButton>
-                        <div className={styles['value']}>
-                            {desireQuan}
-                        </div>
-                        <IconButton
-                            style={{ right: 0 }}
-                            className={styles['box']}
-                            onClick={onIncrement}
-                        >
-                            <img src={Plus} alt="plus" />
-                        </IconButton>
+                            <option value="reserve">예약주문</option>
+                            <option value="delivery">배달주문</option>
+                        </select>
+                    </form>
+                </div>
+            </DialogContent>
+            <div className={styles['title']}>전체 예산</div>
+            <DialogContent className={classes.content}>
+                <div className={styles['modal-input-box']}>
+                    <input
+                        value={numberFormat(budget)}
+                        type="text"
+                        onChange={onChangeBudget} />
+                    <div className={styles['won']}>원</div>
+                </div>
+            </DialogContent>
+            <div className={styles['title']}>희망 수량</div>
+            <DialogContent className={classes.content}>
+                <div className={styles['counter']}>
+                    <IconButton
+                        style={{ left: 0 }}
+                        className={styles['box']}
+                        onClick={onDecrement}
+                    >
+                        <img src={Minus} alt="minus" />
+                    </IconButton>
+                    <div className={styles['value']}>
+                        {desireQuan}
                     </div>
-                </DialogContent>
+                    <IconButton
+                        style={{ right: 0 }}
+                        className={styles['box']}
+                        onClick={onIncrement}
+                    >
+                        <img src={Plus} alt="plus" />
+                    </IconButton>
+                </div>
+            </DialogContent>
 
-                <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
-            </Dialog>
-        </div>
+            <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
+        </Dialog>
     );
 };
 

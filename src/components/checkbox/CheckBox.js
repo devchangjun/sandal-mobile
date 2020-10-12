@@ -6,7 +6,7 @@ import Check from 'components/svg/sign/Check';
 const cx = classNames.bind(styles);
 
 
-export default function CheckBox({ id, text, check, onChange, url, }) {
+export default function CheckBox({ id, text, check, onChange, onClick }) {
     return (
         <div className={cx('check', 'item')}>
             <div className={cx('sub-text')}>
@@ -15,9 +15,9 @@ export default function CheckBox({ id, text, check, onChange, url, }) {
                     <Check on={check} />{text}
                 </label>
             </div>
-            {url &&
-                <div className={styles['sub-text']}>
-                    <label>보기 </label>
+            {onClick &&
+                <div className={styles['sub-text']} onClick={onClick}>
+                    <label className={styles['more']}>보기 </label>
                 </div>}
         </div>
     )

@@ -8,9 +8,10 @@ import styles from './Sign.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import SignAuthInput from 'components/sign/SignAuthInput';
 import Button from 'components/button/Button';
-import {useModal} from '../../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 import CheckBox from 'components/checkbox/CheckBox';
 import { isEmailForm, isPasswordForm } from '../../lib/formatChecker';
+import AgreeModal from '../../components/modal/AgreeModal';
 import AuthPhone from '../../components/sign/AuthPhone';
 
 const cx = classNames.bind(styles);
@@ -247,30 +248,60 @@ const SignUpContainer = () => {
                     onChangeCheck3={onChangeCheck3}
                 />
             </div>
-            <Button title={"가입완료"} onClick={onClickSignUp} toggle={toggle} ></Button>
+            <Button title={"가입 완료"} onClick={onClickSignUp} toggle={toggle} ></Button>
         </>
     );
 };
 
-const AcceptContainer = (props) => (
-    <div className={cx('agree')}>
-        <div className={cx('pd-box', 'border-box')}>
-            <CheckBox id={"all"} text={"모두 동의합니다."} check={props.allCheck} onChange={props.updateAllCheck} />
-        </div>
-        <div className={styles['terms']}>
-            <div className={cx('pd-sub-top')}>
-                <CheckBox id={"check1"} text={"개인정보처리방침 필수 동의"} check={props.check1} onChange={props.onChangeCheck1} />
-                <CheckBox id={"check2"} text={"이용약관 필수 동의"} check={props.check2} onChange={props.onChangeCheck2} />
-                <CheckBox id={"check3"} text={"이벤트, 알림 선택 동의"} check={props.check3} onChange={props.onChangeCheck3} />
-                <div className={styles['sms']}>
-                    <div className={styles['sub-text']}>
-                        <span>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를</span><br />
-                        <span>받아보실 수 있습니다.</span>
+const AcceptContainer = (props) => {
+    const [title, setTitle] = useState('');
+
+    return (
+        <div className={cx('agree')}>
+            <div className={cx('pd-box', 'border-box')}>
+                <CheckBox
+                    id={'all'}
+                    text={'모두 동의합니다.'}
+                    check={props.allCheck}
+                    onChange={props.updateAllCheck}
+                />
+            </div>
+            <div className={styles['terms']}>
+                <div className={cx('pd-sub-top')}>
+                    <CheckBox
+                        id={'check1'}
+                        text={'개인정보처리방침 필수 동의'}
+                        check={props.check1}
+                        onChange={props.onChangeCheck1}
+                        onClick={() => setTitle('개인정보처리방침')}
+                    />
+                    <CheckBox
+                        id={'check2'}
+                        text={'이용약관 필수 동의'}
+                        check={props.check2}
+                        onChange={props.onChangeCheck2}
+                        onClick={() => setTitle('이용약관')}
+                    />
+                    <CheckBox
+                        id={'check3'}
+                        text={'이벤트, 알림 선택 동의'}
+                        check={props.check3}
+                        onChange={props.onChangeCheck3}
+                    />
+                    <div className={styles['sms']}>
+                        <div className={styles['sub-text']}>
+                            <span>
+                                SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를
+                            </span>
+                            <br />
+                            <span>받아보실 수 있습니다.</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <AgreeModal title={title} handleClose={() => setTitle('')} />
         </div>
-    </div>
-);
+    );
+};
 
 export default SignUpContainer;

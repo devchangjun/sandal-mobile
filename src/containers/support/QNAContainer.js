@@ -8,9 +8,10 @@ import QNASend from '../../components/support/QNASend';
 import QNAList from '../../components/support/QNAList';
 
 import { Paths } from '../../paths';
-import { requestQNAList, requestQNAStore } from '../../api/support/qna';
+import { requestQNADetail, requestQNAList, requestQNAStore, requestQNAUpdate } from '../../api/support/qna';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from 'react-swipeable-views';
+import QNADetailModal from '../../components/modal/QNADetailModal';
 import { useStore } from '../../hooks/useStore';
 import { isEmailForm } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
@@ -28,14 +29,24 @@ const tabInit = [
     },
 ];
 
-function reducer(state, action) {
-    return {
-        ...state,
-        [action.name]: action.value,
-    };
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'ON_CHANGE':
+            return {
+                ...state,
+                [action.name]: action.value,
+            };
+        case 'FULL_CHANGE': 
+            return {
+                ...state,
+                ...action
+            };
+        default:
+            return state;
+    }
 }
 
-const QNAContainer = ({ tab = 'send' }) => {
+const QNAContainer = ({ tab = 'send', query }) => {
     // QNASend
     const history = useHistory();
     const openModal = useModal();
@@ -48,6 +59,7 @@ const QNAContainer = ({ tab = 'send' }) => {
         email: '',
     });
     const [files, setFiles] = useState([]);
+    const [viewId, setViewId] = useState(-1);
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
@@ -57,6 +69,39 @@ const QNAContainer = ({ tab = 'send' }) => {
         const tab = index === 0 ? 'send' : 'list';
         history.replace(`${Paths.ajoonamu.support}/qna/${tab}`);
     };
+
+    const onClickDetailView = useCallback(id => setViewId(id), []);
+    const onCloseDetailView = useCallback(() => setViewId(-1), []);
+
+    const sendQNAUpdate = useCallback(async () => {
+        if (isEmailForm(state.email)) {
+            const { title, content } = state;
+            if (user_token) {
+                setLoading(true);
+                try {
+                    const res = await requestQNAUpdate(user_token, {
+                        id: query,
+                        title,
+                        content,
+                        files,
+                    });
+                    console.log(res);
+                    if (res.data.msg === '성공') {
+                        openModal('수정이 완료되었습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.', () => {
+                            history.replace(`${Paths.ajoonamu.mypage}`);
+                        });
+                    } else {
+                        openModal('수정하는 도중 오류가 발생했습니다!', '다시 시도해 주세요.');
+                    }
+                } catch (e) {
+                    openModal('서버에 오류가 발생하겼습니다!', '잠시 후 다시 시도해 주세요.');
+                }
+                setLoading(false);
+            }
+        } else {
+            openModal('이메일이 형식에 맞지 않습니다!', '확인 후 다시 작성해 주세요.');
+        }
+    }, [state, user_token, query, files, openModal, history]);
 
     const sendQNAItem = useCallback(async () => {
         /*
@@ -83,27 +128,48 @@ const QNAContainer = ({ tab = 'send' }) => {
         }
         setLoading(false);
     }, [state, files, user_token, history, openModal]);
-    const onChange = (e) => dispatch(e.target);
-    const onSubmit = (e) => sendQNAItem();
+    const onChange = ({ target }) => dispatch({ type: 'ON_CHANGE', name: target.name, value: target.value });
     // QNASend
 
     // QNAList
     const [qnaList, setQnaList] = useState([]);
+    const onRemoveList = useCallback(id => setQnaList(list => list.filter(item => item.id !== id)), []);
     const getQNAList = useCallback(async () => {
         /*
             1:1 문의 내역 불러오기
         */
         setLoading(true);
-
         if (user_token) {
             const res = await requestQNAList(user_token);
             const { qnas } = res;
             setQnaList(qnas);
         } else {
-            alert('토큰이 없습니다.');
+            openModal('서버에 오류가 발생하겼습니다!', '잠시 후 다시 시도해 주세요.');
         }
         setLoading(false);
-    }, [user_token]);
+    }, [user_token, openModal]);
+
+    const callGetDetail = useCallback(async () => {
+        setLoading(true);
+        try  {
+            const res = await requestQNADetail(user_token, query);
+            if (res.data.query !== null) {
+                const { subject, question } = res.data.query;
+                dispatch({
+                    type: 'FULL_CHANGE',
+                    title: question,
+                    content: subject
+                });
+            } else {
+                openModal('없거나 삭제된 게시물입니다.', '게시물 번호를 확인해 주세요.');
+                history.replace(`${Paths.ajoonamu.mypage}`);
+            }
+        } catch (e) {
+            openModal('서버에 오류가 발생하겼습니다!', '잠시 후 다시 시도해 주세요.');
+            history.replace(`${Paths.ajoonamu.mypage}`);
+        }
+        setLoading(false);
+    }, [user_token, query, openModal, history]);
 
     useEffect(() => {
         if (tab === 'list') getQNAList();
@@ -113,9 +179,24 @@ const QNAContainer = ({ tab = 'send' }) => {
     useEffect(() => {
         if (tab === 'list') {
             setIndex(1);
+        } else {
+            setIndex(0);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [tab]);
+
+    useEffect(() => {
+        if (query) {
+            callGetDetail();
+        } else {
+            dispatch({
+                type: 'FULL_CHANGE',
+                title: '',
+                content: '',
+                email: ''
+            });
+            setFiles([]);
+        }
+    }, [callGetDetail, query]);
 
     return (
         <>
@@ -134,17 +215,20 @@ const QNAContainer = ({ tab = 'send' }) => {
                             files={files}
                             setFiles={setFiles}
                             onChange={onChange}
-                            onSubmit={onSubmit}
+                            onSubmit={query ? sendQNAUpdate : sendQNAItem}
+                            isUpdate={query}
                         />
                     </div>
                     <div>
                         <QNAList
                             listData={qnaList}
                             emptyMessage="등록된 1:1 문의가 없습니다."
+                            onClick={onClickDetailView}
                         />
                     </div>
                 </SwipeableViews>
             </div>
+            <QNADetailModal onRemove={onRemoveList} USER_TOKEN={user_token} viewId={viewId} handleClose={onCloseDetailView} />
         </>
     );
 };

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -87,7 +88,7 @@ const FullScreenDialog = (props) => {
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
                         결제 방법 선택
-                        </Typography>
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <div className={styles['title']}>결제 방법을 선택해주세요.</div>

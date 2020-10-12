@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
@@ -53,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -199,27 +200,25 @@ export default ({ open, handleClose, order_number, token }) => {
     }, [logo, phrase, order_number, token, openModal, handleClose]);
     
     return (
-        <div>
-            <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton className={classes.close} color="inherit" onClick={handleClose} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            문구 서비스 신청
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <div className={styles['container']}>
-                    {TemplateList.map((template, index) => (
-                        <GuideTemplate key={index} title={template.title}>
-                            {template.content}
-                        </GuideTemplate>
-                    ))}
-                </div>
-                <FixButton title={'신청하기'} onClick={onSubmit} toggle={true}/>
-            </Dialog>
-        </div>
+        <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton className={classes.close} color="inherit" onClick={handleClose} aria-label="close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        문구 서비스 신청
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <div className={styles['container']}>
+                {TemplateList.map((template, index) => (
+                    <GuideTemplate key={index} title={template.title}>
+                        {template.content}
+                    </GuideTemplate>
+                ))}
+            </div>
+            <FixButton title={'신청하기'} onClick={onSubmit} toggle={true}/>
+        </Dialog>
     );
 };

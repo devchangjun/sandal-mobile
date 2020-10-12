@@ -1,7 +1,7 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 
 import FixButton from 'components/button/Button';
-import { numberFormat,stringNumberToInt } from '../../lib/formatter';
+import { numberFormat, stringNumberToInt } from '../../lib/formatter';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
@@ -46,7 +46,8 @@ const useStyles = makeStyles(() => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -56,74 +57,81 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FullScreenDialog = (props) => {
     const classes = useStyles();
-    const [point_price,setPointPrice] = useState(0);
+    const [point_price, setPointPrice] = useState(0);
     const openModal = useModal();
 
-    const onChangePointPrice = (e) =>{
-        const value =stringNumberToInt(e.target.value);
+    const onChangePointPrice = (e) => {
+        const value = stringNumberToInt(e.target.value);
         console.log(value);
-        if(isNaN(value)){
+        if (isNaN(value)) {
             setPointPrice(0);
-        }
-        else{
+        } else {
             setPointPrice(value);
         }
-    }
+    };
 
-    const onClickOk =()=>{
-        console.log(props.user_point);
-        console.log(point_price);
-        if(props.user_point < point_price) {
-            openModal('보유하신 포인트보다 많습니다.','포인트를 확인해주세요');
-        }
-        else{
+    const onClickOk = () => {
+        if (props.user_point < point_price) {
+            openModal('보유하신 포인트보다 많습니다.', '포인트를 확인해주세요');
+        } else {
             props.onChange(point_price);
             props.handleClose();
         }
-
-    }
-    const onClickCancle=()=>{
+    };
+    const onClickCancle = () => {
         setPointPrice(0);
         props.handleClose();
-    }
+    };
 
     return (
-        <div>
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton className={classes.close} color="inherit" onClick={onClickCancle} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            포인트 사용
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <DialogContent className={classes.content}>
-                    <div className={styles['point']}>
-                        <div className={styles['title']}>보유 포인트</div>
-                        <div className={styles['value']}>{props.user_point && numberFormat(props.user_point)}P</div>
+        <Dialog
+            fullScreen
+            open={props.open}
+            onClose={props.handleClose}
+            TransitionComponent={Transition}
+        >
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton
+                        className={classes.close}
+                        color="inherit"
+                        onClick={onClickCancle}
+                        aria-label="close"
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        포인트 사용
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <DialogContent className={classes.content}>
+                <div className={styles['point']}>
+                    <div className={styles['title']}>보유 포인트</div>
+                    <div className={styles['value']}>
+                        {props.user_point && numberFormat(props.user_point)}P
                     </div>
-                </DialogContent>
-                <DialogContent className={classes.content}>
-                    <div className={styles['point-input-box']}>
-                        <div className={styles['title']}>사용할 포인트</div>
-                        <div className={styles['modal-input-box']}>
-                            <input className={styles['point-input']}
-                             type="number"
-                             value={numberFormat(point_price)} 
-                             onChange={onChangePointPrice}></input>
-                            <div className={styles['point-img']}>P</div>
-                        </div>
-                        <div className={styles['sub-title']}>
-                            ※ 5,000P 이상부터 사용 가능합니다.
-                        </div>
+                </div>
+            </DialogContent>
+            <DialogContent className={classes.content}>
+                <div className={styles['point-input-box']}>
+                    <div className={styles['title']}>사용할 포인트</div>
+                    <div className={styles['modal-input-box']}>
+                        <input
+                            className={styles['point-input']}
+                            type="number"
+                            value={numberFormat(point_price)}
+                            onChange={onChangePointPrice}
+                        ></input>
+                        <div className={styles['point-img']}>P</div>
                     </div>
-                </DialogContent>
-                <FixButton title={'확인'} onClick={onClickOk} toggle={true}/>
-            </Dialog>
-        </div>
+                    <div className={styles['sub-title']}>
+                        ※ 5,000P 이상부터 사용 가능합니다.
+                    </div>
+                </div>
+            </DialogContent>
+            <FixButton title={'확인'} onClick={onClickOk} toggle={true} />
+        </Dialog>
     );
 };
 

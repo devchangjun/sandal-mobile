@@ -28,13 +28,12 @@ const useStyles = makeStyles(() => ({
     container: {
         paddingBottom: '60px',
     },
-
     appBar: {
         position: 'relative',
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
-        boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
@@ -69,8 +68,8 @@ const useStyles = makeStyles(() => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
-        zIndex: 2100,
+        width: '40px', height: '40px',
+        left: 14, zIndex: 2100
     },
 }));
 

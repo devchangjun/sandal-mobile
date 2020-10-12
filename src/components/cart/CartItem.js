@@ -15,7 +15,6 @@ const CartItem = (props) => {
     const { id } = props;
     const options = props.options;
 
-
     const totalPrice = () => {
         let price = item_price * item_quanity;
         for (let i = 0; i < options.length; i++) {
@@ -42,7 +41,7 @@ const CartItem = (props) => {
                                 </IconButton>
                             </div>
                             <div className={styles['options']}>
-                                추가선택: {options.length !== 0 ? options.map((op) => op.option_name) : "없음"}
+                                추가선택: {options.length !== 0 ? options.map(op => op.option_name) : "없음"}
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>

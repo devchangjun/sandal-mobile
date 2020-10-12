@@ -47,8 +47,6 @@ const AddressContainer = () => {
     );
 
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [searchAddr, setSearchAddr] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
@@ -56,14 +54,9 @@ const AddressContainer = () => {
     const [position, setPosition] = useState('');
     const [open, setOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
-    const nextId = useRef(3);
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
 
-
-    const onClickDeliveryItem =()=>{
-        
-    }
 
     //검색 아이템 클릭
     const onClickAddrItem = (data, zipNo, index) => {
@@ -158,7 +151,6 @@ const AddressContainer = () => {
 
     // 좌표 변경
     const onClickPosition = useCallback((lat, lng) => {
-        console.log('좌표 변경 완료',lat,lng);
         setPosition({ lat: lat, lng: lng });
     }, []);
 
@@ -189,7 +181,7 @@ const AddressContainer = () => {
     const onRemoveAddr = useCallback(
         (delivery_id) => {
             console.log(delivery_id);
-            openMessage(true, '해당 주소를 삭제하시겠습니까?', '', async () => {
+            openMessage(true, '해당 주소를 삭제하시겠습니까?', '삭제하시면 복구할 수 없습니다.', async () => {
                 if (user_token) {
                     try {
                         const res = await deleteAddr(user_token, delivery_id);
@@ -235,7 +227,7 @@ const AddressContainer = () => {
                 openMessage(
                     true,
                     '선택한 주소지로 설정하시겠습니까?',
-                    '',
+                    '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
                     async () => {
                         if (user_token) {
                             try {
@@ -299,13 +291,13 @@ const AddressContainer = () => {
             openMessage(
                 false,
                 '상세 주소를 입력해주세요',
-                '상세주소가 입력되지 않았습니다.',
+                '상세 주소가 입력되지 않았습니다.',
             );
         } else {
             openMessage(
                 true,
                 '이 주소로 배달지를 설정하시겠습니까?',
-                '',
+                '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
                 async () => {
                     if (user_token) {
                         try {
@@ -616,12 +608,12 @@ const AddressContainer = () => {
                 <>
                     <div className={styles['container']}>
                         <div className={cx('title', 'pd-box')}>
-                            배달 받으실 장소를 입력하세요
+                            배달 받으실 장소를 입력하세요.
                         </div>
                         <div className={cx('addr-input', 'pd-box')}>
                             <input
                                 className={cx('input-box', 'pd-box')}
-                                // placeholder="예) 아주나무동12-3 또는 아주나무 아파트"
+                                placeholder="예) 샌달동 12-3 또는 샌달 아파트"
                                 value={searchAddr}
                                 onChange={onChangeSearchAddr}
                                 onKeyPress={handleKeyPress}

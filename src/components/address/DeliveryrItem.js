@@ -38,7 +38,7 @@ const RoadAddrBox = ({ roadAddr }) => {
     );
 };
 const AddrBtn = () => {
-    return <div className={styles['btn']}>도로명</div>;
+    return <div className={styles['btn']}>상세주소</div>;
 };
 
 export default DeliveryrItem;

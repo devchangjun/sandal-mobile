@@ -4,8 +4,8 @@ import { createAction, handleActions } from 'redux-actions';
 const GET_MENULIST = 'bestmenu/GET_MENULIST';
 const ADD_MENUITEM = 'bestmenu/ADD_MENUITEM';
 
-export const get_menulist = createAction(GET_MENULIST);
-export const add_menuitem = createAction(ADD_MENUITEM);
+export const get_best_menu = createAction(GET_MENULIST);
+export const add_best_menu = createAction(ADD_MENUITEM);
 
 const initState = {
     items: null,

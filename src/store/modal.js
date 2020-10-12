@@ -5,11 +5,12 @@ const CLOSE = 'modal/CLOSE';
 
 export const modalOpen = createAction(
     OPEN,
-    (confirm, title, text, handleClick) => ({
+    (confirm, title, text, handleClick,handleClose) => ({
         confirm,
         title,
         text,
         handleClick,
+        handleClose,
     }),
 );
 
@@ -21,12 +22,13 @@ const initialState = {
     title: '창입니다.',
     text: '내용입니다.',
     handleClick: () => {},
+    handleClose:()=>{},
 };
 
 const modal = handleActions(
     {
         [OPEN]: (state, action) => {
-            const { confirm, title, text, handleClick } = action.payload;
+            const { confirm, title, text, handleClick,handleClose } = action.payload;
             return {
                 ...state,
                 open: true,
@@ -34,6 +36,7 @@ const modal = handleActions(
                 title,
                 text,
                 handleClick,
+                handleClose,
             };
         },
         [CLOSE]: (state, action) => ({

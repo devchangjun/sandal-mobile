@@ -7,6 +7,7 @@ export const getBreakCategory = async()=>{
     const req = Paths.api +`user/item/breakfast_cate`;
     axios.defaults.baseURL = req;
     const res = await axios.get();
+    console.log(res);
     return res;
 }
 

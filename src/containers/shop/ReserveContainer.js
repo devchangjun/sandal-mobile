@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Reserve.module.scss';
+
+//components
 import TitleBar from 'components/titlebar/TitleBar';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message';
@@ -10,16 +12,22 @@ import PreferModal from 'components/modal/PreferModal';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from 'react-swipeable-views';
+import TabTests from '../../components/tab/SwiperTabs';
+
+//api
 import { getPreferMenuList, getMenuList } from '../../api/menu/menu';
 import { getCategory } from '../../api/category/category';
-import TabTests from '../../components/tab/SwiperTabs';
 import produce from 'immer';
+
+//store
 import {
     get_catergory,
     get_menulist,
     add_menuitem,
 } from '../../store/product/product';
 
+
+//hooks
 import { useScroll } from '../../hooks/useScroll';
 
 const OFFSET = 8;
@@ -121,6 +129,30 @@ const ReserveContainer = ({ menu }) => {
         }
         setLoading(false);
     }, [categorys, store, items, dispatch]);
+
+
+    const getMenuToCategory = useCallback(async () => {
+        try {
+            if (tabIndex !== 0 && store) {
+                const { ca_id } = categorys[tabIndex - 1];
+                const result = await getMenuList(
+                    ca_id,
+                    0,
+                    LIMIT,
+                    store.shop_id,
+                );
+
+                const temp = {
+                    ca_id: ca_id,
+                    items: result.data.query.items,
+                };
+                // dispatch(get_menulist(temp));
+                console.log(temp);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }, [tabIndex, store, categorys]);
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
@@ -273,7 +305,10 @@ const ReserveContainer = ({ menu }) => {
             PageNationMenuList();
         }
     }, [isScrollEnd]);
-
+    
+    useEffect(()=>{
+        getMenuToCategory();
+    },[getMenuToCategory])
     return (
         <>
             <TitleBar title={title} isHome={true} />

@@ -130,9 +130,6 @@ function App() {
         else if(pathname==='/address'){
             return '주소 설정'
         }
-        else if(pathname==='/order_list'){
-            return '주문내역'
-        }
         else if(pathname==='/order'){
             return '주문하기'
         }
@@ -209,13 +206,11 @@ function App() {
 
     },[location]);
 
-
-
     useEffect(() => {
+        sessionStorage.setItem('home_tab',0);
         GetInfo();
     }, [])
 
-    
     useEffect(()=>{
         getTitle();
     },[getTitle])

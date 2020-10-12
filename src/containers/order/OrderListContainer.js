@@ -27,6 +27,8 @@ const tabInit = [
 ];
 
 const OrderListContainer = ({ tab = '0' }) => {
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
@@ -53,18 +55,27 @@ const OrderListContainer = ({ tab = '0' }) => {
     const getOrderItems = async () => {
         setLoading(true);
         if (user_token) {
-            const res = await getOrderList(user_token,
-                0, 100,
-                // (page - 1) * PAGE_PER_VIEW,
-                // PAGE_PER_VIEW,
-                startDate,
-                endDate,
-            );
-            const orders = res.orders ? res.orders : [];
-            const reserve = orders.filter(
-                (item) => item.info.order_type === 'reserve',
-            );
-            setReserveList(reserve);
+            try {
+                const res = await getOrderList(
+                    user_token,
+                    0,
+                    100,
+                    // (page - 1) * PAGE_PER_VIEW,
+                    // PAGE_PER_VIEW,
+                    startDate,
+                    endDate,
+                );
+                const orders = res.orders ? res.orders : [];
+                const reserve = orders.filter(
+                    (item) => item.info.order_type === 'reserve',
+                );
+                setReserveList(reserve);
+                setSuccess(true);
+                setError(false);
+            } catch (e) {
+                setError(true);
+                setSuccess(false);
+            }
         }
         setLoading(false);
     };
@@ -83,60 +94,80 @@ const OrderListContainer = ({ tab = '0' }) => {
 
     return (
         <>
-            <TitleBar title={'주문내역'}>
-                <IconButton style={{ width: '40px', height: '40px' }} onClick={handleOpen}>
-                    <img src={date} alt="date" />
-                </IconButton>
-            </TitleBar>
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
-            {loading ? (
-                <Loading open={true} />
-            ) : (
-                <div className={styles['container']}>
-                    <SwipeableViews
-                        enableMouseEvents
+            {success && (
+                <>
+                    <TitleBar title={'주문내역'}>
+                        <IconButton
+                            style={{ width: '40px', height: '40px' }}
+                            onClick={handleOpen}
+                        >
+                            <img src={date} alt="date" />
+                        </IconButton>
+                    </TitleBar>
+                    <TabMenu
+                        tabs={tabInit}
                         index={index}
-                        onChangeIndex={onChangeSwiperIndex}
-                        animateHeight={true}
-                    >
-                        <div className={styles['pd-box']}>
-                            {reserveList.length !== 0 ? (
-                                <OrderItemList
-                                    order_list={reserveList}
-                                    onClick={onClickOrderItem}
-                                />
-                            ) : (
-                                <Message
-                                    src={true}
-                                    msg={'주문 내역이 존재하지 않습니다.'}
-                                    isButton={true}
-                                    buttonName={'주문하러 가기'}
-                                    onClick={() => {
-                                        history.replace(Paths.ajoonamu.shop);
-                                    }}
-                                />
-                            )}
+                        onChange={onChangeTabIndex}
+                    />
+                    {loading ? (
+                        <Loading open={true} />
+                    ) : (
+                        <div className={styles['container']}>
+                            <SwipeableViews
+                                enableMouseEvents
+                                index={index}
+                                onChangeIndex={onChangeSwiperIndex}
+                                animateHeight={true}
+                            >
+                                <div className={styles['pd-box']}>
+                                    {reserveList.length !== 0 ? (
+                                        <OrderItemList
+                                            order_list={reserveList}
+                                            onClick={onClickOrderItem}
+                                        />
+                                    ) : (
+                                        <Message
+                                            src={true}
+                                            msg={
+                                                '주문 내역이 존재하지 않습니다.'
+                                            }
+                                            isButton={true}
+                                            buttonName={'주문하러 가기'}
+                                            onClick={() => {
+                                                history.replace(
+                                                    Paths.ajoonamu.shop,
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                                <div className={styles['pd-box']}>
+                                    <Message
+                                        src={true}
+                                        msg={'주문 내역이 존재하지 않습니다.'}
+                                        isButton={true}
+                                        buttonName={'주문하러 가기'}
+                                        onClick={() => {
+                                            history.replace(
+                                                Paths.ajoonamu.shop,
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            </SwipeableViews>
                         </div>
-                        <div className={styles['pd-box']}>
-                            <Message
-                                src={true}
-                                msg={'주문 내역이 존재하지 않습니다.'}
-                                isButton={true}
-                                buttonName={'주문하러 가기'}
-                                onClick={() => {
-                                    history.replace(Paths.ajoonamu.shop);
-                                }}
-                            />
-                        </div>
-                    </SwipeableViews>
-                </div>
+                    )}
+                    <BottomModal
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        open={open}
+                        handleClose={handleClose}
+                        onClick={getOrderItems}
+                    />
+                </>
             )}
-            <BottomModal
-                startDate={startDate} setStartDate={setStartDate}
-                endDate={endDate} setEndDate={setEndDate}
-                open={open} handleClose={handleClose}
-                onClick={getOrderItems}
-            />
         </>
     );
 };

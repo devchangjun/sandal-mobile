@@ -219,14 +219,14 @@ const SignInContainer = () => {
     };
 
 
-    const kakaoLoginClickHanler =()=>{
+    const kakaoLoginClickHandler =()=>{
         window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
     }
 
     const naverLoginClickHandler =()=>{
         window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
-
     }
+
     useEffect(() => {
         const btnToggle =
             email.length !== 0 && password.length !== 0 ? true : false;
@@ -302,7 +302,7 @@ const SignInContainer = () => {
                                 <img src={NaverLogo} alt="naver" onClick={naverLoginClickHandler}></img>
                             </div>
                             <div className={styles['sns']}>
-                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHanler}></img>
+                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>
                                 {/* 
                                 <KakaoButton
                                     jsKey={'122df6d8b0bf2538b90ad7183a949975'}

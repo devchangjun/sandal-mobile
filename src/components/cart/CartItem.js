@@ -2,49 +2,59 @@ import React from 'react';
 import PropsTypes from 'prop-types';
 import styles from './Cart.module.scss';
 import Counter from 'components/counter/Counter';
-import cart from '../svg/cart/cart.png';
-import { numberFormat } from '../../lib/formatter';
+
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import { IconButton } from '@material-ui/core';
+import Cross from '../svg/counter/Cross';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
+import Noimage from '../svg/noimage.png';
 
 // 메뉴이름, 추가옵션
-
 const CartItem = (props) => {
-    // const { id, isChecked, handleCheckChild } = props;
-    // const {item_img, item_option_id} = props.item;
-    const { item_name, item_price, item_quanity } = props.item;
+    const { item_name, item_price, item_quanity, cart_id, item_img } = props.item;
+    const { id } = props;
     const options = props.options;
 
-    const onClick = () => {
-        // console.log(options);
+    const totalPrice = () => {
+        let price = item_price * item_quanity;
+        for (let i = 0; i < options.length; i++) {
+            price += options[i].option_price * item_quanity; // 만약 추가수량은 추가되지 않는거라면 * item_qunity 삭제
+        }
+        return price;
     };
 
     return (
-        <div className={styles['cart-item']} onClick={onClick}>
+        <div className={styles['cart-item']}>
             <div className={styles['pd-box']}>
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
                         <div className={styles['item-img']}>
-                            <img src={cart} alt={item_name}></img>
+                            <ErrorCoverImage className={styles['img']} src={item_img !== "[]" ? DBImageFormat(item_img)[0] : Noimage} alt={"메뉴 이미지"} />
                         </div>
                         <div className={styles['item-info']}>
                             <div className={styles['bar']}>
-                                <div className={styles['name']}>
-                                    {item_name}
-                                </div>
-                                <div className={styles['delete']}>&times;</div>
+                                <div className={styles['name']}>{item_name}</div>
+                                <IconButton className={styles['delete']}
+                                    onClick={() => props.handleDelete([cart_id])}
+                                >
+                                    <Cross color="#777" angle={45} />
+                                </IconButton>
                             </div>
                             <div className={styles['options']}>
-                                {options.map((op) => op.option_name)}
+                                추가선택: {options.length !== 0 ? options.map(op => op.option_name) : "없음"}
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>
-                                    {/* <Counter value={3} /> */}
-                                    <Counter value={item_quanity} />
+                                    <Counter value={item_quanity}  
+                                        onIncrement={()=>props.handleIncrement(id)}
+                                        onDecrement ={()=>props.handleDecrement(id)}
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className={styles['price']}>
-                        {numberFormat(item_price)} 원
+                        {numberFormat(totalPrice())} 원
                     </div>
                 </div>
             </div>

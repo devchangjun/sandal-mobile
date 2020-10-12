@@ -1,105 +1,239 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Paths } from 'paths';
+import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
 import styles from './Detail.module.scss';
 import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
-import { useHistory } from 'react-router';
-import Test from 'components/svg/cart/test.png';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/Back';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import Loading from '../../components/asset/Loading';
+import { getMenuInfo } from '../../api/menu/menu';
+import { addCartItem } from '../../api/cart/cart';
+import { useStore } from '../../hooks/useStore';
+import { useModal } from '../../hooks/useModal';
+import { noAuthAddCart } from '../../api/noAuth/cart';
+import { IconButton } from '@material-ui/core';
+import ErrorCoverImage from '../../components/asset/ErrorCoverImage';
+import Noimage from '../../components/svg/noimage.png';
+
 const cx = classNames.bind(styles);
 
-
-
-const DetailContainer = ({ menu_name }) => {
+const DetailContainer = ({ item_id }) => {
     const history = useHistory();
-    const onClickCart = () => history.push(Paths.ajoonamu.cart);
+
+    const openModal = useModal();
+    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
+    const user_token = useStore(false);
+    const [menu, setMenu] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [quanity, setQuanity] = useState(1);
+    const [options, setOptions] = useState(null);
+    const [option_total, setOptionTotal] = useState(0);
     const onClickBack = () => history.goBack();
 
-    const [amount, setAmount] = useState(1);
-    const [addItem, setAddItem] = useState(
-        [
-            {
-                id: 1,
-                menu_name: '딸기',
-                menu_price: 1000,
-                check: false,
-            },
-            {
-                id: 2,
-                menu_name: '떡볶이',
-                menu_price: 1000,
-                check: false,
-            },
-        ]
-    )
-
-    const onClickAddItem = (id) => {
-        const newAddItem = addItem.map(item => {
-            console.log(id);
-            if (item.id === id) {
-                item.check = !item.check;
-            }
-            return item;
-        })
-        setAddItem(newAddItem);
-    }
+    //옵션 아이템 선택
+    const setOptionItem =useCallback(()=>{
+        const add_option = menu.options.filter(option => option.check).map((option =>option.option_id));
+        setOptions(add_option);
+    },[menu]);
 
     const onDecrement = useCallback(() => {
-        if(amount > 0) 
-            setAmount(amount - 1);
-    }, [amount]);
-    const onIncrement = useCallback(() => {
-        setAmount(amount + 1);
-    }, [amount]);
+        if (quanity > 1) setQuanity(quanity - 1);
+    }, [quanity]);
 
+    const onIncrement = useCallback(() => {
+        setQuanity(quanity + 1);
+    }, [quanity]);
+
+    const getMenu = async () => {
+        setLoading(true);
+
+        try {
+            const res = await getMenuInfo(item_id);
+            setMenu(res);
+        } catch (e) {}
+
+        setLoading(false);
+    };
+
+    const onClickOptionItem = (id) => {
+        const newOptionItem = menu.options.map((item) => {
+            if (item.option_id === id) {
+                item.check = !item.check;
+                let option_price = item.option_price;
+                let new_total = option_total;
+                new_total += (item.check) ? option_price : (option_price)*-1;
+                setOptionTotal(new_total);
+            }
+            return item;
+        });
+        setMenu(
+            {...menu},
+            {options : newOptionItem}
+         );
+    };
+
+    //장바구니 담기
+    const onClickCart = useCallback(async () => {
+        if (user_token) {
+            try {
+                const res = await addCartItem(
+                    user_token,
+                    item_id,
+                    options,
+                    quanity,
+                );
+                if (res.data.msg === '성공') {
+                    openModal(
+                        '장바구니에 담았습니다.',
+                        '장바구니로 이동하시겠습니까?',
+                        () => {
+                            history.push(Paths.ajoonamu.cart);
+                        },
+                        () => {},
+                        true,
+                    );
+                }
+            } catch (e) {
+                alert('Error!');
+            }
+        } else {
+            try {
+                //주소가 존재할 때
+                if (addr1) {
+                    try {
+                        const res = await noAuthAddCart(
+                            item_id,
+                            options,
+                            quanity,
+                            lat,
+                            lng,
+                        );
+                        const noAuthCartId = JSON.parse(
+                            localStorage.getItem('noAuthCartId'),
+                        );
+
+                        if (res.data.msg === '성공') {
+                            //이미 담은 cart_id가 존재할 경우
+                            if (noAuthCartId) {
+                                //기존 list에서 push
+                                noAuthCartId.push(res.data.query);
+                                //그리고 다시 저장
+                                localStorage.setItem(
+                                    'noAuthCartId',
+                                    JSON.stringify(noAuthCartId),
+                                );
+                            } else {
+                                // cart_id가 존재하지 않을 경우 배열의 형태로 push
+                                localStorage.setItem(
+                                    'noAuthCartId',
+                                    JSON.stringify([res.data.query]),
+                                );
+                            }
+                            openModal('장바구니에 담았습니다.', '장바구니로 이동하시겠습니까?',
+                                () => {
+                                    history.push(Paths.ajoonamu.cart);
+                                },
+                                true,
+                            );
+                        }
+                    } catch (e) {
+                        
+                    }
+                } else {
+                    openModal('배달지 주소가 설정되지 않았습니다.', '배달지 주소를 설정하시려면 예를 눌러주세요',
+                        () => {
+                            history.push(Paths.ajoonamu.address);
+                        },
+                        true,
+                    );
+                }
+            } catch (e) {
+                alert('Error!');
+            }
+        }
+    }, [history, item_id, options, quanity, user_token, addr1, lat, lng]);
+
+    useEffect(()=>{
+        getMenu();
+    },[])
+
+    useEffect(() => {
+        menu && setOptionItem();
+    }, [menu, setOptionItem]);
     return (
         <>
-            <div className={styles['menu-img']}>
-                <img className={styles['img']} src={Test} alt={menu_name} />
-                <div className={styles['back']}>
-                    <Back
-                        onClick={onClickBack}
-                        stroke={'#fff'}
-                        strokeWidth={'3'}
-                    />
-                </div>
-            </div>
-            <div className={styles['detail-view']}>
-                <div className={styles['menu-info']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['item-text']}>{menu_name}</div>
-                        <div className={styles['item-text']}>
-                            싱싱한 과일들로 구성된 알찬 도시락입니다.
+            {loading ? (
+                <Loading open={true} />
+            ) : (
+                <>
+                    <div className={styles['container']}>
+                        <div className={styles['menu-img']}>
+                            <ErrorCoverImage
+                                className={styles['img']}
+                                src={
+                                    menu ? menu.item.item_img !== '[]'
+                                        ? DBImageFormat(menu.item.item_img)[0]
+                                        : Noimage: Noimage
+                                }
+                                alt={'메뉴 이미지'}
+                            />
+                            <IconButton
+                                className={styles['back']}
+                                onClick={onClickBack}
+                            >
+                                <Back stroke={'#fff'} strokeWidth={'3'} />
+                            </IconButton>
                         </div>
-                        <div className={styles['cost-count']}>
-                            <div className={styles['cost']}>
-                                {numberFormat(5000 * amount)}원
+                        <div className={styles['detail-view']}>
+                            <div className={styles['menu-info']}>
+                                <div className={styles['menu-name']}>
+                                    {menu && menu.item.item_name}
+                                </div>
+                                <div className={styles['menu-explan']}>
+                                    {menu && menu.item.item_sub}
+                                </div>
+                                <div className={styles['cost-count']}>
+                                    <div className={styles['cost']}>
+                                        {menu &&
+                                            numberFormat(menu.item.item_price)}
+                                        원
+                                    </div>
+                                    <div className={styles['count']}>
+                                        <Counter
+                                            value={quanity}
+                                            onDecrement={onDecrement}
+                                            onIncrement={onIncrement}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className={styles['count']}>
-                                <Counter
-                                    value={amount}
-                                    onDecrement={onDecrement}
-                                    onIncrement={onIncrement}
-                                />
+                            <div className={cx('title')}>추가 선택</div>
+                            <div className={styles['menu-info']}>
+                                <div className={styles['item-text']}>
+                                    {menu && menu.options && (
+                                        <AdditionalList
+                                            itemList={menu && menu.options}
+                                            onClickAddItem={onClickOptionItem}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div className={cx('item-text', 'mg-top')}>
-                            추가 선택
-                        </div>
-                        <div className={styles['item-text']}>
-                            <AdditionalList itemList={addItem} onClickAddItem={onClickAddItem}/>
-                        </div>
+                        <Button
+                            title={`${quanity}개 담기(${numberFormat(
+                                (menu && menu.item.item_price * quanity) +
+                                    option_total * quanity,
+                            )}원)`}
+                            onClick={onClickCart}
+                            toggle={true}
+                        />
                     </div>
-                </div>
-            </div>
-            <Button
-                title={`${amount}개 담기(${numberFormat(5000 * amount)}원)`}
-                onClick={onClickCart}
-                toggle={true}
-            />
+                </>
+            )}
         </>
     );
 };

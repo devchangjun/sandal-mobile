@@ -5,13 +5,11 @@ import { numberFormat } from "../../lib/formatter";
 
 //추천 메뉴 아이템
 const CustomItem = ({datas}) => {
-
-
     return (
         <>
         <div className={styles['custom-item']}>
            <CustomImg src={Menu}/>
-            <CustomTitleList datas={datas}/>
+            {/* <CustomTitleList datas={datas}/> */}
             <CustomPrice/>
             <div className={styles['dim']}/>
         </div>

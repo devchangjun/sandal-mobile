@@ -1,35 +1,29 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 import { Paths } from 'paths';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
 import styles from './BestMenu.module.scss';
 import { ButtonBase } from '@material-ui/core';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
+import Noimage from '../svg/noimage.png';
 
-const MenuDetailLink = styled(NavLink)`
-    text-decoration: none;
-    color: black;
-    margin: 10px;
-`;
 
 //홈 메뉴 아이템 컴포넌트
-const BestMenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
+const BestMenuItem = (props) => {
+    const history = useHistory();
     // item_id 로 경로 줘야함
     return (
-        <MenuDetailLink to={`${Paths.ajoonamu.shop}/menu/detail?menu=${menuTitle}`}>
-            <div className={styles['menu-item']}>
-                <ButtonBase>
-                    <MenuImg src={src} />
-                </ButtonBase>
+            <ButtonBase component='li' className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
+                <div className={styles['btn-base']}>
+                    <MenuImg src={props.item_img} />
+                </div>
                 <div className={styles['pd-box']}>
                     <div className={styles['menu-info']}>
-                        <MenuTitle menuTitle={menuTitle} />
-                        <MenuText menuText={menuText} />
-                        <MenuPrice menuPrice={menuPrice} />
+                        <MenuTitle menuTitle={props.item_name} />
+                        <MenuPrice menuPrice={props.item_price} />
                     </div>
                 </div>
-            </div>
-        </MenuDetailLink>
+            </ButtonBase>
     );
 };
 
@@ -37,7 +31,7 @@ const BestMenuItem = ({ itemid, menuTitle, menuText, menuPrice, src }) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles.img} src={src} alt="메뉴이미지"></img>
+            <ErrorCoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} />
         </div>
     );
 }
@@ -47,14 +41,14 @@ function MenuTitle({ menuTitle }) {
 }
 
 //홈 메뉴 텍스트 컴포넌트
-function MenuText({ menuText }) {
-    return <div className={styles['menu-text']}>{menuText}</div>;
-}
+// function MenuText({ menuText }) {
+//     return <div className={styles['menu-text']}>{menuText}</div>;
+// }
 
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
     return (
-        <div className={styles['menu-price']}>{numberFormat(menuPrice)}</div>
+        <div className={styles['menu-price']}>{numberFormat(menuPrice)} 원</div>
     );
 }
 

@@ -4,13 +4,11 @@ import qs from 'qs';
 
 
 export default function OrderComplete({location}){
-    console.log(location);
-    const query = qs.parse(location.search,{
-        ignoreQueryPrefix: true
+    const query = qs.parse(location.search, {
+        ignoreQueryPrefix: true,
     });
-    console.log(query);
-
-    return(
-        <OrderCompleteContainer/>
+    const {order_number} =query;
+    return (
+        <OrderCompleteContainer order_number={order_number}/>
     )
 }

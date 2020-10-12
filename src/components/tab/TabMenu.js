@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -17,19 +18,21 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#fff',
         position: 'fixed',
         zIndex: 99,
-        paddingLeft:"24px",
-        paddingRight:"24px",
+        paddingLeft:"0px",
+        paddingRight:"0px",
+        boxShadow :" 0px 3px 20px rgba(0,0,0,0.1)"
     },
 }));
 
-const TabMenu = ({ tabs, index, onChange }) => {
+const TabMenu = ({ tabs, index, onChange,isPush }) => {
     const classes = useStyles();
     const history = useHistory();
 
+    const { header } = useSelector(state => state.scroll);
+    
     const onClickTab = (url) => {
         if (url !== undefined) {
-            history.replace(url);
-            console.log('푸쉬');
+            isPush ? history.push(url) : history.replace(url);
         }
     };
 
@@ -49,9 +52,12 @@ const TabMenu = ({ tabs, index, onChange }) => {
             TabIndicatorProps={{
                 style: {
                     backgroundColor: '#000',
+                    height:'3px',
+                    borderRadius:'100px'
                 },
             }}
             className={classes.tabs}
+            style={{ top: header ? '0px' : '40px' }}
         >
             {tabList}
         </Tabs>
@@ -61,6 +67,7 @@ const TabMenu = ({ tabs, index, onChange }) => {
 TabMenu.defaultProps = {
     tabs: null,
     index: 0,
+    isPush : false,
     onChange: () => console.warn(null),
 };
 

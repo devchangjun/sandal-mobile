@@ -6,36 +6,58 @@ import { requestEventPost } from '../../api/event';
 
 import styles from './EventContainer.module.scss';
 import Loading from '../../components/asset/Loading';
+import { DBImageFormat } from '../../lib/formatter';
+import { useModal } from '../../hooks/useModal';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../paths';
 
 export default ({ id }) => {
+    const openModal = useModal();
+    const history = useHistory();
+    
     const [loading, setLoading] = useState(false);
     const [eventData, setEventData] = useState({});
 
     const getEventPost = useCallback(async (id) => {
         setLoading(true);
-        const res = await requestEventPost(id);
-        setEventData(res);
+        try {
+            const res = await requestEventPost(id);
+            if (res.data.msg === '성공') {
+                if (res.data.query.event) {
+                    setEventData(res.data.query.event);
+                } else {
+                    openModal('지워지거나 없는 게시물입니다.', '다시 시도 해주세요.');    
+                    history.push(Paths.index);
+                }
+            } else {
+                openModal('이벤트 내용을 가져오는데 오류가 발생했습니다.', '잠시 후 재시도 해주세요.');
+            }
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+        }
         setLoading(false);
-    }, []);
+    }, [openModal, history]);
 
     useEffect(() => {
         getEventPost(parseInt(id));
     }, [getEventPost, id]);
 
-    const {
-        image, created_at, ended_at,
-        content, precautions
-    } = eventData;
+    const { images_mobile, created_at, end_date, body, warn } = eventData;
     return (
-        <div className={styles['container']}>
+        <>
+            {!loading && (
+                <div className={styles['container']}>
+                    <Loading open={loading} />
+                    <EventImage image={DBImageFormat(images_mobile)} />
+                    <EventCotent
+                        created_at={created_at}
+                        ended_at={end_date}
+                        body={body}
+                        warn={warn}
+                    />
+                </div>
+            )}
             <Loading open={loading} />
-            <EventImage image={image} />
-            <EventCotent
-                created_at={created_at}
-                ended_at={ended_at}
-                content={content}
-                precautions={precautions}
-            />
-        </div>
+        </>
     );
 };

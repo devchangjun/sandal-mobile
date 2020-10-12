@@ -13,7 +13,7 @@ export const getUserInfo = async (token) => {
 export const requestAgreeChange = async (token, type, value) => {
     const req = Paths.api + 'user/mypage/agree_' + type;
     const form_data = {
-        ['agree_' + type]: value
+        ['agree_' + type]: value,
     };
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
@@ -25,7 +25,7 @@ export const requestAgreeChange = async (token, type, value) => {
 export const updateName = async (token, value) => {
     const req = Paths.api + 'user/mypage/update_name';
     const form_data = {
-        name: value
+        name: value,
     };
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
@@ -34,16 +34,40 @@ export const updateName = async (token, value) => {
     return res;
 };
 
+export const updatePhone = async (token, value) => {
+    const req = Paths.api + 'user/mypage/update_hp';
+    const form_data = {
+        hp: value,
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    return res;
+};
+
+export const updatePassword = async (token, pw_o, pw, pw_c) => {
+    const req = Paths.api + 'user/mypage/update_pw';
+    const form_data = {
+        pw_o,
+        pw,
+        pw_c
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req, form_data);
+    return res;
+};
 
 export const localLogin = async (email, password) => {
     const req = Paths.api + 'user/login';
-
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
         email: email,
         password: password,
     };
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
 };
 
@@ -53,33 +77,85 @@ export const localLogout = async (token) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post();
-    console.log(res.data);
     return res.data;
 };
 
-export const localRegister = async (email, password, password_confirm) => {
+export const localRegister = async (
+    email,
+    password,
+    password_confirm,
+    agree_marketing,
+) => {
     const req = Paths.api + 'user/register';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
-        email: email,
-        password: password,
-        password_confirm: password_confirm,
-        agree_marketing: 0,
+        email,
+        password,
+        password_confirm,
+        agree_marketing,
     };
 
     const res = await axios.post(req, form_data);
-    console.log(res);
+    return res;
+};
+
+export const findId = async (name, hp) => {
+    const req = Paths.api + 'user/find_id';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const form_data = {
+        name,
+        hp,
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+};
+export const findPw = async (email, name, hp) => {
+    const req = Paths.api + 'user/find_pw';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const form_data = {
+        name,
+        hp,
+        email,
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+};
+export const changePw = async (email, name, hp, pw, pw_c) => {
+    const req = Paths.api + 'user/change_pw';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const form_data = {
+        email, name, hp, pw, pw_c
+    };
+
+    const res = await axios.post(req, form_data);
     return res;
 }
 
-export const findId = async (name,hp)=>{
-    const req = Paths.api + "user/find_id";
-
+export const requestPostMobileAuth = async (pv_hp) => {
+    const req = Paths.api + 'mobile/auth';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
     const form_data = {
-        name:name,
-        hp:hp
-    }
+        pv_hp,
+    };
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
-
 };
+export const requestPostMobileAuthCheck = async (pv_hp, pv_vnum) => {
+    const req = Paths.api + 'mobile/confirm';
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const form_data = {
+        pv_hp,
+        pv_vnum,
+    };
+    const res = await axios.post(req, form_data);
+    return res;
+};
+
+export const requestPutSecession = async (token, agree_secession) => {
+    const req = Paths.api + 'user/mypage/update_status';
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    
+    const res = await axios.put(req, { agree_secession });
+    return res;
+}

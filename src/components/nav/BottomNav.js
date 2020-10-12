@@ -39,22 +39,30 @@ const tabReducer = (state, action) => {
     switch (action.type) {
         case 'HOME':
             return {
-                ...state,
                 home: true,
+                coupon: false,
+                order: false,
+                mypage: false,
             };
         case 'COUPON':
             return {
-                ...state,
+                home: false,
                 coupon: true,
+                order: false,
+                mypage: false,
             };
         case 'ORDER':
             return {
-                ...state,
+                home: false,
+                coupon: false,
                 order: true,
+                mypage: false,
             };
         case 'MYPAGE':
             return {
-                ...state,
+                home: false,
+                coupon: false,
+                order: false,
                 mypage: true,
             };
         default:
@@ -64,28 +72,29 @@ const tabReducer = (state, action) => {
 
 const BottomNav = (props) => {
     const [tab, dispatchTab] = useReducer(tabReducer, initState);
+    const {location} = props;
 
     const onUpdateTab = useCallback(() => {
-        if (props.match.path === '/' ||
-            props.match.path.indexOf('notice') !== -1) {
+        if (location.pathname === '/' || location.pathname === '/shop') {
             dispatchTab({ type: 'HOME' });
-        } else if (props.match.path.indexOf('coupon') !== -1) {
+        } else if (location.pathname === '/coupon') {
             dispatchTab({ type: 'COUPON' });
-        } else if (props.match.path.indexOf('order_list') !== -1) {
-            dispatchTab({ type: 'ORDER' });
         } else if (
-            props.match.path.indexOf('mypage') !== -1 ||
-            props.match.path.indexOf('account') !== -1 ||
-            props.match.path.indexOf('support') !== -1 ||
-            props.match.path.indexOf('event') !== -1
+            location.pathname === '/mypage' ||
+            location.pathname === '/account' ||
+            location.pathname.indexOf('support') !== -1 ||
+            location.pathname.indexOf('event') !== -1
         ) {
             dispatchTab({ type: 'MYPAGE' });
+        } else if (location.pathname === '/order_list') {
+            dispatchTab({ type: 'ORDER' });
         }
     }, [props]);
 
     useEffect(() => {
         onUpdateTab();
     }, [onUpdateTab]);
+
 
     const history = useHistory();
 
@@ -97,7 +106,7 @@ const BottomNav = (props) => {
         setOpen(false);
     };
     const handleChange = () => {
-        console.log('체인지');
+        // console.log('체인지');
     };
     const onClickHome = () => {
         history.push(Paths.index);
@@ -149,7 +158,7 @@ const BottomNav = (props) => {
                                 </div>
                             </div>
                             <Link to={`${Paths.ajoonamu.shop}?menu=0`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
-                            <Link to={`${Paths.ajoonamu.shop}?menu=1`}className={styles["menu-item"]} onClick={handleClose}>택배배송</Link>
+                            <Link to={`${Paths.ajoonamu.breakfast}?menu=0`}className={styles["menu-item"]} onClick={handleClose}>기업조식</Link>
                         </div>
                         <IconButton className={styles['nav-item']} onClick={onClickOrderList}>
                             <div className={styles['icon']}>

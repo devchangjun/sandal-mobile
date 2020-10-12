@@ -1,118 +1,83 @@
-import React, { useState,useEffect,useRef, useCallback } from 'react';
-import {Paths} from 'paths';
+import React, { useState } from 'react';
+import { Paths } from 'paths';
 import styles from './Recovery.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
-import SignAuthInput from 'components/sign/SignAuthInput';
-import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
 import classNames from 'classnames/bind';
-// import { sendSMS } from "../../api/sms/sms";
 import { useHistory } from 'react-router';
-import AuthTimer from 'components/sign/AuthTimer';
-import Check from 'components/svg/sign/Check';
+import { findPw } from '../../api/auth/auth';
+import { useModal } from '../../hooks/useModal';
+import { isEmailForm } from '../../lib/formatChecker';
+import AuthPhone from '../../components/sign/AuthPhone';
 const cx = classNames.bind(styles);
 
-const logo =
-    'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
 
 const RecoveryPwContainer = () => {
+
+    const openModal = useModal();
     const history = useHistory();
-    const random = useRef(496696);
-    const [name, setName] = useState('김보건');
-    const [email, setEmail] = useState('cuzi.kbg@gmail.com');
-    const [phone, setPhone] = useState('01072128994');
-    const [auth, setAuth] = useState('49669');
-    const [toggle, setToggle] = useState(false);
-    const [success , setSuccess] = useState(false);
-    const [start_timer ,setStartTimer] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [userPhone, setUserPhone] = useState('');
+    const [success, setSuccess] = useState(false);
 
     const onChangeName = (e) => setName(e.target.value);
     const onChangeEmail = (e) => setEmail(e.target.value);
-    const onChangePhone = (e) => setPhone(e.target.value);
-    const onChangeAuth = (e) => setAuth(e.target.value);
+    const onChangePhone = (e) => setUserPhone(e.target.value);
 
-
-    const onClickCompareAuth = useCallback(() => {
-
-        const auth_num = parseInt(auth);
-        setSuccess(auth_num === random.current);
-
-    },[auth]);
-    
-
-    useEffect(()=>{
-        onClickCompareAuth();
-    },[onClickCompareAuth])
-
-    //인증번호 발송
-    const onClickSendAuth = () => {
-        console.log(random.current);
-        setToggle(true);
-        setStartTimer(true);
+    const onClickComplete = async () => {
+        if (isEmailForm(email)) {
+            if (name && userPhone) {
+                try {
+                    const res = await findPw(email, name, userPhone);
+                    if (res.data.msg === '성공') {
+                        const find_user = {
+                            email,
+                            name,
+                            hp: userPhone,
+                        };
+                        sessionStorage.setItem('find_user', JSON.stringify(find_user));
+                        history.push(Paths.ajoonamu.find_password);
+                    } else {
+                        openModal(res.data.msg, '입력하신 정보를 다시 한 번 확인해 주세요.');
+                    }
+                } catch (e) {
+                    openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
+                }
+            } else {
+                openModal('정보가 부족합니다.', '입력하신 정보를 다시 한 번 확인해 주세요.')
+            }
+        } else {
+            openModal('이메일 형식에 맞지 않습니다!', '이메일을 다시 한 번 확인해 주세요.');
+        }
     };
-    const onClickReSendAuth =()=>{
-        setStartTimer(false);
-        setTimeout(()=>setStartTimer(true),0);
-    }
-
-
-
-    const onClickComplete=()=>{
-        history.push(Paths.ajoonamu.find_password);
-    }
 
     return (
-        <>
-            <TitleBar
-                title="비밀번호 찾기"
-                src={logo}
-                alt="비밀번호 찾기"
-            ></TitleBar>
-            <div className={styles['container']}>
-                <div className={cx('content', 'pd-box')}>
-                    <SignNormalInput
-                        placeholder={'이름'}
-                        initValue={name}
-                        onChange={onChangeName}
-                    />
-                    <SignNormalInput
-                        placeholder={'이메일'}
-                        initValue={email}
-                        onChange={onChangeEmail}
-                    />
-                    <SignAuthInput
-                        placeholder={'휴대폰번호'}
-                        inputType={''}
-                        initValue={phone}
-                        buttonTitle={
-                            toggle ? '인증번호 재발송' : '인증번호 발송'
-                        }
-                        onChange={onChangePhone}
-                        onClick={toggle? onClickReSendAuth : onClickSendAuth}
-                        toggle={toggle}
-                    />
-                    <div className={cx('auth-btn', { not_view: !toggle })}>
-                        <SignNormalInput
-                            inputType={'text'}
-                            initValue={auth}
-                            onChange={onChangeAuth}
-                        />
-                        <div className={styles['timer']}>
-                            {success ? (
-                                <Check on={true} />
-                            ) : (
-                                <AuthTimer start={start_timer}></AuthTimer>
-                            )}
-                        </div>
-                    </div>
-                    <Button
-                        title={'확인'}
-                        toggle={success}
-                        onClick={onClickComplete}
-                    ></Button>
-                </div>
+        <div className={styles['container']}>
+            <div className={cx('content', 'pd-box')}>
+                <SignNormalInput
+                    placeholder={'이름'}
+                    initValue={name}
+                    onChange={onChangeName}
+                />
+                <SignNormalInput
+                    placeholder={'이메일'}
+                    initValue={email}
+                    onChange={onChangeEmail}
+                />
+                <AuthPhone
+                    userPhone={userPhone}
+                    onChangePhone={onChangePhone}
+                    success={success}
+                    setSuccess={setSuccess}
+                />
+                <Button
+                    title={'확인'}
+                    toggle={success}
+                    onClick={onClickComplete}
+                ></Button>
             </div>
-        </>
+        </div>
     );
 };
 

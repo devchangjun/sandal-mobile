@@ -13,8 +13,9 @@ const cn = classNames.bind(styles);
 const QNAList = ({ listData, emptyMessage }) => {
     return Array.isArray(listData) && listData.length ? (
         <ul className={styles['qna-list']}>
-            {listData.map((qnaData) => 
-                <QNAItem qnaData={qnaData} key={qnaData.id}/>
+            {listData.map((qnaData) => {
+                return <QNAItem qnaData={qnaData} key={qnaData.id}/>
+            }
             )}
         </ul>
     ) : <Message msg={emptyMessage} />;

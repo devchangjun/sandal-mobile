@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useCallback,useEffect } from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -12,41 +12,58 @@ import { localLogout } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import Button from '@material-ui/core/Button';
 import { numberFormat } from '../../lib/formatter';
-
 import Back from 'components/svg/header/Back';
 import { Link } from 'react-router-dom';
-import Loading from '../../components/asset/Loading';
+import {useInit} from '../../hooks/useStore';
+import {noAuthGetNearStore} from '../../api/noAuth/store';
 
 const cx = classNames.bind(styles);
 
 const MyPageContainer = () => {
-
-    const [loading, setLoading] = useState(false);
+    const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
+    const user_token = sessionStorage.getItem("access_token");
     const dispatch = useDispatch();
     const history = useHistory();
-    const onClickLogin = () => {
-        history.push(Paths.ajoonamu.signin);
-    };
-    const onClickAccount = () => {
-        history.push(Paths.ajoonamu.account);
-    };
-    const onClickLogout = async () => {
-        setLoading(true);
-        const token = sessionStorage.getItem('access_token');
-        const res = await localLogout(token);
-        sessionStorage.removeItem('access_token');
-        if (res.message === '로그아웃에 성공하셨습니다.') {
-            dispatch(logout());
-            history.push(Paths.index);
+
+    const onClickLogout = useCallback(async () => {
+        try{
+            const res = await localLogout(user_token);
+            sessionStorage.removeItem('access_token');
+            if (res.message === '로그아웃에 성공하셨습니다.') {
+                dispatch(logout());
+                initStore();
+                history.replace(Paths.index);
+
+                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                if(noAuthAddrs){
+                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
+                    if(index!==-1){
+                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
+                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                    }
+                }
+            }
         }
-        setLoading(false);
-    };
+        catch (e) {
+            console.error(e);
+        }
+    },[dispatch,history,user_token]);
+
+    const onClickLogin = useCallback(() => {
+        history.push(Paths.ajoonamu.signin);
+    }, [history]);
+    const onClickAccount = useCallback(() => {
+        history.push(Paths.ajoonamu.account);
+    }, [history]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <>
-            <Loading open={loading} />
-            <TitleBar title={'마이페이지'} />
             <div className={styles['container']}>
                 <Button
                     className={styles['user-info']}
@@ -86,40 +103,37 @@ const MyPageContainer = () => {
                     <Item url={`${Paths.ajoonamu.support}/faq`} text={'자주 묻는 질문'} />
                     <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />
-                    <Item text={'버전정보'} />
-                    {user && <Item text={'이용약관'} />}
+                    <Item text={'버전정보'} version />
+                    {user && <Item text={'이용약관'}url={`${Paths.ajoonamu.tos}?tab=0`}/>}
                 </div>
                 {user && (
-                    <div className={styles['logout']} onClick={onClickLogout}>
-                        <Button className={styles['logout-btn']}>
+                    <div className={styles['logout']} >
+                        <Button className={styles['logout-btn']} onClick={onClickLogout}>
                             <div className={styles['pd-btn']}>로그아웃</div>
                         </Button>
                     </div>
                 )}
             </div>
-            <BottomNav />
         </>
     );
 };
 
-const SupportLink = styled(Link)`
-    & + & {
-        border-top: solid 1px #F9F9F9;
-    }
-`;
-
-const Item = ({ text, url }) => {
+const Item = ({ text, url, version }) => {
+    const history = useHistory();
     return (
-        <SupportLink to={url}>
-            <Button className={styles['pd-box']}>
-                <div className={styles['item']}>{text}</div>
-            </Button>
-        </SupportLink>
+        <Button
+            className={styles['pd-box']}
+            onClick={url ? () => history.push(url) : version ? () => {} : () => alert('준비중입니다.')}
+        >
+            <div className={styles['item']}>
+                {text}
+            </div>
+            {version && <div className={styles['version']}>
+                0.01 ver
+            </div>}
+        </Button>
     );
 };
 
-Item.defaultProps = {
-    url: "/"
-};
 
 export default MyPageContainer;

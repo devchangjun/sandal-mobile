@@ -1,21 +1,21 @@
 import React from 'react';
 import styles from './Addr.module.scss';
+import { ButtonBase } from '@material-ui/core';
 
-const AddrItem = ({ jibunAddr, roadAddr, onClick }) => {
+const AddrItem = ({ jibunAddr, roadAddr, onClick, active }) => {
     /*
     주소를 검색했을 시 보여줄 컴포넌트.
     */
     const handleClick = () => {
-        console.log('gd');
-        var data = jibunAddr;
+        const data = jibunAddr;
         onClick(data);
     };
 
     return (
-        <div className={styles['address-item']} onClick={handleClick}>
+        <ButtonBase className={styles['address-item']} onClick={handleClick}>
             <JibunAddrBox jibunAddr={jibunAddr}></JibunAddrBox>
             <RoadAddrBox roadAddr={roadAddr}></RoadAddrBox>
-        </div>
+        </ButtonBase>
     );
 };
 const JibunAddrBox = ({ jibunAddr }) => {

@@ -1,57 +1,53 @@
-let notice_list = [
-    {
-        id: 1,
-        message: "결제하신 음식 배송이 준비되었습니다.",
-        send_at: new Date(2020, 6, 14, 13, 20),
-        checked: true,
-    },
-    {
-        id: 2,
-        message: "결제 완료되었습니다.",
-        send_at: new Date(2020, 6, 28, 13, 50),
-        checked: true,
-    },
-    {
-        id: 3,
-        message: "배송 시작(도착 예정 시간: 12시 ~ 13시사이)",
-        send_at: new Date(2020, 7, 30, 15, 38),
-        checked: false,
-    },
-    {
-        id: 4,
-        message: "결제하신 음식 배송이 준비되었습니다.",
-        send_at: new Date(2020, 7, 30, 20, 22),
-        checked: false,
-    },
-];
+import axios from 'axios';
+import {Paths} from '../../paths';
 
-function reqList() {
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const result = notice_list;
-            resolve(result);
-        }, 1000);
-    });
-    return promise;
+
+export const reqNoticeList =async(token)=>{
+    const req = Paths.api +'user/notification/list?offset=&limit=';
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    };
+    const result = await axios.get(req, config);
+    return result.data.query;
 }
 
-function reqChecked(id) {
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            notice_list = notice_list.map(item => item.id === id ? { ...item, checked: true } : item);
-            const result = true;
-            resolve(result);
-        }, 1000);
-    });
-    return promise;
-}
+export const reqNoticeRead = async(token,not_id)=>{
+    const req = Paths.api + 'user/notification/read';
+    const form_data = {
+        not_id :not_id
+    };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-export const requestNoticeList = async () => {
-    const res = await reqList();
-    return res.reverse();
-}
-
-export const requestNoticeChecked = async (id) => {
-    const res = await reqChecked(id);
+    const res = await axios.put(req, form_data);
     return res;
+};
+
+export const reqNoticeReadAll = async (token) =>{
+    const req = Paths.api + 'user/notification/read_all';
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.put(req);
+    return res;
+
 }
+
+export const reqNoticeDelete = async (token,not_id)=>{
+
+    console.log(not_id);
+    const req = Paths.api +'user/notification/delete';
+    const form_data = { not_id };
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.delete(req, {
+        data: form_data
+    });
+    
+    return res;
+};

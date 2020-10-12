@@ -1,82 +1,57 @@
-import React,{useRef,useEffect,useState,useCallback} from 'react';
-import TitleBar from 'components/titlebar/TitleBar';
+import React, { useState } from 'react';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styles from './UpdateInfo.module.scss';
-import SignAuthInput from 'components/sign/SignAuthInput';
-import SignNormalInput from 'components/sign/SignNormalInput';
-
 import Button from 'components/button/Button';
-import AuthTimer from 'components/sign/AuthTimer';
-import Check from 'components/svg/sign/Check';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import { updatePhone } from '../../api/auth/auth';
+import { update_user_info } from '../../store/auth/auth';
+import { useStore } from '../../hooks/useStore';
+import AuthPhone from '../../components/sign/AuthPhone';
+import { useModal } from '../../hooks/useModal';
+
 
 const UpdatePhoneContainer = () => {
-    const random = useRef(496696);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const openModal = useModal();
+
+    const user_token = useStore();
     const [phone, setPhone] = useState('');
-    const [auth, setAuth] = useState('49669');
     const onChangePhone = (e) => setPhone(e.target.value);
-    const onChangeAuth = (e) => setAuth(e.target.value);
-
-    const [toggle, setToggle] = useState(false);
-    const [start_timer ,setStartTimer] = useState(false);
-    const [success , setSuccess] = useState(false);
-
-
+    const [success, setSuccess] = useState(false);
     //인증번호 발송
-    const onClickSendAuth = () => {
-        setToggle(true);
-        setStartTimer(true);
+
+    const onClickUpdatePhone = async () => {
+        try {
+            const res = await updatePhone(user_token, phone);
+            dispatch(update_user_info({ name: 'hp', value: phone }));
+            if (res.data.msg === '성공') {
+                openModal('성공적으로 변경되었습니다!', '변경된 정보를 기억해 주세요.');
+                history.replace(Paths.ajoonamu.account);
+            } else {
+                openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
+            }
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+        }
     };
-    const onClickReSendAuth =()=>{
-        setStartTimer(false);
-        setTimeout(()=>setStartTimer(true),0);
-    }
-    const onClickCompareAuth = useCallback(() => {
-        const auth_num = parseInt(auth);
-        setSuccess(auth_num === random.current);
-
-    },[auth]);
     
-    useEffect(()=>{
-        onClickCompareAuth();
-    },[onClickCompareAuth])
-
     return (
         <>
-            <TitleBar title={'연락처 수정'} />
             <div className={styles['container']}>
                 <div className={styles['context']}>
                     <div className={styles['input']}>
-                    <SignAuthInput
-                        placeholder={'휴대폰번호'}
-                        inputType={''}
-                        initValue={phone}
-                        buttonTitle={
-                            toggle ? '인증번호 재발송' : '인증번호 발송'
-                        }
-                        onChange={onChangePhone}
-                        onClick={toggle? onClickReSendAuth : onClickSendAuth}
-                        toggle={toggle}
-                    />
-                    </div>
-                    <div className={cx('auth-btn', { not_view: !toggle })}>
-                        <SignNormalInput
-                            inputType={'text'}
-                            initValue={auth}
-                            onChange={onChangeAuth}
+                        <AuthPhone
+                            userPhone={phone}
+                            onChangePhone={onChangePhone}
+                            success={success}
+                            setSuccess={setSuccess}
                         />
-                        <div className={styles['timer']}>
-                            {success ? (
-                                <Check on={true} />
-                            ) : (
-                                <AuthTimer start={start_timer}></AuthTimer>
-                            )}
-                        </div>
                     </div>
                 </div>
             </div>
-
-            <Button title={'확인'} toggle={success}/>
+            <Button title={'확인'} toggle={success} onClick={onClickUpdatePhone}/>
         </>
     );
 };

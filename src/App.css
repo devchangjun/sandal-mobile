@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Apple SD Gothic Neo';
+    font-family: "애플 SD 산돌고딕 Neo", "Apple SD Gothic Neo", 나눔고딕, "NanumGothic", "맑은 고딕", "Malgun Gothic", Ngothic, sans-serif;
+
     -webkit-tap-highlight-color: transparent;
 }
 a {
@@ -20,6 +21,9 @@ input, textarea {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
 }
+input[type='checkbox'] {
+  display: none;
+}
 select {
     /*ios대응*/
     -webkit-appearance: none;
@@ -34,69 +38,3 @@ select {
 select::-ms-expand {
     display: none; /* 화살표 없애기 for IE10, 11*/
 }
-
-
-
-.fade-appear{
-    overflow: hidden;
-    transform: translateX(0%);
-  }
-   
-  .fade-appear.fade-appear-active{
-    transition: all .3s ease-in-out;
-    transform: translateX(-100%);
-  
-  } 
-  
-  
-  
-  .fade-enter {
-    transform: translateX(-50%);
-  }
-  
-  .fade-enter.fade-enter-active {
-    transition: all .3s ease-in;
-    transform: translateX(0%);
-  
-  }
-  
-  .fade-exit {
-    overflow: hidden;
-    transform: translateX(0);
-  
-  }
-  
-  .fade-exit.fade-exit-active {
-      overflow: hidden;
-    transition: all .3s ease-in-out;
-    transform: translateX(100%);
-  }
-  
-  
-  
-  div.transition-group {
-    position: relative;
-  }
-  
-  section.route-section {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-  }
-  
-  .back{
-    display: inline-block;
-    cursor: pointer;
-    border:1px solid red;
-  }
-  .about{
-    width: 100vw;
-    height: 100vh;
-    background:pink;
-  }
-  .home{
-    width:100vw;
-    height: 100vh;
-    background:red;
-  }

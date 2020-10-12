@@ -1,127 +1,243 @@
-import React, { useCallback, useEffect } from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useState, useCallback, useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
-import { getCartList } from '../../api/cart/cart';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import CartItemList from 'components/cart/CartItemList';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';
 import Check from 'components/svg/sign/Check';
 
-import EstmModal from 'components/asset/EstmModal';
+import EstmModal from 'components/modal/EstmModal';
 import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
+import Loading from '../../components/asset/Loading';
+import { ButtonBase } from '@material-ui/core';
+import {useStore} from '../../hooks/useStore';
+import { useModal } from '../../hooks/useModal';
+import { getCartList, deleteCartItem,updateCartQunaity } from '../../api/cart/cart';
+import { noAuthGetCartList, noAuthRemoveCartItem,noAuthUpdateCartQunaity } from '../../api/noAuth/cart';
 
 const cx = classNames.bind(styles);
 
 const CartContainer = () => {
+
     const history = useHistory();
-    const [open, setOpen] = React.useState(false); //모달창 오픈
-    const [allChecked, setAllChecked] = React.useState(false); //전체선택
-    const [estm, setEstm] = React.useState(false); //견적서 발송
-    const [not_estm, setNotEstm] = React.useState(true); // 견적서 미발송
-    const [cartList, setCartList] = React.useState([]); //장바구니
-    const [total, setTotal] = React.useState(0); //총 주문금액
-    const [delivery_cost, setCost] = React.useState(0); // 배달비
-    const handleOpen = useCallback(() => {
-        setOpen(true);
-    }, []);
-    const handleClose = useCallback(() => {
-        setOpen(false);
-    }, []);
+    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
+    const openModal = useModal();
 
-    const onChangeEstm = (e) => {
-        setEstm(true);
-        setNotEstm(false);
-    };
+    const [open, setOpen] = useState(false); //모달창 오픈
+    const [estm, setEstm] = useState(false); //견적서 발송
+    const [cartList, setCartList] = useState([]); //장바구니
+    const [total, setTotal] = useState(0); //총 주문금액
+    const [delivery_cost, setCost] = useState(0); // 배달비
+    const [loading, setLoading] = useState(false);
+    const user_token = useStore(false);
 
-    const onChangeNotEstm = (e) => {
-        setEstm(false);
-        setNotEstm(true);
-    };
+    const handleIncrement = useCallback(index => {
+        setCartList(
+            produce(cartList, (draft) => {
+                draft[index].item.item_quanity++;
+            }),
+        );
+    }, [cartList]);
+    const handleDecrement = useCallback(index => {
+        setCartList(
+            produce(cartList, (draft) => {
+                const item_quanity = draft[index].item.item_quanity;
+                if (item_quanity > 1) {
+                    draft[index].item.item_quanity--;
+                }
+            }),
+        );
+    }, [cartList]);
+    const handleDelete = useCallback(cart_id => {
+   
+        openModal('상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
+            if (user_token) {
+                try {
+                    await deleteCartItem(user_token, cart_id);
+                }
+                catch (e) {
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
+                }
+            }
+            else {
+                try {
+                    await noAuthRemoveCartItem(cart_id);
+                    const cart_ids = JSON.parse(
+                        localStorage.getItem('noAuthCartId'),
+                    );
+                    const newState = cart_ids.filter(
+                        (v) => parseInt(v) !== parseInt(cart_id),
+                    );
+                    localStorage.setItem(
+                        'noAuthCartId',
+                        JSON.stringify(newState),
+                    );
+                    setCartList((list) =>
+                        list.filter(
+                            ({ item }) =>
+                                cart_id.indexOf(item.cart_id) === -1,
+                        ),
+                    );
+                } catch (e) {
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
+                }
+            }
+            setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
+        }, () => {},true);
+    }, [openModal, user_token]);
 
-    // const { user } = useSelector(state => state.auth);
+    const handleOpen = useCallback(() => setOpen(true), []);
+    const handleClose = useCallback(() => setOpen(false), []);
 
-    //마운트 될 때 만 함수 생성.
-    const onCartList = useCallback(async () => {
-        const token = sessionStorage.getItem('access_token');
-        const res = await getCartList(token);
-        let len = Object.keys(res).length;
-        let list = [];
-        for (let i = 0; i < len - 1; i++) {
-            list[i] = res[i];
-            list[i].isChecked = false;
+    const onChangeEstm = useCallback(e => setEstm(true), []);
+    const onChangeNotEstm = useCallback(e => setEstm(false), []);
+
+    //장바구니 들고오기
+    const getCartListApi = useCallback(async () => {
+        //유저 정보가 있을때
+        if (user_token) {
+            setLoading(true);
+            console.log('장바구니 들고오기');
+            try {
+                const res = await getCartList(user_token);
+                if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
+                    openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
+                        history.push(Paths.ajoonamu.address);
+                    });
+                } else {
+                    const { query } = res.data;
+                    let len = Object.keys(query).length;
+                    let list = [];
+                    for (let i = 0; i < len - 2; i++) {
+                        list[i] = query[i];
+                        list[i].checked = false;
+                    }
+                    console.log(list);
+                    setCost(query.delivery_cost);
+                    setCartList(list);
+                }
+            } catch (e) {
+
+            }
+            setLoading(false);
+        } else {
+            setLoading(true);
+     
+            // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
+            setTimeout( async() => {
+                setLoading(true);
+                if (addr1) {
+                     try {
+                         const cart_id = JSON.parse(
+                             localStorage.getItem('noAuthCartId'),
+                         );
+                         const res = await noAuthGetCartList(
+                             cart_id,
+                             lat,
+                             lng,
+                             addr1,
+                         );
+                         const { query } = res.data;
+                         let len = Object.keys(query).length;
+                         let list = [];
+                         for (let i = 0; i < len - 1; i++) {
+                             list[i] = query[i];
+                             list[i].checked = false;
+                         }
+                         setCost(query.delivery_cost);
+                         setCartList(list);
+                     } catch (e) {
+
+                     }
+                     setLoading(false);
+                }
+                else {
+                    setLoading(false);
+                }
+            }, 500);
         }
-        setCost(res.delivery_cost);
-        setCartList(list);
-        setAllChecked(true); //나중에 빼야함
-    }, []);
+    }, [user_token, addr1, lat,lng,history]);
 
-    // 장바구니 리스트가 변경될 때 새로 생성.
     const onChangeTotalPrice = useCallback(() => {
-        console.log(cartList);
-        setTotal(0);
-        let total = 0;
+
+    
+
+        let total = cartList.reduce((prev, { item }) => {
+            const { item_price, item_quanity } = item;
+            return prev + (item_price * item_quanity);
+        }, 0);
+
         for (let i = 0; i < cartList.length; i++) {
-            console.log(cartList[i].item);
-            total += cartList[i].item.item_price;
+            const { options, item } = cartList[i];
+            for (let j = 0; j < options.length; j++) {
+                const { option_price } = options[j];
+                total += option_price * item.item_quanity;
+            }
         }
-        console.log(total);
         setTotal(total);
+
     }, [cartList]);
 
-    //마운트 될때만 함수 호출.
-    useEffect(() => {
-        onCartList();
-    }, [onCartList]);
 
-    useEffect(() => {
-        onChangeTotalPrice();
-    }, [onChangeTotalPrice]);
+    const handleCheckChild = useCallback(e => {
+        const index = e.target.id;
+        setCartList(
+            produce(cartList, (draft) => {
+                draft[index].isChecked = !draft[index].isChecked;
+            }),
+        );
+    }, [cartList]);
+    
+    const onClickOrder = useCallback(async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await updateCartQunaity(
+                        user_token,
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {
 
-    const handleCheckChild = useCallback(
-        (e) => {
-            const index = e.target.id;
-            setCartList(
-                produce(cartList, (draft) => {
-                    draft[index].isChecked = !draft[index].isChecked;
-                }),
-            );
-        },
-        [cartList],
-    );
+            }
+        } else {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await noAuthUpdateCartQunaity(
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {
 
-    //전체 선택인지 아닌지 여부 판단
-    // const handleAllChecked = () => {
+            }
+        }
+        setLoading(false);
+        history.push(Paths.ajoonamu.order);
+    }, [user_token, cartList, history]);
 
-    //     for (let i = 0; i < cartList.length; i++) {
-    //         if (cartList[i].isChecked === false) {
-    //             setAllChecked(false);
-    //             return;
-    //         }
-    //     }
-    //     setAllChecked(true);
-    //     return;
-    // }
-
-    const onClickOrder = () => history.push(Paths.ajoonamu.order);
-
-    const renderList = () => {
-        return (
+    const renderList = useCallback(() => (
             <>
                 <div className={styles['bar']}>
-                    <div className={styles['pd-box']}>
-                        <div className={styles['delete']}>전체 삭제</div>
-                    </div>
+                    <ButtonBase className={styles['delete']}
+                        onClick={() => handleDelete(cartList.map(({ item }) => item.cart_id))}
+                    >전체삭제</ButtonBase>
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
-                        allChecked={allChecked}
                         carts={cartList}
                         handleCheckChild={handleCheckChild}
+                        handleIncrement={handleIncrement}
+                        handleDecrement={handleDecrement}
+                        handleDelete={handleDelete}
                     />
                 </div>
                 <div className={styles['finally']}>
@@ -141,28 +257,28 @@ const CartContainer = () => {
                             </div>
                         </div>
                         <div className={styles['estm']}>
-                            <div className={cx('check', { on: not_estm })} onClick={onChangeNotEstm}>
-                                <div className={styles['check-box']}>
-                                    <Check on={not_estm}/>
+                            <ButtonBase>
+                                <div className={cx('check', { on: !estm })} onClick={onChangeNotEstm}>
+                                    <div className={styles['check-box']}>
+                                        <Check on={!estm} />
+                                    </div>
+                                    <div className={styles['value']}>견적서 미발송</div>
                                 </div>
-                                <div className={styles['value']}>
-                                    견적서 미발송
+                            </ButtonBase>
+                            <ButtonBase>
+                                <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
+                                    <div className={styles['check-box']}>
+                                        <Check on={estm} />
+                                    </div>
+                                    <div className={styles['value']}>견적서 발송</div>
                                 </div>
-                            </div>
-                            <div className={cx('check', { on: estm })} onClick={onChangeEstm}>
-                                <div className={styles['check-box']}>
-                                    <Check  on={estm}/>
-                                </div>
-                                <div className={styles['value']}>
-                                    견적서 발송
-                                </div>
-                            </div>
+                            </ButtonBase>
                         </div>
                     </div>
                 </div>
                 <Button
-                    title={'주문하기'}
-                    onClick={estm? handleOpen : onClickOrder}
+                    title={`${numberFormat(parseInt(total)+ parseInt(delivery_cost))}원 주문하기`}
+                    onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>
                 <EstmModal
@@ -173,24 +289,40 @@ const CartContainer = () => {
                     isEsit={estm}
                 />
             </>
-        );
-    };
+        ), [cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
+    );
+
+        //마운트 될때만 함수 호출.
+        useEffect(() => {
+            getCartListApi();
+        }, [getCartListApi]);
+    
+        useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
+    
 
     return (
         <>
-            <TitleBar title={'장바구니'} />
-            <div className={styles['container']}>
-                {cartList.length !== 0 ? (
-                    renderList()
-                ) : (
-                    <Message
-                        src={true}
-                        msg={'장바구니가 비었습니다.'}
-                        isButton={true}
-                        buttonName={'주문하러 가기'}
-                    />
-                )}
-            </div>
+            {loading ? (
+                <Loading open={true} />
+            ) : (
+                <>
+                    <div className={styles['container']}>
+                        {cartList.length !== 0 ? (
+                            renderList()
+                        ) : (
+                            <Message
+                                src={true}
+                                msg={'장바구니가 비었습니다.'}
+                                isButton={true}
+                                buttonName={'주문하러 가기'}
+                                onClick={() => {
+                                    history.replace(`${Paths.ajoonamu.shop}?menu=1`);
+                                }}
+                            />
+                        )}
+                    </div>
+                </>
+            )}
         </>
     );
 };

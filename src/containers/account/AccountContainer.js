@@ -2,59 +2,80 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
 
-import TitleBar from 'components/titlebar/TitleBar';
+//styles
 import classNames from 'classnames/bind';
-import BottomNav from 'components/nav/BottomNav';
-
-import { localLogout, requestAgreeChange } from '../../api/auth/auth';
-import { logout } from '../../store/auth/auth';
-import {update_user_info} from '../../store/auth/auth';
-
-
 import styles from './Account.module.scss';
+//components
+
 import Profile from 'components/svg/sign/profile.png';
+import Button from '@material-ui/core/Button';
+import DropoutModal from '../../components/modal/DropoutModal';
+//lib
 import { stringToTel } from '../../lib/formatter';
 import Back from '../../components/svg/header/Back';
 
+//hooks
+import { useInit } from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
+
+//api
+import { noAuthGetNearStore } from '../../api/noAuth/store';
+import { localLogout, requestAgreeChange } from '../../api/auth/auth';
+
+//store
+import { logout } from '../../store/auth/auth';
+import { update_user_info } from '../../store/auth/auth';
+
 const cn = classNames.bind(styles);
 
-const AccountContainer = () => {
+const AccountContainer = () => {    
+
+    const [open ,setOpen] =useState(false);
+    const handleOpen =()=>setOpen(true);
+    const handleClose =()=>setOpen(false);
+    const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
+    const user_token = sessionStorage.getItem("access_token");
     const dispatch = useDispatch();
-
     const history = useHistory();
+    const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
+    const onClickUpdatePhone =()=>history.push(Paths.ajoonamu.update_phone);
+    const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
+    
+    const onClickLogout = useCallback(async () => {
+        try{
+            const res = await localLogout(user_token);
+            sessionStorage.removeItem('access_token');
+            if (res.message === '로그아웃에 성공하셨습니다.') {
+                dispatch(logout());
+                initStore();
+                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
+                if(noAuthAddrs){
+                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
+                    if(index!==-1){
+                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
+                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
+                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+                    }
+                }
+                history.replace(Paths.index);
 
-    useEffect(() => {
-        if (user === null) {
-            history.replace(Paths.index);
+
+            }
         }
-    }, [user, history]);
-
-    const onClickLogout = async () => {
-        const token = sessionStorage.getItem('access_token');
-        const res = await localLogout(token);
-        sessionStorage.removeItem('access_token');
-
-        if (res.message === '로그아웃에 성공하셨습니다.') {
-            dispatch(logout());
-            history.replace(Paths.index);
+        catch(e){
+            console.error(e);
         }
-    };
-    const onClickUpdateName =()=>{
-        history.push(Paths.ajoonamu.update_name);
-    }
-    const onClickUpdatePhone =()=>{
-        history.push(Paths.ajoonamu.update_phone);
-    }
-    const onClickUpdatePassword =()=>{
-        history.push(Paths.ajoonamu.update_password);
-    }
+    },[dispatch,history,user_token]);
+
+    useEffect(()=>{
+
+        window.scrollTo(0,0);
+    },[])
 
     const render = () => (
         <>
-            <TitleBar title={'내정보'} />
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
                     <div className={cn('profile')}>
@@ -68,43 +89,46 @@ const AccountContainer = () => {
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
-                    <Item text={'핸드폰번호'} value={"010-1234-1234"}  onClick={onClickUpdatePhone}/>
-                    {/* <Item text={'핸드폰번호'} value={user && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/> */}
+                    <Item text={'휴대폰 번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
-                    <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
+                    <Item text={'비밀번호 변경'} onClick={onClickUpdatePassword}/>
                 </div>
 
                 <MarketingAgree
                     agreeMail={user.agree_mail}
                     agreeSMS={user.agree_sms}
                 />
-
-                <div className={styles['logout']} onClick={onClickLogout}>
-                    <Button className={styles['logout-btn']}>
+                <div className={styles['logout']} >
+                    <Button className={styles['logout-btn']} onClick={onClickLogout}>
                         <div className={styles['pd-btn']}>로그아웃</div>
                     </Button>
                 </div>
+                <div className={styles['drop-out']}>
+                    <div className={styles['text']} onClick={handleOpen}>
+                        회원탈퇴
+                    </div>
+                    <p>회원탈퇴 신청화면으로 이동합니다.</p>
+                </div>
             </div>
-            <BottomNav />
+            <DropoutModal open ={open}  handleClose={handleClose}/>
         </>
     );
-    return <>{user === null ? history.push(Paths.index) : render()}</>;
+    return <>{user === null ? ()=>{} : render()}</>;
 };
 
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {
     const [mail, setMail] = useState(agreeMail);
     const [sms, setSMS] = useState(agreeSMS);
     const dispatch = useDispatch();
+    const user_token = useStore();
 
     const sendPostAgreeChange = useCallback(async (type, value) => {
         /*
             수신 동의 변경하기.
             type과 value로 값 설정.
         */
-        const token = sessionStorage.getItem('access_token');
-        const res = await requestAgreeChange(token, type, value);
-        console.log(res);
-    }, []);
+        await requestAgreeChange(user_token, type, value);
+    }, [user_token]);
 
     const changeMail = useCallback(() => {
         sendPostAgreeChange('mail', !mail);
@@ -154,18 +178,16 @@ const AgreeToggle = ({ name, checked, onToggle }) => {
     );
 };
 
-function Item({ text, value,onClick }) {
-    return (
-        <Button className={styles['pd-box']} onClick={onClick}>
-            <div className={styles['item']}>
-                <div className={styles['text']}>{text}</div>
-                {value &&
-                <div className={styles['value']}>
-                    {value}<Back rotate="180deg" width={18} height={18} />
-                </div>}
+const Item = ({ text, value, onClick }) => (
+    <Button className={styles['pd-box']} onClick={onClick}>
+        <div className={styles['item']}>
+            <div className={styles['text']}>{text}</div>
+            <div className={styles['value']}>
+                {value}
+                {onClick &&  <Back rotate="180deg" width={18} height={18} />}
             </div>
-        </Button>
-    );
-}
+        </div>
+    </Button>
+);
 
 export default AccountContainer;

@@ -1,30 +1,30 @@
-.check{
+.check {
     display: flex;
     justify-content: space-between;
     margin: 15px 0;
 }
-.check input[type="checkbox"] {
-	display:none;
+.check input[type='checkbox'] {
+    display: none;
 }
 
-.check label{
-	width:100%;
+.check label {
+    width: 100%;
 }
-.label{
+.label {
     display: flex;
     align-items: center;
+    &.black{
+        color:#555;
+    }
 }
 
-.check input[type="checkbox"] + label svg {
+.check input[type='checkbox'] + label svg {
     margin-right: 17px;
-
-}
-.check input[type="checkbox"]:checked + label .chk_img {
 }
 
-.sub-text{
+.sub-text {
     font-size: 14px;
-    color: #999999;
+    color: #777;
     line-height: 1.2;
     position: relative;
     cursor: pointer;

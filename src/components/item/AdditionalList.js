@@ -6,11 +6,12 @@ import Additional from './Additional';
 const AdditionalList = ({ itemList, onClickAddItem }) => {
     const list = itemList.map((item) => (
         <Additional
-            key={item.id}
-            menuName={item.menu_name}
-            menuPrice={item.menu_price}
+            key={item.option_id}
+            option_id ={item.option_id}
+            option_name={item.option_name}
+            option_price={item.option_price}
             check={item.check}
-            onClickAddItem={(e) => onClickAddItem(item.id)}
+            onClickAddItem={(e) => onClickAddItem(item.option_id)}
         />
     ));
     return <div>{list}</div>;

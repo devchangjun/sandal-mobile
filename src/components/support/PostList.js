@@ -4,8 +4,8 @@ import Back from 'components/svg/header/Back';
 import Message from "../../components/message/Message";
 
 import classnames from 'classnames/bind';
-import { Button } from '@material-ui/core';
-import { dateToRelative } from '../../lib/formatter';
+import { ButtonBase } from '@material-ui/core';
+import { dateToRelative, dateToYYYYMMDD } from '../../lib/formatter';
 
 
 const cn = classnames.bind(styles);
@@ -20,16 +20,22 @@ const PostItem = ({ postData }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <li className={cn('list-element', { open: open })} onClick={() => setOpen(!open)}>
-            <Button className={styles['preview']}>
+        <li className={cn('list-element', { open: open })}>
+            <ButtonBase className={styles['preview']} onClick={() => setOpen(!open)}>
                 <div className={styles['text']}>
-                    {/* <p className={styles['created-at']}>{created_at}</p> */}
-                    <p className={styles['created-at']}>{dateToRelative(new Date(created_at), '/')}</p>
+                    <p className={styles['created-at']}>{dateToRelative(created_at, '/')}</p>
                     <h2 className={styles['title']}>{title}{question}</h2>
                 </div>
                 <Back rotate="270deg"/>
-            </Button>
-            <div className={cn('content')}>{body}{answer}</div>
+            </ButtonBase>
+            <div className={styles['content']}>
+                <p dangerouslySetInnerHTML={{ __html: body ? body : answer}} />
+                <p className={styles['created-at']}>일시: {dateToYYYYMMDD(created_at)}</p>
+                <div className={styles['thanks']}>
+                    <p>감사합니다.</p>
+                    <p>아주나무 드림</p>
+                </div>
+            </div>
         </li>
     )
 }

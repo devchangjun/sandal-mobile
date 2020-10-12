@@ -1,8 +1,10 @@
+export const PROTOCOL_ENV = 'http://dev'
+
 export const Paths = {
     index: '/',
     ajoonamu: {
         signin: '/login',
-        signup: '/register',
+        signup: '/signup',
         recovery: '/recovery',
         recovery_id: '/recovery_id',
         recovery_pw: '/recovery_pw',
@@ -10,6 +12,8 @@ export const Paths = {
         find_email :'/find_email',
         find_password : '/find_password',
         shop: '/shop',
+        breakfast: '/breakfast',
+        product:'/product',
         mypage: '/mypage',
         account: '/account',
         update_name: '/update_name',
@@ -24,7 +28,10 @@ export const Paths = {
         coupon: '/coupon',
         support: '/support',
         notice: '/notice',
-        event: '/event'
+        event: '/event',
+        tos :'/tos',
+        oauth:'/oauth'
     },
-    api: 'http://devapi.ajoonamu.com/api/',
+    api: PROTOCOL_ENV + 'api.ajoonamu.com/api/',
+    storage: PROTOCOL_ENV + 'api.ajoonamu.com/storage/'
 };

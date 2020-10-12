@@ -1,80 +1,182 @@
-import React,{useState, useEffect,useRef} from 'react';
+import React,{useState, useEffect,useRef,useCallback} from 'react';
 import styles from './OrderList.module.scss';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
-import OrderItemList from 'components/order/OrderItemList';
-import BottomNav from 'components/nav/BottomNav';
+import OrderItemList from '../../components/order/OrderItemList';
 import BottomModal from 'components/nav/BottomModal';
-import SwipeableViews from "react-swipeable-views";
+import SwipeableViews from 'react-swipeable-views';
 import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
+import Loading from '../../components/asset/Loading';
 import { IconButton } from '@material-ui/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { getOrderList } from '../../api/order/orderItem';
+import { useStore } from '../../hooks/useStore';
+import { calculateDate } from '../../lib/calculateDate';
 
+import 'swiper/swiper.scss';
 const tabInit = [
     {
-        url:`${Paths.ajoonamu.order_list}?tab=0`,
-        name: '예약주문'
+        url: `${Paths.ajoonamu.order_list}?tab=0`,
+        name: '예약주문',
     },
     {
-        url:`${Paths.ajoonamu.order_list}?tab=1`,
-        name: '배달주문'
+        url: `${Paths.ajoonamu.order_list}?tab=1`,
+        name: '택배주문',
     },
 ];
 
 const OrderListContainer = ({ tab = '0' }) => {
-    const [open,setOpen] = useState(false);
-    const [index, setIndex] = React.useState(parseInt(tab));
-    
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [index, setIndex] = useState(parseInt(tab));
+    // const [order_list, setOrderList] = useState([]);
+    // const [dlvList, setDlvList] = useState([]);
+    const [reserveList, setReserveList] = useState([]);
+    const [startDate, setStartDate] = useState(
+        calculateDate(new Date(), 7, 'DATE'),
+    );
+    const [endDate, setEndDate] = useState(new Date());
+    const user_token = useStore();
     const history = useHistory();
     const SWIPER = useRef(null);
     
     const handleOpen =()=>setOpen(true);
     const handleClose =()=>setOpen(false);
 
-    const onChangeTabIndex =(e,value) =>{
+    const onChangeTabIndex = (e, value) => {
         setIndex(value);
         SWIPER.current.slideTo(value,300);
     }
     const onChangeSwiperIndex =(index)=>{
         setIndex(index);
         history.replace(`${Paths.ajoonamu.order_list}?tab=${index}`);
-    }
+    };
+    const getOrderItems = async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getOrderList(
+                    user_token,
+                    0,
+                    100,
+                    // (page - 1) * PAGE_PER_VIEW,
+                    // PAGE_PER_VIEW,
+                    startDate,
+                    endDate,
+                );
+                const orders = res.orders ? res.orders : [];
+                const reserve = orders.filter(
+                    (item) => item.info.order_type === 'reserve',
+                );
+                setReserveList(reserve);
+                setSuccess(true);
+                setError(false);
+            } catch (e) {
+                setError(true);
+                setSuccess(false);
+            }
+        }
+        setLoading(false);
+    };
+
+    const onClickOrderItem = useCallback(
+        (order_id) => {
+            history.push(`${Paths.ajoonamu.order_detail}?order_id=${order_id}`);
+        },
+        [history],
+    );
+
+    useEffect(() => {
+        // window.scrollTo(0,0);
+        getOrderItems();
+    }, []);
+
     return (
         <>
-            <TitleBar title={'주문내역'}>
-                <IconButton onClick={handleOpen}>
-                    <img src={date} alt="데이트" />
-                </IconButton>
-            </TitleBar>
-            <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
-            <div className={styles['container']}>
-                <Swiper
-         spaceBetween={50}
-         slidesPerView={1}
-         onSlideChange={(swiper) => onChangeSwiperIndex(swiper.activeIndex)}
-         onSwiper={(swiper) => {SWIPER.current=swiper}}
-         autoHeight={true}
-                >
-
-                    <SwiperSlide className={styles['pd-box']}>
-                        <OrderItemList />
-                    </SwiperSlide>
-                    <SwiperSlide className={styles['pd-box']}>
-                        <Message
-                            src={true}
-                            msg={'주문 내역이 존재하지 않습니다.'}
-                            isButton={true}
-                            buttonName={'주문하러 가기'}
-                        />
-                    </SwiperSlide>
-                </Swiper>
-            </div>
-            <BottomNav />
-            <BottomModal open={open} handleClose={handleClose} />
+            {success && (
+                <>
+                    <TitleBar title={'주문내역'}>
+                        <IconButton
+                            style={{ width: '40px', height: '40px', right: '-10px' }}
+                            onClick={handleOpen}
+                        >
+                            <img src={date} alt="date" />
+                        </IconButton>
+                    </TitleBar>
+                    <TabMenu
+                        tabs={tabInit}
+                        index={index}
+                        onChange={onChangeTabIndex}
+                    />
+                    {loading ? (
+                        <Loading open={true} />
+                    ) : (
+                        <div className={styles['container']}>
+                            <Swiper
+                            initialSlide={index}
+                            slidesPerView={1}
+                            onSlideChange={(swiper) => {
+                                onChangeSwiperIndex(swiper.activeIndex)
+                            }}
+                            autoHeight={true}
+                            onSwiper={(swiper) => SWIPER.current=swiper}
+                            >
+                       
+                                <SwiperSlide className={styles['pd-box']}>
+                                    {reserveList.length !== 0 ? (
+                                        <OrderItemList
+                                            order_list={reserveList}
+                                            onClick={onClickOrderItem}
+                                        />
+                                    ) : (
+                                        <Message
+                                            src={true}
+                                            msg={
+                                                '주문 내역이 존재하지 않습니다.'
+                                            }
+                                            isButton={true}
+                                            buttonName={'주문하러 가기'}
+                                            onClick={() => {
+                                                history.replace(
+                                                    Paths.ajoonamu.shop,
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                </SwiperSlide>
+                                <SwiperSlide className={styles['pd-box']}>
+                                    <Message
+                                        src={true}
+                                        msg={'주문 내역이 존재하지 않습니다.'}
+                                        isButton={true}
+                                        buttonName={'주문하러 가기'}
+                                        onClick={() => {
+                                            history.replace(
+                                                Paths.ajoonamu.shop,
+                                            );
+                                        }}
+                                    />
+                                </SwiperSlide>
+                            </Swiper>
+                        </div>
+                    )}
+                    <BottomModal
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        open={open}
+                        handleClose={handleClose}
+                        onClick={getOrderItems}
+                    />
+                </>
+            )}
         </>
     );
 };

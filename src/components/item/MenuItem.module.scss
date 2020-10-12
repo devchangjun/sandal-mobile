@@ -1,40 +1,54 @@
 @import '../../styles/Root.scss';
-.menu-list {
-    .menu-item {
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        margin-top: 30px;
-        .menu-img{
-            @include animation(0.5s,fadeIn);
-            img{
+html{
+    body{
+        .menu-item {
+            text-align: left;
+            display: block;
+            border-radius: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 30px;
+            .menu-img {
                 width: 100%;
                 height: 168px;
+                @include animation(0.5s, fadeIn);
+                img {
+                    width: 100%;
+                    height: 168px;
+                }
+            }
+            &:first-child {
+                margin: 0;
+            }
+            .menu-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 18px;
+                padding-bottom: 18px;
+                font-size: 16px;
+                .menu-price {
+                    font-weight: bold;
+                }
             }
         }
-        &:first-child {
-            margin: 0;
+        .pd-box {
+            padding: $padding-side;
         }
-        .menu-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            .menu-price {
-                font-weight: bold;
-            }
-        }
-    }
-    .pd-box {
-        padding: $padding-side;
     }
 }
+.menu-list {
+    padding : 24px;
 
-@include keyframe(fadeIn){
-    from{
+}
+
+@include keyframe(fadeIn) {
+    from {
         filter: blur(50px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }
+

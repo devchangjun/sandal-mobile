@@ -1,58 +1,68 @@
-import React,{useState, useEffect} from 'react';
-import {useSelector , useDispatch} from 'react-redux';
-import {useHistory} from 'react-router-dom';
-import {updateName} from '../../api/auth/auth';
-import {update_user_info} from '../../store/auth/auth';
+import React, { useState } from 'react';
+import { Paths } from 'paths';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { updateName } from '../../api/auth/auth';
+import { update_user_info } from '../../store/auth/auth';
 
-import TitleBar from 'components/titlebar/TitleBar';
+import { useStore } from '../../hooks/useStore';
 import styles from './UpdateInfo.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import Button from 'components/button/Button';
 import CloseButton from 'components/svg/account/Close';
+import { useModal } from '../../hooks/useModal';
 
 
 const UpdateNameContainer=()=>{
-    const { user } = useSelector((state) => state.auth);
     const history = useHistory();
-    const [newName,setNewName] = useState('');
-    const onChageNewName =(e) => setNewName(e.target.value);
-    
+    const openModal = useModal();
+    const user_token = useStore();
+    const [newName, setNewName] = useState('');
+
+    const onChageNewName = (e) => setNewName(e.target.value);
     const dispatch = useDispatch();
-    
-    useEffect(()=>{
-        const token = sessionStorage.getItem("access_token");
-        console.log(token);
-        if(token === undefined || token ===null){
-            history.replace("/");
+
+    const onClickUpdateName = async () => {
+        try {
+            const res = await updateName(user_token, newName);
+            dispatch(update_user_info({ name: 'name', value: newName }));
+            if (res.data.msg === '성공') {
+                openModal('성공적으로 변경되었습니다!', '변경된 정보를 기억해 주세요.');
+                history.replace(Paths.ajoonamu.account);
+            } else {
+                openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
+            }
+        } catch (e) {
+            openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
         }
-    },[])
-    const onClickButton =()=>{
-        onChangeName();
-    }
-    const onChangeName = async()=>{
-        const token = sessionStorage.getItem("access_token");
-        const res = await updateName(token,newName);
-        dispatch(update_user_info({name :'name' ,value: newName}));
-        console.log(res);
+    };
+    const onClickClear = () => {
+        setNewName('');
+    };
 
-    }
-
-    return(
-            <>
-            <TitleBar title={"이름수정"}/>
-          <div className={styles['container']}>
+    return (
+        <>
+            <div className={styles['container']}>
                 <div className={styles['context']}>
                     <div className={styles['input']}>
-                    <SignNormalInput initValue={newName} onChange={onChageNewName}/>
-                    <div className={styles['close']}>
-                        <CloseButton/>
-                    </div>
+                        <SignNormalInput
+                            initValue={newName}
+                            onChange={onChageNewName}
+                        />
+
+                        <div className={styles['close']} onClick={onClickClear}>
+                            <CloseButton />
+                        </div>
                     </div>
                 </div>
-        </div>
-        <Button title={"확인"} toggle={true} onClick={onClickButton}/>
+            </div>
+            <Button
+                title={'확인'}
+                toggle={newName.length > 0}
+                onClick={newName.length > 0 && onClickUpdateName}
+            />
         </>
-    )
+    );
 }
 
 export default UpdateNameContainer;

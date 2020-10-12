@@ -1,19 +1,17 @@
 import React from 'react';
 import styles from './Button.module.scss';
 import classNames from 'classnames/bind';
+import { ButtonBase } from '@material-ui/core';
 
 const cx = classNames.bind(styles);
 
-//fixed button
-
-const Button =({title, onClick,toggle})=>{
-
-    const onClickDefault =()=>{
-        console.warn("not data");
-    }
+// fixed button
+const Button = ({ title, onClick, toggle }) => {
     return (
-        <div className={cx('btn',{on:toggle})} onClick ={toggle ? onClick : onClickDefault }>{title}</div>
-    )
-}
+        <ButtonBase className={cx('btn', { on: toggle })} onClick={toggle ? onClick : ()=>{}}>
+            {title}
+        </ButtonBase>
+    );
+};
 
-export default Button; 
+export default Button;

@@ -1,62 +1,80 @@
 @import '../../styles/Root.scss';
 
-.menu-list{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+$value1: -10px;
+$value2: 10px;
+.menu-list {
+    list-style: none;
+    // border:1px solid red;
     width: 100%;
     max-width: $max-width;
     margin-bottom: 24px;
-    
-}
-.menu-item{
-    width: 150px;
-    height: 260px;
-
-    cursor: pointer;
-    .menu-img{
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    &::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        clear: both;
+    }
+    padding: 0 21px;
+    padding-top: 5px;
+    box-sizing: border-box;
+    .menu-item {
+        display: block;
+        float: left;
+        box-sizing: border-box;
+        width: 49.9%;
+        padding: 0 6px;
+        margin-bottom: 30px;
         height: auto;
-       @include animation(0.5s,fadeIn);
-        img{
-            width:152px;
-            height: 200px;
+        cursor: pointer;
+        .btn-base {
+            // border:1px solid red;
+            width: 100%;
+            height: auto;
+        }
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            @include animation(0.5s, fadeIn);
+            img {
+                width: 100%;
+                height: 100%;
+                vertical-align: middle;
+            }
+        }
+
+        //메뉴 정보 텍스트 영역
+        .menu-info {
+            width: 100%;
+            .menu-title {
+                font-size: 14px;
+                color: #444;
+                margin: 10px 0;
+            }
+            .menu-text {
+                font-size: $font-size;
+                color: #999999;
+                margin: 10px 0;
+            }
+            .menu-price {
+                font-size: 16px;
+                color: #444;
+                font-weight: bold;
+            }
         }
     }
-
-    //메뉴 정보 텍스트 영역
-    .menu-info{
-        width: 100%;
-        .menu-title{
-            font-size: $font-size;
-            font-weight: bold;
-            margin: 5px 0 5px 0;
-        }
-        .menu-text{
-            font-size: $font-size;
-            color :#999999;
-            margin: 5px 0 5px 0;
-        }
-        .menu-price{
-            font-size: 16px;
-            font-weight: bold;
-        }
-    }
-
 }
-.pd-box{
+
+.pd-box {
     padding: 0 10px;
 }
 
-
-@include keyframe(fadeIn){
-    from{
+@include keyframe(fadeIn) {
+    from {
         filter: blur(100px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }

@@ -259,9 +259,9 @@ const AcceptContainer = (props) => (
         </div>
         <div className={styles['terms']}>
             <div className={cx('pd-sub-top')}>
-                <CheckBox id={"check1"} text={"개인정보처리방침 필수동의"} check={props.check1} onChange={props.onChangeCheck1} />
-                <CheckBox id={"check2"} text={"이용약관 필수"} check={props.check2} onChange={props.onChangeCheck2} />
-                <CheckBox id={"check3"} text={"이벤트알림 선택동의"} check={props.check3} onChange={props.onChangeCheck3} />
+                <CheckBox id={"check1"} text={"개인정보처리방침 필수 동의"} check={props.check1} onChange={props.onChangeCheck1} />
+                <CheckBox id={"check2"} text={"이용약관 필수 동의"} check={props.check2} onChange={props.onChangeCheck2} />
+                <CheckBox id={"check3"} text={"이벤트, 알림 선택 동의"} check={props.check3} onChange={props.onChangeCheck3} />
                 <div className={styles['sms']}>
                     <div className={styles['sub-text']}>
                         <span>SMS, 이메일을 통해 할인/이벤트/쿠폰 정보를</span><br />

@@ -15,11 +15,10 @@ export default function CheckBox({ id, text, check, onChange, url, }) {
                     <Check on={check} />{text}
                 </label>
             </div>
-            {url!==null &&
-            <div className={styles['sub-text']}>
+            {url &&
+                <div className={styles['sub-text']}>
                     <label>보기 </label>
-                </div>
-            }
+                </div>}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Title.module.scss';
@@ -13,7 +13,7 @@ const cx = cn.bind(styles);
 // 헤더 폴더로 이동시켜야할지 말지 고민중
 
 const Title = () => {
-    const { addr1 } = useSelector((state) => state.address);
+    const { addr1 } = useSelector(state => state.address);
     const { notice_check, notification } = useSelector((state) => state.notice);
     const history = useHistory();
     const { header } = useSelector(state => state.scroll);
@@ -29,7 +29,6 @@ const Title = () => {
     const onClickNotice = () => {
         history.push(Paths.ajoonamu.notice);
     };
-
 
     return (
         <div className={cx('app-title', { not_view: header })}>

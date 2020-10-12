@@ -8,6 +8,7 @@ import { useModal } from '../../../hooks/useModal';
 import { requestBannerList } from '../../../api/event/banner';
 import { Link } from 'react-router-dom';
 import { DBImageFormat } from '../../../lib/formatter';
+import ErrorCoverImage from '../../../components/asset/ErrorCoverImage';
 
 const HomeSlick = () => {
     const openModal = useModal();
@@ -63,7 +64,7 @@ const HomeSlick = () => {
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
                         <div className={styles['item']}>
-                            <img src={DBImageFormat(item.bn_img_mobile)[0]} alt="mainBanner" />
+                            <ErrorCoverImage src={DBImageFormat(item.bn_img_mobile)[0]} alt="mainBanner" />
                         </div>
                     </Link>
                 ))}

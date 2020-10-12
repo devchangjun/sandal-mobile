@@ -188,9 +188,9 @@ const App = () => {
         const { scrollY } = window;
         const offset = preventY - scrollY;
         if (offset !== 0) {
-            if (scrollY > 250 && offset < -50) {
+            if (scrollY > 80 && offset < -10) {
                 dispatch(scrollOpen('header'));
-            } else if (scrollY <= 250 || offset >= 50) {
+            } else if (scrollY <= 80 || offset >= 30) {
                 dispatch(scrollClose('header'));
             }
             preventY = scrollY;
@@ -204,8 +204,7 @@ const App = () => {
 
     return (
         <div className="App">
-            <TitleBar title={getTitle()}>
-             </TitleBar>
+            <TitleBar title={getTitle()} />
             <Switch>
                 <Route exact={true} path={Paths.index} component={Home}></Route>
                 <Route path={Paths.ajoonamu.signin} component={Signin}></Route>

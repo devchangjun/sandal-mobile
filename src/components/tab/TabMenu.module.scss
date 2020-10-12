@@ -1,22 +1,18 @@
-
 @import '../../styles/Root.scss';
 
-
-.tab-item{
-    font-size:16px !important;
+.tab-item {
+    font-size: 16px !important;
     min-height: 40px !important; //필수
     padding: 0 !important;
     display: flex !important;
-    flex : 1 1 0;
+    flex: 1 1 0;
 }
-:global .MuiTabs-flexContainer{
-
+:global .MuiTabs-flexContainer {
     // border : 1px  solid blue;
     display: flex !important; /* 핵심! */
     width: 100% !important;
-   height: 40px !important;
-   margin:auto !important;
-   justify-content: center;
-   align-items: center;
+    height: 40px !important;
+    margin: auto !important;
+    justify-content: center;
+    align-items: center;
 }
-

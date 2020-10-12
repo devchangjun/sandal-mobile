@@ -11,7 +11,6 @@ import Slide from '@material-ui/core/Slide';
 import DialogContent from '@material-ui/core/DialogContent';
 import Plus from '../svg/counter/cross.svg';
 import Minus from '../svg/counter/line.svg';
-import { ButtonBase } from '@material-ui/core';
 import { numberFormat,stringNumberToInt } from '../../lib/formatter';
 
 import styles from './PreferModal.module.scss';
@@ -69,7 +68,6 @@ const FullScreenDialog = (props) => {
 
     const onChangeBudget = (e) => {
         const value = stringNumberToInt(e.target.value);
-        console.log(value);
         if (isNaN(value)) {
             setBudget(0);
         } else {
@@ -89,7 +87,6 @@ const FullScreenDialog = (props) => {
     }, [desireQuan]);
 
     const onClickOk = () => {
-
         props.onCustomOrder(budget,desireQuan);
         setOrderType('reserve');
         setBudget(0);
@@ -145,7 +142,7 @@ const FullScreenDialog = (props) => {
                     <div className={styles['modal-input-box']}>
                         <input
                             value={numberFormat(budget)}
-                            type="number"
+                            type="text"
                             onChange={onChangeBudget} />
                         <div className={styles['won']}>원</div>
                     </div>

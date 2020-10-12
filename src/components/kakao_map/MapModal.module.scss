@@ -15,16 +15,19 @@
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
     }
-}
 
-.back {
-    z-index: 2700;
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    display: none;
-    &.on {
-        display: block;
+}
+.map {
+    .back {
+        z-index: 2700;
+        position: absolute;
+        top: 0px; left: 14px;
+        width: 40px; height: 40px;
+        display: none;
+        
+        &.on {
+            display: block;
+        }
     }
 }
 

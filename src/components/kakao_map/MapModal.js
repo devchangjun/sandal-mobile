@@ -1,12 +1,12 @@
 /*global kakao*/
 import React,{ useEffect,useRef } from 'react';
 import classNames from 'classnames/bind';
-import Back from 'components/svg/header/Back';
+import Back from 'components/svg/header/goBack';
 import LinkButtom from 'components/button/LinkButton';
 import MarkerImg from './MarkerImg.svg';
 import styles from './MapModal.module.scss';
 import logo from  './location.png';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
 import { getCoordinates } from '../../api/address/address';
@@ -17,8 +17,8 @@ const FullScreenDialog = (props) => {
     
     const [jibun,setJibun] = React.useState('');
     const [road ,setRoad] = React.useState('');
-    const [detail,setDetail] = React. useState('');
-    const [click,setClick] = React. useState(false);
+    const [detail,setDetail] = React.useState('');
+    const [click,setClick] = React.useState(false);
 
     const onChangeDetail =(e)=>setDetail(e.target.value);
     const {lat,lng} = props.position;
@@ -190,21 +190,21 @@ const FullScreenDialog = (props) => {
     };
 
     return (
-        <div>
-            <div className={cx('map-modal',{on:props.open})}>
+        <div className={styles['map']}>
+            <div className={cx('map-modal',{on: props.open})}>
                 <div id="map" className={styles['map']} style={{ width: "100vw", height: "100vh" }}></div>
             </div>
-            <div className={cx('back',{on:props.open})}>
-                    <Back onClick={handleClose} stroke ={"#fff"} strokeWidth={"3"}/>
-            </div>
+            <IconButton className={cx('back',{on: props.open})} onClick={handleClose}>
+                <Back />
+            </IconButton>
             <MyLocation onClick={resetLocation} open={props.open}/>
             <BottomModal 
-            open={props.open} 
-            jibun={jibun}
-             road={road} 
-             detailAddr={detail}
-             onChange={onChangeDetail}
-             onClick={ ()=>props.onClick(jibun,detail,lat,lng)}/>
+                open={props.open} 
+                jibun={jibun}
+                road={road} 
+                detailAddr={detail}
+                onChange={onChangeDetail}
+                onClick={ ()=>props.onClick(jibun,detail,lat,lng)}/>
         </div>
     );
 };

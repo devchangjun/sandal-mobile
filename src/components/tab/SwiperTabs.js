@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 
 const cn = classnames.bind(styles);
 
-
 const SwiperTab = ({ idx, categorys, onChange }) => {
 
     const { header } = useSelector(state => state.scroll);

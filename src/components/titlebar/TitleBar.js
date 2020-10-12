@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
-import Back from 'components/svg/header/Back';
+import Back from 'components/svg/header/goBack';
 import { IconButton } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 

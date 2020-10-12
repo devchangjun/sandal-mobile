@@ -7,7 +7,7 @@ import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
 import classNames from 'classnames/bind';
-import Back from 'components/svg/header/Back';
+import Back from 'components/svg/header/goBack';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { getMenuInfo } from '../../api/menu/menu';
@@ -185,7 +185,7 @@ const DetailContainer = ({ item_id }) => {
                                 className={styles['back']}
                                 onClick={onClickBack}
                             >
-                                <Back stroke={'#fff'} strokeWidth={'3'} />
+                                <Back fill={'#fff'} boxShadow />
                             </IconButton>
                         </div>
                         <div className={styles['detail-view']}>

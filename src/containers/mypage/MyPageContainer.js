@@ -107,8 +107,8 @@ const MyPageContainer = () => {
                     {user && <Item text={'이용약관'}url={`${Paths.ajoonamu.tos}?tab=0`}/>}
                 </div>
                 {user && (
-                    <div className={styles['logout']} onClick={onClickLogout}>
-                        <Button className={styles['logout-btn']}>
+                    <div className={styles['logout']} >
+                        <Button className={styles['logout-btn']} onClick={onClickLogout}>
                             <div className={styles['pd-btn']}>로그아웃</div>
                         </Button>
                     </div>

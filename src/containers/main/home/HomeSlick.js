@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import {Paths} from 'paths';
+import {useHistory} from 'react-router-dom';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 
@@ -9,6 +11,7 @@ import { DBImageFormat } from '../../../lib/formatter';
 
 const HomeSlick = () => {
     const openModal = useModal();
+    const history = useHistory();
     
     const [state, dispatch] = useReducer((state, action) => ({ ...state, ...action }), {
         oldSlide: 0, activeSlide: 1, end: 0
@@ -20,6 +23,7 @@ const HomeSlick = () => {
     const getBannerList = useCallback(async () => {
         try {
             const res = await requestBannerList();
+            console.log(res);
             if (res.data.msg === '성공') {
                 setList(res.data.query);
                 dispatch({ end: res.data.query.length });
@@ -65,7 +69,7 @@ const HomeSlick = () => {
                     </Link>
                 ))}
             </Slider>
-            <div className={styles['count']}>
+            <div className={styles['count']} onClick={()=>history.push(Paths.ajoonamu.event)}>
                 <span>{state.activeSlide}</span>
                 <span>{state.end}</span>
             </div>

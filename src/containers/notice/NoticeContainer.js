@@ -18,7 +18,7 @@ const cn = classnames.bind(styles);
 
 const NoticeContainer = () => {
 
-    const user_token = useStore();
+    const user_token = useStore(false);
 
     const dispatch = useDispatch();
     const {notification} = useSelector((state)=>state.notice);

@@ -64,10 +64,10 @@ const BreakfastContainer = ({ menu }) => {
 
     //첫 로딩시 카테고리 받아오기
     const callBreakCategoryApi = useCallback(async () => {
-        console.log('카테고리 받아오기');
-        console.log(categorys);
+
         if (categorys.length === 0) {
             try {
+                console.log('카테고리 받아오기');
                 const res = await getBreakCategory();
                 console.log(res);
                 dispatch(get_break_category(res.data.query.categorys));
@@ -79,13 +79,11 @@ const BreakfastContainer = ({ menu }) => {
 
     //첫 로딩시 메뉴 받아오기
     const callBreakMenuListApi = useCallback(async () => {
-        console.log('설마 이걸 다시 받아오냐');
         setLoading(true);
-        console.log('시작');
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
-            if (categorys.length !== 0 && store && !items) {
+            if (categorys.length !== 0 && store && !items ) {
                 console.log('들어옴');
                 for (let i = 0; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
@@ -108,7 +106,7 @@ const BreakfastContainer = ({ menu }) => {
             console.error(e);
         }
         setLoading(false);
-    }, [categorys, store, items, dispatch]);
+    }, [categorys, store, items,dispatch]);
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
@@ -162,23 +160,32 @@ const BreakfastContainer = ({ menu }) => {
     );
 
     const renderSwiperItem = useCallback(() => {
-        const item = categorys.map((category, index) => (
-            <div key={category.ca_id}>
-                {items[index].items.length!==0 ? (
-                    <MenuItemList
-                        menuList={items[index].items.slice(0, offset)}
-                        onClick={onClickMenuItem}
-                    />
-                ) : (
-                    <Message
-                        msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
-                        src={true}
-                        isButton={false}
-                    />
-                )}
-            </div>
-        ));
+        console.log('아이템 잇나');
+        console.log(items);
+        console.log(items[0])
+  
+            const test = categorys.map((category,index)=>{
+                return items[index].ca_id;
+            })
+            console.log(test);
+            const item = categorys.map((category, index) => (
+                <div key={category.ca_id}>
+                    {items[index].items.length!==0 ? (
+                        <MenuItemList
+                            menuList={items[index].items.slice(0, offset)}
+                            onClick={onClickMenuItem}
+                        />
+                    ) : (
+                        <Message
+                            msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
+                            src={true}
+                            isButton={false}
+                        />
+                    )}
+                </div>
+            ));
         return item;
+     
     }, [categorys, items,onClickMenuItem,offset]);
 
     //첫 로딩시 카테고리 셋팅

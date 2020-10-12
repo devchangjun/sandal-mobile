@@ -26,8 +26,9 @@ export const useStore = (isReplace = true) => {
             openModal(
                 '로그인이 필요한 서비스입니다.',
                 '로그인 후에 이용해 주세요.',
+                ()=> history.replace(Paths.ajoonamu.signin),
+                ()=> history.replace(Paths.ajoonamu.signin)
             );
-            history.replace(Paths.ajoonamu.signin);
         }
     }, [user_token, history, openModal, isReplace]);
 

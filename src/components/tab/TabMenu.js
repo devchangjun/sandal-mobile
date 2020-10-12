@@ -17,8 +17,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#fff',
         position: 'fixed',
         zIndex: 99,
-        paddingLeft:"24px",
-        paddingRight:"24px",
+        paddingLeft:"0px",
+        paddingRight:"0px",
+        boxShadow :" 0px 3px 20px rgba(0,0,0,0.1)"
     },
 }));
 
@@ -48,7 +49,7 @@ const TabMenu = ({ tabs, index, onChange,isPush }) => {
             TabIndicatorProps={{
                 style: {
                     backgroundColor: '#000',
-                    height:'4px',
+                    height:'3px',
                     borderRadius:'100px'
                 },
             }}

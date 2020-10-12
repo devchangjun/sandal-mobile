@@ -21,14 +21,18 @@ const useStyles = makeStyles((theme) => ({
 
 const cn = classnames.bind(styles);
 
-export default ({ confirm, title, text, handleClick = () => {}, open }) => {
+export default ({ confirm, title, text, handleClick = () => {},  handleClose = () => {}, open }) => {
     const state = useSelector(state => state.modal);
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const confirmButton = useRef(null);
 
-    const onClose = useCallback(() => dispatch(modalClose()), [dispatch]);
+    const onClose = useCallback(() => {
+        
+        handleClose();
+        dispatch(modalClose());
+    }, [dispatch, handleClose]);
     const onClick = useCallback(() => {
         handleClick();
         onClose();

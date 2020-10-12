@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Title.module.scss';
@@ -15,7 +15,7 @@ const cx = cn.bind(styles);
 const Title = () => {
     const { user } = useSelector((state) => state.auth);
     const { addr1 } = useSelector((state) => state.address);
-    const {notice_check} = useSelector((state)=>state.notice);
+    const { notice_check, notification } = useSelector((state) => state.notice);
     const history = useHistory();
     /* 
         사용자가 마지막으로 선택한 배달지를 
@@ -28,18 +28,23 @@ const Title = () => {
     const onClickNotice = () => {
         history.push(Paths.ajoonamu.notice);
     };
-
     return (
         <div className={styles['app-title']}>
             <div className={styles['app-title-main']}>
                 <div className={styles['app-title-content']}>
                     <div className={cx('notice')}>
-                        {user &&
-                               <div className={cx('app-title-notification',{unread:!notice_check})} onClick={onClickNotice} >
-                               <img src={notificationBellImage} alt="notification-bell"/>
-                           </div>
-                        }
-             
+                        <div
+                            className={cx('app-title-notification', {
+                                unread:
+                                    !notice_check && notification.length !== 0,
+                            })}
+                            onClick={onClickNotice}
+                        >
+                            <img
+                                src={notificationBellImage}
+                                alt="notification-bell"
+                            />
+                        </div>
                     </div>
                     <div
                         className={styles['app-title-location']}

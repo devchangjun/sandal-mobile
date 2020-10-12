@@ -164,7 +164,6 @@ const DetailContainer = ({ item_id }) => {
     useEffect(() => {
         menu && setOptionItem();
     }, [menu, setOptionItem]);
-    console.log(menu);
     return (
         <>
             {loading ? (

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
-import { Paths } from 'paths';
+import { Paths} from 'paths';
 import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     FindEmail, FindPassword, Home, Account, Address, Reserve, Breakfast,DetailMenu,
@@ -16,6 +16,7 @@ import { Route, Switch } from 'react-router-dom';
 import ModalContainer from './containers/assets/ModalContainer';
 import TitleBar from './components/titlebar/TitleBar';
 import BottomNav from './components/nav/BottomNav';
+
 //api
 import { noAuthGetNearStore } from './api/noAuth/store';
 import { getActiveAddr } from './api/address/address';

@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect,useRef} from 'react';
 import styles from './OrderList.module.scss';
 import {useHistory} from 'react-router-dom';
 import { Paths } from 'paths';
@@ -11,6 +11,7 @@ import SwipeableViews from "react-swipeable-views";
 import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
 import { IconButton } from '@material-ui/core';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 
 const tabInit = [
@@ -29,12 +30,14 @@ const OrderListContainer = ({ tab = '0' }) => {
     const [index, setIndex] = React.useState(parseInt(tab));
     
     const history = useHistory();
+    const SWIPER = useRef(null);
     
     const handleOpen =()=>setOpen(true);
     const handleClose =()=>setOpen(false);
 
     const onChangeTabIndex =(e,value) =>{
         setIndex(value);
+        SWIPER.current.slideTo(value,300);
     }
     const onChangeSwiperIndex =(index)=>{
         setIndex(index);
@@ -49,24 +52,26 @@ const OrderListContainer = ({ tab = '0' }) => {
             </TitleBar>
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
-                <SwipeableViews
-                    enableMouseEvents
-                    index={index}
-                    onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={true}
+                <Swiper
+         spaceBetween={50}
+         slidesPerView={1}
+         onSlideChange={(swiper) => onChangeSwiperIndex(swiper.activeIndex)}
+         onSwiper={(swiper) => {SWIPER.current=swiper}}
+         autoHeight={true}
                 >
-                    <div className={styles['pd-box']}>
+
+                    <SwiperSlide className={styles['pd-box']}>
                         <OrderItemList />
-                    </div>
-                    <div className={styles['pd-box']}>
+                    </SwiperSlide>
+                    <SwiperSlide className={styles['pd-box']}>
                         <Message
                             src={true}
                             msg={'주문 내역이 존재하지 않습니다.'}
                             isButton={true}
                             buttonName={'주문하러 가기'}
                         />
-                    </div>
-                </SwipeableViews>
+                    </SwiperSlide>
+                </Swiper>
             </div>
             <BottomNav />
             <BottomModal open={open} handleClose={handleClose} />

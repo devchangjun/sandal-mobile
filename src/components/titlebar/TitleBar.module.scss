@@ -21,13 +21,12 @@
             height: 40px;
         }
         .empty, .back {
-            // border:1px solid red;
-            width: 80px;
+            width: 80px; height: 40px;
+            position: relative;
             @include flex-center(inherit);
-            height: 40px;
             .back-button {
-                width: auto;
-                // width: 40px; height: 40px;
+                width: 40px; height: 40px;
+                left: -10px;
             }
         }
         .empty {
@@ -36,5 +35,8 @@
         .back {
             justify-content: flex-start;
         }
+    }
+    &.not_view {
+        display: none;
     }
 }

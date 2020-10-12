@@ -163,12 +163,12 @@ const HomeContainer = () => {
         }
     }, [break_cate, store, break_menu,dispatch]);
 
-    useEffect(()=>{
-        const tab= parseInt(sessionStorage.getItem('home_tab'));
-        setIndex(tab);
+    useEffect(() => {
+        const tab = parseInt(sessionStorage.getItem('home_tab'));
+        setIndex(tab ? tab : 0);
     },[])
     useEffect(()=>{
-        sessionStorage.setItem('home_tab',index);
+        sessionStorage.setItem('home_tab', index);
     },[index])
 
     useEffect(() => {

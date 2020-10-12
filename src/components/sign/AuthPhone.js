@@ -98,7 +98,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
                     success ? '인증 완료' : toggle ? '인증번호 재발송' : '인증번호 발송'
                 }
                 onChange={onChangePhone}
-                placeholder={'핸드폰 번호'}
+                placeholder={'휴대폰 번호'}
                 button_disabled={success}
                 input_disabled={success}
             />

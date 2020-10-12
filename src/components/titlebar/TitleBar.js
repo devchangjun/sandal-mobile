@@ -1,16 +1,20 @@
 import React from 'react';
+import classnames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
 import Back from 'components/svg/header/Back';
 import { IconButton } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
-
+const cn = classnames.bind(styles);
 
 const TitleBar = ({ title, children, isHome }) => {
+    const { header } = useSelector(state => state.scroll);
+
     return (
         <>
             {title &&
-                <div className={styles['title-bar']}>
+                <div className={cn('title-bar', { not_view: header })}>
                     <div className={styles['item']}>
                         <BackButton isHome={isHome} />
                         <Title title={title} />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Paths } from 'paths';
 import styles from './Title.module.scss';
@@ -13,10 +13,11 @@ const cx = cn.bind(styles);
 // 헤더 폴더로 이동시켜야할지 말지 고민중
 
 const Title = () => {
-    const { user } = useSelector((state) => state.auth);
     const { addr1 } = useSelector((state) => state.address);
     const { notice_check, notification } = useSelector((state) => state.notice);
     const history = useHistory();
+    const { header } = useSelector(state => state.scroll);
+    
     /* 
         사용자가 마지막으로 선택한 배달지를 
         addr로 받아와 렌더.
@@ -28,8 +29,10 @@ const Title = () => {
     const onClickNotice = () => {
         history.push(Paths.ajoonamu.notice);
     };
+
+
     return (
-        <div className={styles['app-title']}>
+        <div className={cx('app-title', { not_view: header })}>
             <div className={styles['app-title-main']}>
                 <div className={styles['app-title-content']}>
                     <div className={cx('notice')}>

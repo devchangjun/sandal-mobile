@@ -98,7 +98,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                 <>
                     <TitleBar title={'주문내역'}>
                         <IconButton
-                            style={{ width: '40px', height: '40px' }}
+                            style={{ width: '40px', height: '40px', right: '-10px' }}
                             onClick={handleOpen}
                         >
                             <img src={date} alt="date" />

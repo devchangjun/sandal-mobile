@@ -24,11 +24,10 @@ const cx = classNames.bind(styles);
 const CartContainer = () => {
 
     const history = useHistory();
-    const { addr1, addr2,lat,lng } = useSelector((state) => state.address);
+    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
     const openModal = useModal();
 
     const [open, setOpen] = useState(false); //모달창 오픈
-    const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(false); //견적서 발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
@@ -55,20 +54,18 @@ const CartContainer = () => {
     }, [cartList]);
     const handleDelete = useCallback(cart_id => {
    
-        openModal('이 상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
+        openModal('상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
             if (user_token) {
                 try {
-                    const res = await deleteCartItem(user_token, cart_id);
-                    console.log(res);
-
+                    await deleteCartItem(user_token, cart_id);
                 }
                 catch (e) {
-
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
                 }
             }
             else {
                 try {
-                    const res = await noAuthRemoveCartItem(cart_id);
+                    await noAuthRemoveCartItem(cart_id);
                     const cart_ids = JSON.parse(
                         localStorage.getItem('noAuthCartId'),
                     );
@@ -86,14 +83,12 @@ const CartContainer = () => {
                         ),
                     );
                 } catch (e) {
-
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
                 }
             }
-        setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
-        },true);
-               
-   
-    }, [user_token]);
+            setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
+        }, () => {},true);
+    }, [openModal, user_token]);
 
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
@@ -238,7 +233,6 @@ const CartContainer = () => {
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
-                        allChecked={allChecked}
                         carts={cartList}
                         handleCheckChild={handleCheckChild}
                         handleIncrement={handleIncrement}
@@ -295,7 +289,7 @@ const CartContainer = () => {
                     isEsit={estm}
                 />
             </>
-        ), [allChecked, cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
+        ), [cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
     );
 
         //마운트 될때만 함수 호출.

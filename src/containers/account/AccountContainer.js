@@ -16,16 +16,16 @@ import { stringToTel } from '../../lib/formatter';
 import Back from '../../components/svg/header/Back';
 
 //hooks
-import {useInit} from '../../hooks/useStore';
-import {useStore} from '../../hooks/useStore';
+import { useInit } from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
 
 //api
-import {noAuthGetNearStore} from '../../api/noAuth/store';
+import { noAuthGetNearStore } from '../../api/noAuth/store';
 import { localLogout, requestAgreeChange } from '../../api/auth/auth';
 
 //store
 import { logout } from '../../store/auth/auth';
-import {update_user_info} from '../../store/auth/auth';
+import { update_user_info } from '../../store/auth/auth';
 
 const cn = classNames.bind(styles);
 
@@ -89,9 +89,9 @@ const AccountContainer = () => {
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
-                    <Item text={'핸드폰번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
+                    <Item text={'휴대폰 번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
-                    <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
+                    <Item text={'비밀번호 변경'} onClick={onClickUpdatePassword}/>
                 </div>
 
                 <MarketingAgree
@@ -115,8 +115,6 @@ const AccountContainer = () => {
         </>
     );
     return <>{user === null ? ()=>{} : render()}</>;
-
-    // return <>{user === null ? history.replace(Paths.index) : render()}</>;
 };
 
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {
@@ -181,18 +179,16 @@ const AgreeToggle = ({ name, checked, onToggle }) => {
     );
 };
 
-function Item({ text, value,onClick }) {
-    return (
-        <Button className={styles['pd-box']} onClick={onClick}>
-            <div className={styles['item']}>
-                <div className={styles['text']}>{text}</div>
-                {value &&
-                <div className={styles['value']}>
-                    {value}<Back rotate="180deg" width={18} height={18} />
-                </div>}
+const Item = ({ text, value, onClick }) => (
+    <Button className={styles['pd-box']} onClick={onClick}>
+        <div className={styles['item']}>
+            <div className={styles['text']}>{text}</div>
+            <div className={styles['value']}>
+                {value}
+                {onClick &&  <Back rotate="180deg" width={18} height={18} />}
             </div>
-        </Button>
-    );
-}
+        </div>
+    </Button>
+);
 
 export default AccountContainer;

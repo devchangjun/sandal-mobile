@@ -25,4 +25,7 @@
     position: fixed;
     top: 40px; left: 0px;
 
+    &.not_view {
+        top: 0px;
+    }
 }

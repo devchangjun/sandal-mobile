@@ -183,7 +183,7 @@ const CouponConatiner = ({ tab = '0' }) => {
             if (search.indexOf('tab=2') !== -1) {
                 return (
                     <IconButton
-                        style={{ width: '40px', height: '40px' }}
+                        style={{ width: '40px', height: '40px', right: '-10px' }}
                         onClick={handleOpen}
                     >
                         <img src={date} alt="date" />

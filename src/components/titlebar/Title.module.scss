@@ -70,4 +70,7 @@
             }
         }
     }
+    &.not_view {
+        display: none;
+    }
 }

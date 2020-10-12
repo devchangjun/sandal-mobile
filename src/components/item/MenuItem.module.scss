@@ -11,10 +11,11 @@ html{
             margin-top: 30px;
             .menu-img {
                 width: 100%;
-                // height: 168px;
+                height: 168px;
                 @include animation(0.5s, fadeIn);
                 img {
                     width: 100%;
+                    height: 168px;
                 }
             }
             &:first-child {

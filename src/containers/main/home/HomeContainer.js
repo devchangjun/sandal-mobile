@@ -72,11 +72,9 @@ const HomeContainer = () => {
     //첫 로딩시 카테고리 받아오기
     const callCategoryList = useCallback(async () => {
         //카테고리 길이가 1이면 받아오기.
-        console.log('카테고리')
         if (best_cate.length === 0) {
             try {
                 const res = await getCategory();
-                console.log(res);
                 dispatch(get_catergory(res));
             } catch (e) {
                 console.error(e);
@@ -88,7 +86,6 @@ const HomeContainer = () => {
     const callBestMenuListApi = useCallback(async () => {
         setLoading(true);
         try {
-        console.log('베스트메뉴')
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
             if (best_cate.length !== 0 && !best_menu) {
@@ -122,11 +119,9 @@ const HomeContainer = () => {
 
     //첫 로딩시 기업조식 카테고리 받아오기
     const callBreakCategoryApi = useCallback(async () => {
-        console.log('조식카테고리')
         if (break_cate.length === 0) {
             try {
                 const res = await getBreakCategory();
-                console.log(res);
                 dispatch(get_break_category(res.data.query.categorys));
             } catch (e) {
                 console.error(e);
@@ -137,7 +132,6 @@ const HomeContainer = () => {
     //첫 로딩시 기업조식 메뉴 받아오기
     //기업조식은 배달주소 필요.
     const callBreakMenuListApi = useCallback(async () => {
-        console.log('기업조식')
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];

@@ -67,7 +67,6 @@ export const useInit = () => {
         post_num = null,
         near_store = null,
     ) => {
-        console.log('스토어 초기화');
         dispatch(init());
         dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
         dispatch(get_near_store(near_store));

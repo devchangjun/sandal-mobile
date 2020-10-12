@@ -32,6 +32,9 @@ import {
 import { get_best_menu, add_best_menu } from '../../../store/product/bestmenu';
 import { get_catergory } from '../../../store/product/product';
 
+
+//hooks
+import {useScroll} from '../../../hooks/useScroll';
 const OFFSET = 8;
 const LIMIT = 8;
 
@@ -58,6 +61,11 @@ const HomeContainer = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [menuList, setMenuList] = useState([]);
+    
+    const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
+    const [isPaging, setIsPaging] = useState(false); //페이징중인지
+    const [offset, setOffset] = useState(8);
+
 
     const history = useHistory();
 

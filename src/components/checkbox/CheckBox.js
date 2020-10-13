@@ -2,17 +2,18 @@ import React from 'react';
 import styles from './CheckBox.module.scss';
 import classNames from 'classnames/bind';
 import Check from 'components/svg/sign/Check';
+import { UpgradeCheck } from '../svg/sign/Check';
 
 const cx = classNames.bind(styles);
 
 
-export default function CheckBox({ id, text, check, onChange, onClick }) {
+export default function CheckBox({ id, text, check, onChange, onClick, upgrade }) {
     return (
         <div className={cx('check', 'item')}>
-            <div className={cx('sub-text')}>
+            <div className={cx('sub-text', { upgrade })}>
                 <input type="checkbox" id={id} checked={check} onChange ={onChange} />
                 <label className={styles['label']} htmlFor={id}>
-                    <Check on={check} />{text}
+                    {upgrade ? <UpgradeCheck on={check} /> : <Check on={check} />}{text}
                 </label>
             </div>
             {onClick &&

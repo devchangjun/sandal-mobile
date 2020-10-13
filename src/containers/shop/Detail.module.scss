@@ -37,10 +37,12 @@
         .menu-name {
             font-size: 18px;
             color: #333;
+            font-weight: 500;
             margin: 7px 0;
         }
         .menu-explan {
             font-size: 14px;
+            line-height: 1.5;
             color: #777;
         }
         .item-additional-list {
@@ -51,6 +53,7 @@
         .cost-count {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 24px 0;
             .cost {
                 font-size: 20px;
@@ -61,6 +64,7 @@
     .title {
         font-size: 16px;
         padding: 10px 24px;
+        color: #333;
         background-color: #f9f9f9;
         font-weight: 500;
     }

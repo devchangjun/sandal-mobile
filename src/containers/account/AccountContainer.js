@@ -8,11 +8,11 @@ import classNames from 'classnames/bind';
 import styles from './Account.module.scss';
 //components
 
-import Profile from 'components/svg/sign/profile.png';
 import Button from '@material-ui/core/Button';
 import DropoutModal from '../../components/modal/DropoutModal';
+import ProfileModal from '../../components/modal/ProfileModal';
 //lib
-import { stringToTel } from '../../lib/formatter';
+import { DBImageFormat, stringToTel } from '../../lib/formatter';
 import Back from '../../components/svg/header/Back';
 
 //hooks
@@ -21,70 +21,109 @@ import { useStore } from '../../hooks/useStore';
 
 //api
 import { noAuthGetNearStore } from '../../api/noAuth/store';
-import { localLogout, requestAgreeChange } from '../../api/auth/auth';
+import { localLogout, requestAgreeChange, updateProfileImage } from '../../api/auth/auth';
 
 //store
-import { logout } from '../../store/auth/auth';
+import { get_user_info, logout } from '../../store/auth/auth';
 import { update_user_info } from '../../store/auth/auth';
+import { useModal } from '../../hooks/useModal';
+import ProfileCoverImage from '../../components/asset/ProfileCoverImage';
 
 const cn = classNames.bind(styles);
 
 const AccountContainer = () => {    
 
-    const [open ,setOpen] =useState(false);
-    const handleOpen =()=>setOpen(true);
-    const handleClose =()=>setOpen(false);
+    const [open, setOpen] = useState(false);
+    
+    const [profileOpen, setProfileOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const initStore = useInit();
-    const { user } = useSelector((state) => state.auth);
-    const user_token = sessionStorage.getItem("access_token");
+    const { user } = useSelector(state => state.auth);
+    const user_token = sessionStorage.getItem('access_token');
     const dispatch = useDispatch();
     const history = useHistory();
-    const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
-    const onClickUpdatePhone =()=>history.push(Paths.ajoonamu.update_phone);
-    const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
+    const openModal = useModal();
+    const onClickUpdateName = () => history.push(Paths.ajoonamu.update_name);
+    const onClickUpdatePhone = () => history.push(Paths.ajoonamu.update_phone);
+    const onClickUpdatePassword = () => history.push(Paths.ajoonamu.update_password);
     
-    const onClickLogout = useCallback(async () => {
-        try{
-            const res = await localLogout(user_token);
-            sessionStorage.removeItem('access_token');
-            if (res.message === '로그아웃에 성공하셨습니다.') {
-                dispatch(logout());
-                initStore();
-                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                if(noAuthAddrs){
-                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
-                    if(index!==-1){
-                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
-                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
-                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
-                    }
+    const onChangeFiles = useCallback(async (e) => {
+        if (e.target.files.length) {
+            try {
+                const res = await updateProfileImage(user_token, e.target.files[0]);
+                if (res.data.msg === "성공") {
+                    openModal('프로필 이미지를 변경하였습니다!');
+                    dispatch(get_user_info(user_token));
+                } else {
+                    openModal('프로필 이미지 변경에 실패하였습니다!', '나중에 다시 시도해 주세요.');
                 }
-                history.replace(Paths.index);
-
-
+            } catch (e) {
+                openModal('서버에 오류가 발생하였습니다!', '나중에 다시 시도해 주세요.');
             }
         }
-        catch(e){
-            console.error(e);
-        }
-    },[dispatch,history,user_token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, user_token]);
 
-    useEffect(()=>{
+    const onClickLogout = useCallback(async () => {
+        openModal('정말 로그아웃 하시겠습니까?', '', async () => {
+            try {
+                const res = await localLogout(user_token);
+                sessionStorage.removeItem('access_token');
+                if (res.message === '로그아웃에 성공하셨습니다.') {
+                    dispatch(logout());
+                    initStore();
+                    const noAuthAddrs = JSON.parse(
+                        localStorage.getItem('noAuthAddrs'),
+                    );
+                    if (noAuthAddrs) {
+                        const index = noAuthAddrs.findIndex(
+                            (item) => item.active === 1,
+                        );
+                        if (index !== -1) {
+                            const {
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                            } = noAuthAddrs[index];
+                            const near_store = await noAuthGetNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
+                        }
+                    }
+                    history.replace(Paths.index);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }, () => {}, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, history, initStore, user_token]);
 
-        window.scrollTo(0,0);
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const render = () => (
         <>
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
-                    <div className={cn('profile')}>
-                        <img
-                            className={styles['profile-img']}
-                            src={Profile}
-                            alt={'프로필 이미지'}
-                        />
-                        <div className={styles['change']}>변경</div>
+                    <div className={cn('profile')} onClick={() => setProfileOpen(true)}>
+                        <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} alt="" />
+                        <label htmlFor="change_profile" onClick={e => e.stopPropagation()} className={styles['change']}>변경</label>
+                        <input type="file" id="change_profile" className={styles['change-profile']} onChange={onChangeFiles} accept="image/gif, image/jpeg, image/png, image/svg" />
                     </div>
                 </div>
                 <div className={styles['tab']}>
@@ -110,7 +149,8 @@ const AccountContainer = () => {
                     <p>회원탈퇴 신청화면으로 이동합니다.</p>
                 </div>
             </div>
-            <DropoutModal open ={open}  handleClose={handleClose}/>
+            <ProfileModal open={profileOpen} src={DBImageFormat(user && user.profile_img)} handleClose={() => setProfileOpen(false)} />
+            <DropoutModal open={open} handleClose={handleClose}/>
         </>
     );
     return <>{user === null ? ()=>{} : render()}</>;

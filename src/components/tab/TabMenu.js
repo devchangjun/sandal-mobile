@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 99,
         paddingLeft:"0px",
         paddingRight:"0px",
-        boxShadow :" 0px 3px 20px rgba(0,0,0,0.1)"
     },
 }));
 
@@ -57,7 +56,7 @@ const TabMenu = ({ tabs, index, onChange,isPush }) => {
                 },
             }}
             className={classes.tabs}
-            style={{ top: header ? '0px' : '40px' }}
+            style={{ top: header ? '0px' : '40px', boxShadow : header ? "0px 3px 20px rgba(0,0,0,0.1)": "" }}
         >
             {tabList}
         </Tabs>

@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
         textAlign: 'center',
         backgroundColor: 'white',
         color: 'black',
+        boxShadow: 'none',
         borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },

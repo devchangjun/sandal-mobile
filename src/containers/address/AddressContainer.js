@@ -1,7 +1,7 @@
 /*global kakao*/
 
 //hooks
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {useInit} from '../../hooks/useStore';
 import { useStore } from '../../hooks/useStore';
@@ -40,7 +40,7 @@ const AddressContainer = () => {
     const dispatch = useDispatch();
 
     const openMessage = useCallback(
-        (isConfirm, title, text, handleClick = () => { }) => {
+        (isConfirm, title, text, handleClick = () => {}) => {
             modalDispatch(modalOpen(isConfirm, title, text, handleClick));
         },
         [modalDispatch],
@@ -51,7 +51,9 @@ const AddressContainer = () => {
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [searchList, setSearchList] = useState([]); // 검색 리스트
-    const [position, setPosition] = useState('');
+    const [position, setPosition] = useState({
+        lat: 0, lng: 0
+    });
     const [open, setOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
     const [deliveryList, setDeliveryList] = useState([]);
@@ -113,14 +115,25 @@ const AddressContainer = () => {
 
     //현재 위치 받아오기
     const getUserLocation = async () => {
-        setLoading(true);
-        const p = await getCoordinates();
-        const lat = p.coords.latitude;
-        const lng = p.coords.longitude;
-        const newState = { lat: lat, lng: lng };
-        setPosition(newState);
-        setLoading(false);
-        setMapOpen(true);
+        if ('geolocation' in navigator) {
+            setLoading(true);
+            try {
+                const p = await getCoordinates();
+                const lat = p.coords.latitude;
+                const lng = p.coords.longitude;
+                const newState = { lat: lat, lng: lng };
+                setPosition(newState);
+                setMapOpen(true);
+            } catch (e) {
+                console.log(e);
+                if (e.code === 3) {
+                    openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
+                } else {
+                    openMessage(false, "위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                }
+            }
+            setLoading(false);
+        }
     };
 
 

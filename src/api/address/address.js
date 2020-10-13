@@ -4,6 +4,11 @@ import { Paths } from '../../paths';
 const URL = 'https://www.juso.go.kr/addrlink/addrLinkApi.do';
 const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 
+const OPTIONS = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 5000,
+};
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
@@ -15,8 +20,8 @@ export const getDeliveryList = async (token) => {
 }
 
 export function getCoordinates() {
-    return new Promise(function(resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+    return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, OPTIONS);
     });
 }
 

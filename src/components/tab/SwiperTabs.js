@@ -30,9 +30,9 @@ const SwiperTab = ({ idx, categorys, onChange }) => {
                     borderPosition="bottom"
                     borderThickness={4}
                     itemClassName={styles['item']}
-                    borderColor="#222"
+                    borderColor="#007246"
                     activeStyle={{
-                        color: '#000',
+                        color: '#007246',
                     }}
                 />
             </div>

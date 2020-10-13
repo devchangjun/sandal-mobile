@@ -74,7 +74,7 @@ const HomeContainer = () => {
 
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
-    const [sub ,setSub] = useState(false);
+    const [swiper_open ,setSwiperOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
 
     const [best_post_index ,setBestPostIndex] = useState(0);
@@ -208,12 +208,12 @@ const HomeContainer = () => {
 
         if(height<=80){
             setHidden(true);
-            setSub(true);
+            setSwiperOpen(true);
 
         }
         else{
             setHidden(false);
-            setSub(false);
+            setSwiperOpen(false);
 
         }
     };
@@ -226,7 +226,7 @@ const HomeContainer = () => {
         console.log(scrollTop);
         if(scrollTop <= 0) {
             console.log('숨기기');
-            setSub(false);
+            setSwiperOpen(false);
             setHidden(false);
         }
         else{
@@ -258,7 +258,7 @@ const HomeContainer = () => {
                     <>
                         <Swiper
                             ref={SUB_TAB}
-                            className={cx('swiper',{sub:sub})}
+                            className={cx('swiper',{sub:swiper_open})}
                             initialSlide={index}
                             slidesPerView={1}
                             onSlideChange={(swiper) => {
@@ -273,7 +273,7 @@ const HomeContainer = () => {
                                         spaceBetween={15}
                                         nested={true}
                                         slidesPerView={5}
-                                        className={cx('categorys',{sub:sub})}
+                                        className={cx('categorys')}
                                         onClick={(swiper) => {
                                             if (swiper.clickedIndex!==undefined) {
                                                 console.log(swiper.clickedIndex);
@@ -297,7 +297,7 @@ const HomeContainer = () => {
                                         </>
                                     </Swiper>
                                 )}
-                                <h3 className={cx('menu-list-title',{sub:sub})}>
+                                <h3 className={cx('menu-list-title',{sub:swiper_open})}>
                                     베스트 메뉴
                                 </h3>
                                 {best_menu && (
@@ -321,7 +321,7 @@ const HomeContainer = () => {
                                         spaceBetween={15}
                                         nested={true}
                                         slidesPerView={5}
-                                        className={cx('categorys',{sub:sub})}
+                                        className={cx('categorys')}
                                         onClick={(swiper) => {
                                             if (swiper.clickedIndex!==undefined) {
                                                 console.log(swiper.clickedIndex);

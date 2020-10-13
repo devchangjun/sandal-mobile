@@ -30,11 +30,13 @@ const TabMenu = ({ tabs, index, onChange,isPush,center }) => {
         <Tabs
             value={index}
             onChange={onChange}
+            textColor="primary"
             TabIndicatorProps={{
                 style: {
-                    backgroundColor: '#000',
+                    backgroundColor: '#007246',
                     height:'2px',
-                    borderRadius:'100px'
+                    borderRadius:'100px',
+                    color:'red'
                 },
             }}
             className={styles['tabs']}

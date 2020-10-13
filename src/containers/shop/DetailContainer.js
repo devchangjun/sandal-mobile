@@ -18,6 +18,7 @@ import { noAuthAddCart } from '../../api/noAuth/cart';
 import { IconButton } from '@material-ui/core';
 import ErrorCoverImage from '../../components/asset/ErrorCoverImage';
 import Noimage from '../../components/svg/noimage.png';
+import TitleBar from '../../components/titlebar/TitleBar';
 
 const cx = classNames.bind(styles);
 
@@ -172,6 +173,7 @@ const DetailContainer = ({ item_id }) => {
                 <Loading open={true} />
             ) : (
                 <>
+                    <TitleBar title={menu && menu.item.item_name} isHome={true} />
                     <div className={styles['container']}>
                         <div className={styles['menu-img']}>
                             <ErrorCoverImage
@@ -183,12 +185,6 @@ const DetailContainer = ({ item_id }) => {
                                 }
                                 alt={'메뉴 이미지'}
                             />
-                            <IconButton
-                                className={styles['back']}
-                                onClick={onClickBack}
-                            >
-                                <Back fill={'#fff'} boxShadow />
-                            </IconButton>
                         </div>
                         <div className={styles['detail-view']}>
                             <div className={styles['menu-info']}>

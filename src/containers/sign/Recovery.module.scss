@@ -4,7 +4,10 @@
     .content {
         padding-top: $pd-top40;
         .box {
-            border: 0px solid red;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
         }
     }
 }

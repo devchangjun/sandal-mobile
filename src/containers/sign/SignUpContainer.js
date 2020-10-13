@@ -258,12 +258,13 @@ const AcceptContainer = (props) => {
 
     return (
         <div className={cx('agree')}>
-            <div className={cx('pd-box', 'border-box')}>
+            <div className={cx('all-box')}>
                 <CheckBox
                     id={'all'}
                     text={'모두 동의합니다.'}
                     check={props.allCheck}
                     onChange={props.updateAllCheck}
+                    upgrade
                 />
             </div>
             <div className={styles['terms']}>

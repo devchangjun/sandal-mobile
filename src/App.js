@@ -106,7 +106,7 @@ const App = () => {
         } else if (pathname === '/complete') {
             return '회원가입';
         } else if (pathname === '/recovery') {
-            return '아이디/비밀번호찾기';
+            return '내 정보 찾기';
         } else if (pathname === '/recovery_id') {
             return '아이디 찾기';
         } else if (pathname === '/find_email') {

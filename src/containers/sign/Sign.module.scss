@@ -77,17 +77,13 @@
 }
 
 .sns-box{
-    position: absolute;
-    left:0;
-    right:0;
-    top:50vh;
     padding:$padding-side;
     .social-login{
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-        padding-top :70px;
+        margin-top: 100px;
         .text{
             color:#999;
             font-size: 14px;
@@ -109,9 +105,8 @@
 }
 // 로그인창 소셜 로그인
 .social {
-    margin: 28px 0;
+    margin-top: 14px;
     display: flex;
-
     flex-direction: row;
     justify-content: center;
 
@@ -136,9 +131,16 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    background-color: #ebebeb;
-    padding-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 30px;
     
+    .all-box {
+        padding: 0 14px;
+        background-color: #fff;
+        border: solid 1px #ccc;
+        border-radius: 6px;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.05);
+    }
     //SMS 알림
     .sms {
         margin-top: 24px;
@@ -172,7 +174,7 @@
     padding: 0 24px;
 }
 .pd-sub-top {
-    padding: 20px 24px;
+    padding: 20px 14px;
 }
 .border-box {
     border-top: 1px solid #ebebeb;

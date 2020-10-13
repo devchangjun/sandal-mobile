@@ -22,6 +22,20 @@ export const requestAgreeChange = async (token, type, value) => {
     return res;
 };
 
+export const updateProfileImage = async (token, profile_img) => {
+    const req = Paths.api + 'user/mypage/update_profileimg';
+    const formData = new FormData();
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    
+    formData.append('_method', "put");
+    formData.append('profile_img[]', profile_img);
+
+    const res = await axios.post(req, formData);
+    return res;
+}
+
 export const updateName = async (token, value) => {
     const req = Paths.api + 'user/mypage/update_name';
     const form_data = {

@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
 
     width: 302px;
-    height: 254px;
+    padding-bottom: 54px;
     border-radius: 10px;
     overflow: hidden;
     background-color: #fff;
@@ -29,10 +29,11 @@
             .title {
                 font-weight: 500;
                 font-size: 18px;
+                margin-bottom: 35px;
                 color: #222;
             }
             .text {
-                margin-top: 35px;
+                margin-bottom: 60px;
                 font-size: 14px;
                 color: #555;
             }

@@ -1,21 +1,18 @@
-import React, {useCallback,useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Paths } from 'paths';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import TitleBar from 'components/titlebar/TitleBar';
 import styles from './MyPage.module.scss';
-import styled from 'styled-components';
-import Profile from 'components/svg/sign/profile.png';
-import BottomNav from 'components/nav/BottomNav';
 import classNames from 'classnames/bind';
 import { localLogout } from '../../api/auth/auth';
 import { logout } from '../../store/auth/auth';
 import Button from '@material-ui/core/Button';
-import { numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import Back from 'components/svg/header/Back';
-import { Link } from 'react-router-dom';
-import {useInit} from '../../hooks/useStore';
-import {noAuthGetNearStore} from '../../api/noAuth/store';
+import { useInit } from '../../hooks/useStore';
+import { noAuthGetNearStore } from '../../api/noAuth/store';
+import ProfileCoverImage from '../../components/asset/ProfileCoverImage';
+import { useModal } from '../../hooks/useModal';
 
 const cx = classNames.bind(styles);
 
@@ -23,33 +20,56 @@ const MyPageContainer = () => {
     const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
     const user_token = sessionStorage.getItem("access_token");
+    const openModal = useModal();
     const dispatch = useDispatch();
     const history = useHistory();
 
     const onClickLogout = useCallback(async () => {
-        try{
-            const res = await localLogout(user_token);
-            sessionStorage.removeItem('access_token');
-            if (res.message === '로그아웃에 성공하셨습니다.') {
-                dispatch(logout());
-                initStore();
-                history.replace(Paths.index);
-
-                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                if(noAuthAddrs){
-                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
-                    if(index!==-1){
-                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
-                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
-                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
+        openModal('정말 로그아웃 하시겠습니까?', '', async () => {
+            try {
+                const res = await localLogout(user_token);
+                sessionStorage.removeItem('access_token');
+                if (res.message === '로그아웃에 성공하셨습니다.') {
+                    dispatch(logout());
+                    initStore();
+                    const noAuthAddrs = JSON.parse(
+                        localStorage.getItem('noAuthAddrs'),
+                    );
+                    if (noAuthAddrs) {
+                        const index = noAuthAddrs.findIndex(
+                            (item) => item.active === 1,
+                        );
+                        if (index !== -1) {
+                            const {
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                            } = noAuthAddrs[index];
+                            const near_store = await noAuthGetNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
+                        }
                     }
+                    history.replace(Paths.index);
                 }
+            } catch (e) {
+                console.error(e);
             }
-        }
-        catch (e) {
-            console.error(e);
-        }
-    },[dispatch,history,user_token]);
+        }, () => {}, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, history, initStore, user_token]);
 
     const onClickLogin = useCallback(() => {
         history.push(Paths.ajoonamu.signin);
@@ -62,6 +82,7 @@ const MyPageContainer = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    console.log(user); 
     return (
         <>
             <div className={styles['container']}>
@@ -70,7 +91,7 @@ const MyPageContainer = () => {
                     onClick={user ? onClickAccount : onClickLogin}
                 >
                     <div className={cx('profile', 'pd-left')}>
-                        <img src={Profile} alt={'이미지'} />
+                        <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} />
                     </div>
                     <div className={cx('info', 'pd-box')}>
                         <div className={styles['auth']}>

@@ -125,7 +125,12 @@ const AddressContainer = () => {
                 setPosition(newState);
                 setMapOpen(true);
             } catch (e) {
-                openMessage(false, "위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                console.log(e);
+                if (e.code === 3) {
+                    openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
+                } else {
+                    openMessage(false, "위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                }
             }
             setLoading(false);
         }

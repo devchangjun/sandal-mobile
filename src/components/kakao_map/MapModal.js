@@ -17,10 +17,10 @@ const cx = classNames.bind(styles);
 const FullScreenDialog = (props) => {
     const openModal = useModal();
     
-    const [jibun,setJibun] = React.useState('');
-    const [road ,setRoad] = React.useState('');
-    const [detail,setDetail] = React.useState('');
-    const [click,setClick] = React.useState(false);
+    const [jibun, setJibun] = React.useState('');
+    const [road, setRoad] = React.useState('');
+    const [detail, setDetail] = React.useState('');
+    const [click, setClick] = React.useState(false);
 
     const onChangeDetail =(e)=>setDetail(e.target.value);
     const { lat, lng } = props.position;
@@ -45,7 +45,12 @@ const FullScreenDialog = (props) => {
                 const lng = p.coords.longitude;
                 props.onClickPosition(lat, lng);
             } catch (e) {
-                openModal("위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                console.log(e);
+                if (e.code === 3) {
+                    openModal("요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");
+                } else {
+                    openModal("위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                }
             }
             setClick(false);
         }
@@ -86,7 +91,6 @@ const FullScreenDialog = (props) => {
 
         firstSetting(lng, lat, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
-                console.log(result);
                 setJibun(result[0].address.address_name);
                 if (!!result[0].road_address) {
                     setRoad(result[0].road_address.address_name);
@@ -105,15 +109,9 @@ const FullScreenDialog = (props) => {
 
                     var latlng = mouseEvent.latLng;
 
-                    var message =
-                        '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-                    message += '경도는 ' + latlng.getLng() + ' 입니다';
-                    console.log(message);
 
                     props.onClickPosition(latlng.getLat(), latlng.getLng());
-                    // console.log(message);
                     // 마커를 클릭한 위치에 표시합니다
-                    console.log(latlng);
                     marker.setPosition(latlng);
                     marker.setMap(map);
                     setJibun(result[0].address.address_name);
@@ -136,9 +134,6 @@ const FullScreenDialog = (props) => {
             // 지도의 현재 레벨을 얻어옵니다
             var level = map.getLevel();
             MapLevel.current = parseInt(level);
-            var message = '현재 지도 레벨은 ' + level + ' 입니다';
-            console.log(MapLevel.current);
-            console.log(message);
         });
 
         function searchDetailAddrFromCoords(coords, callback) {

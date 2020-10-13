@@ -7,7 +7,7 @@ const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 const OPTIONS = {
     enableHighAccuracy: true,
     maximumAge: 30000,
-    timeout: 5000,
+    timeout: 10000,
 };
 
 export const getDeliveryList = async (token) => {

@@ -155,10 +155,12 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
                     <div className={styles['question']}>
                         {question}
                     </div>
-                    {answer && <div className={styles['answer']}>
-                        <div className={styles['a_time']}>답변 일시: {dateToYYYYMMDD(a_datetime, '/')}</div>
-                        <p className={styles['text']} dangerouslySetInnerHTML={{ __html: answer}} />
-                    </div>}
+                    <div className={styles['area']}>
+                        {answer && <div className={styles['answer']}>
+                            <div className={styles['a_time']}>답변 일시: {dateToYYYYMMDD(a_datetime, '/')}</div>
+                            <p className={styles['text']} dangerouslySetInnerHTML={{ __html: answer}} />
+                        </div>}
+                    </div>
                 </div>
             </DialogContent>}
             <div className={styles['interaction']}>

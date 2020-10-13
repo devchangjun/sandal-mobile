@@ -34,20 +34,25 @@
         padding: 24px;
         line-height: 1.6;
     }
-    .answer {
-        margin-top: 40px;
-        border: solid 2px #222;
-        background-color: #f9f9f9;
-        padding: 24px;
-        line-height: 1.6;
-        .a_time {
-            color: #777;
-            font-size: 12px;
-            font-weight: 500;
-            border-bottom: solid 1px #777;
-        }
-        .text {
-            padding: 24px 0;
+    .area {
+        padding: 0 10px;
+        .answer {
+            margin-top: 40px;
+            border: solid 2px #222;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            padding: 24px;
+            line-height: 1.6;
+            .a_time {
+                color: #777;
+                font-size: 12px;
+                font-weight: 500;
+                border-bottom: solid 1px #777;
+            }
+            .text {
+                padding-top: 20px;
+                padding-bottom: 40px;
+            }
         }
     }
 }

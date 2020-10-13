@@ -15,3 +15,19 @@ html body {
         border-radius: 0;
     }
 }
+
+.swiper-container { 
+   
+    /* border:1px solid red; */
+    /* height:500px; */ /* This solution causes gaps because the images are resized */
+}
+.swiper-wrapper{
+    /* height: auto !important; */
+}
+.swiper-slide {
+    border-top:5px solid red;
+    max-height: 100vh;
+    overflow-y: scroll;
+    height: 100vh !important;
+
+}

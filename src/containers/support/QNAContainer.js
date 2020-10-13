@@ -85,7 +85,6 @@ const QNAContainer = ({ tab = 'send', query }) => {
                         content,
                         files,
                     });
-                    console.log(res);
                     if (res.data.msg === '성공') {
                         openModal('수정이 완료되었습니다!', '답변이 올 때까지는 조금 시간이 소요됩니다.', () => {
                             history.replace(`${Paths.ajoonamu.mypage}`);

@@ -36,7 +36,7 @@ import { useModal } from '../../hooks/useModal';
 import { calculateDate } from '../../lib/calculateDate';
 
 const cx = classNames.bind(styles);
-
+// 스와이퍼 테스트
 const tabInit = [
     {
         url: `${Paths.ajoonamu.coupon}?tab=0`,

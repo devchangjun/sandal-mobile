@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React,{useState, useEffect,useRef,useCallback} from 'react';
 import styles from './OrderList.module.scss';
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
@@ -11,10 +11,13 @@ import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
 import { IconButton } from '@material-ui/core';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
 import { calculateDate } from '../../lib/calculateDate';
 
+import 'swiper/swiper.scss';
 const tabInit = [
     {
         url: `${Paths.ajoonamu.order_list}?tab=0`,
@@ -41,14 +44,16 @@ const OrderListContainer = ({ tab = '0' }) => {
     const [endDate, setEndDate] = useState(new Date());
     const user_token = useStore();
     const history = useHistory();
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const SWIPER = useRef(null);
+    
+    const handleOpen =()=>setOpen(true);
+    const handleClose =()=>setOpen(false);
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
-    };
-    const onChangeSwiperIndex = (index) => {
+        SWIPER.current.slideTo(value,300);
+    }
+    const onChangeSwiperIndex =(index)=>{
         setIndex(index);
         history.replace(`${Paths.ajoonamu.order_list}?tab=${index}`);
     };
@@ -113,13 +118,17 @@ const OrderListContainer = ({ tab = '0' }) => {
                         <Loading open={true} />
                     ) : (
                         <div className={styles['container']}>
-                            <SwipeableViews
-                                enableMouseEvents
-                                index={index}
-                                onChangeIndex={onChangeSwiperIndex}
-                                animateHeight={true}
+                            <Swiper
+                            initialSlide={index}
+                            slidesPerView={1}
+                            onSlideChange={(swiper) => {
+                                onChangeSwiperIndex(swiper.activeIndex)
+                            }}
+                            autoHeight={true}
+                            onSwiper={(swiper) => SWIPER.current=swiper}
                             >
-                                <div className={styles['pd-box']}>
+                       
+                                <SwiperSlide className={styles['pd-box']}>
                                     {reserveList.length !== 0 ? (
                                         <OrderItemList
                                             order_list={reserveList}
@@ -140,8 +149,8 @@ const OrderListContainer = ({ tab = '0' }) => {
                                             }}
                                         />
                                     )}
-                                </div>
-                                <div className={styles['pd-box']}>
+                                </SwiperSlide>
+                                <SwiperSlide className={styles['pd-box']}>
                                     <Message
                                         src={true}
                                         msg={'주문 내역이 존재하지 않습니다.'}
@@ -153,8 +162,8 @@ const OrderListContainer = ({ tab = '0' }) => {
                                             );
                                         }}
                                     />
-                                </div>
-                            </SwipeableViews>
+                                </SwiperSlide>
+                            </Swiper>
                         </div>
                     )}
                     <BottomModal

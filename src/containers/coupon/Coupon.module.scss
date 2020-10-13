@@ -1,8 +1,15 @@
 @import '../../styles/Root.scss';
 .container {
     @include wireframe($pd-top);
-    // width: 100%;
-    // background-color: #f9f9f9;
+    height: 100vh;
+    overflow:hidden;
+
+    .swiper{
+        @include swiper($pd-top);
+        .swiper-slide{
+                @include swiper-slide($pd-top);
+        }
+    }
 
     .coupon-title {
         border: 0px solid red;

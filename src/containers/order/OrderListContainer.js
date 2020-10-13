@@ -17,7 +17,6 @@ import { getOrderList } from '../../api/order/orderItem';
 import { useStore } from '../../hooks/useStore';
 import { calculateDate } from '../../lib/calculateDate';
 
-import 'swiper/swiper.scss';
 const tabInit = [
     {
         url: `${Paths.ajoonamu.order_list}?tab=0`,
@@ -119,6 +118,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                     ) : (
                         <div className={styles['container']}>
                             <Swiper
+                            className={styles['swiper']}
                             initialSlide={index}
                             slidesPerView={1}
                             onSlideChange={(swiper) => {
@@ -128,7 +128,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                             onSwiper={(swiper) => SWIPER.current=swiper}
                             >
                        
-                                <SwiperSlide className={styles['pd-box']}>
+                                <SwiperSlide className={styles['swiper-slide']}>
                                     {reserveList.length !== 0 ? (
                                         <OrderItemList
                                             order_list={reserveList}

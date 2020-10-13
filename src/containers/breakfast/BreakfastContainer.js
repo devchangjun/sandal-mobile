@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,useRef } from 'react';
 //hooks
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useScroll } from '../../hooks/useScroll';
+import { useDomScroll ,useRestore} from '../../hooks/useScroll';
 
 //paths
 import { Paths } from 'paths';
@@ -16,6 +16,8 @@ import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
 import SwipeableViews from 'react-swipeable-views';
 import TabTests from '../../components/tab/SwiperTabs';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 //api
 import { getBreakCategory, getBreakMenu } from '../../api/break_fast/break_fast';
@@ -34,6 +36,9 @@ const LIMIT = 8;
 
 const BreakfastContainer = ({ menu }) => {
 
+
+    const SWIPER = useRef(null);
+    const SWIPER_SLIDE =useRef(null);
     const { categorys, items } = useSelector((state) => state.breakfast);
     const { store } = useSelector((state) => state.store);
 
@@ -43,15 +48,15 @@ const BreakfastContainer = ({ menu }) => {
     const [title, setTitle] = useState('');
     const [tabIndex, setTabIndex] = useState(menu);
 
-    const { isScrollEnd } = useScroll(loading); //스크롤 끝 판단.
+    const {restoreScroll ,restoreOffset} = useRestore();
+    const { isScrollEnd, onScroll } = useDomScroll(); //스크롤 끝 판단.
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
-
-
 
     const onChangeTabIndex = useCallback(
         (index) => {
             history.push(`${Paths.ajoonamu.breakfast}?menu=${index}`);
+            SWIPER.current.slideTo(index, 300);
         },
         [history],
     );
@@ -169,7 +174,12 @@ const BreakfastContainer = ({ menu }) => {
             })
             console.log(test);
             const item = categorys.map((category, index) => (
-                <div key={category.ca_id}>
+                <SwiperSlide 
+                key={category.ca_id}
+                onScroll={onScroll}
+                className={styles['swiper-slide']}
+                ref={index === tabIndex ? SWIPER_SLIDE : null}
+                >
                     {items[index].items.length!==0 ? (
                         <MenuItemList
                             menuList={items[index].items.slice(0, offset)}
@@ -182,7 +192,7 @@ const BreakfastContainer = ({ menu }) => {
                             isButton={false}
                         />
                     )}
-                </div>
+                </SwiperSlide>
             ));
         return item;
      
@@ -211,24 +221,11 @@ const BreakfastContainer = ({ menu }) => {
         setTabIndex(menu);
     }, [menu]);
 
-    useEffect(() => {
-        console.log('오프셋바뀜');
-        console.log(offset);
-    }, [offset]);
 
     useEffect(() => {
         setLoading(true);
         setTimeout(() => {
-            const url = JSON.parse(sessionStorage.getItem('url'));
-            if (url) {
-                //이전 페이지가 상품페이지라면 오프셋 유지.
-                if (url.prev === '/product') {
-                    const OS = sessionStorage.getItem('offset');
-                    if (OS) {
-                        setOffset(parseInt(OS));
-                    }
-                }
-            }
+            restoreOffset(setOffset);
             setLoading(false);
         }, 100);
     }, []);
@@ -236,16 +233,7 @@ const BreakfastContainer = ({ menu }) => {
     //로딩 완료 되었을 때 스크롤 위치로 이동.
     useEffect(() => {
         setTimeout(() => {
-            const scrollTop = sessionStorage.getItem('scrollTop');
-            const url = JSON.parse(sessionStorage.getItem('url'));
-            console.log(url);
-            if (url) {
-                //이전 주소가 상품페이지라면 스크롤 유지
-                if (url.prev === '/product') {
-                    // alert(`${scrollTop}으로 유지`);
-                    window.scrollTo(0, scrollTop);
-                }
-            }
+            restoreScroll(SWIPER_SLIDE.current);
         }, 100);
     }, []);
 
@@ -281,15 +269,20 @@ const BreakfastContainer = ({ menu }) => {
                                 />
                             )}
                             <div className={styles['container']}>
-                                <SwipeableViews
-                                    enableMouseEvents
-                                    onChangeIndex={onChangeSwiperIndex}
-                                    animateHeight={!isPaging}
-                                    index={tabIndex}
-                                    className={styles['test']}
+                                <Swiper
+                                       className={styles['swiper']}
+                                       initialSlide={tabIndex}
+                                       slidesPerView={1}
+                                       onSlideChange={(swiper) => {
+                                           onChangeSwiperIndex(swiper.activeIndex);
+                                       }}
+                                       autoHeight={true}
+                                       onSwiper={(swiper) =>
+                                           (SWIPER.current = swiper)
+                                       }
                                 >
                                     {items && renderSwiperItem()}
-                                </SwipeableViews>
+                                </Swiper>
                             </div>
                             <CartLink />
                         </>

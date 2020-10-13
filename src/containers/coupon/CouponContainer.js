@@ -15,6 +15,7 @@ import { Button } from '@material-ui/core';
 import SwipeableViews from 'react-swipeable-views';
 import BottomModal from '../../components/nav/BottomModal';
 import TitleBar from '../../components/titlebar/TitleBar';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import date from 'components/svg/title-bar/date.svg';
 import { IconButton } from '@material-ui/core';
@@ -54,6 +55,7 @@ const tabInit = [
 
 const CouponConatiner = ({ tab = '0' }) => {
     const openModal = useModal();
+    const SWIPER = useRef(null);
     const location = useLocation();
     const history = useHistory();
     const myCouponTitle = useRef(null);
@@ -90,7 +92,10 @@ const CouponConatiner = ({ tab = '0' }) => {
         [index],
     );
 
-    const onChangeTabIndex = (e, value) => setIndex(value);
+    const onChangeTabIndex = (e, value) => {
+        setIndex(value);
+        SWIPER.current.slideTo(value, 300);
+    };
     const onChangeSwiperIndex = useCallback(
         (index) => {
             setIndex(index);
@@ -231,15 +236,20 @@ const CouponConatiner = ({ tab = '0' }) => {
                                 tabs={tabInit}
                                 index={index}
                                 onChange={onChangeTabIndex}
+                                center={false}
                             />
                             <div className={cx('container')}>
-                                <SwipeableViews
-                                    enableMouseEvents
-                                    index={index}
-                                    onChangeIndex={onChangeSwiperIndex}
-                                    animateHeight={true}
-                                >
-                                    <div>
+                            <Swiper
+                            className={styles['swiper']}
+                            initialSlide={index}
+                            slidesPerView={1}
+                            onSlideChange={(swiper) => {
+                                onChangeSwiperIndex(swiper.activeIndex)
+                            }}
+                            autoHeight={true}
+                            onSwiper={(swiper) => SWIPER.current=swiper}
+                            >
+                                    <SwiperSlide className={styles['swiper-slide']}>
                                         <div
                                             className={cx(
                                                 'coupon-title',
@@ -297,8 +307,8 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                 />
                                             )}
                                         </div>
-                                    </div>
-                                    <div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={styles['swiper-slide']}>
                                         <div
                                             className={cx(
                                                 'coupon-list',
@@ -319,8 +329,8 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                 />
                                             )}
                                         </div>
-                                    </div>
-                                    <div>
+                                    </SwiperSlide>
+                                    <SwiperSlide className={styles['swiper-slide']}>
                                         <div
                                             className={cx(
                                                 'coupon-list',
@@ -329,8 +339,8 @@ const CouponConatiner = ({ tab = '0' }) => {
                                         >
                                             <UseCouponItemList />
                                         </div>
-                                    </div>
-                                </SwipeableViews>
+                                    </SwiperSlide>
+                                </Swiper>
                             </div>
                         </>
                     )}

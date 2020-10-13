@@ -2,14 +2,43 @@
 
 .container {
     @include wireframe($pd-top);
+    .swiper{
+        @include swiper($pd-top);
+        &.sub{
+            .swiper-slide{
+                overflow-y: scroll;
+            }
+        }
+        .swiper-slide{
+             @include swiper-slide($pd-top);
+             overflow: hidden;
+        }   
+    }
+
+    .menu-list-title {
+    
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 0 24px;
+        margin-top:24px;
+    }
+
     .carousel {
         border: 0px solid black;
         display: flex;
         justify-content: center;
         width: 100%;
         margin: 0 auto;
+        transition: all 0.3s;
+        overflow: hidden;
+        height: auto;
+ 
     }
     .banner {
+        transition: all 0.3s;
+        overflow: hidden;
+        height: auto;
         width: 100%;
         cursor: pointer;
         img {
@@ -18,19 +47,27 @@
     }
 }
 
-.menu-list {
-    margin-top: 24px;
-    box-sizing: border-box;
-    .menu-list-title {
-        margin-bottom: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 0 24px;
-    }
-}
 
 .mg-top {
     div {
         margin-top: 0;
+    }
+}
+
+
+.categorys{
+    padding: 15px 0;
+    padding-left: 15px;
+    background-color: #fff;
+    .item{
+        font-size: 12px;
+        padding: 5px 15px;
+        width: auto !important;
+        border-radius: 100px;
+        background-color: #e8e8e8;
+        &.active{
+            background-color: $main-color;
+            color:#fff;
+        }
     }
 }

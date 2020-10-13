@@ -1,6 +1,9 @@
 @import '../../styles/Root.scss';
 .container{
         @include wireframe($pd-top);
+        height: 100vh;
+        overflow:hidden;
+        // border:5px solid blue;
         .pd-box{
                 padding: $padding-all;
         }
@@ -10,6 +13,12 @@
                 font-size:20px;
                 font-weight: bold;
                 color:#444;
+        }
+        .swiper{
+                @include swiper($pd-top);
+                .swiper-slide{
+                        @include swiper-slide($pd-top);
+                }
         }
  
 }

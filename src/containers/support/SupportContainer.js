@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import styles from './SupportContainer.module.scss';
@@ -13,7 +13,8 @@ import { requestFAQList } from '../../api/support/faq';
 import PostList from '../../components/support/PostList';
 import { Button } from '@material-ui/core';
 import Loading from '../../components/asset/Loading';
-import SwipeableViews from 'react-swipeable-views';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const cn = classNames.bind(styles);
 
@@ -29,12 +30,18 @@ const tabInit = [
 ];
 
 const faqTypeList = [
-    '회원가입', '쿠폰', '결제', '포인트', '배달', '문구 서비스'
-]
+    '회원가입',
+    '쿠폰',
+    '결제',
+    '포인트',
+    '배달',
+    '문구 서비스',
+];
 
 const SupportContainer = ({ tab = 'notice' }) => {
+    const SWIPER = useRef(null);
     const history = useHistory();
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(null);
     const [loading, setLoading] = useState(false);
     const [noticeList, setNoticeList] = useState([]);
     const [faqList, setFAQList] = useState([]);
@@ -46,6 +53,7 @@ const SupportContainer = ({ tab = 'notice' }) => {
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
+        SWIPER.current.slideTo(value, 300);
     };
     const onChangeSwiperIndex = (index) => {
         setIndex(index);
@@ -96,54 +104,82 @@ const SupportContainer = ({ tab = 'notice' }) => {
         if (tab !== 'notice') {
             setIndex(1);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        else{
+            setIndex(0);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+  
 
     return (
         <>
+        {index !==null && 
+        <>
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={styles['container']}>
-                <SwipeableViews
-                    enableMouseEvents
-                    index={index}
-                    onChangeIndex={onChangeSwiperIndex}
-                >
-                    <div>
-                        {!loading && <PostList
-                            listData={noticeList}
-                            emptyMessage={emptyMessage}
-                        />}
-                    </div>
+                    <Swiper
+                        className={styles['swiper']}
+                        initialSlide={index}
+                        slidesPerView={1}
+                        onSlideChange={(swiper) => {
+                            onChangeSwiperIndex(swiper.activeIndex);
+                        }}
+                        autoHeight={true}
+                        onSwiper={(swiper) => (SWIPER.current = swiper)}
+                    >
+                        <SwiperSlide className={styles['swiper-slide']}>
+                            {!loading && (
+                                <PostList
+                                    listData={noticeList}
+                                    emptyMessage={emptyMessage}
+                                />
+                            )}
+                        </SwiperSlide>
+                        <SwiperSlide className={styles['swiper-slide']}>
+                            <div className={styles['title']}>
+                                <h2 className={styles['text']}>
+                                    자주 묻는 질문
+                                </h2>
+                            </div>
 
-                    <div>
-                        <div className={styles['title']}>
-                            <h2 className={styles['text']}>자주 묻는 질문</h2>
-                        </div>
-
-                        <div className={styles['select-area']}>
-                            <Button>
-                                <select className={cn('input-box')} value={faqType}
-                                    onChange={(e) => setFAQType(e.target.value)}
-                                >
-                                    <option value="0">회원가입</option>
-                                    <option value="1">쿠폰</option>
-                                    <option value="2">결제</option>
-                                    <option value="3">포인트</option>
-                                    <option value="4">배달</option>
-                                    <option value="5">문구 서비스</option>
-                                </select>
-                            </Button>
-                        </div>
-                        <div className={styles['title']}>
-                            <h2 className={styles['text']}>{faqTypeList[faqType]}</h2>
-                        </div>
-                        {!loading && <PostList
-                            listData={faqList}
-                            emptyMessage={emptyMessage}
-                        />}
-                    </div>
-                </SwipeableViews>
+                            <div className={styles['select-area']}>
+                                <Button>
+                                    <select
+                                        className={cn('input-box')}
+                                        value={faqType}
+                                        onChange={(e) =>
+                                            setFAQType(e.target.value)
+                                        }
+                                    >
+                                        <option value="0">회원가입</option>
+                                        <option value="1">쿠폰</option>
+                                        <option value="2">결제</option>
+                                        <option value="3">포인트</option>
+                                        <option value="4">배달</option>
+                                        <option value="5">문구 서비스</option>
+                                    </select>
+                                </Button>
+                            </div>
+                            <div className={styles['title']}>
+                                <h2 className={styles['text']}>
+                                    {faqTypeList[faqType]}
+                                </h2>
+                            </div>
+                            {!loading && (
+                                <PostList
+                                    listData={faqList}
+                                    emptyMessage={emptyMessage}
+                                />
+                            )}
+                        </SwiperSlide>
+                    </Swiper>
             </div>
+
+        </>
+        }
+    
+    
             <Loading open={loading} />
         </>
     );

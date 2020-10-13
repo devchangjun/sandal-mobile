@@ -40,3 +40,13 @@ $border-radius: 10px;
     justify-content: $justify-content;
     align-items: center;
 }
+
+@mixin swiper($height){
+    height: calc(100vh -#{$height});
+    max-height:  calc(100vh - #{$height}); 
+}
+@mixin swiper-slide($height){
+    height: calc(100vh - #{$height});
+    max-height:  calc(100vh - #{$height}); 
+    padding-bottom:70px;
+}

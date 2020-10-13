@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo,useRef } from 'react';
 
 export const useScroll = (loading) => {
     const [scrollTop, setScrollTop] = useState(0);
@@ -10,6 +10,7 @@ export const useScroll = (loading) => {
         [scrollHeight, innerHeight, scrollTop],
     );
     const onScroll = () => {
+        console.log('스크롤');
         setInnerHeight(window.innerHeight);
         setScrollHeight(document.body.scrollHeight);
         setPrevScroll(scrollTop);
@@ -39,3 +40,62 @@ export const useScroll = (loading) => {
         isScrollEnd,
     };
 };
+
+export const useDomScroll = ()=>{
+
+    const [isScrollEnd,setScrollEnd] = useState(false);
+    const [scrollTop, setScrollTop] = useState(0);
+    const [scrollHeight, setScrollHeight] = useState(0);
+    const [innerHeight, setInnerHeight] = useState(0);
+    const [prevScroll, setPrevScroll] = useState(0);
+
+    const onScroll =(e) =>{
+        let scrollHeight = e.target.scrollHeight;
+        let scrollTop = e.target.scrollTop;
+        let clientHeight = e.target.clientHeight;
+        let height  = scrollTop+clientHeight;
+        console.log(scrollTop);
+        sessionStorage.setItem('scroll_top',scrollTop);
+        if(scrollHeight-100 <= height){
+            console.log('페이지 끝');
+            setScrollEnd(true);
+        }
+        else{
+            setScrollEnd(false);
+        }
+    } 
+
+    return{
+        onScroll,isScrollEnd
+    }
+}
+
+export const useRestore =()=>{
+
+    const restoreScroll =(dom) =>{
+            const scrollTop = sessionStorage.getItem('scroll_top');
+            const url = JSON.parse(sessionStorage.getItem('url'));
+            console.log(url);
+            if (url) {
+                //이전 주소가 상품페이지라면 스크롤 유지
+                if (url.prev === '/product') {
+                    dom.scrollTo(0,scrollTop);
+                }
+            }
+    }
+    const restoreOffset =(setOffset)=>{
+        const url = JSON.parse(sessionStorage.getItem('url'));
+        if (url) {
+            //이전 페이지가 상품페이지라면 오프셋 유지.
+            if (url.prev === '/product') {
+                const OS = sessionStorage.getItem('offset');
+                if (OS) {
+                    setOffset(parseInt(OS));
+                }
+            }
+        }
+    }
+    return {
+        restoreScroll ,restoreOffset
+    };
+}

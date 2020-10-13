@@ -3,6 +3,16 @@
 .container {
     @include wireframe($pd-top);
 
+    height: 100vh;
+    overflow:hidden;
+
+    .swiper{
+        @include swiper($pd-top);
+        .swiper-slide{
+                @include swiper-slide($pd-top);
+        }
+    }
+
     .title {
         background-color: #f9f9f9;
         padding: 0 24px;

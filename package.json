@@ -71,6 +71,7 @@
     "react-slick": "^0.27.0",
     "react-swipeable-tabs": "^2.2.0",
     "react-swipeable-views": "^0.13.9",
+    "react-swiper": "^0.1.5",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",

@@ -1,20 +1,31 @@
-import React, { useReducer, useState, useCallback, useEffect } from 'react';
+import React, { useReducer, useState, useRef,useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './QNAContainer.module.scss';
 import classNames from 'classnames/bind';
 
+
+//components
 import TabMenu from '../../components/tab/TabMenu';
 import QNASend from '../../components/support/QNASend';
 import QNAList from '../../components/support/QNAList';
-
-import { Paths } from '../../paths';
-import { requestQNADetail, requestQNAList, requestQNAStore, requestQNAUpdate } from '../../api/support/qna';
 import Loading from '../../components/asset/Loading';
 import SwipeableViews from 'react-swipeable-views';
 import QNADetailModal from '../../components/modal/QNADetailModal';
-import { useStore } from '../../hooks/useStore';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+//api
+import { requestQNADetail, requestQNAList, requestQNAStore, requestQNAUpdate } from '../../api/support/qna';
+
+//lib
 import { isEmailForm } from '../../lib/formatChecker';
+import { Paths } from '../../paths';
+
+//hooks
+import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
+
+
+
 
 const cn = classNames.bind(styles);
 
@@ -48,6 +59,7 @@ const reducer = (state, action) => {
 
 const QNAContainer = ({ tab = 'send', query }) => {
     // QNASend
+    const SWIPER = useRef(null);
     const history = useHistory();
     const openModal = useModal();
     const user_token = useStore();
@@ -63,6 +75,8 @@ const QNAContainer = ({ tab = 'send', query }) => {
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
+        SWIPER.current.slideTo(value, 300);
+
     };
     const onChangeSwiperIndex = (index) => {
         setIndex(index);
@@ -202,13 +216,17 @@ const QNAContainer = ({ tab = 'send', query }) => {
             <Loading open={loading} />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cn('container', { list: tab === 'list' })}>
-                <SwipeableViews
-                    enableMouseEvents
-                    index={index}
-                    onChangeIndex={onChangeSwiperIndex}
-                    animateHeight={qnaList.length !== 0}
+                <Swiper
+               className={styles['swiper']}
+               initialSlide={index}
+               slidesPerView={1}
+               onSlideChange={(swiper) => {
+                   onChangeSwiperIndex(swiper.activeIndex);
+               }}
+               autoHeight={true}
+               onSwiper={(swiper) => (SWIPER.current = swiper)}
                 >
-                    <div>
+                    <SwiperSlide className={styles['swiper-slide']}>
                         <QNASend
                             state={state}
                             files={files}
@@ -217,15 +235,15 @@ const QNAContainer = ({ tab = 'send', query }) => {
                             onSubmit={query ? sendQNAUpdate : sendQNAItem}
                             isUpdate={query}
                         />
-                    </div>
-                    <div>
+                    </SwiperSlide>
+                    <SwiperSlide className={styles['swiper-slide']}>
                         <QNAList
                             listData={qnaList}
                             emptyMessage="등록된 1:1 문의가 없습니다."
                             onClick={onClickDetailView}
                         />
-                    </div>
-                </SwipeableViews>
+                    </SwiperSlide>
+                </Swiper>
             </div>
             <QNADetailModal onRemove={onRemoveList} USER_TOKEN={user_token} viewId={viewId} handleClose={onCloseDetailView} />
         </>

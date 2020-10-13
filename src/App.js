@@ -158,13 +158,17 @@ const App = () => {
             return <BottomNav />;
         } else if (pathname === '/coupon') {
             return <BottomNav />;
-        } else if (pathname === '/shop') {
+        } 
+        else if (pathname === '/shop') {
             return <BottomNav />;
-        } else if (pathname === '/breakfast') {
+        }
+         else if (pathname === '/breakfast') {
             return <BottomNav />;
-        } else if (pathname === '/order_list') {
+        } 
+        else if (pathname === '/order_list') {
             return <BottomNav />;
-        } else if (pathname.indexOf('qna') !== -1) {
+        }
+         else if (pathname.indexOf('qna') !== -1) {
             return <BottomNav />;
         } else if (pathname.indexOf('support') !== -1) {
             return <BottomNav />;
@@ -184,23 +188,23 @@ const App = () => {
         getTitle();
     },[getTitle])
 
-    const scrollEvent = useCallback(() => {
-        const { scrollY } = window;
-        const offset = preventY - scrollY;
-        if (offset !== 0) {
-            if (scrollY > 80 && offset < -10) {
-                dispatch(scrollOpen('header'));
-            } else if (scrollY <= 80 || offset >= 30) {
-                dispatch(scrollClose('header'));
-            }
-            preventY = scrollY;
-        }
-    }, [dispatch]);
+    // const scrollEvent = useCallback(() => {
+    //     const { scrollY } = window;
+    //     const offset = preventY - scrollY;
+    //     if (offset !== 0) {
+    //         if (scrollY > 80 && offset < -10) {
+    //             dispatch(scrollOpen('header'));
+    //         } else if (scrollY <= 80 || offset >= 30) {
+    //             dispatch(scrollClose('header'));
+    //         }
+    //         preventY = scrollY;
+    //     }
+    // }, [dispatch]);
 
-    useEffect(() => {
-        window.addEventListener('scroll', scrollEvent);
-        return () => window.removeEventListener('scroll', scrollEvent);
-    }, [scrollEvent]);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', scrollEvent);
+    //     return () => window.removeEventListener('scroll', scrollEvent);
+    // }, [scrollEvent]);
 
     return (
         <div className="App">

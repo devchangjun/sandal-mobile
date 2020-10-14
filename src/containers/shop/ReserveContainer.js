@@ -27,6 +27,12 @@ import {
     add_menuitem,
 } from '../../store/product/product';
 
+import {
+    
+    get_prefer_list,
+    get_gernal_list,
+} from '../../store/product/prefer';
+
 //hooks
 import {
     useScroll,
@@ -40,13 +46,16 @@ const LIMIT = 8;
 const ReserveContainer = ({ menu }) => {
     const SWIPER = useRef(null);
     const SWIPER_SLIDE = useRef(null);
+
+    const {prefer_items, gernal_items} = useSelector((state)=>state.prefer);
     const { categorys, items } = useSelector((state) => state.product);
     const { addr1 } = useSelector((state) => state.address);
     const { store } = useSelector((state) => state.store);
 
     const dispatch = useDispatch();
-    const [open, setOpen] = useState(false);
     const history = useHistory();
+
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('추천메뉴');
     const [tabIndex, setTabIndex] = useState(menu);
@@ -92,6 +101,7 @@ const ReserveContainer = ({ menu }) => {
                 store.shop_id,
             );
             console.log(res);
+            // dispatch(get_prefer_list(res.items.prefer));
             setPreferMenuList(res.items_prefer);
             setGeneralMenuList(res.items_general);
         } catch (e) {}
@@ -366,4 +376,7 @@ const ReserveContainer = ({ menu }) => {
         </>
     );
 };
+
+
+
 export default ReserveContainer;

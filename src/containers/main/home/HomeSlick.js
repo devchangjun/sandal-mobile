@@ -53,7 +53,6 @@ const HomeSlick = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-
         appendDots: (dots) => <ul>{dots}</ul>,
         beforeChange: (current, next) => dispatch({ oldSlide: current, activeSlide: next + 1 }),
     };

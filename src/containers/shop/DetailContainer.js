@@ -173,7 +173,7 @@ const DetailContainer = ({ item_id }) => {
                 <Loading open={true} />
             ) : (
                 <>
-                    <TitleBar title={menu && menu.item.item_name} isHome={true} />
+                    <TitleBar title={menu && menu.item.item_name} />
                     <div className={styles['container']}>
                         <div className={styles['menu-img']}>
                             <ErrorCoverImage

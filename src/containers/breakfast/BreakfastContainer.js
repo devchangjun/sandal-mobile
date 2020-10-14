@@ -165,14 +165,6 @@ const BreakfastContainer = ({ menu }) => {
     );
 
     const renderSwiperItem = useCallback(() => {
-        console.log('아이템 잇나');
-        console.log(items);
-        console.log(items[0])
-  
-            const test = categorys.map((category,index)=>{
-                return items[index].ca_id;
-            })
-            console.log(test);
             const item = categorys.map((category, index) => (
                 <SwiperSlide 
                 key={category.ca_id}

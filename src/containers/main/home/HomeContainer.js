@@ -35,7 +35,7 @@ import { get_best_menu, add_best_menu } from '../../../store/product/bestmenu';
 import { get_catergory } from '../../../store/product/product';
 
 //hooks
-import { useScroll ,useDomScroll } from '../../../hooks/useScroll';
+import { useScroll, useDomScroll } from '../../../hooks/useScroll';
 
 const cx = cn.bind(styles);
 const OFFSET = 8;
@@ -54,12 +54,11 @@ const tabInit = [
 ];
 
 const HomeContainer = () => {
-
     // useScroll();
     const SWIPER = useRef(null);
     const SUB_TAB = useRef(null);
     const SWIPER_SLIDE = useRef(null);
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(null);
     const { categorys: best_cate } = useSelector((state) => state.product);
     const { categorys: break_cate } = useSelector((state) => state.breakfast);
     const { items: best_menu } = useSelector((state) => state.bestmenu);
@@ -69,25 +68,21 @@ const HomeContainer = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
-
     // const { isScrollEnd, onScroll } = useDomScroll(); //스크롤 끝 판단.
 
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(8);
-    const [swiper_open ,setSwiperOpen] = useState(false);
-    const [hidden, setHidden] = useState(false);
+    const [swiper_open, setSwiperOpen] = useState(false);
 
-    const [best_post_index ,setBestPostIndex] = useState(0);
-    const [break_post_index , setBreakIndex] = useState(0);
+    const [best_post_index, setBestPostIndex] = useState(0);
+    const [break_post_index, setBreakIndex] = useState(0);
 
     const history = useHistory();
 
     const onChangeTabIndex = (e, value) => {
-
-        SWIPER_SLIDE.current.scrollTo(0,0);
+        SWIPER_SLIDE.current.scrollTo(0, 0);
         SWIPER.current.slideTo(value, 300);
         setIndex(value);
-
     };
     const onChangeSwiperIndex = (index) => {
         setIndex(index);
@@ -113,7 +108,6 @@ const HomeContainer = () => {
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
-
             if (best_cate.length !== 0 && !best_menu) {
                 for (let i = 0; i < best_cate.length; i++) {
                     const { ca_id } = best_cate[i];
@@ -148,29 +142,29 @@ const HomeContainer = () => {
     //첫 로딩시 기업조식 메뉴 받아오기
     //기업조식은 배달주소 필요.
     const callBreakMenuListApi = useCallback(async () => {
-        try {
-            // 카테고리별로 메뉴 리스트 받아오기.
-            let arr = [];
-            if (break_cate.length !== 0 && store && !break_menu) {
-                for (let i = 0; i < break_cate.length; i++) {
-                    const { ca_id } = break_cate[i];
-                    const result = await getBreakMenu(
-                        ca_id,
-                        0,
-                        LIMIT,
-                        store.shop_id,
-                    );
-                    const temp = {
-                        ca_id: ca_id,
-                        items: result.data.query.items,
-                    };
-                    arr.push(temp);
-                }
-                dispatch(get_break_menuList(arr));
-            }
-        } catch (e) {
-            console.error(e);
-        }
+        // try {
+        //     // 카테고리별로 메뉴 리스트 받아오기.
+        //     let arr = [];
+        //     if (break_cate.length !== 0 && store && !break_menu) {
+        //         for (let i = 0; i < break_cate.length; i++) {
+        //             const { ca_id } = break_cate[i];
+        //             const result = await getBreakMenu(
+        //                 ca_id,
+        //                 0,
+        //                 LIMIT,
+        //                 store.shop_id,
+        //             );
+        //             const temp = {
+        //                 ca_id: ca_id,
+        //                 items: result.data.query.items,
+        //             };
+        //             arr.push(temp);
+        //         }
+        //         dispatch(get_break_menuList(arr));
+        //     }
+        // } catch (e) {
+        //     console.error(e);
+        // }
     }, [break_cate, store, break_menu, dispatch]);
 
     useEffect(() => {
@@ -192,7 +186,6 @@ const HomeContainer = () => {
         callBreakMenuListApi();
     }, [callBreakMenuListApi]);
 
-
     useEffect(() => {
         window.addEventListener('scroll', onWindowScroll, false);
         return () => {
@@ -200,65 +193,46 @@ const HomeContainer = () => {
         };
     });
 
-    const onWindowScroll =() => {
- 
-        let height =SUB_TAB.current.getBoundingClientRect().top;
+    const onWindowScroll = () => {
+        let height = SUB_TAB.current.getBoundingClientRect().top;
         console.log(height);
-
-
-        if(height<=80){
-            setHidden(true);
+        if (height <= 20) {
             setSwiperOpen(true);
-
-        }
-        else{
-            setHidden(false);
+        } else {
             setSwiperOpen(false);
-
         }
     };
 
-    const onScroll =(e) =>{
+    const onScroll = (e) => {
         let scrollHeight = e.target.scrollHeight;
         let scrollTop = e.target.scrollTop;
         let clientHeight = e.target.clientHeight;
-        let height  = scrollTop+clientHeight;
-        console.log(scrollTop);
-        if(scrollTop <= 0) {
+        let height = scrollTop + clientHeight;
+        // console.log(scrollTop);
+        if (scrollTop <= 0) {
             console.log('숨기기');
             setSwiperOpen(false);
-            setHidden(false);
+        } else {
         }
-        else{
-            
-        }
-    } 
-
+    };
 
     return (
         <>
             <Title />
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cx('container')}>
-                <div className={cx('carousel') }>
-                    <HomeSlick />
-                </div>
-                <div
-                    className={cx('banner')}
-                    onClick={() => {
-                        history.push(`${Paths.ajoonamu.shop}?tab=${0}`);
-                        window.scrollTo(0, 0);
-                    }}
-                >
-                    <img src={BannerImg} alt="subBanner" />
-                </div>
                 {loading ? (
                     <Loading open={loading} />
                 ) : (
                     <>
+                        <MainEventContainer />
+                    { 
+                    index!==null 
+                    && 
                         <Swiper
+                            initialSlide={index}
                             ref={SUB_TAB}
-                            className={cx('swiper',{sub:swiper_open})}
+                            className={cx('swiper', { sub: swiper_open })}
                             initialSlide={index}
                             slidesPerView={1}
                             onSlideChange={(swiper) => {
@@ -267,114 +241,39 @@ const HomeContainer = () => {
                             autoHeight={true}
                             onSwiper={(swiper) => (SWIPER.current = swiper)}
                         >
-                            <SwiperSlide className={styles['swiper-slide']} ref= {index===0 ? SWIPER_SLIDE : null} onScroll={onScroll}>
-                                {best_cate.length !== 0 && (
-                                    <Swiper
-                                        spaceBetween={15}
-                                        nested={true}
-                                        slidesPerView={5}
-                                        className={cx('categorys')}
-                                        onClick={(swiper) => {
-                                            if (swiper.clickedIndex!==undefined) {
-                                                console.log(swiper.clickedIndex);
-                                                setBestPostIndex(
-                                                    swiper.clickedIndex,
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        <>
-                                            {best_cate.map((c,index) => (
-                                                <SwiperSlide
-                                                    className={cx('item',{active : index===best_post_index} )}
-                                                    key={c.ca_id}
-                                                >
-                                                    <ButtonBase>
-                                                        {c.ca_name}
-                                                    </ButtonBase>
-                                                </SwiperSlide>
-                                            ))}
-                                        </>
-                                    </Swiper>
-                                )}
-                                <h3 className={cx('menu-list-title',{sub:swiper_open})}>
-                                    베스트 메뉴
-                                </h3>
-                                {best_menu && (
-                                    <>
-                                        {best_menu[best_post_index].items
-                                            .length !== 0 && (
-                                            <BestMenuItemList
-                                                menuList={
-                                                    best_menu[best_post_index]
-                                                        .items
-                                                }
-                                            />
-                                        )}
-                                    </>
-                                )}
+                            <SwiperSlide
+                                className={styles['swiper-slide']}
+                                ref={index === 0 ? SWIPER_SLIDE : null}
+                                onScroll={onScroll}
+                            >
+                                <BestMenu
+                                    index={index}
+                                    categorys={best_cate}
+                                    list={best_menu}
+                                    post_index={best_post_index}
+                                    setPostIndex={setBestPostIndex}
+                                    title={'베스트 메뉴'}
+                                    swiper_open={swiper_open}
+                                />
                             </SwiperSlide>
 
-                            <SwiperSlide className={styles['swiper-slide']} ref={index===1 ? SWIPER_SLIDE :null} onScroll={onScroll}>
-                            {break_cate.length !== 0 && (
-                                    <Swiper
-                                        spaceBetween={15}
-                                        nested={true}
-                                        slidesPerView={5}
-                                        className={cx('categorys')}
-                                        onClick={(swiper) => {
-                                            if (swiper.clickedIndex!==undefined) {
-                                                console.log(swiper.clickedIndex);
-                                                setBreakIndex(
-                                                    swiper.clickedIndex,
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        <>
-                                            {break_cate.map((c,index) => (
-                                                <SwiperSlide
-                                                className={cx('item',{active : index===break_post_index} )}
-                                                    key={c.ca_id}
-                                                >
-                                                    <ButtonBase>
-                                                        {c.ca_name}
-                                                    </ButtonBase>
-                                                </SwiperSlide>
-                                            ))}
-                                        </>
-                                    </Swiper>
-                                )}
-                                
-                                
-                                <h3 className={styles['menu-list-title']}>
-                                    기업조식
-                                </h3>
-                                {store ? (
-                                    <>
-                                        {break_menu && (
-                                            <>
-                                                {break_menu[break_post_index].items.length !==
-                                                    0 && (
-                                                    <BestMenuItemList
-                                                        menuList={
-                                                            break_menu[break_post_index].items
-                                                        }
-                                                    />
-                                                )}
-                                            </>
-                                        )}
-                                    </>
-                                ) : (
-                                    <Message
-                                        msg={'주소지가 설정되지 않았습니다.'}
-                                        src={true}
-                                        isButton={true}
-                                        buttonName={'주소지 설정하기'}
-                                    />
-                                )}
+                            <SwiperSlide
+                                className={styles['swiper-slide']}
+                                ref={index === 1 ? SWIPER_SLIDE : null}
+                                onScroll={onScroll}
+                            >   
+                                <BreakFast
+                                index={index}
+                                categorys={break_cate}
+                                list={break_menu}
+                                post_index={break_post_index}
+                                setPostIndex={setBreakIndex}
+                                title={'기업조식'}
+                                store={store}
+                                />
                             </SwiperSlide>
                         </Swiper>
+                    }
                     </>
                 )}
             </div>
@@ -382,14 +281,139 @@ const HomeContainer = () => {
     );
 };
 
-const BestMenuContainer =()=>{
+const BestMenu = ({
+    categorys,
+    list,
+    post_index,
+    setPostIndex,
+    title,
+    swiper_open
+}) => {
+    return (
+        <>
+            {categorys.length !== 0 && (
+                <Swiper
+                    spaceBetween={15}
+                    nested={true}
+                    slidesPerView={5}
+                    className={cx('categorys',{sub:swiper_open})}
+                    onClick={(swiper) => {
+                        if (swiper.clickedIndex !== undefined) {
+                            console.log(swiper.clickedIndex);
+                            setPostIndex(swiper.clickedIndex);
+                        }
+                    }}
+                >
+                    <>
+                        {categorys.map((c, index) => (
+                            <SwiperSlide
+                                className={cx('item', {
+                                    active: index === post_index,
+                                })}
+                                key={c.ca_id}
+                            >
+                                <ButtonBase>{c.ca_name}</ButtonBase>
+                            </SwiperSlide>
+                        ))}
+                    </>
+                </Swiper>
+            )}
+            <h3 className={cx('menu-list-title',{sub:swiper_open})}>{title}</h3>
+            {list && (
+                <>
+                    {list[post_index].items.length !== 0 && (
+                        <BestMenuItemList menuList={list[post_index].items} />
+                    )}
+                </>
+            )}
+        </>
+    );
+};
 
-    return(
-        <div>
-            
-        </div>
-    )
-}
+const BreakFast = ({
+    categorys,
+    list,
+    post_index,
+    setPostIndex,
+    title,
+    store,
+}) => {
+    const history= useHistory();
+    return (
+        <>
+            {categorys.length !== 0 && (
+                <Swiper
+                    spaceBetween={15}
+                    nested={true}
+                    slidesPerView={5}
+                    className={cx('categorys')}
+                    onClick={(swiper) => {
+                        if (swiper.clickedIndex !== undefined) {
+                            console.log(swiper.clickedIndex);
+                            setPostIndex(swiper.clickedIndex);
+                        }
+                    }}
+                >
+                    <>
+                        {categorys.map((c, index) => (
+                            <SwiperSlide
+                                className={cx('item', {
+                                    active: index === post_index,
+                                })}
+                                key={c.ca_id}
+                            >
+                                <ButtonBase>{c.ca_name}</ButtonBase>
+                            </SwiperSlide>
+                        ))}
+                    </>
+                </Swiper>
+            )}
 
+            <h3 className={styles['menu-list-title']}>{title}</h3>
+            {store ? (
+                <>
+                    {list && (
+                        <>
+                            {list[post_index].items.length !== 0 && (
+                                <BestMenuItemList
+                                    menuList={list[post_index].items}
+                                />
+                            )}
+                        </>
+                    )}
+                </>
+            ) : (
+                <Message
+                    msg={'주소지가 설정되지 않았습니다.'}
+                    src={true}
+                    isButton={true}
+                    buttonName={'주소지 설정하기'}
+                    onClick ={()=>history.push(Paths.ajoonamu.address)}
+                />
+            )}
+        </>
+    );
+};
+
+const MainEventContainer = () => {
+    const history = useHistory();
+
+    return (
+        <>
+            <div className={cx('carousel')}>
+                <HomeSlick />
+            </div>
+            <ButtonBase
+                className={cx('banner')}
+                onClick={() => {
+                    history.push(`${Paths.ajoonamu.shop}?tab=${0}`);
+                    window.scrollTo(0, 0);
+                }}
+            >
+                <img src={BannerImg} alt="subBanner" />
+            </ButtonBase>
+        </>
+    );
+};
 
 export default HomeContainer;

@@ -14,7 +14,6 @@ import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
-import SwipeableViews from 'react-swipeable-views';
 import TabTests from '../../components/tab/SwiperTabs';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -69,17 +68,15 @@ const BreakfastContainer = ({ menu }) => {
 
     //첫 로딩시 카테고리 받아오기
     const callBreakCategoryApi = useCallback(async () => {
-
         if (categorys.length === 0) {
             try {
-                console.log('카테고리 받아오기');
                 const res = await getBreakCategory();
-                console.log(res);
                 dispatch(get_break_category(res.data.query.categorys));
             } catch (e) {
                 console.error(e);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //첫 로딩시 메뉴 받아오기
@@ -89,7 +86,6 @@ const BreakfastContainer = ({ menu }) => {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
             if (categorys.length !== 0 && store && !items ) {
-                console.log('들어옴');
                 for (let i = 0; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
                     const result = await getBreakMenu(
@@ -98,7 +94,6 @@ const BreakfastContainer = ({ menu }) => {
                         LIMIT,
                         store.shop_id,
                     );
-                    console.log(result);
                     const temp = {
                         ca_id: ca_id,
                         items: result.data.query.items,
@@ -117,8 +112,7 @@ const BreakfastContainer = ({ menu }) => {
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
             try {
-                console.log('페이지네이션 실행');
-                //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
+                //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난 뒤, 아이템과 스토어가 있으면 실행
                 if (
                     categorys.length !== 0 &&
                     items &&
@@ -130,14 +124,11 @@ const BreakfastContainer = ({ menu }) => {
                         LIMIT,
                         store.shop_id,
                     );
-                    console.log(res);
 
                     const get_list = res.data.query.items;
                     if (get_list.length !== 0) {
                         setIsPaging(true);
-                        console.log('페이지네이션 오프셋 갱신');
                         setOffset(offset + LIMIT);
-
                         dispatch(
                             add_break_menuitem({
                                 ca_id: categorys[tabIndex].ca_id,
@@ -145,9 +136,7 @@ const BreakfastContainer = ({ menu }) => {
                             }),
                         );
                     }
-                    else{
-                        console.log('받아온 아이템 없음');
-                    }
+                    else {}
                     setTimeout(() => {
                         setIsPaging(false);
                     }, 1000);
@@ -171,24 +160,26 @@ const BreakfastContainer = ({ menu }) => {
                 onScroll={onScroll}
                 className={styles['swiper-slide']}
                 ref={index === tabIndex ? SWIPER_SLIDE : null}
-                >
-                    {items[index].items.length!==0 ? (
-                        <MenuItemList
-                            menuList={items[index].items.slice(0, offset)}
-                            onClick={onClickMenuItem}
-                        />
-                    ) : (
-                        <Message
-                            msg={"배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다."}
-                            src={true}
-                            isButton={false}
-                        />
-                    )}
-                </SwiperSlide>
-            ));
+            >
+                {items[index].items.length !== 0 ? (
+                    <MenuItemList
+                        menuList={items[index].items.slice(0, offset)}
+                        onClick={onClickMenuItem}
+                    />
+                ) : (
+                    <Message
+                        msg={
+                            '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                        }
+                        src={true}
+                        isButton={false}
+                    />
+                )}
+            </SwiperSlide>
+        ));
         return item;
-     
-    }, [categorys, items,onClickMenuItem,offset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categorys, items, onClickMenuItem, offset]);
 
     //첫 로딩시 카테고리 셋팅
     useEffect(() => {
@@ -241,6 +232,7 @@ const BreakfastContainer = ({ menu }) => {
         if (isScrollEnd && !isPaging) {
             PageNationMenuList();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
     return (

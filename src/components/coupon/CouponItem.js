@@ -1,22 +1,21 @@
 import React from 'react';
 import styles from './Coupon.module.scss';
-import DownCoupon from 'components/svg/coupon/down.svg';
 import { numberFormat } from "../../lib/formatter";
 
 const CouponItem = (props) => {
     const { 
         cp_datetime,
-        cp_end,
-        cp_id,
-        cp_minimum,
+        // cp_end,
+        // cp_id,
+        // cp_minimum,
         cp_price,
-        cp_start,
+        // cp_start,
         cp_subject,
         cp_target,
-        cp_use,
-        cp_use_date,
-         cz_id,
-        user_id,
+        // cp_use,
+        // cp_use_date,
+        // cz_id,
+        // user_id,
     } = props.item;
     return (
         
@@ -46,9 +45,6 @@ function CouponEventSub({ sub_name }) {
 }
 function CouponDate({ date }) {
     return <div className={styles['date']}>{date}</div>;
-}
-function CouponDown({ check }) {
-    return <>{check && <img src={DownCoupon} alt="다운" />}</>;
 }
 
 export default CouponItem;

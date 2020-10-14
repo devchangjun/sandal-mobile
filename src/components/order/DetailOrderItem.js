@@ -5,7 +5,6 @@ import ErrorCoverImage from '../asset/ErrorCoverImage';
 import Noimage from '../svg/noimage.png';
 
 const DetailOrderItem = (props) => {
-    console.log(props)
     const { item_name, item_option, item_price, item_img } = props;
     return (
         <div className={styles['detail-order-item']}>
@@ -34,9 +33,9 @@ const DetailOrderItem = (props) => {
     );
 };
 
-DetailOrderItem.defaultProps={
-    item_price : 10000,
-    item_name :"과일도시락",
-}
+DetailOrderItem.defaultProps = {
+    item_price: 10000,
+    item_name: '과일도시락',
+};
 
 export default DetailOrderItem;

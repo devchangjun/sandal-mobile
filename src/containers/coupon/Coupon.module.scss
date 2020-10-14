@@ -2,17 +2,16 @@
 .container {
     @include wireframe($pd-top);
     height: 100vh;
-    overflow:hidden;
+    overflow: hidden;
 
-    .swiper{
+    .swiper {
         @include swiper($pd-top);
-        .swiper-slide{
-                @include swiper-slide($pd-top);
+        .swiper-slide {
+            @include swiper-slide($pd-top);
         }
     }
 
     .coupon-title {
-        border: 0px solid red;
         padding: 10px 24px;
     }
     .coupon-form {
@@ -51,7 +50,7 @@
 .pd-box {
     padding: $padding-side;
 }
-.title{
+.title {
     position: sticky;
     top: 80px;
     width: 100%;
@@ -59,13 +58,12 @@
     z-index: 10;
     background-color: #f9f9f9;
     max-width: $max-width;
-    padding:0 24px;
-    margin:0 auto;
+    padding: 0 24px;
+    margin: 0 auto;
     box-shadow: 0 0 10px gray;
     display: none;
-    &.show{
+    &.show {
         display: flex;
         align-items: center;
     }
 }
-

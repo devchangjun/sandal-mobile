@@ -1,48 +1,45 @@
 @import '../../styles/Root.scss';
-.container{
-        @include wireframe($pd-top);
-        height: 100vh;
-        overflow:hidden;
-        // border:5px solid blue;
-        .pd-box{
-                padding: $padding-all;
+.container {
+    @include wireframe($pd-top);
+    height: 100vh;
+    overflow: hidden;
+    // border:5px solid blue;
+    .pd-box {
+        padding: $padding-all;
+    }
+    .title {
+        padding: 20px 24px;
+        padding-bottom: 0;
+        font-size: 20px;
+        font-weight: bold;
+        color: #444;
+    }
+    .swiper {
+        @include swiper($pd-top);
+        .swiper-slide {
+            @include swiper-slide($pd-top);
         }
-        .title{
-                padding:20px 24px;
-                padding-bottom: 0;
-                font-size:20px;
-                font-weight: bold;
-                color:#444;
-        }
-        .swiper{
-                @include swiper($pd-top);
-                .swiper-slide{
-                        @include swiper-slide($pd-top);
-                }
-        }
- 
+    }
 }
 
-.tab-item{
-        // border:1px solid red;
-        margin:0px!important;
-        margin-left:24px!important;
-        padding : 0 24px !important;
-        width: auto !important;
-        font-size: 16px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
+.tab-item {
+    margin: 0px !important;
+    margin-left: 24px !important;
+    padding: 0 24px !important;
+    width: auto !important;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
 }
-.tab-list{
-        // border:1px solid blue;
-        position: fixed;
-        top:40px;
-        height: 40px;
-        margin: 0 auto;
-        width: 100%;
-        max-width: $max-width;
+.tab-list {
+    position: fixed;
+    top: 40px;
+    height: 40px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: $max-width;
 }
-:global .line{
-        border-bottom:4px solid #222222;
+:global .line {
+    border-bottom: 4px solid #222222;
 }

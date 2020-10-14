@@ -7,7 +7,6 @@ import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
 import classNames from 'classnames/bind';
-import Back from 'components/svg/header/goBack';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { getMenuInfo } from '../../api/menu/menu';
@@ -15,7 +14,6 @@ import { addCartItem } from '../../api/cart/cart';
 import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 import { noAuthAddCart } from '../../api/noAuth/cart';
-import { IconButton } from '@material-ui/core';
 import ErrorCoverImage from '../../components/asset/ErrorCoverImage';
 import Noimage from '../../components/svg/noimage.png';
 import TitleBar from '../../components/titlebar/TitleBar';
@@ -26,15 +24,14 @@ const DetailContainer = ({ item_id }) => {
     const history = useHistory();
 
     const openModal = useModal();
-    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
+    const { addr1, lat, lng } = useSelector((state) => state.address);
     const user_token = useStore(false);
     const [menu, setMenu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
     const [option_total, setOptionTotal] = useState(0);
-    const onClickBack = () => history.goBack();
-
+    
     //옵션 아이템 선택
     const setOptionItem =useCallback(()=>{
         const add_option = menu.options.filter(option => option.check).map((option =>option.option_id));
@@ -158,10 +155,12 @@ const DetailContainer = ({ item_id }) => {
                 alert('Error!');
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, item_id, options, quanity, user_token, addr1, lat, lng]);
 
     useEffect(()=>{
         getMenu();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     useEffect(() => {
@@ -222,7 +221,7 @@ const DetailContainer = ({ item_id }) => {
                             </div>
                         </div>
                         <Button
-                            title={`${quanity}개 담기(${numberFormat(
+                            title={`${quanity}개 담기 (${numberFormat(
                                 (menu && menu.item.item_price * quanity) +
                                     option_total * quanity,
                             )}원)`}

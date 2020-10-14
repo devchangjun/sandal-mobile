@@ -1,11 +1,11 @@
 /*global kakao*/
-import React,{ useEffect,useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/goBack';
 import LinkButtom from 'components/button/LinkButton';
 import MarkerImg from './MarkerImg.svg';
 import styles from './MapModal.module.scss';
-import logo from  './location.png';
+import logo from './location.png';
 import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
@@ -16,13 +16,13 @@ const cx = classNames.bind(styles);
 
 const FullScreenDialog = (props) => {
     const openModal = useModal();
-    
+
     const [jibun, setJibun] = React.useState('');
     const [road, setRoad] = React.useState('');
     const [detail, setDetail] = React.useState('');
     const [click, setClick] = React.useState(false);
 
-    const onChangeDetail =(e)=>setDetail(e.target.value);
+    const onChangeDetail = (e) => setDetail(e.target.value);
     const { lat, lng } = props.position;
     const MapLevel = useRef(5);
 
@@ -45,24 +45,27 @@ const FullScreenDialog = (props) => {
                 const lng = p.coords.longitude;
                 props.onClickPosition(lat, lng);
             } catch (e) {
-                console.log(e);
                 if (e.code === 3) {
-                    openModal("요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");
+                    openModal(
+                        '요청 시간이 초과되었습니다.',
+                        '네트워크 상태를 확인하신 후 다시 시도해 주세요.',
+                    );
                 } else {
-                    openModal("위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                    openModal(
+                        '위치 정보 접근이 거부되었습니다.',
+                        '위치 정보 허용을 하신 후에 다시 시도해 주세요.',
+                    );
                 }
             }
             setClick(false);
         }
     };
 
-
-
     const mapScript = () => {
         let container = document.getElementById('map');
         let options = {
             center: new kakao.maps.LatLng(lat, lng),
-            level: MapLevel.current
+            level: MapLevel.current,
         };
         const map = new kakao.maps.Map(container, options);
 
@@ -106,9 +109,7 @@ const FullScreenDialog = (props) => {
                 status,
             ) {
                 if (status === kakao.maps.services.Status.OK) {
-
                     var latlng = mouseEvent.latLng;
-
 
                     props.onClickPosition(latlng.getLat(), latlng.getLng());
                     // 마커를 클릭한 위치에 표시합니다
@@ -138,7 +139,6 @@ const FullScreenDialog = (props) => {
 
         function searchDetailAddrFromCoords(coords, callback) {
             geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-            // console.log(coords.getLng());
         }
 
         function firstSetting(lng, lat, callback) {
@@ -240,6 +240,3 @@ const MyLocation = ({ onClick, open }) => (
 );
 
 export default FullScreenDialog;
-
-
-

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo,useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export const useScroll = (loading) => {
     const [scrollTop, setScrollTop] = useState(0);
@@ -10,7 +10,6 @@ export const useScroll = (loading) => {
         [scrollHeight, innerHeight, scrollTop],
     );
     const onScroll = () => {
-        console.log('스크롤');
         setInnerHeight(window.innerHeight);
         setScrollHeight(document.body.scrollHeight);
         setPrevScroll(scrollTop);

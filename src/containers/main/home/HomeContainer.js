@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwipeableViews from 'react-swipeable-views';
 import Message from '../../../components/message/Message';
 import Title from 'components/titlebar/Title';
 import styles from './HomeContainer.module.scss';
@@ -178,6 +177,7 @@ const HomeContainer = () => {
     useEffect(() => {
         callCategoryList();
         callBreakCategoryApi();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         callBestMenuListApi();

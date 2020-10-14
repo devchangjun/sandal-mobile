@@ -41,7 +41,7 @@ const App = () => {
     const initStore = useInit();
 
     const GetInfo = async () => {
-        const token = sessionStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token');
         if (token) {
             dispatch(get_user_info(token));
             const res = await getActiveAddr(token);
@@ -89,8 +89,10 @@ const App = () => {
     const GetNotification = async (token) => {
         try {
             const res = await reqNoticeList(token);
-            const index =res.notification.findIndex((item) =>!item.not_read_datetime);
-            dispatch(read_check(index===-1));
+            const index = res.notification.findIndex(
+                item => !item.not_read_datetime,
+            );
+            dispatch(read_check(index === -1));
             dispatch(get_notice(res.notification));
         } catch (e) {
             console.error(e);
@@ -143,6 +145,8 @@ const App = () => {
             return '이벤트';
         } else if (pathname === '/tos') {
             return '이용약관';
+        } else if (pathname.indexOf('coupon') !== -1) {
+            return '쿠폰';
         }
     }, [location]);
 
@@ -158,17 +162,13 @@ const App = () => {
             return <BottomNav />;
         } else if (pathname === '/coupon') {
             return <BottomNav />;
-        } 
-        else if (pathname === '/shop') {
+        } else if (pathname === '/shop') {
             return <BottomNav />;
-        }
-         else if (pathname === '/breakfast') {
+        } else if (pathname === '/breakfast') {
             return <BottomNav />;
-        } 
-        else if (pathname === '/order_list') {
+        } else if (pathname === '/order_list') {
             return <BottomNav />;
-        }
-         else if (pathname.indexOf('qna') !== -1) {
+        } else if (pathname.indexOf('qna') !== -1) {
             return <BottomNav />;
         } else if (pathname.indexOf('support') !== -1) {
             return <BottomNav />;
@@ -182,6 +182,7 @@ const App = () => {
     useEffect(() => {
         sessionStorage.setItem('home_tab', 0);
         GetInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(()=>{

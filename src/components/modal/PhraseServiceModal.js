@@ -65,7 +65,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const InputLogo = ({ handleChange }) => {
     const [image, setImage] = useState(null);
-    const handleImageChange = (e) => {
+    const handleImageChange = e => {
         if (e.target.files[0]) {
             handleChange(e.target.files);
             setImage(e.target.files[0].name); // 파일 상태 업데이트

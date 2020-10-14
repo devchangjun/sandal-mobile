@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     font-size: 30px;
-    input[type="text"] {
+    input[type='text'] {
         border-radius: 2px;
     }
     .title {
@@ -15,7 +15,6 @@
         display: flex;
         align-items: center;
         height: 56px;
-  
     }
     .table {
         display: flex;
@@ -27,24 +26,24 @@
             display: flex;
             flex-direction: row;
             margin-bottom: 8px;
-            .user-name{
+            .user-name {
                 font-size: 16px;
                 font-weight: bold;
-                color:#333;
+                color: #333;
                 margin-bottom: 8px;
             }
             &.address {
                 display: block;
-                .info{
+                .info {
                     font-size: 16px;
                 }
-                
             }
             &.auth-area {
                 position: relative;
                 left: -30%;
                 opacity: 0;
-                transition: .3s ease-in-out;
+                height: 0;
+                transition: 0.3s ease-in-out;
                 .timer {
                     position: absolute;
                     top: 50%;
@@ -54,6 +53,7 @@
                 &.auth_open {
                     left: 0;
                     opacity: 1;
+                    height: 100%;
                 }
             }
             .text {
@@ -63,18 +63,18 @@
             .info {
                 font-size: 14px;
                 width: 100%;
-                margin-bottom: 8px;
                 word-break: keep-all;
-                line-height: 1.4;
+                line-height: 1.6;
                 // font-size: $font-size;
-        
+
                 &.row {
                     display: flex;
                     flex-direction: row;
                     margin-bottom: 0;
                     .auth-btn {
                         @include flex-center(center);
-                        min-width: 100px; height: 56px;
+                        min-width: 100px;
+                        height: 56px;
                         border: 1px solid $main-color;
                         color: $main-color;
                         font-size: 14px;
@@ -88,6 +88,7 @@
                     height: 56px;
                     margin: 0;
                     padding-left: 16px;
+                    font-size: 14px;
                     &.normal {
                         margin-bottom: 16px;
                     }
@@ -97,9 +98,8 @@
                 margin-bottom: 0;
             }
         }
-   
+
         .input-save {
-            // font-size: $font-size;
             font-size: 16px;
             display: flex;
             justify-content: space-between;
@@ -108,11 +108,12 @@
                 font-size: 14px;
                 input[type='checkbox'] {
                     display: block;
-                    width: 16px; height: 16px;
+                    width: 16px;
+                    height: 16px;
                     border: 1px solid #dbdbdb;
                     cursor: pointer;
                 }
-                label { 
+                label {
                     padding-left: 5px;
                 }
             }
@@ -121,16 +122,19 @@
             width: 100%;
             padding-top: 10px;
             .input {
-                width: 100%; height: 56px;
+                width: 100%;
+                height: 56px;
                 border: 1px solid #ebebeb;
                 box-sizing: border-box;
                 background-color: white;
+                font-size: 14px;
                 margin: 0;
                 padding-left: 15px;
             }
             .payment {
                 @include flex-center(center);
-                width: 100%; height: 56px;
+                width: 100%;
+                height: 56px;
                 border: 1px solid $main-color;
                 border-radius: 2px;
                 font-size: 16px;
@@ -159,6 +163,7 @@
                     padding: 10px 0;
                     border: 1px solid #dbdbdb;
                     box-sizing: border-box;
+                    background-color: #fff;
                 }
                 .text-cost {
                     width: 100%;
@@ -181,16 +186,16 @@
         }
     }
 
-    .date-picker{
+    .date-picker {
         padding: 26px 24px;
-        .date{
+        .date {
             width: 100%;
             margin-bottom: 15px;
-            input{
-                border-radius :0 !important;
+            input {
+                border-radius: 0 !important;
             }
         }
-        .time{
+        .time {
             display: flex;
             select {
                 border: 1px solid #dbdbdb;
@@ -198,14 +203,13 @@
                 height: 56px;
                 padding: 0;
                 width: 100%;
-
+                font-size: 14px;
                 padding-left: 15px;
             }
-    
-            .second {
-                &:first-child{
-                    margin-right: 15px;
 
+            .second {
+                &:first-child {
+                    margin-right: 15px;
                 }
                 width: 100%;
                 // border:1px solid red;
@@ -213,12 +217,11 @@
                     border: 1px solid #dbdbdb;
                     box-sizing: border-box;
                     outline: none;
-                    font-size: 1.5rem;
+                    font-size: 14px;
                     height: 48px;
                 }
             }
         }
-     
     }
 
     .order-info {
@@ -227,7 +230,7 @@
         border: 0px solid black;
         width: 100%;
 
-        .info{
+        .info {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -235,7 +238,8 @@
         }
         .box {
             @include flex-center(space-between);
-            width: 100%; height: 56px;
+            width: 100%;
+            height: 56px;
             font-size: 16px;
             color: #333;
             border-top: 1px solid #ebebeb;
@@ -268,8 +272,8 @@
 .pd-box {
     padding: 0 24px;
 }
-.pd-none{
-    padding-top:0 !important;
+.pd-none {
+    padding-top: 0 !important;
 }
 .pd-in {
     width: 100%;

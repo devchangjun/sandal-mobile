@@ -3,7 +3,7 @@
 //hooks
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {useInit} from '../../hooks/useStore';
+import { useInit } from '../../hooks/useStore';
 import { useStore } from '../../hooks/useStore';
 
 //style
@@ -21,7 +21,13 @@ import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
 import { getCoordinates } from 'api/address/address';
-import { insertAddress, searchAddress,selectAddress,getDeliveryList ,deleteAddr } from '../../api/address/address';
+import {
+    insertAddress,
+    searchAddress,
+    selectAddress,
+    getDeliveryList,
+    deleteAddr,
+} from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { noAuthGetNearStore } from '../../api/noAuth/store';
 
@@ -31,7 +37,6 @@ import { modalOpen } from '../../store/modal';
 
 const cx = classNames.bind(styles);
 
-// const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
 const AddressContainer = () => {
 
     const user_token = useStore(false);
@@ -59,14 +64,11 @@ const AddressContainer = () => {
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
 
-
     //검색 아이템 클릭
-    const onClickAddrItem = (data, zipNo, index) => {
+    const onClickAddrItem = (data, zipNo) => {
         setSelectAddr(data);
         setPostNum(zipNo);
-
     };
-
     //검색어 변경
     const onChangeSearchAddr = useCallback((e) => {
         setSearchAddr(e.target.value);
@@ -90,7 +92,6 @@ const AddressContainer = () => {
             catch(e){
                 console.error(e);
             }
-
         }
         else{
             const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
@@ -104,6 +105,7 @@ const AddressContainer = () => {
     //지도 열기
     const onClickMapOpen = useCallback(() => {
         getUserLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //지도 닫기
@@ -174,18 +176,15 @@ const AddressContainer = () => {
         } else {
             const result = await callSearchApi();
             setSearchList(result);
-            console.log(result);
         }
     };
 
     //검색 api 호출
     const callSearchApi = async () => {
-        try{
+        try {
             const res = await searchAddress(searchAddr);
             return res;
-        }
-     
-        catch(e){
+        } catch (e) {
             console.error(e);
         }
     };
@@ -193,12 +192,10 @@ const AddressContainer = () => {
     //주소지 삭제
     const onRemoveAddr = useCallback(
         (delivery_id) => {
-            console.log(delivery_id);
             openMessage(true, '해당 주소를 삭제하시겠습니까?', '삭제하시면 복구할 수 없습니다.', async () => {
                 if (user_token) {
                     try {
-                        const res = await deleteAddr(user_token, delivery_id);
-                        console.log(res);
+                        await deleteAddr(user_token, delivery_id);
                         const index = deliveryList.findIndex((item) => item.delivery_id === delivery_id);
 
                         //삭제하려는 주소가 활성화 주소라면 배달지 설정 초기화
@@ -229,6 +226,7 @@ const AddressContainer = () => {
                 }
             });
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [openMessage, user_token, deliveryList, dispatch],
     );
 
@@ -236,64 +234,86 @@ const AddressContainer = () => {
 
     //선택한 주소지로 설정 하기
     const onClickDeliveyAddr = useCallback(
-            (delivery_id, addr1, addr2, lat, lng, post_num) => {
-                openMessage(
-                    true,
-                    '선택한 주소지로 설정하시겠습니까?',
-                    '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
-                    async () => {
-                        if (user_token) {
-                            try {
-                                // const res = await selectAddress(user_token, delivery_id);
-                                await selectAddress(user_token, delivery_id);
-                                const near_store = await getNearStore(lat, lng, addr1);
-                                initStore(addr1, addr2, lat, lng, post_num,near_store.data.query);
-                       
-    
-                                callDeliveryList();
-                            } catch (e) {
-                                
-                            }
-                        }
-                        else {
+        (delivery_id, addr1, addr2, lat, lng, post_num) => {
+            openMessage(
+                true,
+                '선택한 주소지로 설정하시겠습니까?',
+                '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
+                async () => {
+                    if (user_token) {
+                        try {
+                            // const res = await selectAddress(user_token, delivery_id);
+                            await selectAddress(user_token, delivery_id);
+                            const near_store = await getNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
 
-                            //로컬 스토리지에 있는 아이템을 들고온다.
-                            //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
-                            const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-    
-                            //모든 활성화를 0으로 초기화
-                            noAuthAddrs.map((item) => (item.active = 0));
-    
-                            //선택한 주소를 활성화
-                            noAuthAddrs[delivery_id].active = 1;
-    
-                            //활성화된 스토리지의 주소를 제일 위로 올린다.
-                            let tmp = noAuthAddrs[delivery_id];
-                            noAuthAddrs.splice(delivery_id, 1);
-                            noAuthAddrs.unshift(tmp);
-    
-                            //활성화된 정보를 갱신
-                            localStorage.setItem('noAuthAddrs', JSON.stringify(noAuthAddrs));
-    
-                            //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
-                            const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                            setDeliveryList(temp);
-                            const near_store = await noAuthGetNearStore(lat, lng, addr1);
-                            initStore(addr1, addr2, lat, lng, post_num,near_store.data.query);
-    
-    
-                        }
-                    },
-                );
-            },
-            [callDeliveryList,dispatch, openMessage, user_token],
-        );
+                            callDeliveryList();
+                        } catch (e) {}
+                    } else {
+                        //로컬 스토리지에 있는 아이템을 들고온다.
+                        //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
+                        const noAuthAddrs = JSON.parse(
+                            localStorage.getItem('noAuthAddrs'),
+                        );
+
+                        //모든 활성화를 0으로 초기화
+                        noAuthAddrs.map((item) => (item.active = 0));
+
+                        //선택한 주소를 활성화
+                        noAuthAddrs[delivery_id].active = 1;
+
+                        //활성화된 스토리지의 주소를 제일 위로 올린다.
+                        let tmp = noAuthAddrs[delivery_id];
+                        noAuthAddrs.splice(delivery_id, 1);
+                        noAuthAddrs.unshift(tmp);
+
+                        //활성화된 정보를 갱신
+                        localStorage.setItem(
+                            'noAuthAddrs',
+                            JSON.stringify(noAuthAddrs),
+                        );
+
+                        //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
+                        const temp = JSON.parse(
+                            localStorage.getItem('noAuthAddrs'),
+                        );
+                        setDeliveryList(temp);
+                        const near_store = await noAuthGetNearStore(
+                            lat,
+                            lng,
+                            addr1,
+                        );
+                        initStore(
+                            addr1,
+                            addr2,
+                            lat,
+                            lng,
+                            post_num,
+                            near_store.data.query,
+                        );
+                    }
+                },
+            );
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [callDeliveryList, dispatch, openMessage, user_token],
+    );
 
 
         
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
-        console.log("ㅎㅇ");
         if (selectAddr === '') {
             openMessage(
                 false,

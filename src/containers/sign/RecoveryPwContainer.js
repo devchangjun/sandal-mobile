@@ -75,7 +75,7 @@ const RecoveryPwContainer = () => {
                     title={'확인'}
                     toggle={success}
                     onClick={onClickComplete}
-                ></Button>
+                />
             </div>
         </div>
     );

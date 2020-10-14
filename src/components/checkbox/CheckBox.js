@@ -24,11 +24,10 @@ export default function CheckBox({ id, text, check, onChange, onClick, upgrade }
     )
 }
 
-
-CheckBox.defaultProps ={
-    id:'check',
-    text:'text',
-    check:false,
-    onChange :()=>console.warn("onChange"),
-    url:null,
-}
+CheckBox.defaultProps = {
+    id: 'check',
+    text: 'text',
+    check: false,
+    onChange: () => {},
+    url: null,
+};

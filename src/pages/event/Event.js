@@ -5,10 +5,5 @@ import EventListContainer from '../../containers/event/EventListContainer';
 export default ({ match }) => {
     const post = match.params.post;
 
-    return (
-        <>
-            {post ? <EventContainer id={post} />
-            : <EventListContainer />}
-        </>
-    );
+    return <>{post ? <EventContainer id={post} /> : <EventListContainer />}</>;
 };

@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useEffect, useState } from 'react';
+import React, { useReducer, useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -98,7 +98,7 @@ const EstmModal = (props) => {
     const sendEstimate = useCallback(async () => {
         if (estmFile) {
             if (isEmailForm(state.receiver_email)) {
-                const token = sessionStorage.getItem('access_token');
+                const token = localStorage.getItem('access_token');
                 setLoading(true);
                 try {
                     const { receiver, receiver_email } = state;

@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import classNames from 'classnames/bind';
-import {updatePassword} from '../../api/auth/auth';
-import {useStore} from '../../hooks/useStore';
+import { updatePassword } from '../../api/auth/auth';
+import { useStore } from '../../hooks/useStore';
 import { Paths } from '../../paths';
-import {useModal} from '../../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
 import { isPasswordForm } from '../../lib/formatChecker';
 const cx = classNames.bind(styles);
 
@@ -18,18 +18,19 @@ const UpdatePasswordContainer = () => {
     const [new_password, setNewPassword] = useState('');
     const [new_password_confirm, setNewPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
-    const onChangePassword = e=> setPassword(e.target.value);
-    const onChangeNewPassword =e => setNewPassword(e.target.value);
-    const onChangeNewPasswordConfirm = e => setNewPasswordConfirm(e.target.value);
+    const onChangePassword = (e) => setPassword(e.target.value);
+    const onChangeNewPassword = (e) => setNewPassword(e.target.value);
+    const onChangeNewPasswordConfirm = (e) =>
+        setNewPasswordConfirm(e.target.value);
     const user_token = useStore();
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
-          if (new_password.length !== 0 && new_password_confirm.length !== 0) {
+        if (new_password.length !== 0 && new_password_confirm.length !== 0) {
             setCompare(new_password === new_password_confirm);
-          } else {
+        } else {
             setCompare(false);
-         }
+        }
     }, [new_password, new_password_confirm]);
 
     const confirm = () => {
@@ -53,19 +54,30 @@ const UpdatePasswordContainer = () => {
                 );
                 console.log(res);
                 if (res.data.msg === '성공') {
-                    openModal('성공적으로 변경되었습니다!', '변경된 정보를 기억해 주세요.');
+                    openModal(
+                        '성공적으로 변경되었습니다!',
+                        '변경된 정보를 기억해 주세요.',
+                    );
                     history.replace(Paths.ajoonamu.account);
                 } else {
-                    openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
+                    openModal(
+                        '서버에 오류가 발생했습니다.',
+                        '잠시 후 다시 시도해 주세요.',
+                    );
                 }
             } catch (e) {
-                openModal('기존 비밀번호가 틀렸습니다', '기존 비밀번호를 다시 한 번 확인해 주세요.');
+                openModal(
+                    '기존 비밀번호가 틀렸습니다',
+                    '기존 비밀번호를 다시 한 번 확인해 주세요.',
+                );
             }
         } else {
-            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
+            openModal(
+                '형식에 맞지 않는 비밀번호입니다.',
+                '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.',
+            );
         }
     };
- 
 
     useEffect(() => {
         matchPassword();
@@ -112,7 +124,11 @@ const UpdatePasswordContainer = () => {
                 </div>
             </div>
 
-            <Button title={'확인'} toggle ={compare} onClick={onClickUpdatePassword}/>
+            <Button
+                title={'확인'}
+                toggle={compare}
+                onClick={onClickUpdatePassword}
+            />
         </>
     );
 };

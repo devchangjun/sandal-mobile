@@ -4,17 +4,14 @@
     @include wireframe($pd-top);
     background-color: #f9f9f9;
     height: 100vh;
-    overflow:hidden;
+    overflow: hidden;
 
-    
-    .swiper{
+    .swiper {
         @include swiper($pd-top);
-        .swiper-slide{
-                @include swiper-slide($pd-top);
+        .swiper-slide {
+            @include swiper-slide($pd-top);
         }
     }
-
-
 
     &.list {
         background-color: transparent;

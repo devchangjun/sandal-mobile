@@ -48,7 +48,6 @@ export const insertAddress = async (
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
 };
 
@@ -102,9 +101,9 @@ export const searchAddress = (searchAddr) => {
     return fetch(
         `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${searchAddr}&resultType=json`,
     )
-        .then((res) => res.json())
-        .then((json) => json.results.juso)
-        .catch((err) => console.log(err));
+        .then(res => res.json())
+        .then(json => json.results.juso)
+        .catch(err => {});
 };
 
 
@@ -112,9 +111,9 @@ export const getPostNum = (addr1) => {
     return fetch(
         `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${addr1}&resultType=json`,
     )
-        .then((res) => res.json())
-        .then((json) => json.results.juso)
-        .catch((err) => console.log(err));
+        .then(res => res.json())
+        .then(json => json.results.juso)
+        .catch(err => {});
 };
 
 

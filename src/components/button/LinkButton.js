@@ -8,17 +8,11 @@ import { Button } from '@material-ui/core';
 const cx = classNames.bind(styles);
 //fixed button
 
-const LinkButton = ({ title, onClick, toggle }) => {
-    
-  
-    
-    return (
-        <Button className={styles['link-btn-container']}>
-            <div className={cx('link-btn', { on: toggle })} onClick={toggle ? onClick: ()=>{}}>{title}</div>
-        </Button>
-    )
-}
-
+const LinkButton = ({ title, onClick, toggle }) => (
+    <Button className={styles['link-btn-container']}>
+        <div className={cx('link-btn', { on: toggle })} onClick={toggle ? onClick: ()=>{}}>{title}</div>
+    </Button>
+);
 
 
 LinkButton.propTypes = {
@@ -28,9 +22,8 @@ LinkButton.propTypes = {
 }
 LinkButton.defaultProps ={
     title : "button",
-    onClick : ()=>console.log("linkbutton"),
+    onClick : () => {},
     toggle :false,
 }
-
 
 export default LinkButton; 

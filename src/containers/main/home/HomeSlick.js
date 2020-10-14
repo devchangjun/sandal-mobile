@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import {Paths} from 'paths';
-import {useHistory} from 'react-router-dom';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 

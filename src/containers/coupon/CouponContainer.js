@@ -12,9 +12,7 @@ import UseCouponItemList from '../../components/coupon/UseCouponItemList';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
 import { Button } from '@material-ui/core';
-import SwipeableViews from 'react-swipeable-views';
 import BottomModal from '../../components/nav/BottomModal';
-import TitleBar from '../../components/titlebar/TitleBar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import date from 'components/svg/title-bar/date.svg';
@@ -56,11 +54,9 @@ const tabInit = [
 const CouponConatiner = ({ tab = '0' }) => {
     const openModal = useModal();
     const SWIPER = useRef(null);
-    const location = useLocation();
     const history = useHistory();
     const myCouponTitle = useRef(null);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [startDate, setStartDate] = useState(
         calculateDate(new Date(), 7, 'DATE'),
@@ -110,11 +106,8 @@ const CouponConatiner = ({ tab = '0' }) => {
                 const res = await getMyCoupons(user_token);
                 setCpList(res);
                 setSuccess(true);
-                setError(false);
             } catch (e) {
                 setSuccess(false);
-                setError(true);
-                console.error(e);
             }
         }
         setLoading(false);
@@ -125,7 +118,6 @@ const CouponConatiner = ({ tab = '0' }) => {
         if (user_token) {
             try {
                 const res = await getDownloadCpList(user_token);
-                console.log(res);
                 setDownCpList(res);
             } catch (e) {
                 console.error(e);
@@ -137,7 +129,6 @@ const CouponConatiner = ({ tab = '0' }) => {
         async (cp) => {
             try {
                 const res = await downloadCoupon(user_token, cp.cz_id);
-                console.log(res);
                 if (
                     res.data.msg ===
                     '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
@@ -158,55 +149,36 @@ const CouponConatiner = ({ tab = '0' }) => {
                 );
             } catch (e) {}
         },
-        [user_token, down_cp_list, openModal],
+        [user_token, down_cp_list, openModal, cp_list],
     );
 
     const inputCoupon = useCallback(async () => {
-        if (user_input_cp === '') {
-            return;
+        if (user_input_cp !== '') {
+            try {
+                const res = await couponInput(user_token, user_input_cp);
+                if (res.data.msg === '성공') {
+                    openModal('쿠폰 등록이 완료되었습니다.');
+                    getMyCouponList();
+                } else if (res.data.msg === '이미 발급된 쿠폰입니다.') {
+                    openModal('쿠폰번호를 확인해주세요', res.data.msg);
+                } else if (
+                    res.data.msg ===
+                    '해당 쿠폰번호에 맞는 쿠폰이 존재하지 않습니다.'
+                ) {
+                    openModal('쿠폰번호를 확인해주세요', res.data.msg);
+                }
+            } catch (e) {}
         }
-        try {
-            const res = await couponInput(user_token, user_input_cp);
-            console.log(res);
-            if (res.data.msg === '성공') {
-                openModal('쿠폰 등록이 완료되었습니다.');
-                getMyCouponList();
-            } else if (res.data.msg === '이미 발급된 쿠폰입니다.') {
-                openModal('쿠폰번호를 확인해주세요', res.data.msg);
-            } else if (
-                res.data.msg ===
-                '해당 쿠폰번호에 맞는 쿠폰이 존재하지 않습니다.'
-            ) {
-                openModal('쿠폰번호를 확인해주세요', res.data.msg);
-            }
-        } catch (e) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user_token, user_input_cp, openModal]);
 
-    const getChild = useCallback(() => {
-        const { pathname, search } = location;
-        if (pathname === '/coupon') {
-            if (search.indexOf('tab=2') !== -1) {
-                return (
-                    <IconButton
-                        style={{ width: '40px', height: '40px', right: '-10px' }}
-                        onClick={handleOpen}
-                    >
-                        <img src={date} alt="date" />
-                    </IconButton>
-                );
-            }
-        }
-    }, [location]);
 
     useEffect(() => {
         getMyCouponList();
-    }, []);
-    useEffect(() => {
         getDownCouponList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    useEffect(() => {
-        getChild();
-    }, [getChild]);
+    
 
     useEffect(() => {
         setShow(false);
@@ -224,7 +196,6 @@ const CouponConatiner = ({ tab = '0' }) => {
         <>
             {success && (
                 <>
-                    <TitleBar title={'쿠폰'}>{getChild()}</TitleBar>
                     {loading ? (
                         <Loading open={true} />
                     ) : (
@@ -239,39 +210,25 @@ const CouponConatiner = ({ tab = '0' }) => {
                                 center={false}
                             />
                             <div className={cx('container')}>
-                            <Swiper
-                            className={styles['swiper']}
-                            initialSlide={index}
-                            slidesPerView={1}
-                            onSlideChange={(swiper) => {
-                                onChangeSwiperIndex(swiper.activeIndex)
-                            }}
-                            autoHeight={true}
-                            onSwiper={(swiper) => SWIPER.current=swiper}
-                            >
+                                <Swiper
+                                    className={styles['swiper']}
+                                    initialSlide={index}
+                                    slidesPerView={1}
+                                    onSlideChange={swiper => onChangeSwiperIndex(swiper.activeIndex)}
+                                    autoHeight={true}
+                                    onSwiper={(swiper) => SWIPER.current=swiper}
+                                >
                                     <SwiperSlide className={styles['swiper-slide']}>
-                                        <div
-                                            className={cx(
-                                                'coupon-title',
-                                                'pd-box',
-                                            )}
-                                        >
+                                        <div className={cx('coupon-title', 'pd-box')}>
                                             쿠폰 코드 입력
                                         </div>
-                                        <div
-                                            className={cx(
-                                                'coupon-form',
-                                                'pd-box',
-                                            )}
-                                        >
+                                        <div className={cx('coupon-form', 'pd-box')}>
                                             <input
                                                 className={styles['code-input']}
                                                 type="text"
                                                 value={user_input_cp}
                                                 onChange={onChangeUserInputCp}
-                                                placeholder={
-                                                    '쿠폰 코드를 입력하세요'
-                                                }
+                                                placeholder='쿠폰 코드를 입력하세요'
                                             />
                                             <Button
                                                 className={styles['submit-btn']}
@@ -280,41 +237,16 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                 쿠폰등록
                                             </Button>
                                         </div>
-                                        <div
-                                            className={cx(
-                                                'coupon-title',
-                                                'pd-box',
-                                            )}
-                                            ref={myCouponTitle}
-                                        >
+                                        <div className={cx('coupon-title', 'pd-box')} ref={myCouponTitle}>
                                             내 쿠폰
                                         </div>
-                                        <div
-                                            className={cx(
-                                                'coupon-list',
-                                                'pd-box',
-                                            )}
-                                        >
-                                            {cp_list.length !== 0 ? (
-                                                <CouponItemList
-                                                    cp_list={cp_list}
-                                                />
-                                            ) : (
-                                                <Message
-                                                    msg={
-                                                        '보유하고 있는 쿠폰이 없습니다'
-                                                    }
-                                                />
-                                            )}
+                                        <div className={cx('coupon-list', 'pd-box')}>
+                                            {cp_list.length !== 0 ? <CouponItemList cp_list={cp_list} />
+                                            : <Message msg={'보유하고 있는 쿠폰이 없습니다'} />}
                                         </div>
                                     </SwiperSlide>
                                     <SwiperSlide className={styles['swiper-slide']}>
-                                        <div
-                                            className={cx(
-                                                'coupon-list',
-                                                'pd-box',
-                                            )}
-                                        >
+                                        <div className={cx('coupon-list', 'pd-box')}>
                                             {down_cp_list.length !== 0 ? (
                                                 <DownCouponList
                                                     check={true}
@@ -322,21 +254,18 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                     onClick={callCouponDownload}
                                                 />
                                             ) : (
-                                                <Message
-                                                    msg={
-                                                        '받을 수 있는 쿠폰이 존재하지 않습니다.'
-                                                    }
-                                                />
+                                                <Message msg={'받을 수 있는 쿠폰이 존재하지 않습니다.'} />
                                             )}
                                         </div>
                                     </SwiperSlide>
                                     <SwiperSlide className={styles['swiper-slide']}>
-                                        <div
-                                            className={cx(
-                                                'coupon-list',
-                                                'pd-box',
-                                            )}
-                                        >
+                                        <div className={cx('coupon-list', 'pd-box')}>
+                                            <IconButton
+                                                style={{ width: '40px', height: '40px', right: '-10px' }}
+                                                onClick={handleOpen}
+                                            >
+                                                <img src={date} alt="date" />
+                                            </IconButton>
                                             <UseCouponItemList />
                                         </div>
                                     </SwiperSlide>

@@ -13,10 +13,19 @@ const Support = ({ match, location }) => {
     const id = query.id;
     return (
         <Switch>
-            <Route exact path={`${Paths.ajoonamu.support}/:tab`} render={() => <SupportContainer tab={tab}/>} />
-            <Route path={`${Paths.ajoonamu.support}/qna/:tab`} render={({ match }) => <QNAContainer tab={match.params.tab} query={id} />} />
+            <Route
+                exact
+                path={`${Paths.ajoonamu.support}/:tab`}
+                render={() => <SupportContainer tab={tab} />}
+            />
+            <Route
+                path={`${Paths.ajoonamu.support}/qna/:tab`}
+                render={({ match }) => (
+                    <QNAContainer tab={match.params.tab} query={id} />
+                )}
+            />
         </Switch>
-    )
+    );
 };
 
 export default Support;

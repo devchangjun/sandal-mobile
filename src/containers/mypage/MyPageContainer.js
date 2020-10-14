@@ -19,7 +19,7 @@ const cx = classNames.bind(styles);
 const MyPageContainer = () => {
     const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
-    const user_token = sessionStorage.getItem("access_token");
+    const user_token = localStorage.getItem("access_token");
     const openModal = useModal();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -28,7 +28,7 @@ const MyPageContainer = () => {
         openModal('정말 로그아웃 하시겠습니까?', '', async () => {
             try {
                 const res = await localLogout(user_token);
-                sessionStorage.removeItem('access_token');
+                localStorage.removeItem('access_token');
                 if (res.message === '로그아웃에 성공하셨습니다.') {
                     dispatch(logout());
                     initStore();
@@ -82,7 +82,6 @@ const MyPageContainer = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    console.log(user); 
     return (
         <>
             <div className={styles['container']}>

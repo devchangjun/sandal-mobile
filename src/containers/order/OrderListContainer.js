@@ -6,7 +6,6 @@ import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import OrderItemList from '../../components/order/OrderItemList';
 import BottomModal from 'components/nav/BottomModal';
-import SwipeableViews from 'react-swipeable-views';
 import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
@@ -30,7 +29,7 @@ const tabInit = [
 
 const OrderListContainer = ({ tab = '0' }) => {
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    // const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(parseInt(tab));
@@ -75,9 +74,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                 );
                 setReserveList(reserve);
                 setSuccess(true);
-                setError(false);
             } catch (e) {
-                setError(true);
                 setSuccess(false);
             }
         }
@@ -94,6 +91,7 @@ const OrderListContainer = ({ tab = '0' }) => {
     useEffect(() => {
         // window.scrollTo(0,0);
         getOrderItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

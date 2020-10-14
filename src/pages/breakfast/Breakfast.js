@@ -8,5 +8,5 @@ const Breakfast = ({ location }) => {
     });
     const menu = query.menu !== undefined ? query.menu : '0';
     return <BreakfastContainer menu={parseInt(menu)} />;
-}
+};
 export default Breakfast;

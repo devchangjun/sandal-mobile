@@ -82,10 +82,7 @@ const FullScreenDialog = (props) => {
     const [agree, setAgree] = useState(false);
     const openModal = useModal();
 
-    const onChangeAgree = (e) => {
-        console.log(e.target.checked);
-        setAgree(e.target.checked);
-    };
+    const onChangeAgree = e => setAgree(e.target.checked);
 
     const onSecession = useCallback(() => {
         if (agree) {
@@ -95,14 +92,13 @@ const FullScreenDialog = (props) => {
                 async () => {
                     try {
                         const res = await requestPutSecession(token, agree);
-                        console.log(res);
                         if (res.data.msg) {
                             openModal(
                                 '정상적으로 회원탈퇴 되셨습니다!',
                                 '다음에도 저희 아주나무를 이용해 주시기 바랍니다.',
                             );
                             history.push(Paths.ajoonamu.logout);
-                            sessionStorage.removeItem('access_token');
+                            localStorage.removeItem('access_token');
                             dispatch(logout());
                             initStore();
                             //회원 탈퇴후 비회원정보가 있을시 정보 받아오기
@@ -153,6 +149,7 @@ const FullScreenDialog = (props) => {
                 '위 글을 읽고 다시 신청해 주세요.',
             );
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, agree, openModal, history]);
 
     return (

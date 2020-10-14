@@ -10,10 +10,12 @@ const Message = ({ src, msg, onClick, isButton, buttonName }) => {
         <div className={styles['msg']}>
             {src && (
                 <div className={styles['icon']}>
-                    <img src={NoMenu} alt={''}></img>
+                    <img src={NoMenu} alt={''} />
                 </div>
             )}
-            <div className={styles['title-msg']}>{msg}</div>
+            <div className={styles['title-msg']}>
+                {msg.split('\n').map((line, index) => (<span key={index}>{line}<br/></span>))}
+            </div>
             {isButton ? (
                 <ButtonBase className={styles['custom-btn']} onClick={onClick}>
                     {buttonName}
@@ -33,7 +35,7 @@ Message.defaultProps = {
     src: true,
     msg: '샌달',
     isButton: false,
-    onClick: () => console.warn('onClick no defined'),
+    onClick: () => {},
 };
 
 export default Message;

@@ -29,7 +29,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const user_token = useStore(false);
     const history = useHistory();
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    // const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
@@ -53,16 +53,13 @@ const OrderDetailContainer = ({ order_id }) => {
                     false,
                 );
                 setSuccess(false);
-                setError(true);
             } else {
                 setOrders(orders);
                 setPayinfo(payinfo);
                 setSuccess(true);
-                setError(false);
             }
         } catch (e) {
             setSuccess(false);
-            setError(true);
             openModal(
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',
@@ -71,6 +68,7 @@ const OrderDetailContainer = ({ order_id }) => {
             );
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id, history, user_token]);
 
     const userOrderCancle = async () => {

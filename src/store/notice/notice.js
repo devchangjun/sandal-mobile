@@ -1,4 +1,3 @@
-import produce from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 
 const GET_NOTICE = 'notice/GET_NOTICE'; //알림 가져오기
@@ -15,59 +14,65 @@ export const read_all_notice = createAction(READ_ALL_NOTICE);
 export const read_check = createAction(CHECK);
 export const init = createAction(INIT);
 
-
-
 const initState = {
-    notification:[],
-    notice_check : false,
+    notification: [],
+    notice_check: false,
 };
-
 
 const notice = handleActions(
     {
         [GET_NOTICE]: (state, action) => {
             console.log(action);
-            return{
+            return {
                 ...state,
                 notification: state.notification.concat(action.payload),
-            }
+            };
         },
         [REMOVE_NOTICE]: (state, action) => ({
             ...state,
-            notification: state.notification.filter((item)=> item.not_id !==action.payload )
+            notification: state.notification.filter(
+                (item) => item.not_id !== action.payload,
+            ),
         }),
         [READ_NOTICE]: (state, action) => {
-            const {notification} = state;
-            const {not_id, not_read_datetime} = action.payload
-           const newState = notification.map((item)=> item.not_id ===not_id ? { ...item , not_read_datetime : not_read_datetime} : item);
-            return{
+            const { notification } = state;
+            const { not_id, not_read_datetime } = action.payload;
+            const newState = notification.map((item) =>
+                item.not_id === not_id
+                    ? { ...item, not_read_datetime: not_read_datetime }
+                    : item,
+            );
+            return {
                 ...state,
-                notification: newState
-            }
+                notification: newState,
+            };
         },
         [READ_ALL_NOTICE]: (state, action) => {
-            const {notification} = state;
-            const {not_id, not_read_datetime} = action.payload
-           const newState = notification.map((item) => ({...item, not_read_datetime: not_read_datetime}));
-           return{
-            ...state,
-            notification: newState
-        }
+            const { notification } = state;
+            const {
+                // not_id,
+                not_read_datetime
+            } = action.payload;
+            const newState = notification.map((item) => ({
+                ...item,
+                not_read_datetime: not_read_datetime,
+            }));
+            return {
+                ...state,
+                notification: newState,
+            };
         },
-        [CHECK] : (state,action)=>({
+        [CHECK]: (state, action) => ({
             ...state,
-            notice_check : action.payload
+            notice_check: action.payload,
         }),
 
-        [INIT] : (state,action)=>({
-            notification:[],
-            notice_check:false,
-        })
-
+        [INIT]: (state, action) => ({
+            notification: [],
+            notice_check: false,
+        }),
     },
     initState,
 );
 
 export default notice;
-
-

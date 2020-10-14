@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
 import Tabs from '@material-ui/core/Tabs';
@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 const cx = cn.bind(styles);
 
-const TabMenu = ({ tabs, index, onChange,isPush,center }) => {
+const TabMenu = ({ tabs, index, onChange, isPush, center }) => {
     const history = useHistory();
-    const { header } = useSelector(state => state.scroll);
-    
+    const { header } = useSelector((state) => state.scroll);
+
     const onClickTab = (url) => {
         if (url !== undefined) {
             isPush ? history.push(url) : history.replace(url);
@@ -21,7 +21,7 @@ const TabMenu = ({ tabs, index, onChange,isPush,center }) => {
         <Tab
             label={tab.name}
             key={tab.name}
-            className={cx('tab-item',{center : center})}
+            className={cx('tab-item', { center: center })}
             onClick={() => onClickTab(tab.url)}
         />
     ));
@@ -34,13 +34,16 @@ const TabMenu = ({ tabs, index, onChange,isPush,center }) => {
             TabIndicatorProps={{
                 style: {
                     backgroundColor: '#007246',
-                    height:'2px',
-                    borderRadius:'100px',
-                    color:'red'
+                    height: '2px',
+                    borderRadius: '100px',
+                    color: 'red',
                 },
             }}
             className={styles['tabs']}
-            style={{ top: header ? '0px' : '40px', boxShadow : header ? "0px 3px 20px rgba(0,0,0,0.1)": "" }}
+            style={{
+                top: header ? '0px' : '40px',
+                boxShadow: header ? '0px 3px 20px rgba(0,0,0,0.1)' : '',
+            }}
         >
             {tabList}
         </Tabs>
@@ -48,11 +51,11 @@ const TabMenu = ({ tabs, index, onChange,isPush,center }) => {
 };
 
 TabMenu.defaultProps = {
-    center:true,
+    center: true,
     tabs: null,
     index: 0,
-    isPush : false,
-    onChange: () => console.warn(null),
+    isPush: false,
+    onChange: () => {},
 };
 
 export default TabMenu;

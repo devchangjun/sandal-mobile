@@ -4,12 +4,12 @@
     @include wireframe($pd-top);
 
     height: 100vh;
-    overflow:hidden;
+    overflow: hidden;
 
-    .swiper{
+    .swiper {
         @include swiper($pd-top);
-        .swiper-slide{
-                @include swiper-slide($pd-top);
+        .swiper-slide {
+            @include swiper-slide($pd-top);
         }
     }
 
@@ -29,11 +29,11 @@
         width: 100%;
         padding: 24px;
         button {
-
             border-radius: 10px;
         }
         .input-box {
-            width: 100%; height: 56px;
+            width: 100%;
+            height: 56px;
             padding: 0.8em 16px; /* 여백으로 높이 설정 */
             border: 1px solid #ebebeb;
             border-radius: 10px; /* iOS 둥근모서리 제거 */

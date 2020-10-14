@@ -27,7 +27,6 @@ import {
 } from '../../store/product/product';
 
 import {
-    
     get_prefer_list,
     get_gernal_list,
 } from '../../store/product/prefer';
@@ -45,7 +44,7 @@ const ReserveContainer = ({ menu }) => {
     const SWIPER = useRef(null);
     const SWIPER_SLIDE = useRef(null);
 
-    const {prefer_items, gernal_items} = useSelector((state)=>state.prefer);
+    const { prefer_items, gernal_items } = useSelector((state) => state.prefer);
     const { categorys, items } = useSelector((state) => state.product);
     const { addr1 } = useSelector((state) => state.address);
     const { store } = useSelector((state) => state.store);

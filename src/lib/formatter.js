@@ -139,7 +139,7 @@ export const DBImageFormat = (url) => {
         const IMAGES = URL_FORMAT.split(',');
         return IMAGES.map((IMAGE) => STORAGE_URL + IMAGE);
     }
-    return '';
+    return [];
 };
 
 export const hideEmail = (email) => {

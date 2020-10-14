@@ -90,7 +90,7 @@ const MyPageContainer = () => {
                     onClick={user ? onClickAccount : onClickLogin}
                 >
                     <div className={cx('profile', 'pd-left')}>
-                        <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} />
+                        <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} alt="profile"/>
                     </div>
                     <div className={cx('info', 'pd-box')}>
                         <div className={styles['auth']}>
@@ -149,7 +149,7 @@ const Item = ({ text, url, version }) => {
                 {text}
             </div>
             {version && <div className={styles['version']}>
-                0.01 ver
+                1.0.1 ver
             </div>}
         </Button>
     );

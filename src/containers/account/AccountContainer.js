@@ -40,7 +40,7 @@ const AccountContainer = () => {
     const handleClose = () => setOpen(false);
     const initStore = useInit();
     const { user } = useSelector(state => state.auth);
-    const user_token = localStorage.getItem('access_token');
+    const user_token = useStore();
     const dispatch = useDispatch();
     const history = useHistory();
     const openModal = useModal();

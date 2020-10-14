@@ -260,12 +260,14 @@ const CouponConatiner = ({ tab = '0' }) => {
                                     </SwiperSlide>
                                     <SwiperSlide className={styles['swiper-slide']}>
                                         <div className={cx('coupon-list', 'pd-box')}>
-                                            <IconButton
-                                                style={{ width: '40px', height: '40px', right: '-10px' }}
-                                                onClick={handleOpen}
-                                            >
-                                                <img src={date} alt="date" />
-                                            </IconButton>
+                                            <div className={styles['use-history']}>
+                                                <IconButton
+                                                    className={cx('date-button', { on: tab === '2' })}
+                                                    onClick={handleOpen}
+                                                >
+                                                    <img src={date} alt="date" />
+                                                </IconButton>
+                                            </div>
                                             <UseCouponItemList />
                                         </div>
                                     </SwiperSlide>

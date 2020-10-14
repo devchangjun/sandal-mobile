@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "애플 SD 산돌고딕 Neo", "Apple SD Gothic Neo", 나눔고딕, "NanumGothic", "맑은 고딕", "Malgun Gothic", Ngothic, sans-serif;
+    font-family: '애플 SD 산돌고딕 Neo', 'Apple SD Gothic Neo', 나눔고딕,
+        'NanumGothic', '맑은 고딕', 'Malgun Gothic', Ngothic, sans-serif;
 
     -webkit-tap-highlight-color: transparent;
 }
@@ -14,7 +15,8 @@ button {
     cursor: pointer;
     outline: none;
 }
-input, textarea {
+input,
+textarea {
     box-sizing: border-box;
     outline: none;
     appearance: none;
@@ -22,7 +24,7 @@ input, textarea {
     -webkit-border-radius: 0;
 }
 input[type='checkbox'] {
-  display: none;
+    display: none;
 }
 select {
     /*ios대응*/
@@ -38,4 +40,3 @@ select {
 select::-ms-expand {
     display: none; /* 화살표 없애기 for IE10, 11*/
 }
-

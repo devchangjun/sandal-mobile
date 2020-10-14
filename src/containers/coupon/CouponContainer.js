@@ -138,6 +138,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                     getMyCouponList();
                 } else {
                     openModal('다운로드에 문제가 발생했습니다!', '잠시 후에 다시 시도해 주세요.');
+                    getMyCouponList();
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cp.cz_id,

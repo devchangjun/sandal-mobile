@@ -34,7 +34,7 @@ import {
     get_general_list,
     set_type,
     set_serach,
-    init,
+    init
 } from '../../store/product/prefer';
 
 //hooks
@@ -203,7 +203,6 @@ const ReserveContainer = ({ menu }) => {
                 addr1,
                 store.shop_id,
             );
-
             if (res.items_prefer.length !== 0) {
                 dispatch(get_prefer_list(res.items_prefer));
                 setPreferEmpty(false);
@@ -317,6 +316,7 @@ const ReserveContainer = ({ menu }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
+
 
     return (
         <>

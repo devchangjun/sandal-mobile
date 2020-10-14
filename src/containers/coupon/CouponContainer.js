@@ -136,8 +136,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                     openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
                 } else {
                     openModal('다운로드 성공했습니다.', res.data.msg);
-                    const newState = cp_list.concat(cp);
-                    setCpList(newState);
+                    getMyCouponList();
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cp.cz_id,

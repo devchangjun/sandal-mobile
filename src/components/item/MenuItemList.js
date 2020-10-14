@@ -5,7 +5,6 @@ import {List} from 'react-virtualized';
 
 const MenuItemList = ({ menuList, onClick }) => {
 
-    const test = useCallback(())
 
     const rowRenderer = menuList.map((menu) => {
         return (

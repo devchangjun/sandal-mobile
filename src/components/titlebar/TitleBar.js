@@ -56,7 +56,7 @@ const BackButton = ({ isHome }) => {
 TitleBar.defaultProps = {
     sub: false,
     isHome: false,
-    onClick: () => console.warn('null'),
+    onClick: () => {},
 };
 
 export default TitleBar;

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './Tos.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import SwipeableViews from 'react-swipeable-views';
 

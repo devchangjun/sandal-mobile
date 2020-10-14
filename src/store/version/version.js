@@ -1,7 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
 const GET_ADDRESS = 'address/GET_ADDRESS';
-// const GET_ADDR2 = 'address/GET_ADDR2';
 
 export const get_address = createAction(GET_ADDRESS);
 

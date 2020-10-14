@@ -1,25 +1,25 @@
 @import '../../styles/Root.scss';
 
-.container{
+.container {
     @include wireframe(40px);
     display: flex;
     justify-content: center;
     align-items: center;
-    .content{
+    .content {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .title{
-            color:$main-color;
-            font-size:18px;
+        .title {
+            color: $main-color;
+            font-size: 18px;
             font-weight: bold;
         }
-        .text{
+        .text {
             text-align: center;
             font-size: 16px;
-            color:#555;
-            padding-top:36px;
+            color: #555;
+            padding-top: 36px;
         }
     }
 }

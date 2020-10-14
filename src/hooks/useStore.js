@@ -17,7 +17,7 @@ import { Paths } from '../paths';
 //3.로그아웃 시 (비회원 주소초기화 ,알림창 초기화 ,가까운 가게 초기화)
 //4. 회원탈퇴시 (비회원 주소 초기화, 알림창 초기화 ,가까운 가게 초기화)
 export const useStore = (isReplace = true) => {
-    const user_token = sessionStorage.getItem('access_token');
+    const user_token = localStorage.getItem('access_token');
     const history = useHistory();
     const openModal = useModal();
 
@@ -36,7 +36,6 @@ export const useStore = (isReplace = true) => {
 };
 
 export const useUrl = () => {
-    const history = useHistory();
     const location = useLocation();
     const [current, setCurrent] = useState('/');
     const [prev, setPrev] = useState('');

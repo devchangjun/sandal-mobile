@@ -194,7 +194,7 @@ const SignUpContainer = () => {
                     const res = await localLogin(email);
                     if (res.data.msg === '비밀번호가 틀렸습니다.') {
                         openModal('중복된 이메일입니다.', '다른 이메일로 시도해 주세요.');
-                    } else if(res.data.msg === '탈퇴한 이메일입니다.') {
+                    } else if (res.data.msg === '탈퇴한 이메일입니다.') {
                         openModal(res.data.msg, '다른 이메일로 시도해 주세요.');
                     } else {
                         openModal('사용 가능한 이메일입니다.', '다음 절차를 계속하세요.');

@@ -40,7 +40,7 @@ const AccountContainer = () => {
     const handleClose = () => setOpen(false);
     const initStore = useInit();
     const { user } = useSelector(state => state.auth);
-    const user_token = sessionStorage.getItem('access_token');
+    const user_token = localStorage.getItem('access_token');
     const dispatch = useDispatch();
     const history = useHistory();
     const openModal = useModal();
@@ -69,7 +69,7 @@ const AccountContainer = () => {
         openModal('정말 로그아웃 하시겠습니까?', '', async () => {
             try {
                 const res = await localLogout(user_token);
-                sessionStorage.removeItem('access_token');
+                localStorage.removeItem('access_token');
                 if (res.message === '로그아웃에 성공하셨습니다.') {
                     dispatch(logout());
                     initStore();

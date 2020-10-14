@@ -17,7 +17,10 @@ export default () => {
             if (res.data.msg === '성공') {
                 setList(res.data.query.events);
             } else {
-                openModal('이벤트 목록을 가져오는데 오류가 발생했습니다.', '잠시 후 재시도 해주세요.');
+                openModal(
+                    '이벤트 목록을 가져오는데 오류가 발생했습니다.',
+                    '잠시 후 재시도 해주세요.',
+                );
             }
         } catch (e) {
             openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');

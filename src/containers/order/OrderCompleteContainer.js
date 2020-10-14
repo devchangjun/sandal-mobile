@@ -8,8 +8,6 @@ import classNames from 'classnames/bind';
 
 // components
 import { Button } from '@material-ui/core';
-import TitleBar from 'components/titlebar/TitleBar';
-import DetailOrderItem from '../../components/order/DetailOrderItem';
 import DetailOrderItemList from '../../components/order/DetailOrderItemList';
 import PhraseServiceModal from '../../components/modal/PhraseServiceModal';
 
@@ -37,10 +35,10 @@ const OrderCompleteContainer = ({ order_number }) => {
     const [phraseOpen, setPhraseOpen] = React.useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    // const [error, setError] = useState(false);
     const [orders, setOrders] = useState(null);
-    const [payinfo, setPayInfo] = useState(null);
-    const [payple_info, setPaypleInfo] = useState(null);
+    // const [payinfo, setPayInfo] = useState(null);
+    // const [payple_info, setPaypleInfo] = useState(null);
 
     const handlePhraseOpen = () => setPhraseOpen(true);
     const handlePhrasetClose = () => setPhraseOpen(false);
@@ -70,14 +68,11 @@ const OrderCompleteContainer = ({ order_number }) => {
                     false,
                 );
                 setSuccess(false);
-                setError(true);
             } else {
                 setOrders(orders);
                 setSuccess(true);
-                setError(false);
             }
         } catch (e) {
-            setError(true);
             openModal(
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',

@@ -7,29 +7,25 @@ export default function CricleCheckBox({ id, text, check, onChange }) {
     return (
         <div className={cx('check', 'item')}>
             <div className={cx('sub-text')}>
-                <input type="checkbox" id={id} checked={check} onChange ={onChange} />
-                <label className={cx('label','black')} htmlFor={id}>
-                    <CheckBox on={check} />{text}
+                <input
+                    type="checkbox"
+                    id={id}
+                    checked={check}
+                    onChange={onChange}
+                />
+                <label className={cx('label', 'black')} htmlFor={id}>
+                    <CheckBox on={check} />
+                    {text}
                 </label>
             </div>
-        
         </div>
-    )
+    );
 }
 
-
-
-
-function CheckBox({on}) {
+function CheckBox({ on }) {
     return (
-        <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-        >
-            <g
-                transform="translate(-24 -480)"
-            >
+        <svg width="24" height="24" viewBox="0 0 24 24">
+            <g transform="translate(-24 -480)">
                 <circle
                     cx="12"
                     cy="12"
@@ -50,10 +46,10 @@ function CheckBox({on}) {
         </svg>
     );
 }
-CricleCheckBox.defaultProps ={
-    id:'check',
-    text:'text',
-    check:false,
-    onChange :()=>console.warn("onChange"),
-    url:null,
-}
+CricleCheckBox.defaultProps = {
+    id: 'check',
+    text: 'text',
+    check: false,
+    onChange: () => {},
+    url: null,
+};

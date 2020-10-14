@@ -9,7 +9,6 @@ import TabMenu from '../../components/tab/TabMenu';
 import QNASend from '../../components/support/QNASend';
 import QNAList from '../../components/support/QNAList';
 import Loading from '../../components/asset/Loading';
-import SwipeableViews from 'react-swipeable-views';
 import QNADetailModal from '../../components/modal/QNADetailModal';
 import { Swiper, SwiperSlide } from 'swiper/react';
 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { Paths,PROTOCOL_ENV } from 'paths';
+import { Paths, PROTOCOL_ENV } from 'paths';
 // styles
 import styles from './Sign.module.scss';
 import classNames from 'classnames/bind';
-import styled from 'styled-components';
 
 //components
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -13,7 +12,6 @@ import {
     NaverLogo,
     FacebookLogo,
 } from '../../components/svg/sign/social';
-import KakaoLogin from 'react-kakao-login';
 //lib
 import { isEmailForm } from '../../lib/formatChecker';
 
@@ -27,32 +25,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { localLogin } from '../../api/auth/auth';
-import {kakaoLogin} from '../../api/social';
-import { reqNoticeList} from '../../api/notice';
-import {getMobileOperatingSystem} from '../../api/OS/os';
+import { reqNoticeList } from '../../api/notice';
+import { getMobileOperatingSystem } from '../../api/OS/os';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
-import {get_notice,read_check} from '../../store/notice/notice';
+import { get_notice, read_check } from '../../store/notice/notice';
 const cx = classNames.bind(styles);
-const {Kakao} = window;
 
-const KakaoButton = styled(KakaoLogin)`
-    /* display: inline-block;
-  padding: 0;
-  width: auto;
-  height: 49px;
-  line-height: 49px;
-  color: #3C1E1E;
-  background-color: #FFEB00;
-  border: 1px solid red;
-  border-radius: 3px;
-  font-size: 16px;
-  text-align: center;
- background-image : url('../../components/svg/sign/social/kakao.png') no-repeat;; */
-    border: none;
-    background-color: transparent;
-`;
 
 const initialUserState = {
     email: '',
@@ -84,7 +64,6 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const { email, password } = user;
     const [toggle, setToggle] = useState(false);
-    const { succeed } = useSelector((state) => state.auth);
 
     const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -101,7 +80,7 @@ const SignInContainer = () => {
         try {
             const res = await reqNoticeList(token);
             // setList(res.notification);
-            const index =res.notification.findIndex((item) =>!item.not_read_datetime);
+            const index = res.notification.findIndex((item) =>!item.not_read_datetime);
             dispatch(read_check(index===-1));
             dispatch(get_notice(res.notification));
         } catch (e) {
@@ -121,7 +100,7 @@ const SignInContainer = () => {
         const login_os = getMobileOperatingSystem();
         console.log(login_os);
         if(login_os ==='Android'){
-            if(typeof window.myJs !=='undefined'){
+            if (typeof window.myJs !=='undefined') {
                 window.myJs.requsetToken();
             }
         }
@@ -167,7 +146,7 @@ const SignInContainer = () => {
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
                         const active_addr = await getActiveAddr(res.data.access_token);
-                        sessionStorage.setItem( 'access_token', res.data.access_token);
+                        localStorage.setItem('access_token', res.data.access_token);
                         if (active_addr) {
                             const {
                                 lat,
@@ -206,17 +185,9 @@ const SignInContainer = () => {
                 history.replace('/');
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, openModal, password, dispatch, history, initStore]);
 
-    const onClickKakaoLogin = async (res) => {
-        console.log(res);
-        const token = res.response.access_token;
-        localStorage.setItem('social', 'kakao');
-        localStorage.setItem('access_token', token);
-
-        const test = await kakaoLogin();
-        console.log(test);
-    };
 
 
     const kakaoLoginClickHandler =()=>{
@@ -302,16 +273,7 @@ const SignInContainer = () => {
                                 <img src={NaverLogo} alt="naver" onClick={naverLoginClickHandler}></img>
                             </div>
                             <div className={styles['sns']}>
-                                   <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>
-                                {/* 
-                                <KakaoButton
-                                    jsKey={'122df6d8b0bf2538b90ad7183a949975'}
-                                    buttonText="kakao"
-                                    getProfile={true}
-                                    onSuccess={onClickKakaoLogin}
-                                >
-                                <img src={KakaoLogo} alt="kakao"></img>
-                                </KakaoButton> */}
+                               <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>    
                             </div>
                             <div className={styles['sns']}>
                                 <img src={FacebookLogo} alt="facebook"></img>

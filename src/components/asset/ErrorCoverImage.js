@@ -5,15 +5,13 @@ export default ({ className, src, alt }) => {
     const [imageSrc, setImageSrc] = useState(src);
 
     useEffect(() => setImageSrc(src), [src]);
-    
+
     return (
         <img
             src={imageSrc}
             alt={alt}
             className={className}
-            onError={() => {
-                setImageSrc(NoImage);
-            }}
+            onError={() => setImageSrc(NoImage)}
         />
     );
 };

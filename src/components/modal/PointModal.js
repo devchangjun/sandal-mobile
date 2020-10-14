@@ -63,7 +63,6 @@ const FullScreenDialog = (props) => {
 
     const onChangePointPrice = (e) => {
         const value = stringNumberToInt(e.target.value);
-        console.log(value);
         if (isNaN(value)) {
             setPointPrice(0);
         } else {

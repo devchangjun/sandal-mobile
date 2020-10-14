@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
-html{
-    body{
+html {
+    body {
         .tab-item {
             // border:1px solid red !important;
             font-size: 14px;
@@ -9,17 +9,17 @@ html{
             padding: 0 10px;
             display: flex;
             // padding: 0 24px !important;
-            &.center{
-                flex:  1 1 0;
+            &.center {
+                flex: 1 1 0;
                 max-width: 100%;
             }
         }
     }
 }
-html{
-    body{
-        .tabs{
-            padding:0 24px;
+html {
+    body {
+        .tabs {
+            padding: 0 24px;
             width: 100%;
             max-width: 768px;
             min-height: 40px;
@@ -30,19 +30,11 @@ html{
             background-color: #fff;
             position: fixed;
             z-index: 99;
-         
-            &>div > div{
-
-            }
         }
     }
 }
 
-
-
-
-
-:global .MuiTab-textColorPrimary.Mui-selected{
-    color:$main-color !important;
+:global .MuiTab-textColorPrimary.Mui-selected {
+    color: $main-color !important;
     font-weight: bold;
 }

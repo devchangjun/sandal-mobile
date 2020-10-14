@@ -11,9 +11,9 @@ const cx = classNames.bind(styles);
 
 const OrderCouponItem = (props) => {
     const {
-        cp_datetime,
+        // cp_datetime,
         cp_end,
-        cp_id,
+        // cp_id,
         // cp_minimum,
         cp_price,
         cp_start,

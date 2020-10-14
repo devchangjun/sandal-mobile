@@ -1,6 +1,6 @@
 @import '../../styles/Root.scss';
-html{
-    body{
+html {
+    body {
         .menu-item {
             overflow: hidden;
             text-align: left;
@@ -40,8 +40,7 @@ html{
     }
 }
 .menu-list {
-    padding : 24px;
-
+    padding: 24px;
 }
 
 @include keyframe(fadeIn) {
@@ -52,4 +51,3 @@ html{
         filter: blur(0);
     }
 }
-

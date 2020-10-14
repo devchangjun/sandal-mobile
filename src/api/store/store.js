@@ -10,16 +10,15 @@ export const getStoreList = async (search, offset, limit) => {
         params: {
             search,
             limit,
-            offset
-        }
-    }
+            offset,
+        },
+    };
 
     const res = await axios.get(req, config);
     return res;
 };
 
-
-export const getNearStore = async (lat,lng,addr1)=>{
+export const getNearStore = async (lat, lng, addr1) => {
     const req = Paths.api + 'user/delivery/select';
     axios.defaults.headers.get['Context-Type'] = 'application/json';
 
@@ -27,10 +26,10 @@ export const getNearStore = async (lat,lng,addr1)=>{
         params: {
             lat,
             lng,
-            addr1
-        }
-    }
+            addr1,
+        },
+    };
 
     const res = await axios.get(req, config);
     return res;
-}
+};

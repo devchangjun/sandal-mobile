@@ -8,5 +8,5 @@ const Reserve = ({ location }) => {
     });
     const menu = query.menu !== undefined ? query.menu : '0';
     return <ReserveContainer menu={parseInt(menu)} />;
-}
+};
 export default Reserve;

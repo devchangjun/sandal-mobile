@@ -105,9 +105,7 @@ const BottomNav = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleChange = () => {
-        // console.log('체인지');
-    };
+    const handleChange = () => {};
     const onClickHome = () => {
         history.push(Paths.index);
     };

@@ -3,8 +3,8 @@ import { Paths } from '../../paths';
 
 export const getOrderList = async (
     token,
-    offset=0,
-    limit=10,
+    offset = 0,
+    limit = 10,
     start_date,
     end_date,
 ) => {
@@ -35,6 +35,5 @@ export const getDetailOrderView = async (token, order_id) => {
         },
     };
     const res = await axios.get(req, config);
-    console.log(res);
     return res.data.query;
 };

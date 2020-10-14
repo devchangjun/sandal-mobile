@@ -62,15 +62,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FullScreenDialog = (props) => {
     const classes = useStyles();
-    const [cp_list,setCpList] = useState([]);
-    const [cp_price ,setCpPrice] = useState(0);
-    const [cp_id ,setCpId] = useState('');
+    const [cp_list, setCpList] = useState([]);
+    const [cp_price, setCpPrice] = useState(0);
+    const [cp_id, setCpId] = useState('');
 
 
     //open이 바뀔때마다 list 갱신.
-    useEffect(()=>{
+    useEffect(() => {
         setCpList(props.list);
-    },[props.open])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.open]);
 
 
     //쿠폰 클릭
@@ -79,31 +80,30 @@ const FullScreenDialog = (props) => {
         const prevList = cp_list.map((c)=> c.select=== true ? {...c, select:false} : c ); //전부 false로 초기화
         const index = prevList.findIndex((c) => c.cp_id === cp_id);
         //true였던 index랑 현재 바꾸고자하는 index가 같을시 true로 갱신
-        if(trueIndex===index){
-            prevList[index].select=true;
+        if (trueIndex === index) {
+            prevList[index].select = true;
         }
         setCpList(
             produce(prevList, (draft) => {
                 draft[index].select = !draft[index].select;
             }),
         );
-        if(trueIndex===index){
+        if (trueIndex === index) {
             setCpPrice(0);
             setCpId(null);
-        }
-        else{
+        } else {
             setCpPrice(cp_price);
             setCpId(cp_id);
         }
     },[cp_list]);
 
-    const onClickOk =()=>{
+    const onClickOk = () => {
         props.handleClose();
-        props.onClick(cp_price,cp_id,cp_list);
-    }
-    const onClickCancle =()=>{
+        props.onClick(cp_price, cp_id, cp_list);
+    };
+    const onClickCancle = () => {
         props.handleClose();
-    }
+    };
 
 
     return (
@@ -128,11 +128,8 @@ const FullScreenDialog = (props) => {
                                 cp_list={cp_list}
                             />
                             :
-                            <Message
-                            msg={"보유하고 있는 쿠폰이 없습니다."}
-                            />
-                        }   
-                    
+                            <Message msg={"보유하고 있는 쿠폰이 없습니다."}/>
+                        }
                     </div>
                 </div>
             </div>

@@ -63,9 +63,7 @@ const FullScreenDialog = (props) => {
     const classes = useStyles();
     const [payment, setPayment] = React.useState(props.payment);
 
-    const onClickPayment = (value) => {
-        setPayment(value);
-    };
+    const onClickPayment = value => setPayment(value);
     const onClickClose = () => {
         setPayment(props.payment);
         props.handleClose();

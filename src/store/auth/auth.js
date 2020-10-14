@@ -32,6 +32,7 @@ function* get_user_info_saga(action) {
             type: GET_USERINFO_ERROR,
             payload: e,
         });
+        localStorage.removeItem('access_token');
     }
 }
 
@@ -61,15 +62,15 @@ const auth = handleActions(
             succeed: false,
             user: null,
         }),
-        [UPDATE_USERINFO] :(state,action)=>{
-            const {user} = state;
-            const {name,value} = action.payload;
-            user[name]  = value;
+        [UPDATE_USERINFO]: (state, action) => {
+            const { user } = state;
+            const { name, value } = action.payload;
+            user[name] = value;
             return {
                 ...state,
-                user :user
-            }
-        }
+                user: user,
+            };
+        },
     },
     initState,
 );

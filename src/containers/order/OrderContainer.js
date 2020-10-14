@@ -427,7 +427,6 @@ const OrderContainer = () => {
         getTotalPrice();
     }, [getTotalPrice]);
     useEffect(() => {
-        console.log('gd');
         localStorage.setItem(
             'requestMemo',
             JSON.stringify({
@@ -464,7 +463,7 @@ const OrderContainer = () => {
                     </div>
                     <div className={cx('text-info', 'address')}>
                         <div className={styles['info']}>{addr1}</div>
-                        <div style={{ color: '#555', fontSize: '14px' }} className={styles['info']} >
+                        <div style={{ color: '#555', fontSize: '14px', marginTop: '8px' }} className={styles['info']} >
                             {addr2}
                         </div>
                     </div>
@@ -473,7 +472,7 @@ const OrderContainer = () => {
                         <div className={cx('info', 'row')}>
                             <input
                                 type="number"
-                                placeholder="핸드폰번호"
+                                placeholder="휴대폰 번호"
                                 value={hp}
                                 onChange={onChangeHp}
                                 disabled={success}
@@ -738,7 +737,6 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
             <Button
                 title={`${numberFormat(
                     parseInt(totalPrice) +

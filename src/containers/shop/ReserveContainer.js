@@ -11,7 +11,6 @@ import Message from 'components/message/Message';
 import PreferModal from 'components/modal/PreferModal';
 import Loading from '../../components/asset/Loading';
 import CartLink from '../../components/cart/CartLink';
-import SwipeableViews from 'react-swipeable-views';
 import TabTests from '../../components/tab/SwiperTabs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -29,7 +28,6 @@ import {
 
 //hooks
 import {
-    useScroll,
     useDomScroll,
     useRestore,
 } from '../../hooks/useScroll';
@@ -91,7 +89,6 @@ const ReserveContainer = ({ menu }) => {
                 addr1,
                 store.shop_id,
             );
-            console.log(res);
             setPreferMenuList(res.items_prefer);
             setGeneralMenuList(res.items_general);
         } catch (e) {}
@@ -110,6 +107,7 @@ const ReserveContainer = ({ menu }) => {
                 console.error(e);
             }
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //첫 로딩시 메뉴 받아오기
@@ -127,7 +125,6 @@ const ReserveContainer = ({ menu }) => {
                         LIMIT,
                         store.shop_id,
                     );
-                    console.log(result);
                     const temp = {
                         ca_id: ca_id,
                         items: result.data.query.items,
@@ -218,12 +215,14 @@ const ReserveContainer = ({ menu }) => {
             </SwiperSlide>
         ));
         return item;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categorys, items, onClickMenuItem, offset, SWIPER_SLIDE, tabIndex]);
 
     //첫 로딩시 카테고리 셋팅
     useEffect(() => {
         getCategoryList();
         window.scrollTo(0, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // 첫 로딩시 메뉴 셋팅
     useEffect(() => {
@@ -247,6 +246,7 @@ const ReserveContainer = ({ menu }) => {
             restoreOffset(setOffset);
             setLoading(false);
         }, 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //로딩 완료 되었을 때 스크롤 위치로 이동.
@@ -254,6 +254,7 @@ const ReserveContainer = ({ menu }) => {
         setTimeout(() => {
             restoreScroll(SWIPER_SLIDE.current);
         }, 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -273,6 +274,7 @@ const ReserveContainer = ({ menu }) => {
         if (isScrollEnd && !isPaging) {
             PageNationMenuList();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isScrollEnd]);
 
     return (
@@ -330,7 +332,7 @@ const ReserveContainer = ({ menu }) => {
                                         ) : (
                                             <Message
                                                 msg={
-                                                    '전체 예산과 희망 수량을 선택하시면 메뉴 구성을 추천 받으실 수 있습니다.'
+                                                    `전체 예산과 희망 수량을 선택하시면\n 메뉴 구성을 추천 받으실 수 있습니다.`
                                                 }
                                                 isButton={true}
                                                 onClick={handleOpen}

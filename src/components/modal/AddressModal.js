@@ -56,9 +56,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-    //modal brunch test
-
-
 const AddressModal = (props) => {
     const classes = useStyles();
     return (
@@ -66,15 +63,14 @@ const AddressModal = (props) => {
             <AppBar className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton 
-                    className={classes.close}
-                    color="inherit" 
-                    onClick={props.handleClose} aria-label="close">
+                        className={classes.close}
+                        color="inherit" 
+                        onClick={props.handleClose} aria-label="close">
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
                         배달받을 주소
-                        </Typography>
-        
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <div className={styles['title']}>배달 받을 주소</div>

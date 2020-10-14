@@ -24,7 +24,7 @@ const cx = classNames.bind(styles);
 const CartContainer = () => {
 
     const history = useHistory();
-    const { addr1, addr2, lat, lng } = useSelector((state) => state.address);
+    const { addr1, lat, lng } = useSelector(state => state.address);
     const openModal = useModal();
 
     const [open, setOpen] = useState(false); //모달창 오픈
@@ -101,7 +101,6 @@ const CartContainer = () => {
         //유저 정보가 있을때
         if (user_token) {
             setLoading(true);
-            console.log('장바구니 들고오기');
             try {
                 const res = await getCartList(user_token);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
@@ -116,51 +115,46 @@ const CartContainer = () => {
                         list[i] = query[i];
                         list[i].checked = false;
                     }
-                    console.log(list);
                     setCost(query.delivery_cost);
                     setCartList(list);
                 }
-            } catch (e) {
-
-            }
+            } catch (e) {}
             setLoading(false);
         } else {
             setLoading(true);
-     
+
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
-            setTimeout( async() => {
+            setTimeout(async () => {
                 setLoading(true);
                 if (addr1) {
-                     try {
-                         const cart_id = JSON.parse(
-                             localStorage.getItem('noAuthCartId'),
-                         );
-                         const res = await noAuthGetCartList(
-                             cart_id,
-                             lat,
-                             lng,
-                             addr1,
-                         );
-                         const { query } = res.data;
-                         let len = Object.keys(query).length;
-                         let list = [];
-                         for (let i = 0; i < len - 1; i++) {
-                             list[i] = query[i];
-                             list[i].checked = false;
-                         }
-                         setCost(query.delivery_cost);
-                         setCartList(list);
-                     } catch (e) {
-
-                     }
-                     setLoading(false);
-                }
-                else {
+                    try {
+                        const cart_id = JSON.parse(
+                            localStorage.getItem('noAuthCartId'),
+                        );
+                        const res = await noAuthGetCartList(
+                            cart_id,
+                            lat,
+                            lng,
+                            addr1,
+                        );
+                        const { query } = res.data;
+                        let len = Object.keys(query).length;
+                        let list = [];
+                        for (let i = 0; i < len - 1; i++) {
+                            list[i] = query[i];
+                            list[i].checked = false;
+                        }
+                        setCost(query.delivery_cost);
+                        setCartList(list);
+                    } catch (e) {}
+                    setLoading(false);
+                } else {
                     setLoading(false);
                 }
             }, 500);
         }
-    }, [user_token, addr1, lat,lng,history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user_token, addr1, lat, lng, history]);
 
     const onChangeTotalPrice = useCallback(() => {
 
@@ -211,7 +205,7 @@ const CartContainer = () => {
             try {
                 for (let i = 0; i < cartList.length; i++) {
                     const { item } = cartList[i];
-                    const res = await noAuthUpdateCartQunaity(
+                    await noAuthUpdateCartQunaity(
                         item.cart_id,
                         item.item_quanity,
                     );

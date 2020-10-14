@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 //api
-// import { noAuthGetNearStore } from '../../api/noAuth/store';
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { socialRegister } from '../../api/social';
@@ -57,20 +56,21 @@ const OAuth = ({ match, location }) => {
 
     const Register = async (email, name, register_type) => {
         try {
-            const res = await socialRegister(email, name, register_type);
-            if (
-                res.data.msg ===
-                '존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.'
-            ) {
+            if (register_type === 'already') {
                 history.replace('/');
-                openModal('회원가입 실패', res.data.msg);
-            } else if (res.data.access_token) {
-                dispatch(get_user_info(res.data.access_token));
-                localStorage.setItem('access_token', res.data.access_token);
-                initStore();
-                history.replace('/');
+                openModal(
+                    '회원가입 실패',
+                    '존재하는 이메일 주소로 가입을 시도하셔서 가입에 실패하셨습니다.',
+                );
+            } else {
+                const res = await socialRegister(email, name, register_type);
+                if (res.data.access_token) {
+                    dispatch(get_user_info(res.data.access_token));
+                    localStorage.setItem('access_token', res.data.access_token);
+                    initStore();
+                    history.replace('/');
+                }
             }
-            history.replace('/');
         } catch (e) {
             history.replace('/error');
         }

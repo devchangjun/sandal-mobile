@@ -80,7 +80,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
             setStartTimer(false);
             onClickSendAuth();
-        }, true);
+        },() =>{},true);
     };
 
     useEffect(() => {

@@ -16,6 +16,12 @@ import produce from 'immer';
 import styles from './Coupon.module.scss';
 import  Message from '../message/Message';
 
+//hooks
+import {useModal} from '../../hooks/useModal';
+
+//lib
+import { numberFormat } from '../../lib/formatter';
+
 const useStyles = makeStyles((theme) => ({
     container:{
         paddingBottom:"60px",
@@ -61,10 +67,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const FullScreenDialog = (props) => {
+
+    const openModal = useModal();
     const classes = useStyles();
     const [cp_list, setCpList] = useState([]);
     const [cp_price, setCpPrice] = useState(0);
     const [cp_id, setCpId] = useState('');
+    const [cp_minimum ,setCpMinimum] = useState(0);
 
 
     //open이 바뀔때마다 list 갱신.
@@ -75,7 +84,7 @@ const FullScreenDialog = (props) => {
 
 
     //쿠폰 클릭
-    const onClickSelectCoupon = useCallback((cp_id,cp_price) => {
+    const onClickSelectCoupon = useCallback((cp_id,cp_price,cp_minimum) => {
         const trueIndex = cp_list.findIndex((c)=>c.select===true); //true였던 인덱스를 뽑음.
         const prevList = cp_list.map((c)=> c.select=== true ? {...c, select:false} : c ); //전부 false로 초기화
         const index = prevList.findIndex((c) => c.cp_id === cp_id);
@@ -90,16 +99,24 @@ const FullScreenDialog = (props) => {
         );
         if (trueIndex === index) {
             setCpPrice(0);
+            setCpMinimum(0);
             setCpId(null);
         } else {
             setCpPrice(cp_price);
             setCpId(cp_id);
+            setCpMinimum(cp_minimum);
         }
     },[cp_list]);
 
     const onClickOk = () => {
-        props.handleClose();
-        props.onClick(cp_price, cp_id, cp_list);
+        if(props.item_price <cp_minimum){
+            openModal('사용하실 수 없는 쿠폰입니다.',`최소주문 금액이\n${numberFormat(cp_minimum)}원 이상일 때 사용가능한 쿠폰입니다. `);
+        }
+        else{
+            props.handleClose();
+            props.onClick(cp_price, cp_id, cp_list);
+        }
+     
     };
     const onClickCancle = () => {
         props.handleClose();

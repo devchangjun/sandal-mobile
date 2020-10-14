@@ -163,7 +163,7 @@ const BreakfastContainer = ({ menu }) => {
             >
                 {items[index].items.length !== 0 ? (
                     <MenuItemList
-                        menuList={items[index].items.slice(0, offset)}
+                        menuList={items[index].items}
                         onClick={onClickMenuItem}
                     />
                 ) : (
@@ -196,7 +196,6 @@ const BreakfastContainer = ({ menu }) => {
 
     //탭 바뀌었을때 오프셋 갱신
     useEffect(() => {
-        console.log('탭 바뀌엇을때 오프셋 갱신');
         setOffset(OFFSET);
     }, [tabIndex]);
 

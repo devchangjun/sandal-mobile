@@ -2,18 +2,27 @@ import produce from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 
 const GET_MENULIST = 'bestmenu/GET_MENULIST';
+const GET_CATEGORY = 'bestmenu/GET_CATEGORY';
 const ADD_MENUITEM = 'bestmenu/ADD_MENUITEM';
 
+export const get_best_cate = createAction(GET_CATEGORY);
 export const get_best_menu = createAction(GET_MENULIST);
 export const add_best_menu = createAction(ADD_MENUITEM);
 
 const initState = {
     items: null,
+    categorys:[],
 };
 
 const bestmenu = handleActions(
     {
 
+        [GET_CATEGORY]: (state, action) => {
+            return{
+            ...state,
+            categorys: state.categorys.concat(action.payload),
+            }
+        },
         [GET_MENULIST]: (state, action) => ({
             ...state,
             items: action.payload,

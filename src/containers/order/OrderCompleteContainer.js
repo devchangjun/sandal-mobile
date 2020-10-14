@@ -57,15 +57,12 @@ const OrderCompleteContainer = ({ order_number }) => {
                 res = await noAuthOrderView(order_number);
             }
 
-            console.log(res);
             const { orders } = res;
-            console.log(orders);
             if (orders === undefined) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
                     () => history.replace('/'),
-                    false,
                 );
                 setSuccess(false);
             } else {
@@ -77,7 +74,6 @@ const OrderCompleteContainer = ({ order_number }) => {
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',
                 () => history.replace('/'),
-                false,
             );
         }
         setLoading(false);

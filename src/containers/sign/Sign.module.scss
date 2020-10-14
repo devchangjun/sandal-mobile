@@ -52,6 +52,24 @@
             display: flex;
             justify-content: center;
         }
+        .msg{
+            margin-top: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            .text{
+                font-size: 20px;
+                color:#222;
+                font-weight: bold;
+                line-height:3;
+            }
+            .sub-text{
+                word-break: keep-all;
+                text-align: center;
+                line-height: 1.5;
+            }
+        }
     }
 
     //휴대폰 인증 버튼

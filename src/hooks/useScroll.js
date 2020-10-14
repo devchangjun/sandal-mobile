@@ -53,10 +53,8 @@ export const useDomScroll = ()=>{
         let scrollTop = e.target.scrollTop;
         let clientHeight = e.target.clientHeight;
         let height  = scrollTop+clientHeight;
-        console.log(scrollTop);
         sessionStorage.setItem('scroll_top',scrollTop);
         if(scrollHeight-100 <= height){
-            console.log('페이지 끝');
             setScrollEnd(true);
         }
         else{
@@ -74,9 +72,9 @@ export const useRestore =()=>{
     const restoreScroll =(dom) =>{
             const scrollTop = sessionStorage.getItem('scroll_top');
             const url = JSON.parse(sessionStorage.getItem('url'));
-            console.log(url);
             if (url) {
                 //이전 주소가 상품페이지라면 스크롤 유지
+                //여기 예외처리
                 if (url.prev === '/product') {
                     dom.scrollTo(0,scrollTop);
                 }

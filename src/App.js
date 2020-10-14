@@ -105,7 +105,7 @@ const App = () => {
             return '로그인';
         } else if (pathname === '/signup') {
             return '회원가입';
-        } else if (pathname === '/complete') {
+        } else if (pathname.indexOf('/complete') !==-1) {
             return '회원가입';
         } else if (pathname === '/recovery') {
             return '내 정보 찾기';

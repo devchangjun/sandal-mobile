@@ -14,7 +14,7 @@ const OrderCouponItem = (props) => {
         // cp_datetime,
         cp_end,
         // cp_id,
-        // cp_minimum,
+        cp_minimum,
         cp_price,
         cp_start,
         cp_subject,
@@ -35,8 +35,8 @@ const OrderCouponItem = (props) => {
                 <div className={styles['pd-box']}>
                     <OrderCouponEventName event_name={cp_subject} />
                     <OrderCouponSale sale={cp_price} />
-                    <OrderCouponEventSub sub_name={cp_target} />
-                    <OrderCouponDate date={`${cp_start} ~ ${cp_end}까지`} />
+                    <OrderCouponEventSub sub_name={`최소주문금액 ${numberFormat(cp_minimum)}원`} />
+                    <OrderCouponDate date={`${cp_start} - ${cp_end}`} />
                 </div>
             </div>
         </ButtonBase>
@@ -48,4 +48,4 @@ const OrderCouponEventSub = ({ sub_name }) => <div className={cx('text', 'sub-na
 const OrderCouponDate = ({ date }) => <div className={cx('text', 'date')}>{date}</div>;
 const OrderCouponCheck = ({ select }) => <Check select={select} />
 
-export default OrderCouponItem;
+export default React.memo(OrderCouponItem);

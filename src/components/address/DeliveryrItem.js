@@ -40,4 +40,4 @@ const AddrBtn = () => {
     return <div className={styles['btn']}>상세주소</div>;
 };
 
-export default DeliveryrItem;
+export default React.memo(DeliveryrItem);

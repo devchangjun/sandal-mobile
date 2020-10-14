@@ -43,14 +43,12 @@ const OrderDetailContainer = ({ order_id }) => {
             } else {
                 res = await noAuthOrderView(order_id);
             }
-
             const { orders, payinfo } = res;
             if (orders === undefined) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
                     () => history.replace('/'),
-                    false,
                 );
                 setSuccess(false);
             } else {
@@ -64,7 +62,6 @@ const OrderDetailContainer = ({ order_id }) => {
                 '주문번호가 존재하지 않습니다.',
                 '주문번호를 확인해주세요',
                 () => history.replace('/'),
-                false,
             );
         }
         setLoading(false);
@@ -99,6 +96,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 } catch (e) {}
                 setLoading(false);
             },
+            ()=>{},
             true,
         );
     };

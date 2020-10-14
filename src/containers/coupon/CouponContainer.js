@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './Coupon.module.scss';
 import classNames from 'classnames/bind';
@@ -130,14 +130,14 @@ const CouponConatiner = ({ tab = '0' }) => {
             try {
                 const res = await downloadCoupon(user_token, cp.cz_id);
                 if (
-                    res.data.msg ===
-                    '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
+                    res.data.msg === '이미 해당 쿠폰존에서 받은 쿠폰이력이 있습니다.'
                 ) {
-                    openModal('이미 다운로드 한 쿠폰입니다.', res.data.msg);
+                    openModal('이미 다운로드 한 쿠폰입니다.');
+                } else if (res.data.msg === '성공') {
+                    openModal('다운로드 성공했습니다.');
+                    getMyCouponList();
                 } else {
-                    openModal('다운로드 성공했습니다.', res.data.msg);
-                    const newState = cp_list.concat(cp);
-                    setCpList(newState);
+                    openModal('다운로드에 문제가 발생했습니다!', '잠시 후에 다시 시도해 주세요.');
                 }
                 const idx = down_cp_list.findIndex(
                     (item) => item.cz_id === cp.cz_id,
@@ -201,7 +201,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                     ) : (
                         <>
                             <div className={cx('title', { show: show })}>
-                                내 쿠폰
+                                 보유쿠폰 <b>{cp_list.length}</b>개
                             </div>
                             <TabMenu
                                 tabs={tabInit}
@@ -228,7 +228,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                 type="text"
                                                 value={user_input_cp}
                                                 onChange={onChangeUserInputCp}
-                                                placeholder='쿠폰 코드를 입력하세요'
+                                                placeholder='쿠폰 코드를 입력해주세요'
                                             />
                                             <Button
                                                 className={styles['submit-btn']}
@@ -238,7 +238,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                                             </Button>
                                         </div>
                                         <div className={cx('coupon-title', 'pd-box')} ref={myCouponTitle}>
-                                            내 쿠폰
+                                            보유쿠폰 <b>{cp_list.length}</b>개
                                         </div>
                                         <div className={cx('coupon-list', 'pd-box')}>
                                             {cp_list.length !== 0 ? <CouponItemList cp_list={cp_list} />

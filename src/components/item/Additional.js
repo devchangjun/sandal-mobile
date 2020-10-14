@@ -20,4 +20,4 @@ const Additional = (props) => {
     );
 };
 
-export default Additional;
+export default React.memo(Additional);

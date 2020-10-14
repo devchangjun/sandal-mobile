@@ -3,7 +3,9 @@ import styles from './MenuItem.module.scss';
 import MenuItem from './MenuItem';
 
 const MenuItemList = ({ menuList, onClick }) => {
-    const list = menuList.map((menu) => {
+
+
+    const rowRenderer = menuList.map((menu) => {
         return (
             <MenuItem
                 ca_id={menu.ca_id}
@@ -25,7 +27,10 @@ const MenuItemList = ({ menuList, onClick }) => {
             />
         );
     });
-    return <div className={styles['menu-list']}>{list}</div>;
+
+    return <div className={styles['menu-list']}>{rowRenderer}</div>;
+
+
 };
 
-export default MenuItemList;
+export default React.memo(MenuItemList);

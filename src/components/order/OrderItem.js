@@ -73,4 +73,4 @@ const OrderMenuItem = ({ item_name, item_option, item_price }) => {
     );
 };
 
-export default OrderItem;
+export default React.memo(OrderItem);

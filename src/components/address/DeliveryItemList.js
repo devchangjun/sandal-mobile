@@ -47,4 +47,4 @@ const DeliveryItemList = (props) => {
     return <div className={styles['delivery-list']}>{list}</div>;
 };
 
-export default DeliveryItemList;
+export default React.memo(DeliveryItemList);

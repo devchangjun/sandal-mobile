@@ -89,7 +89,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
 
     const callDeleteDetail = useCallback(() => {
         if (viewId !== -1) {
-            openModal('정말 문의를 삭제하시겠습니까?', '', async () => {
+            openModal('해당 문의를 삭제하시겠습니까?', '', async () => {
                 setLoading(true);
                 try {
                     const res = await requestQNADelete(USER_TOKEN, viewId);
@@ -110,7 +110,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
 
     const onClickUpdateForm = useCallback(() => {
         if (viewId !== -1) {
-            openModal('정말 문의를 수정하시겠습니까?', '', () => {
+            openModal('해당 문의를 수정하시겠습니까?', '', () => {
                 history.replace(Paths.ajoonamu.support + '/qna/send?id=' + viewId);
                 handleClose();
             }, () => {}, true);

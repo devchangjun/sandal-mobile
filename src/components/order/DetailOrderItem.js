@@ -38,4 +38,4 @@ DetailOrderItem.defaultProps = {
     item_name: '과일도시락',
 };
 
-export default DetailOrderItem;
+export default React.memo(DetailOrderItem);

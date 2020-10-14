@@ -48,8 +48,8 @@ function MenuTitle({ menuTitle }) {
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
     return (
-        <div className={styles['menu-price']}>{numberFormat(menuPrice)} 원</div>
+        <div className={styles['menu-price']}>{numberFormat(menuPrice)}원</div>
     );
 }
 
-export default BestMenuItem;
+export default React.memo(BestMenuItem);

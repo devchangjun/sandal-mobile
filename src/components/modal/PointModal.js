@@ -75,9 +75,12 @@ const FullScreenDialog = (props) => {
             openModal('보유하신 포인트보다 많습니다.', '포인트를 확인해주세요');
         }
         else {
-            if(point_price < 5000) {
-            openModal('5000P 이상부터 사용가능합니다.', '포인트를 확인해주세요');
-
+            if(point_price===0){
+                props.onChange(0);
+                props.handleClose();
+            }
+            else if(point_price < 5000) {
+            openModal('5,000P 이상부터 사용가능합니다.', '포인트를 확인해주세요');
             }
             else{
                 props.onChange(point_price);

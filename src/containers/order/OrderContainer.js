@@ -400,8 +400,6 @@ const OrderContainer = () => {
 
             PaypleCpayAuthCheck(obj);
         });
-
-        // const res  = auth_test();
     };
 
     useEffect(() => {

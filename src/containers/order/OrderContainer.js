@@ -155,7 +155,7 @@ const OrderContainer = () => {
         openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
             setStartTimer(false);
             onClickSendAuth();
-        }, true);
+        }, ()=>{}, true);
     };
 
 
@@ -288,7 +288,6 @@ const OrderContainer = () => {
         //회원 주문
         // setLoading(true);
         if (user_token) {
-            console.log('회원주문 시작');
             console.log(cp_id);
             const res = await user_order(
                 user_token,
@@ -300,7 +299,6 @@ const OrderContainer = () => {
                 point_price,
                 
             );
-            console.log(res);
             order_id.current = res.data.query;
 
             //장바구니 삭제
@@ -341,7 +339,7 @@ const OrderContainer = () => {
             let buyer_name = user ? user.name : noAuthName; //고객 이름
             let buyer_hp = `${hp}`; //고객 번호
             let buyer_email = user && user.email; //고객 이메일
-            let buy_goods = '테스트'; //구매하는 물건 이름
+            let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
             let buy_total = Number(
                 parseInt(totalPrice) +
                     parseInt(dlvCost) -
@@ -660,7 +658,7 @@ const OrderContainer = () => {
                                     <div className={cx('cost')}>
                                         {numberFormat(
                                             parseInt(totalPrice) +
-                                                parseInt(dlvCost),
+                                                parseInt(dlvCost) -parseInt(point_price) - parseInt(cp_price),
                                         )}
                                         원
                                     </div>
@@ -744,7 +742,7 @@ const OrderContainer = () => {
                         parseInt(point_price) -
                         parseInt(cp_price),
                 )}원 결제`}
-                toggle={toggle && success}
+                toggle={(user || noAuthName.length !== 0) && toggle && success}
                 onClick={onClickOrder}
             />
             <PointModal
@@ -755,6 +753,7 @@ const OrderContainer = () => {
                 point_price={point_price}
             />
             <CouponModal
+                item_price ={totalPrice}
                 open={couponOpen}
                 handleClose={onClickCouponClose}
                 list={couponList}

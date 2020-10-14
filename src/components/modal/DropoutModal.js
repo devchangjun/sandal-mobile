@@ -141,6 +141,7 @@ const FullScreenDialog = (props) => {
                         );
                     }
                 },
+                ()=>{},
                 true,
             );
         } else {

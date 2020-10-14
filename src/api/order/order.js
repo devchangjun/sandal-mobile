@@ -12,6 +12,10 @@ export const user_order = async (
 ) => {
     const req = Paths.api + 'user/order';
     let form_data;
+    
+    order_memo = order_memo ? order_memo :'없음';
+    delivery_memo = delivery_memo  ? delivery_memo : '없음';
+
     if (cp_id === null) {
         form_data = {
             order_type: 'reserve',

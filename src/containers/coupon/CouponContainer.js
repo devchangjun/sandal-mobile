@@ -201,7 +201,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                     ) : (
                         <>
                             <div className={cx('title', { show: show })}>
-                                내 쿠폰
+                                 보유쿠폰 <b>{cp_list.length}</b>개
                             </div>
                             <TabMenu
                                 tabs={tabInit}
@@ -228,7 +228,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                                                 type="text"
                                                 value={user_input_cp}
                                                 onChange={onChangeUserInputCp}
-                                                placeholder='쿠폰 코드를 입력하세요'
+                                                placeholder='쿠폰 코드를 입력해주세요'
                                             />
                                             <Button
                                                 className={styles['submit-btn']}
@@ -238,7 +238,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                                             </Button>
                                         </div>
                                         <div className={cx('coupon-title', 'pd-box')} ref={myCouponTitle}>
-                                            내 쿠폰
+                                            보유쿠폰 <b>{cp_list.length}</b>개
                                         </div>
                                         <div className={cx('coupon-list', 'pd-box')}>
                                             {cp_list.length !== 0 ? <CouponItemList cp_list={cp_list} />

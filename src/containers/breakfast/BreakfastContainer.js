@@ -163,7 +163,7 @@ const BreakfastContainer = ({ menu }) => {
             >
                 {items[index].items.length !== 0 ? (
                     <MenuItemList
-                        menuList={items[index].items.slice(0, offset)}
+                        menuList={items[index].items}
                         onClick={onClickMenuItem}
                     />
                 ) : (

@@ -13,7 +13,7 @@ const DownCouponItem = (props) => {
         cz_end,
         // cz_id,
         // cz_limit,
-        // cz_minimum,
+        cz_minimum,
         // cz_period,
         cz_price,
         cz_start,
@@ -29,7 +29,7 @@ const DownCouponItem = (props) => {
                 <div className={styles['pd-box']}>
                     <CouponEventName event_name={cz_subject} />
                     <CouponSale sale={cz_price} />
-                    <CouponEventSub sub_name={cz_subject} />
+                    <CouponEventSub sub_name={`최소주문금액 ${numberFormat(cz_minimum)}원`} />
                     <CouponDate start={cz_start} end={cz_end} />
                 </div>
             </div>
@@ -48,7 +48,7 @@ function CouponEventSub({ sub_name }) {
 function CouponDate({ start, end }) {
     return (
         <div className={styles['date']}>
-            {start} ~ {end}
+            {start} - {end}
         </div>
     );
 }

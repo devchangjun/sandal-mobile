@@ -51,6 +51,7 @@ const DetailContainer = ({ item_id }) => {
 
         try {
             const res = await getMenuInfo(item_id);
+            console.log(res);
             setMenu(res);
         } catch (e) {}
 

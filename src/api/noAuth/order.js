@@ -14,10 +14,11 @@ export const noAuth_order = async (
     order_memo,
     delivery_memo,
     delivery_req_time,
-    // cp_id,
-    // point_price,
 ) => {
     const req = Paths.api + 'noauth/order';
+
+    order_memo = order_memo ? order_memo :'없음';
+    delivery_memo = delivery_memo  ? delivery_memo : '없음';
 
     const form_data = {
         cart_ids,

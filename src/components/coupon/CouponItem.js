@@ -5,11 +5,11 @@ import { numberFormat } from "../../lib/formatter";
 const CouponItem = (props) => {
     const { 
         cp_datetime,
-        // cp_end,
+        cp_end,
         // cp_id,
-        // cp_minimum,
+        cp_minimum,
         cp_price,
-        // cp_start,
+        cp_start,
         cp_subject,
         cp_target,
         // cp_use,
@@ -27,8 +27,8 @@ const CouponItem = (props) => {
                 <div className={styles['pd-box']}>
                     <CouponEventName event_name={cp_subject} />
                     <CouponSale sale={cp_price} />
-                    <CouponEventSub sub_name={cp_target} />
-                    <CouponDate date={cp_datetime} />
+                    <CouponEventSub sub_name={`최소주문금액 ${numberFormat(cp_minimum)}원`} />
+                    <CouponDate date={`${cp_start} - ${cp_end}`} />
                 </div>
             </div>
         </div>

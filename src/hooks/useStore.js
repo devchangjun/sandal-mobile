@@ -7,7 +7,9 @@ import { get_address } from '../store/address/address';
 import { get_near_store } from '../store/address/store';
 import { get_menulist } from '../store/product/product';
 import {get_break_menuList} from '../store/product/breakfast'
-import {init} from '../store/notice/notice';
+
+import  { init as notice_init} from '../store/notice/notice';
+import  { init as prefer_init} from '../store/product/prefer';
 import { Paths } from '../paths';
 
 
@@ -66,11 +68,13 @@ export const useInit = () => {
         post_num = null,
         near_store = null,
     ) => {
-        dispatch(init());
+        dispatch(notice_init());
+        dispatch(prefer_init());
         dispatch(get_address({ addr1, addr2, lat, lng, post_num }));
         dispatch(get_near_store(near_store));
         dispatch(get_menulist(null));
         dispatch(get_break_menuList(null));
+
     };
     return initStore;
 };

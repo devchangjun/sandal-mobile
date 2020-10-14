@@ -78,6 +78,8 @@ export const useRestore =()=>{
             if (url) {
                 //이전 주소가 상품페이지라면 스크롤 유지
                 if (url.prev === '/product') {
+                    console.log('돔 찍히냐');
+                    console.log(dom);
                     dom.scrollTo(0,scrollTop);
                 }
             }

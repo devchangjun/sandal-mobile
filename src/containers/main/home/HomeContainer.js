@@ -16,11 +16,8 @@ import { ButtonBase } from '@material-ui/core';
 import cn from 'classnames/bind';
 //api
 import { getMainMenuList } from '../../../api/menu/menu';
-import { getCategory } from '../../../api/category/category';
-import {
-    getBreakCategory,
-    getBreakMenu,
-} from '../../../api/break_fast/break_fast';
+import { getMainCategory } from '../../../api/category/category';
+import {getBreakCategory,getBreakMenu} from '../../../api/break_fast/break_fast';
 
 //store
 
@@ -30,8 +27,7 @@ import {
     add_break_menuitem,
 } from '../../../store/product/breakfast';
 
-import { get_best_menu, add_best_menu } from '../../../store/product/bestmenu';
-import { get_catergory } from '../../../store/product/product';
+import { get_best_cate,get_best_menu, add_best_menu } from '../../../store/product/bestmenu';
 
 //hooks
 import { useScroll, useDomScroll } from '../../../hooks/useScroll';
@@ -58,10 +54,9 @@ const HomeContainer = () => {
     const SUB_TAB = useRef(null);
     const SWIPER_SLIDE = useRef(null);
     const [index, setIndex] = useState(null);
-    const { categorys: best_cate } = useSelector((state) => state.product);
-    const { categorys: break_cate } = useSelector((state) => state.breakfast);
-    const { items: best_menu } = useSelector((state) => state.bestmenu);
-    const { items: break_menu } = useSelector((state) => state.breakfast);
+
+    const { items: best_menu ,categorys: best_cate } = useSelector((state) => state.bestmenu);
+    const { items: break_menu , categorys: break_cate } = useSelector((state) => state.breakfast);
     const { store } = useSelector((state) => state.store);
 
     const dispatch = useDispatch();
@@ -93,8 +88,8 @@ const HomeContainer = () => {
         //카테고리 길이가 1이면 받아오기.
         if (best_cate.length === 0) {
             try {
-                const res = await getCategory();
-                dispatch(get_catergory(res));
+                const res = await getMainCategory();
+                dispatch(get_best_cate(res));
             } catch (e) {
                 console.error(e);
             }
@@ -106,6 +101,7 @@ const HomeContainer = () => {
         setLoading(true);
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
+            console.log('카테고리별 메뉴 받아오기');
             let arr = [];
             if (best_cate.length !== 0 && !best_menu) {
                 for (let i = 0; i < best_cate.length; i++) {
@@ -141,29 +137,29 @@ const HomeContainer = () => {
     //첫 로딩시 기업조식 메뉴 받아오기
     //기업조식은 배달주소 필요.
     const callBreakMenuListApi = useCallback(async () => {
-        // try {
-        //     // 카테고리별로 메뉴 리스트 받아오기.
-        //     let arr = [];
-        //     if (break_cate.length !== 0 && store && !break_menu) {
-        //         for (let i = 0; i < break_cate.length; i++) {
-        //             const { ca_id } = break_cate[i];
-        //             const result = await getBreakMenu(
-        //                 ca_id,
-        //                 0,
-        //                 LIMIT,
-        //                 store.shop_id,
-        //             );
-        //             const temp = {
-        //                 ca_id: ca_id,
-        //                 items: result.data.query.items,
-        //             };
-        //             arr.push(temp);
-        //         }
-        //         dispatch(get_break_menuList(arr));
-        //     }
-        // } catch (e) {
-        //     console.error(e);
-        // }
+        try {
+            // 카테고리별로 메뉴 리스트 받아오기.
+            let arr = [];
+            if (break_cate.length !== 0 && store && !break_menu) {
+                for (let i = 0; i < break_cate.length; i++) {
+                    const { ca_id } = break_cate[i];
+                    const result = await getBreakMenu(
+                        ca_id,
+                        0,
+                        LIMIT,
+                        store.shop_id,
+                    );
+                    const temp = {
+                        ca_id: ca_id,
+                        items: result.data.query.items,
+                    };
+                    arr.push(temp);
+                }
+                dispatch(get_break_menuList(arr));
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }, [break_cate, store, break_menu, dispatch]);
 
     useEffect(() => {
@@ -195,7 +191,6 @@ const HomeContainer = () => {
 
     const onWindowScroll = () => {
         let height = SUB_TAB.current.getBoundingClientRect().top;
-        console.log(height);
         if (height <= 20) {
             setSwiperOpen(true);
         } else {
@@ -219,7 +214,9 @@ const HomeContainer = () => {
     return (
         <>
             <Title />
+            {index !==null &&
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
+            }
             <div className={cx('container')}>
                 {loading ? (
                     <Loading open={loading} />
@@ -321,9 +318,18 @@ const BestMenu = ({
             <h3 className={cx('menu-list-title',{sub:swiper_open})}>{title}</h3>
             {list && (
                 <>
-                    {list[post_index].items.length !== 0 && (
+                    {list[post_index].items.length !== 0 ? (
                         <BestMenuItemList menuList={list[post_index].items} />
-                    )}
+                    ) : 
+                    
+                    <Message
+                    msg={
+                        '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                    }
+                    src={true}
+                    isButton={false}
+                />
+                    }
                 </>
             )}
         </>
@@ -374,13 +380,24 @@ const BreakFast = ({
                 <>
                     {list && (
                         <>
-                            {list[post_index].items.length !== 0 && (
+                            {list[post_index].items.length !== 0 ? (
                                 <BestMenuItemList
                                     menuList={list[post_index].items}
                                 />
-                            )}
+                            ) :
+                            
+                            <Message
+                            msg={
+                                '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                            }
+                            src={true}
+                            isButton={false}
+                        />
+                            }
                         </>
-                    )}
+                    ) 
+           
+                    }
                 </>
             ) : (
                 <Message

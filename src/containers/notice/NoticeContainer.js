@@ -67,7 +67,6 @@ const NoticeContainer = () => {
         let seconds = today.getSeconds();
 
         const not_read_datetime = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
-        console.log(not_read_datetime);
 
         if (user_token) {
             try {
@@ -82,7 +81,6 @@ const NoticeContainer = () => {
     //전체 체크됐는지.
     const confirmChecked = useCallback(() => {
         const index = notification.findIndex((item) => !item.not_read_datetime);
-        console.log(index);
         setAvailableTotal(index === -1);
         dispatch(read_check(index === -1));
     // eslint-disable-next-line react-hooks/exhaustive-deps

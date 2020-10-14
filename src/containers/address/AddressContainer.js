@@ -85,8 +85,6 @@ const AddressContainer = () => {
         if(user_token){
             try{
                 const res = await getDeliveryList(user_token);
-                console.log(res);
-                console.log(res.data.query);
                 setDeliveryList(res.data.query);
             }
             catch(e){
@@ -127,7 +125,6 @@ const AddressContainer = () => {
                 setPosition(newState);
                 setMapOpen(true);
             } catch (e) {
-                console.log(e);
                 if (e.code === 3) {
                     openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
                 } else {
@@ -489,7 +486,6 @@ const AddressContainer = () => {
 
         //최근 주소지에 추가
         const onClickMapInsertAddr = async (jibun,detail,lat,lng) => {
-            console.log("ㅎㅇ");
             if (jibun === '') {
                 openMessage(
                     false,

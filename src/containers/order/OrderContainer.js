@@ -188,7 +188,6 @@ const OrderContainer = () => {
         if (user_token) {
             try {
                 const res = await getOrderCoupons(user_token);
-                console.log(res);
                 setCouponList(res);
             } catch (e) {
                 console.error(e);
@@ -242,7 +241,6 @@ const OrderContainer = () => {
                         lng,
                         addr1,
                     );
-                    console.log(res);
                     const { query } = res.data;
                     let len = Object.keys(query).length;
                     let price = 0;
@@ -288,7 +286,6 @@ const OrderContainer = () => {
         //회원 주문
         // setLoading(true);
         if (user_token) {
-            console.log(cp_id);
             const res = await user_order(
                 user_token,
                 'reserve',
@@ -320,7 +317,6 @@ const OrderContainer = () => {
                 dlvMemo,
                 delivery_req_time
             );
-            console.log(res);
             order_id.current = res.data.query;
             //장바구니 삭제
         }

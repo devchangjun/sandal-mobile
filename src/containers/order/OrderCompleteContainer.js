@@ -57,9 +57,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                 res = await noAuthOrderView(order_number);
             }
 
-            console.log(res);
             const { orders } = res;
-            console.log(orders);
             if (orders === undefined) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',

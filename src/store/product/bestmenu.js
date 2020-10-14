@@ -18,7 +18,6 @@ const bestmenu = handleActions(
     {
 
         [GET_CATEGORY]: (state, action) => {
-            console.log(action);
             return{
             ...state,
             categorys: state.categorys.concat(action.payload),

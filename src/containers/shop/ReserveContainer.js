@@ -151,7 +151,6 @@ const ReserveContainer = ({ menu }) => {
     const PageNationMenuList = useCallback(async () => {
         if (!loading) {
             try {
-                console.log('페이지네이션 실행');
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난뒤, 아이템과 스토어가  있으면 실행
                 if (
                     tabIndex !== 0 &&
@@ -165,12 +164,10 @@ const ReserveContainer = ({ menu }) => {
                         LIMIT,
                         store.shop_id,
                     );
-                    console.log(res);
 
                     const get_list = res.data.query.items;
                     if (get_list.length !== 0) {
                         setIsPaging(true);
-                        console.log('페이지네이션 오프셋 갱신');
                         setOffset(offset + LIMIT);
 
                         dispatch(
@@ -180,7 +177,6 @@ const ReserveContainer = ({ menu }) => {
                             }),
                         );
                     } else {
-                        console.log('받아온 아이템 없음');
                     }
                     setTimeout(() => {
                         setIsPaging(false);
@@ -221,7 +217,7 @@ const ReserveContainer = ({ menu }) => {
             }
             dispatch(set_serach(true));
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
         setLoading(false);
     };

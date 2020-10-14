@@ -22,7 +22,6 @@ const initState = {
 const notice = handleActions(
     {
         [GET_NOTICE]: (state, action) => {
-            console.log(action);
             return {
                 ...state,
                 notification: state.notification.concat(action.payload),

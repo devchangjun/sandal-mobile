@@ -98,7 +98,6 @@ const SignInContainer = () => {
 
     const LoginOs =()=>{
         const login_os = getMobileOperatingSystem();
-        console.log(login_os);
         if(login_os ==='Android'){
             if (typeof window.myJs !=='undefined') {
                 window.myJs.requsetToken();

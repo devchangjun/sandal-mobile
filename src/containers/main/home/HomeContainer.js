@@ -101,13 +101,11 @@ const HomeContainer = () => {
         setLoading(true);
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
-            console.log('카테고리별 메뉴 받아오기');
             let arr = [];
             if (best_cate.length !== 0 && !best_menu) {
                 for (let i = 0; i < best_cate.length; i++) {
                     const { ca_id } = best_cate[i];
                     const result = await getMainMenuList(ca_id, 0, LIMIT);
-                    console.log(result);
                     const temp = {
                         ca_id: ca_id,
                         items: result.data.query.items,
@@ -203,9 +201,7 @@ const HomeContainer = () => {
         let scrollTop = e.target.scrollTop;
         let clientHeight = e.target.clientHeight;
         let height = scrollTop + clientHeight;
-        // console.log(scrollTop);
         if (scrollTop <= 0) {
-            console.log('숨기기');
             setSwiperOpen(false);
         } else {
         }
@@ -296,7 +292,6 @@ const BestMenu = ({
                     className={cx('categorys',{sub:swiper_open})}
                     onClick={(swiper) => {
                         if (swiper.clickedIndex !== undefined) {
-                            console.log(swiper.clickedIndex);
                             setPostIndex(swiper.clickedIndex);
                         }
                     }}
@@ -355,7 +350,6 @@ const BreakFast = ({
                     className={cx('categorys')}
                     onClick={(swiper) => {
                         if (swiper.clickedIndex !== undefined) {
-                            console.log(swiper.clickedIndex);
                             setPostIndex(swiper.clickedIndex);
                         }
                     }}

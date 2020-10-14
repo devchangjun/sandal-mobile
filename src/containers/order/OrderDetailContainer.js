@@ -43,7 +43,6 @@ const OrderDetailContainer = ({ order_id }) => {
             } else {
                 res = await noAuthOrderView(order_id);
             }
-            console.log(res);
             const { orders, payinfo } = res;
             if (orders === undefined) {
                 openModal(

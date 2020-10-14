@@ -47,4 +47,4 @@ function CouponDate({ date }) {
     return <div className={styles['date']}>{date}</div>;
 }
 
-export default CouponItem;
+export default React.memo(CouponItem);

@@ -73,6 +73,7 @@
     "react-swipeable-views": "^0.13.9",
     "react-swiper": "^0.1.5",
     "react-transition-group": "^4.4.1",
+    "react-virtualized": "^9.22.2",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",

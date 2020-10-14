@@ -74,4 +74,4 @@ function CustomPrice({ price }) {
     return <div className={styles['custom-price']}>총 {'20,000원'}</div>;
 }
 
-export default CustomItem;
+export default React.memo(CustomItem);

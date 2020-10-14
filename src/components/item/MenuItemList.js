@@ -1,9 +1,13 @@
-import React from 'react';
+import React,{useCallback} from 'react';
 import styles from './MenuItem.module.scss';
 import MenuItem from './MenuItem';
+import {List} from 'react-virtualized';
 
 const MenuItemList = ({ menuList, onClick }) => {
-    const list = menuList.map((menu) => {
+
+    const test = useCallback(())
+
+    const rowRenderer = menuList.map((menu) => {
         return (
             <MenuItem
                 ca_id={menu.ca_id}
@@ -25,7 +29,7 @@ const MenuItemList = ({ menuList, onClick }) => {
             />
         );
     });
-    return <div className={styles['menu-list']}>{list}</div>;
+    return <div className={styles['menu-list']}>{rowRenderer}</div>;
 };
 
-export default MenuItemList;
+export default React.memo(MenuItemList);

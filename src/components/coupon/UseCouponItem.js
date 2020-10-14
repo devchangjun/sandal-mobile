@@ -32,4 +32,4 @@ function CouponSale({ sale }) {
     return <div className={styles['sale']}>할인 금액 {sale}</div>;
 }
 
-export default UseCouponItem;
+export default React.memo(UseCouponItem);

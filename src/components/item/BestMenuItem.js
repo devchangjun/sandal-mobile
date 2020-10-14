@@ -52,4 +52,4 @@ function MenuPrice({ menuPrice }) {
     );
 }
 
-export default BestMenuItem;
+export default React.memo(BestMenuItem);

@@ -17,4 +17,4 @@ const AddrItemList = ({ addrs, onClick }) => {
     return <div className={styles['addr-list']}>{addrsList}</div>;
 };
 
-export default AddrItemList;
+export default React.memo(AddrItemList);

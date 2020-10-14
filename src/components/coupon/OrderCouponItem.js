@@ -48,4 +48,4 @@ const OrderCouponEventSub = ({ sub_name }) => <div className={cx('text', 'sub-na
 const OrderCouponDate = ({ date }) => <div className={cx('text', 'date')}>{date}</div>;
 const OrderCouponCheck = ({ select }) => <Check select={select} />
 
-export default OrderCouponItem;
+export default React.memo(OrderCouponItem);

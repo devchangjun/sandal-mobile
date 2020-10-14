@@ -29,7 +29,7 @@ import {
 import {
     
     get_prefer_list,
-    get_gernal_list,
+    get_general_list,
 } from '../../store/product/prefer';
 
 //hooks
@@ -60,6 +60,9 @@ const ReserveContainer = ({ menu }) => {
 
     const [preferList, setPreferMenuList] = useState([]);
     const [generalList, setGeneralMenuList] = useState([]); //추천메뉴 리스트
+    const [preferEmpty ,setPreferEmpty] = useState(false);
+    const [generalEmpty , setGeneralEmpty] = useState(false);
+
 
     const {restoreScroll, restoreOffset} = useRestore();
     const { isScrollEnd, onScroll } = useDomScroll(); //스크롤 끝 판단.
@@ -82,29 +85,6 @@ const ReserveContainer = ({ menu }) => {
         },
         [history],
     );
-    //맞춤 주문 설정
-    const onClickCustomOrder = async (budget, desireQuan) => {
-        setOpen(false);
-        setLoading(true);
-        try {
-            const res = await getPreferMenuList(
-                0,
-                100,
-                0,
-                100,
-                1,
-                budget,
-                desireQuan,
-                addr1,
-                store.shop_id,
-            );
-            console.log(res);
-            // dispatch(get_prefer_list(res.items.prefer));
-            setPreferMenuList(res.items_prefer);
-            setGeneralMenuList(res.items_general);
-        } catch (e) {}
-        setLoading(false);
-    };
 
     //첫 로딩시 카테고리 받아오기
     const getCategoryList = useCallback(async () => {
@@ -192,6 +172,47 @@ const ReserveContainer = ({ menu }) => {
             } catch (e) {}
         }
     }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
+
+
+        //맞춤 주문 설정
+        const onClickCustomOrder = async (budget, desireQuan) => {
+            setOpen(false);
+            setLoading(true);
+            try {
+                const res = await getPreferMenuList(
+                    0,
+                    500,
+                    0,
+                    500,
+                    1,
+                    budget,
+                    desireQuan,
+                    addr1,
+                    store.shop_id,
+                );
+                console.log(res);
+                console.log('아이템길이');
+                console.log(res.items_general.length);
+                if(res.items_prefer.length!==0){
+                    dispatch(get_prefer_list(res.items_prefer));
+                    setPreferEmpty(false);
+                }
+                else{
+                    setPreferEmpty(true);
+                }
+                if(res.items_general.length!==0){
+                    dispatch(get_general_list(res.items_general));
+                    setGeneralEmpty(false);
+                }
+                else{
+                    setGeneralEmpty(true);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+            setLoading(false);
+        };
+   
 
     const onClickMenuItem = useCallback(
         (item_id) => {
@@ -328,28 +349,13 @@ const ReserveContainer = ({ menu }) => {
                                             tabIndex === 0 ? SWIPER_SLIDE : null
                                         }
                                     >
-                                        {preferList.length !== 0 ? (
-                                            <>
-                                                <div
-                                                    className={styles['title']}
-                                                >
-                                                    맞춤 메뉴
-                                                </div>
-                                                <MenuItemList
-                                                    menuList={preferList}
-                                                    onClick={onClickMenuItem}
-                                                />
-                                            </>
-                                        ) : (
-                                            <Message
-                                                msg={
-                                                    `전체 예산과 희망 수량을 선택하시면\n 메뉴 구성을 추천 받으실 수 있습니다.`
-                                                }
-                                                isButton={true}
-                                                onClick={handleOpen}
-                                                buttonName={'맞춤 주문 하기'}
-                                            />
-                                        )}
+                                        <PreferMenu
+                                            empty={preferEmpty}
+                                            list={prefer_items}
+                                            onClick={onClickMenuItem}
+                                            handleOpen={handleOpen}
+                                        />
+
                                     </SwiperSlide>
                                     {items && renderSwiperItem()}
                                 </Swiper>
@@ -379,6 +385,40 @@ const ReserveContainer = ({ menu }) => {
         </>
     );
 };
+
+function PreferMenu({empty, list, onClick, type ,handleOpen}) {
+    return (
+        <>
+            {!empty ? (
+                <>
+                    {list.length !== 0 ? (
+                        <>
+                            <div className={styles['title']}>맞춤 메뉴</div>
+                            <MenuItemList
+                                menuList={list}
+                                onClick={onClick}
+                            />
+                        </>
+                    ) : (
+                        <Message
+                            msg={`전체 예산과 희망 수량을 선택하시면\n 메뉴 구성을 추천 받으실 수 있습니다.`}
+                            isButton={true}
+                            onClick={handleOpen}
+                            buttonName={'맞춤 주문 하기'}
+                        />
+                    )}
+                </>
+            ) : (
+                <Message
+                    msg={`추천 드릴 메뉴구성이 없습니다.`}
+                    isButton={true}
+                    onClick={handleOpen}
+                    buttonName={'맞춤 주문 하기'}
+                />
+            )}
+        </>
+    );
+}
 
 
 

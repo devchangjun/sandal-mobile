@@ -25,4 +25,4 @@ const BestMenuItemList = ({ menuList }) => {
     return <ul className={styles['menu-list']}>{list}</ul>;
 };
 
-export default BestMenuItemList;
+export default React.memo(BestMenuItemList);

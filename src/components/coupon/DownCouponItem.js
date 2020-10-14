@@ -58,4 +58,4 @@ function CouponDown({ check }) {
     );
 }
 
-export default DownCouponItem;
+export default React.memo(DownCouponItem);

@@ -29,4 +29,4 @@ const AddrBtn = () => {
     return <div className={styles['btn']}>도로명</div>;
 };
 
-export default AddrItem;
+export default React.memo(AddrItem);

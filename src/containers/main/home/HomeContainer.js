@@ -33,8 +33,8 @@ import { get_best_cate,get_best_menu, add_best_menu } from '../../../store/produ
 import { useScroll, useDomScroll } from '../../../hooks/useScroll';
 
 const cx = cn.bind(styles);
-const OFFSET = 8;
-const LIMIT = 8;
+const OFFSET = 10;
+const LIMIT = 10;
 
 const tabInit = [
     {

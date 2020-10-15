@@ -43,8 +43,8 @@ import { useModal } from '../../hooks/useModal';
 
 const cx = cn.bind(styles);
 
-const OFFSET = 8;
-const LIMIT = 8;
+const OFFSET = 10;
+const LIMIT = 10;
 
 const ReserveContainer = ({ menu }) => {
     const SWIPER = useRef(null);
@@ -72,7 +72,7 @@ const ReserveContainer = ({ menu }) => {
     const { restoreScroll, restoreOffset } = useRestore();
     const { isScrollEnd, onScroll } = useDomScroll(); //스크롤 끝 판단.
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
-    const [offset, setOffset] = useState(8);
+    const [offset, setOffset] = useState(OFFSET);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

@@ -162,7 +162,6 @@ const HomeContainer = () => {
                 for (let i = 0; i < break_cate.length; i++) {
                     const { ca_id } = break_cate[i];
                     const result = await getBreakMenu(ca_id, 0, LIMIT);
-                    console.log(result);
                     const temp = {
                         ca_id: ca_id,
                         items: result.data.query.items,
@@ -179,12 +178,9 @@ const HomeContainer = () => {
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const callPageNationMain = useCallback(async () => {
         try {
-            console.log('페이지 네이션 실행');
             const { ca_id } = best_cate[best_post_index];
-            console.log(ca_id);
             const res = await getMainMenuList(ca_id, offset, LIMIT);
             const get_list = res.data.query.items;
-            console.log(get_list);
             if (get_list.length !== 0) {
                 setIsPaging(true);
                 setOffset(offset + LIMIT);
@@ -203,9 +199,7 @@ const HomeContainer = () => {
 
     const callPageNationBreak = useCallback(async () => {
         try {
-            console.log('페이지 네이션 실행');
             const { ca_id } = break_cate[break_post_index];
-            console.log(ca_id);
             const res = await getBreakMenu(ca_id, offset, LIMIT);
             const get_list = res.data.query.items;
             if (get_list.length !== 0) {

@@ -5,11 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { updateName } from '../../api/auth/auth';
 import { update_user_info } from '../../store/auth/auth';
 
-import { useStore } from '../../hooks/useStore';
 import styles from './UpdateInfo.module.scss';
 import SignNormalInput from 'components/sign/SignNormalInput';
 import Button from 'components/button/Button';
 import CloseButton from 'components/svg/account/Close';
+
+//hooks
+import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
 
 

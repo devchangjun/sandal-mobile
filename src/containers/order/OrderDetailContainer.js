@@ -85,7 +85,7 @@ const OrderDetailContainer = ({ order_id }) => {
                     } else {
                         res = await noAutuOrderCancle(
                             order_id,
-                            order.info.s_hp,
+                            order.info[0].s_hp,
                         );
                     }
                     if (

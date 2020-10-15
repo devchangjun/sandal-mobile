@@ -9,7 +9,7 @@ import produce from 'immer';
 import classNames from 'classnames/bind';
 import Check from 'components/svg/sign/Check';
 
-import EstmModal from 'components/modal/EstmModal';
+import EstmModal from '../../components/modal/EstmModal';
 import Message from 'components/message/Message';
 import { numberFormat } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
@@ -91,7 +91,21 @@ const CartContainer = () => {
         }, () => {},true);
     }, [openModal, user_token]);
 
-    const handleOpen = useCallback(() => setOpen(true), []);
+    const handleOpen = useCallback(() => {
+        if(total < company.minimum_order){
+            openModal(
+                '최소 주문 금액을 채워주세요.',
+                `최소 주문 금액은 ${numberFormat(
+                    company.minimum_order,
+                )}원입니다.`,
+            );
+        }
+        else{
+            setOpen(true)
+
+        }
+    }
+    , [total,company]);
     const handleClose = useCallback(() => setOpen(false), []);
 
     const onChangeEstm = useCallback(e => setEstm(true), []);
@@ -289,6 +303,7 @@ const CartContainer = () => {
                     open={open}
                     handleClose={handleClose}
                     handleOpen={handleOpen}
+                    total={total}
                     onClick={onClickOrder}
                     isEsit={estm}
                 />

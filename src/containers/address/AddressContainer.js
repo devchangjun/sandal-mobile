@@ -352,10 +352,12 @@ const AddressContainer = () => {
                                             temp_lat,
                                             temp_lng,
                                         );
+                                        console.log('회원 주소설정');
+                                        console.log(res);
                                         if (res.data.msg === '성공') {
                                             const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
                                         
-                                           initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
+                                             initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
 
                                             callDeliveryList();
                                             setOpen(false);
@@ -394,9 +396,10 @@ const AddressContainer = () => {
                             if (status === kakao.maps.services.Status.OK) {
                                 temp_lat = result[0].y;
                                 temp_lng = result[0].x;
-
                                 try{
                                     const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
+                                    console.log('비회원 가까운 정보');
+                                    console.log(near_store);
                                     if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
                                         openMessage(
                                             false,
@@ -404,7 +407,13 @@ const AddressContainer = () => {
                                             '주변 매장정보를 확인해 주세요.',
                                         );
                                     }
-
+                                    else if(near_store.data.msg==='배달 가능한 매장이 없습니다.'){
+                                        openMessage(
+                                            false,
+                                            near_store.data.msg,
+                                            '주변 매장정보를 확인해 주세요.',
+                                        );
+                                    }
                                     //배달 가능한 지역이라면
                                     else{
                                         //비회원일시 로컬스토리지에서 아이템을 들고온다.
@@ -457,7 +466,7 @@ const AddressContainer = () => {
                                         initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
                                         setDeliveryList(test2);
                                         setOpen(false);
-                                          setSearchAddr('');
+                                        setSearchAddr('');
 
                                     }
 

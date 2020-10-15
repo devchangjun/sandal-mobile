@@ -23,6 +23,7 @@ export const getOrderList = async (
         },
     };
     const res = await axios.get(req, config);
+    console.log(res);
     return res.data.query;
 };
 

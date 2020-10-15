@@ -4,18 +4,26 @@ import { createAction, handleActions } from 'redux-actions';
 const GET_CATEGORY = 'brakefast/GET_CATEGORY';
 const GET_MENULIST = 'brakefast/GET_MENULIST';
 const ADD_MENUITEM = 'brakefast/ADD_MENUITEM';
+const POST_INDEX = 'brakefast/POST_INDEX';
 
 export const get_break_category = createAction(GET_CATEGORY);
 export const get_break_menuList = createAction(GET_MENULIST);
 export const add_break_menuitem = createAction(ADD_MENUITEM);
+export const post_index = createAction(POST_INDEX);
 
 const initState = {
     categorys: [],
     items: null,
+    index :0,
 };
 
 const breakfast = handleActions(
     {
+
+        [POST_INDEX] : (state,action) =>({
+            ...state,
+            index : action.payload
+        }),
         [GET_CATEGORY]: (state, action) => {
             return{
             ...state,

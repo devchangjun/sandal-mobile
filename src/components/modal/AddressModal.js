@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useRef,useEffect} from 'react';
 import styles from './Address.module.scss';
 import classNames from 'classnames/bind';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import FixButton from 'components/button/Button';
+import userEvent from '@testing-library/user-event';
 
 
 const cx = classNames.bind(styles);
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
         paddingLeft :24,
         paddingRight:24,
-        paddingBottom:73,
+        paddingBottom:60,
         flex: "0 0 auto"
     },
     close: {
@@ -58,6 +59,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AddressModal = (props) => {
     const classes = useStyles();
+    const inputRef = useRef(null);
+
+
+    const {selectAddr ,detailAddr,addrs,searchAddr} = props;
+
+    
+    useEffect(()=>{
+        if(inputRef.current){
+        inputRef.current.focus();
+        }
+     
+    },[selectAddr])
     return (
         <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
@@ -69,7 +82,7 @@ const AddressModal = (props) => {
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        배달받을 주소
+                        배달 받을 주소
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -77,20 +90,20 @@ const AddressModal = (props) => {
             <DialogContent className={classes.content}>
             <div className={styles['container']}>
                     <div className={styles['modal-input-box']}>
-                        <input className={styles['modal-input']} type="text" value={props.searchAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
+                        <input className={styles['modal-input']} type="text" value={searchAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
                         <div className={styles['search-btn']} onClick={props.onSearch} ><BsSearch /></div>
                     </div>
                     <div className={styles['result']}>
-                    {props.addrs ? `${props.addrs.length}개의 검색결과가 있습니다.` : "0개의 검색결과가 있습니다."}
+                    {addrs ? `총 ${addrs.length}개의 검색결과가 있습니다.` : "0개의 검색결과가 있습니다."}
 
                     </div>
                     <div className={styles['addrs-list']}>
-                        {props.addrs ? <AddrItemList addrs={props.addrs} onClick={props.onClickAddrItem} /> : ""}
+                        {addrs ? <AddrItemList addrs={addrs} onClick={props.onClickAddrItem} /> : ""}
                     </div>
                     <div className={styles['select-addr']}>
-                        {props.selectAddr ? props.selectAddr : ""}
+                        {selectAddr ? selectAddr : ""}
                     </div>
-                    <input className={cx('modal-input','md-top')} type="text" value={props.detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail}></input>
+                    <input className={cx('modal-input','md-top')} type="text" value={detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail} ref={inputRef}></input>
             </div>
             </DialogContent>
             <FixButton title={"이 주소로 배달지 설정"} toggle={true} onClick={props.onClick}/>

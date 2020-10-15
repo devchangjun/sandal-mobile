@@ -31,6 +31,7 @@ import { useUrl } from './hooks/useStore';
 import { get_user_info } from './store/auth/auth';
 import { get_notice, read_check } from './store/notice/notice';
 import { scrollClose, scrollOpen } from './store/scroll';
+import { get_company_info } from './store/company';
 
 let preventY = 0;
 
@@ -39,7 +40,6 @@ const App = () => {
     const dispatch = useDispatch();
     const location = useLocation();
     const initStore = useInit();
-
     const GetInfo = async () => {
         const token = localStorage.getItem('access_token');
         if (token) {
@@ -184,6 +184,11 @@ const App = () => {
         GetInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        dispatch(get_company_info());
+    }, []);
+
 
     useEffect(()=>{
         getTitle();

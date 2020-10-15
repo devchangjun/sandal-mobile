@@ -5,7 +5,7 @@ import ErrorCoverImage from '../asset/ErrorCoverImage';
 import Noimage from '../svg/noimage.png';
 
 const DetailOrderItem = (props) => {
-    const { item_name, item_option, item_price, item_img } = props;
+    const { item_name, item_option, item_price, item_img,qty } = props;
     return (
         <div className={styles['detail-order-item']}>
             <div className={styles['menu-img']}>
@@ -23,7 +23,7 @@ const DetailOrderItem = (props) => {
                     <div className={styles['addition']}>
                         추가 옵션: {item_option ? item_option : '없음'}
                     </div>
-                    <div className={styles['counter']}>수량: 1개</div>
+                    <div className={styles['counter']}>&nbsp; 수량: {qty}개</div>
                 </div>
                 <div className={styles['menu-price']}>
                     {numberFormat(item_price)}원
@@ -33,9 +33,5 @@ const DetailOrderItem = (props) => {
     );
 };
 
-DetailOrderItem.defaultProps = {
-    item_price: 10000,
-    item_name: '과일도시락',
-};
 
 export default React.memo(DetailOrderItem);

@@ -25,6 +25,7 @@ const CartContainer = () => {
 
     const history = useHistory();
     const { addr1, lat, lng } = useSelector(state => state.address);
+    const {company} = useSelector(state => state.company);
     const openModal = useModal();
 
     const [open, setOpen] = useState(false); //모달창 오픈
@@ -105,8 +106,11 @@ const CartContainer = () => {
                 const res = await getCartList(user_token);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
                     openModal(res.data.msg, '주소지 설정을 해주세요.', () => {
-                        history.push(Paths.ajoonamu.address);
-                    });
+                    },
+                    () => {
+                        history.push(Paths.ajoonamu.address) 
+                    }
+                    );
                 } else {
                     const { query } = res.data;
                     let len = Object.keys(query).length;
@@ -188,35 +192,41 @@ const CartContainer = () => {
     
     const onClickOrder = useCallback(async () => {
         setLoading(true);
-        if (user_token) {
-            try {
-                for (let i = 0; i < cartList.length; i++) {
-                    const { item } = cartList[i];
-                    const res = await updateCartQunaity(
-                        user_token,
-                        item.cart_id,
-                        item.item_quanity,
-                    );
-                }
-            } catch (e) {
-
+    
+            if (user_token) {
+                try {
+                    for (let i = 0; i < cartList.length; i++) {
+                        const { item } = cartList[i];
+                        const res = await updateCartQunaity(
+                            user_token,
+                            item.cart_id,
+                            item.item_quanity,
+                        );
+                    }
+                } catch (e) {}
+            } else {
+                try {
+                    for (let i = 0; i < cartList.length; i++) {
+                        const { item } = cartList[i];
+                        await noAuthUpdateCartQunaity(
+                            item.cart_id,
+                            item.item_quanity,
+                        );
+                    }
+                } catch (e) {}
             }
-        } else {
-            try {
-                for (let i = 0; i < cartList.length; i++) {
-                    const { item } = cartList[i];
-                    await noAuthUpdateCartQunaity(
-                        item.cart_id,
-                        item.item_quanity,
-                    );
-                }
-            } catch (e) {
-
+            if (company.minimum_order > total) {
+                openModal(
+                    '최소 주문 금액을 채워주세요.',
+                    `최소 주문 금액은 ${numberFormat(
+                        company.minimum_order,
+                    )}원입니다.`,
+                );
+            } else {
+                history.push(Paths.ajoonamu.order);
             }
-        }
         setLoading(false);
-        history.push(Paths.ajoonamu.order);
-    }, [user_token, cartList, history]);
+    }, [user_token, cartList, history,total,company]);
 
     const renderList = useCallback(() => (
             <>

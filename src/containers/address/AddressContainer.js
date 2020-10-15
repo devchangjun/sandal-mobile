@@ -2,6 +2,7 @@
 
 //hooks
 import React, { useState, useEffect, useCallback } from 'react';
+import {useHistory} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useInit } from '../../hooks/useStore';
 import { useStore } from '../../hooks/useStore';
@@ -33,12 +34,15 @@ import { noAuthGetNearStore } from '../../api/noAuth/store';
 
 //store
 import { modalOpen } from '../../store/modal';
+import { Paths } from '../../paths';
 
 
 const cx = classNames.bind(styles);
 
 const AddressContainer = () => {
 
+
+    const history = useHistory();
     const user_token = useStore(false);
     const modalDispatch = useDispatch();
     const initStore = useInit();
@@ -63,6 +67,13 @@ const AddressContainer = () => {
     const [mapOpen, setMapOpen] = useState(false);
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
+
+    const onMovePrevUrl =()=>{
+        const url = JSON.parse(sessionStorage.getItem('url'));
+        if(url){
+            history.push(url.prev);
+        }
+    }
 
     //검색 아이템 클릭
     const onClickAddrItem = (data, zipNo) => {
@@ -254,8 +265,10 @@ const AddressContainer = () => {
                                 post_num,
                                 near_store.data.query,
                             );
+                                onMovePrevUrl();
 
-                            callDeliveryList();
+                            // callDeliveryList();
+
                         } catch (e) {}
                     } else {
                         //로컬 스토리지에 있는 아이템을 들고온다.
@@ -299,6 +312,8 @@ const AddressContainer = () => {
                             post_num,
                             near_store.data.query,
                         );
+
+                        onMovePrevUrl();
                     }
                 },
             );
@@ -352,16 +367,16 @@ const AddressContainer = () => {
                                             temp_lat,
                                             temp_lng,
                                         );
-                                        console.log('회원 주소설정');
-                                        console.log(res);
                                         if (res.data.msg === '성공') {
                                             const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
                                         
                                              initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
 
-                                            callDeliveryList();
+                                            // callDeliveryList();
                                             setOpen(false);
                                           setSearchAddr('');
+                                          onMovePrevUrl();
+
 
                                         } else {
                                             openMessage(
@@ -398,8 +413,6 @@ const AddressContainer = () => {
                                 temp_lng = result[0].x;
                                 try{
                                     const near_store = await noAuthGetNearStore(temp_lat, temp_lng, selectAddr);
-                                    console.log('비회원 가까운 정보');
-                                    console.log(near_store);
                                     if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
                                         openMessage(
                                             false,
@@ -467,7 +480,7 @@ const AddressContainer = () => {
                                         setDeliveryList(test2);
                                         setOpen(false);
                                         setSearchAddr('');
-
+                                        onMovePrevUrl();
                                     }
 
 
@@ -539,8 +552,10 @@ const AddressContainer = () => {
                                             0,
                                             near_store.data.query,
                                         );
-                                        callDeliveryList();
+                                        // callDeliveryList();
                                         setMapOpen(false);
+                                        onMovePrevUrl();
+
                                     } else {
                                         openMessage(
                                             false,
@@ -558,6 +573,13 @@ const AddressContainer = () => {
                             try{
                                 const near_store = await noAuthGetNearStore(lat, lng, jibun);
                                 if(near_store.data.msg==="배달 가능한 지역이 아닙니다."){
+                                    openMessage(
+                                        false,
+                                        near_store.data.msg,
+                                        '주변 매장정보를 확인해 주세요.',
+                                    );
+                                }
+                                else if(near_store.data.msg==='배달 가능한 매장이 없습니다.'){
                                     openMessage(
                                         false,
                                         near_store.data.msg,
@@ -616,6 +638,8 @@ const AddressContainer = () => {
                                     initStore(jibun, detail, lat, lng, 0,near_store.data.query);
                                     setDeliveryList(test2);
                                     setMapOpen(false);
+                                    history.goBack();
+
                                 }
                             }
 

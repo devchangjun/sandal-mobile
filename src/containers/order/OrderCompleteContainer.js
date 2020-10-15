@@ -56,6 +56,7 @@ const OrderCompleteContainer = ({ order_number }) => {
             } else {
                 res = await noAuthOrderView(order_number);
             }
+            console.log(res);
 
             const { orders } = res;
             if (orders === undefined) {
@@ -102,8 +103,16 @@ const OrderCompleteContainer = ({ order_number }) => {
                                 <div className={styles['order-number']}>
                                     주문번호: {orders.order_id}
                                 </div>
-                                <div className={styles['bank']}>
-                                    <div className={styles['bank-box']}>
+                                <div className={styles['msg']}>
+                                    {orders.info[0].s_name}님, 저희 샌달
+                                    딜리버리 서비스를 <br/>이용해주셔서 감사합니다.<br/><br/>
+
+                                    <div className={styles['no-auth']}>
+                                    (비회원 주문시 주문내역 확인이
+                                    어려울 수 있습니다.)
+                                    </div>
+                                
+                                    {/* <div className={styles['bank-box']}>
                                         <div className={styles['bank-name']}>
                                             입금은행
                                         </div>
@@ -118,7 +127,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                         <div className={styles['bank-value']}>
                                             유효기간 2020/06/09 00:00:00
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className={styles['order-list']}>
@@ -129,23 +138,27 @@ const OrderCompleteContainer = ({ order_number }) => {
                                 <div className={cx('title', 'between')}>
                                     <div>배달 정보</div>
                                     <div className={styles['order-type']}>
-                                        {orders.info.order_type === 'reserve'
+                                        {orders.info[0].order_type === 'reserve'
                                             ? '예약주문'
                                             : '배달주문'}
                                     </div>
                                 </div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={orders.info.s_name}
+                                        value1={orders.info[0].s_name}
                                         value2={`${orders.s_addr1} ${orders.s_addr2}`}
-                                        value3={stringToTel(orders.info.s_hp)}
+                                        value3={stringToTel(
+                                            orders.info[0].s_hp,
+                                        )}
                                     />
                                 </div>
                                 <div className={styles['title']}>주문정보</div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={orders.info.s_name}
-                                        value2={stringToTel(orders.info.s_hp)}
+                                        value1={orders.info[0].s_name}
+                                        value2={stringToTel(
+                                            orders.info[0].s_hp,
+                                        )}
                                         value3={user && user.email}
                                     />
                                 </div>
@@ -179,7 +192,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                     />
                                     <PaymentInfo
                                         text={'입금자명'}
-                                        value={orders.info.s_name}
+                                        value={orders.info[0].s_name}
                                     />
                                     {/* <PaymentInfo text={'입금계좌'} value={'국민은행 12345-67-89000 아주나무'} />
                                 <PaymentInfo text={'가상계좌 유효기간'} value={'2020년 06월 09일 00:00:00'} /> */}

@@ -39,7 +39,6 @@ const BreakfastContainer = ({ menu }) => {
     const SWIPER = useRef(null);
     const SWIPER_SLIDE =useRef(null);
     const { categorys, items } = useSelector((state) => state.breakfast);
-    const { store } = useSelector((state) => state.store);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -85,14 +84,13 @@ const BreakfastContainer = ({ menu }) => {
         try {
             // 카테고리별로 메뉴 리스트 받아오기.
             let arr = [];
-            if (categorys.length !== 0 && store && !items ) {
+            if (categorys.length !== 0 && !items ) {
                 for (let i = 0; i < categorys.length; i++) {
                     const { ca_id } = categorys[i];
                     const result = await getBreakMenu(
                         ca_id,
                         0,
                         LIMIT,
-                        store.shop_id,
                     );
                     const temp = {
                         ca_id: ca_id,
@@ -106,7 +104,7 @@ const BreakfastContainer = ({ menu }) => {
             console.error(e);
         }
         setLoading(false);
-    }, [categorys, store, items,dispatch]);
+    }, [categorys, items,dispatch]);
 
     //오프셋이 바뀌었을때 페이지네이션으로 메뉴를 불러오는 함수.
     const PageNationMenuList = useCallback(async () => {
@@ -115,14 +113,12 @@ const BreakfastContainer = ({ menu }) => {
                 //현재 탭이 추천메뉴 탭이 아니고, 카테고리를 받아오고난 뒤, 아이템과 스토어가 있으면 실행
                 if (
                     categorys.length !== 0 &&
-                    items &&
-                    store
+                    items
                 ) {
                     const res = await getBreakMenu(
                         categorys[tabIndex].ca_id,
                         offset,
                         LIMIT,
-                        store.shop_id,
                     );
 
                     const get_list = res.data.query.items;
@@ -143,7 +139,7 @@ const BreakfastContainer = ({ menu }) => {
                 }
             } catch (e) {}
         }
-    }, [tabIndex, categorys, offset, items, loading, store, dispatch]);
+    }, [tabIndex, categorys, offset, items, loading, dispatch]);
 
     const onClickMenuItem = useCallback(
         (item_id) => {
@@ -242,46 +238,28 @@ const BreakfastContainer = ({ menu }) => {
                 <Loading open={true} />
             ) : (
                 <>
-                    {store ? (
-                        <>
-                            {categorys.length !== 0 && (
-                                <TabTests
-                                    idx={tabIndex}
-                                    onChange={onChangeTabIndex}
-                                    categorys ={categorys}
-                                />
-                            )}
-                            <div className={styles['container']}>
-                                <Swiper
-                                       className={styles['swiper']}
-                                       initialSlide={tabIndex}
-                                       slidesPerView={1}
-                                       onSlideChange={(swiper) => {
-                                           onChangeSwiperIndex(swiper.activeIndex);
-                                       }}
-                                       autoHeight={true}
-                                       onSwiper={(swiper) =>
-                                           (SWIPER.current = swiper)
-                                       }
-                                >
-                                    {items && renderSwiperItem()}
-                                </Swiper>
-                            </div>
-                            <CartLink />
-                        </>
-                    ) : (
-                        <div className={styles['msg']}>
-                            <Message
-                                msg={'주소지가 설정되지 않았습니다.'}
-                                src={true}
-                                isButton={true}
-                                buttonName={'주소지 설정하기'}
-                                onClick={() =>
-                                    history.push(Paths.ajoonamu.address)
-                                }
-                            />
-                        </div>
+                    {categorys.length !== 0 && (
+                        <TabTests
+                            idx={tabIndex}
+                            onChange={onChangeTabIndex}
+                            categorys={categorys}
+                        />
                     )}
+                    <div className={styles['container']}>
+                        <Swiper
+                            className={styles['swiper']}
+                            initialSlide={tabIndex}
+                            slidesPerView={1}
+                            onSlideChange={(swiper) => {
+                                onChangeSwiperIndex(swiper.activeIndex);
+                            }}
+                            autoHeight={true}
+                            onSwiper={(swiper) => (SWIPER.current = swiper)}
+                        >
+                            {items && renderSwiperItem()}
+                        </Swiper>
+                    </div>
+                    <CartLink />
                 </>
             )}
         </>

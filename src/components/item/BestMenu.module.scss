@@ -19,8 +19,8 @@ $value2: 10px;
     padding-top: 5px;
     box-sizing: border-box;
     .menu-item {
-        display: block;
-        float: left;
+        display: inline-block;
+        vertical-align: top;
         box-sizing: border-box;
         width: 49.9%;
         padding: 0 6px;

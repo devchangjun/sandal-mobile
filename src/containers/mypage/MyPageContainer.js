@@ -19,6 +19,7 @@ const cx = classNames.bind(styles);
 const MyPageContainer = () => {
     const initStore = useInit();
     const { user } = useSelector((state) => state.auth);
+    const {company} = useSelector(state => state.company);
     const user_token = localStorage.getItem("access_token");
     const openModal = useModal();
     const dispatch = useDispatch();
@@ -123,7 +124,7 @@ const MyPageContainer = () => {
                     <Item url={`${Paths.ajoonamu.support}/faq`} text={'자주 묻는 질문'} />
                     <Item url={`${Paths.ajoonamu.support}/qna/send`} text={'1:1 문의'} />
                     <Item text={'알림설정'} />
-                    <Item text={'버전정보'} version />
+                    <Item text={'버전정보'} version={company && company.version}  />
                     {user && <Item text={'이용약관'}url={`${Paths.ajoonamu.tos}?tab=0`}/>}
                 </div>
                 {user && (
@@ -149,7 +150,7 @@ const Item = ({ text, url, version }) => {
                 {text}
             </div>
             {version && <div className={styles['version']}>
-                1.0.1 ver
+                {version} ver
             </div>}
         </Button>
     );

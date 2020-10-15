@@ -3,6 +3,8 @@ import styles from './Order.module.scss';
 import { numberFormat } from '../../lib/formatter';
 import { ButtonBase } from '@material-ui/core';
 
+import {calculateDay} from '../../lib/calculateDate';
+
 // 전제척인 주문 메뉴 아이템
 const OrderItem = (props) => {
     const {
@@ -15,15 +17,17 @@ const OrderItem = (props) => {
         cp_price,
         point_price,
         receipt_price,
+        info,
     } = props;
+
     return (
         <ButtonBase className={styles['order-item']} onClick={props.onClick}>
             <div className={styles['item']}>
                 <div className={styles['menu']}>
                     <div className={styles['pd-box']}>
-                        <div className={styles['date']}>{receipt_time}</div>
+                        <div className={styles['date']}>{ calculateDay(receipt_time)}</div>
                         <div className={styles['list']}>
-                            <OrderMenuItemList items={items} />
+                            <OrderMenuItemList items={items} qty/>
                         </div>
                     </div>
                 </div>
@@ -49,10 +53,12 @@ const OrderItem = (props) => {
 //주문 메뉴 리스트
 const OrderMenuItemList = ({ items }) => {
     const list = items.map((item, index) => (
-        <OrderMenuItem
+        <OrderInfoItem
             item_name={item.item_name}
             item_option={item.item_option}
             item_price={item.item_price}
+            item_qty ={item.qty}
+            item_img = {item.item_img}
             key={index}
         />
     ));
@@ -61,10 +67,10 @@ const OrderMenuItemList = ({ items }) => {
 };
 
 //주문 메뉴 아이템 (개별)
-const OrderMenuItem = ({ item_name, item_option, item_price }) => {
+const OrderInfoItem = ({ item_name, item_option, item_price,item_qty }) => {
     return (
         <div className={styles['menu-name']}>
-            <div className={styles['name']}>{item_name} 1개</div>
+            <div className={styles['name']}>{item_name} {item_qty}개</div>
             <div className={styles['options']}>
                 추가선택 : {item_option ? item_option : '없음'} / 비용 :{' '}
                 {numberFormat(item_price)}원

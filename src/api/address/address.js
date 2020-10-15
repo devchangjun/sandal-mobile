@@ -4,6 +4,11 @@ import { Paths } from '../../paths';
 const URL = 'https://www.juso.go.kr/addrlink/addrLinkApi.do';
 const KEY = 'devU01TX0FVVEgyMDIwMDgyMzIxNTAzMDExMDA4OTU=';
 
+const OPTIONS = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 10000,
+};
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
@@ -15,8 +20,8 @@ export const getDeliveryList = async (token) => {
 }
 
 export function getCoordinates() {
-    return new Promise(function(resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
+    return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, OPTIONS);
     });
 }
 
@@ -43,7 +48,6 @@ export const insertAddress = async (
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
-    console.log(res);
     return res;
 };
 
@@ -97,9 +101,9 @@ export const searchAddress = (searchAddr) => {
     return fetch(
         `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${searchAddr}&resultType=json`,
     )
-        .then((res) => res.json())
-        .then((json) => json.results.juso)
-        .catch((err) => console.log(err));
+        .then(res => res.json())
+        .then(json => json.results.juso)
+        .catch(err => {});
 };
 
 
@@ -107,9 +111,9 @@ export const getPostNum = (addr1) => {
     return fetch(
         `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${addr1}&resultType=json`,
     )
-        .then((res) => res.json())
-        .then((json) => json.results.juso)
-        .catch((err) => console.log(err));
+        .then(res => res.json())
+        .then(json => json.results.juso)
+        .catch(err => {});
 };
 
 

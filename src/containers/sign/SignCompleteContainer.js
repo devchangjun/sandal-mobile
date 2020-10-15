@@ -2,16 +2,12 @@ import React from 'react';
 import styles from './Sign.module.scss';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
-import TitleBar from 'components/titlebar/TitleBar';
-import SignComplete from 'components/sign/SignComplete';
+import SignComplete from '../../components/sign/SignComplete';
 import Button from 'components/button/Button';
 import Complete from '../../components/svg/sign/complete.svg';
 import cn from 'classnames/bind';
 
 const cx = cn.bind(styles);
-
-
-const logo = "http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png";
 
 const SignCompleteContainer = ({ name }) => {
     //qurey로 이름 값 받아서 출력하기
@@ -20,14 +16,19 @@ const SignCompleteContainer = ({ name }) => {
     const onClickLogin = () => {
         history.push(Paths.ajoonamu.signin);
     }
+
     return (
         <div className={cx('container', 'center')}>
             <div className={cx('content', 'pd-none')}>
                 <div className={styles['success-img']}>
                     <img src={Complete} alt={"축하합니다"} />
                 </div>
-                <SignComplete mainTitle={`축하합니다 ${name}님`} subTitle={"아주나무 딜리버리 회원가입이 완료 되었습니다. "}
-                    text={"이메일 회원가입을 하신 회원님께서는 가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다."} />
+                <div className={styles['msg']}> 
+                <div className={styles['text']}>축하합니다 {name}님!</div>
+                    <div className={styles['sub-text']}>
+                    아주나무 딜리버리 회원가입이 완료 되었습니다.<br/>
+                    이메일 회원가입을 하신 회원님께서는 가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다.</div>
+                </div>
                 <Button title={"로그인"} onClick={onClickLogin} toggle={true}></Button>
             </div>
         </div>

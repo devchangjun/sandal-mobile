@@ -13,9 +13,11 @@ const cx = cn.bind(styles);
 // 헤더 폴더로 이동시켜야할지 말지 고민중
 
 const Title = () => {
-    const { user } = useSelector((state) => state.auth);
-    const { addr1 } = useSelector((state) => state.address);
+    const { addr1 } = useSelector(state => state.address);
+    const { notice_check, notification } = useSelector((state) => state.notice);
     const history = useHistory();
+    const { header } = useSelector(state => state.scroll);
+    
     /* 
         사용자가 마지막으로 선택한 배달지를 
         addr로 받아와 렌더.
@@ -29,16 +31,22 @@ const Title = () => {
     };
 
     return (
-        <div className={styles['app-title']}>
+        <div className={cx('app-title', { not_view: header })}>
             <div className={styles['app-title-main']}>
                 <div className={styles['app-title-content']}>
                     <div className={cx('notice')}>
-                        {user &&
-                               <div className={cx('app-title-notification', 'unread')} onClick={onClickNotice} >
-                               <img src={notificationBellImage} alt="notification-bell"/>
-                           </div>
-                        }
-             
+                        <div
+                            className={cx('app-title-notification', {
+                                unread:
+                                    !notice_check && notification.length !== 0,
+                            })}
+                            onClick={onClickNotice}
+                        >
+                            <img
+                                src={notificationBellImage}
+                                alt="notification-bell"
+                            />
+                        </div>
                     </div>
                     <div
                         className={styles['app-title-location']}

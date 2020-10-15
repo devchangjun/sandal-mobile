@@ -8,39 +8,39 @@ export const user_order = async (
     delivery_memo,
     delivery_req_time,
     cp_id,
-    point_price=0,
-    
+    point_price = 0,
 ) => {
     const req = Paths.api + 'user/order';
-    let form_data ;
+    let form_data;
+    
+    order_memo = order_memo ? order_memo :'없음';
+    delivery_memo = delivery_memo  ? delivery_memo : '없음';
+
     if (cp_id === null) {
-        console.log('cp_id없음');
         form_data = {
             order_type: 'reserve',
             order_memo: order_memo,
             delivery_memo: delivery_memo,
             delivery_req_time: delivery_req_time,
-            point_price:point_price,
+            point_price: point_price,
+            device: 'mobile',
         };
-    }
-    else{
+    } else {
         form_data = {
             order_type: 'reserve',
             order_memo: order_memo,
             delivery_memo: delivery_memo,
             delivery_req_time: delivery_req_time,
-            cp_id :cp_id,
-            point_price:point_price,
+            cp_id: cp_id,
+            point_price: point_price,
+            device: 'mobile',
         };
     }
-    console.log(form_data);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);
     return res;
 };
-
-
 
 export const order_cancle = async (token, order_id) => {
     const req = Paths.api + 'user/order/cancel';

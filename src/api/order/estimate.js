@@ -11,12 +11,11 @@ export const requestPostEstimate = async (token, {
 
     formData.append('estm_email', estm_email);
     formData.append('estm_username', estm_username);
-    formData.append('estm_file', []);
+    formData.append('estm_file[]', estm_file);
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers['Context-Type'] = 'application/json';
 
     const res = await axios.post(req, formData);
-    console.log(res);
     return res;
 };

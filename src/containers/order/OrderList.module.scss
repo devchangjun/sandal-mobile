@@ -1,8 +1,18 @@
 @import '../../styles/Root.scss';
 
-.container{
+.container {
     @include wireframe($pd-top);
+    height: 100vh;
+    overflow: hidden;
+    .swiper {
+        @include swiper(80px);
+
+        .swiper-slide {
+            padding: 24px;
+            @include swiper-slide(80px);
+        }
+    }
 }
-.pd-box{
-    padding:24px;
+.pd-box {
+    padding: 24px;
 }

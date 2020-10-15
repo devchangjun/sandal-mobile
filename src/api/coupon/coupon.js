@@ -9,6 +9,8 @@ export const getMyCoupons = async (token) => {
             Authorization: `Bearer ${token}`,
         },
     };
+
+    axios.defaults.baseURL=req;
     const result = await axios.get(req, config);
     return result.data.query;
 };
@@ -31,6 +33,7 @@ export const getDownloadCpList = async (token) => {
             Authorization: `Bearer ${token}`,
         },
     };
+    axios.defaults.baseURL=req;
     const result = await axios.get(req, config);
     return result.data.query;
 };
@@ -58,7 +61,9 @@ export const downloadCoupon = async (token, cz_id) => {
     const form_data = {
         cz_id: cz_id,
     };
+    
 
+    axios.defaults.baseURL=req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
@@ -71,6 +76,7 @@ export const couponInput = async (token, cp_id) => {
     const form_data = {
         cp_id: cp_id,
     };
+    axios.defaults.baseURL=req;
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 

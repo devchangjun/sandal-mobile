@@ -1,9 +1,9 @@
 /*global kakao*/
 
 //hooks
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {useInit} from '../../hooks/useStore';
+import { useInit } from '../../hooks/useStore';
 import { useStore } from '../../hooks/useStore';
 
 //style
@@ -11,20 +11,23 @@ import styles from './Address.module.scss';
 import classNames from 'classnames/bind';
 
 //components
-import TitleBar from 'components/titlebar/TitleBar';
 import DeliveryItemList from 'components/address/DeliveryItemList';
 import { BsSearch } from 'react-icons/bs';
 import AddressModal from '../../components/modal/AddressModal';
 import MapModal from '../../components/kakao_map/MapModal';
 import Loading from '../../components/asset/Loading';
 import Message from '../../components/message/Message';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, IconButton } from '@material-ui/core';
 
-//lib
-import produce from 'immer';
 //api
 import { getCoordinates } from 'api/address/address';
-import { insertAddress, searchAddress,selectAddress,getDeliveryList ,deleteAddr } from '../../api/address/address';
+import {
+    insertAddress,
+    searchAddress,
+    selectAddress,
+    getDeliveryList,
+    deleteAddr,
+} from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { noAuthGetNearStore } from '../../api/noAuth/store';
 
@@ -34,7 +37,6 @@ import { modalOpen } from '../../store/modal';
 
 const cx = classNames.bind(styles);
 
-// const key = 'devU01TX0FVVEgyMDIwMDcyMzE4MTUzMzEwOTk4NzE';
 const AddressContainer = () => {
 
     const user_token = useStore(false);
@@ -43,38 +45,30 @@ const AddressContainer = () => {
     const dispatch = useDispatch();
 
     const openMessage = useCallback(
-        (isConfirm, title, text, handleClick = () => { }) => {
+        (isConfirm, title, text, handleClick = () => {}) => {
             modalDispatch(modalOpen(isConfirm, title, text, handleClick));
         },
         [modalDispatch],
     );
 
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
     const [searchAddr, setSearchAddr] = useState(''); //검색
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [searchList, setSearchList] = useState([]); // 검색 리스트
-    const [position, setPosition] = useState('');
+    const [position, setPosition] = useState({
+        lat: 0, lng: 0
+    });
     const [open, setOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
-    const nextId = useRef(3);
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
 
-
-    const onClickDeliveryItem =()=>{
-        
-    }
-
     //검색 아이템 클릭
-    const onClickAddrItem = (data, zipNo, index) => {
+    const onClickAddrItem = (data, zipNo) => {
         setSelectAddr(data);
         setPostNum(zipNo);
-
     };
-
     //검색어 변경
     const onChangeSearchAddr = useCallback((e) => {
         setSearchAddr(e.target.value);
@@ -91,14 +85,11 @@ const AddressContainer = () => {
         if(user_token){
             try{
                 const res = await getDeliveryList(user_token);
-                console.log(res);
-                console.log(res.data.query);
                 setDeliveryList(res.data.query);
             }
             catch(e){
                 console.error(e);
             }
-
         }
         else{
             const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
@@ -112,6 +103,7 @@ const AddressContainer = () => {
     //지도 열기
     const onClickMapOpen = useCallback(() => {
         getUserLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     //지도 닫기
@@ -123,14 +115,24 @@ const AddressContainer = () => {
 
     //현재 위치 받아오기
     const getUserLocation = async () => {
-        setLoading(true);
-        const p = await getCoordinates();
-        const lat = p.coords.latitude;
-        const lng = p.coords.longitude;
-        const newState = { lat: lat, lng: lng };
-        setPosition(newState);
-        setLoading(false);
-        setMapOpen(true);
+        if ('geolocation' in navigator) {
+            setLoading(true);
+            try {
+                const p = await getCoordinates();
+                const lat = p.coords.latitude;
+                const lng = p.coords.longitude;
+                const newState = { lat: lat, lng: lng };
+                setPosition(newState);
+                setMapOpen(true);
+            } catch (e) {
+                if (e.code === 3) {
+                    openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
+                } else {
+                    openMessage(false, "위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
+                }
+            }
+            setLoading(false);
+        }
     };
 
 
@@ -161,7 +163,6 @@ const AddressContainer = () => {
 
     // 좌표 변경
     const onClickPosition = useCallback((lat, lng) => {
-        console.log('좌표 변경 완료',lat,lng);
         setPosition({ lat: lat, lng: lng });
     }, []);
 
@@ -172,18 +173,15 @@ const AddressContainer = () => {
         } else {
             const result = await callSearchApi();
             setSearchList(result);
-            console.log(result);
         }
     };
 
     //검색 api 호출
     const callSearchApi = async () => {
-        try{
+        try {
             const res = await searchAddress(searchAddr);
             return res;
-        }
-     
-        catch(e){
+        } catch (e) {
             console.error(e);
         }
     };
@@ -191,12 +189,10 @@ const AddressContainer = () => {
     //주소지 삭제
     const onRemoveAddr = useCallback(
         (delivery_id) => {
-            console.log(delivery_id);
-            openMessage(true, '해당 주소를 삭제하시겠습니까?', '', async () => {
+            openMessage(true, '해당 주소를 삭제하시겠습니까?', '삭제하시면 복구할 수 없습니다.', async () => {
                 if (user_token) {
                     try {
-                        const res = await deleteAddr(user_token, delivery_id);
-                        console.log(res);
+                        await deleteAddr(user_token, delivery_id);
                         const index = deliveryList.findIndex((item) => item.delivery_id === delivery_id);
 
                         //삭제하려는 주소가 활성화 주소라면 배달지 설정 초기화
@@ -227,6 +223,7 @@ const AddressContainer = () => {
                 }
             });
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [openMessage, user_token, deliveryList, dispatch],
     );
 
@@ -234,64 +231,86 @@ const AddressContainer = () => {
 
     //선택한 주소지로 설정 하기
     const onClickDeliveyAddr = useCallback(
-            (delivery_id, addr1, addr2, lat, lng, post_num) => {
-                openMessage(
-                    true,
-                    '선택한 주소지로 설정하시겠습니까?',
-                    '',
-                    async () => {
-                        if (user_token) {
-                            try {
-                                // const res = await selectAddress(user_token, delivery_id);
-                                await selectAddress(user_token, delivery_id);
-                                const near_store = await getNearStore(lat, lng, addr1);
-                                initStore(addr1, addr2, lat, lng, post_num,near_store.data.query);
-                       
-    
-                                callDeliveryList();
-                            } catch (e) {
-                                
-                            }
-                        }
-                        else {
+        (delivery_id, addr1, addr2, lat, lng, post_num) => {
+            openMessage(
+                true,
+                '선택한 주소지로 설정하시겠습니까?',
+                '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
+                async () => {
+                    if (user_token) {
+                        try {
+                            // const res = await selectAddress(user_token, delivery_id);
+                            await selectAddress(user_token, delivery_id);
+                            const near_store = await getNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
 
-                            //로컬 스토리지에 있는 아이템을 들고온다.
-                            //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
-                            const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-    
-                            //모든 활성화를 0으로 초기화
-                            noAuthAddrs.map((item) => (item.active = 0));
-    
-                            //선택한 주소를 활성화
-                            noAuthAddrs[delivery_id].active = 1;
-    
-                            //활성화된 스토리지의 주소를 제일 위로 올린다.
-                            let tmp = noAuthAddrs[delivery_id];
-                            noAuthAddrs.splice(delivery_id, 1);
-                            noAuthAddrs.unshift(tmp);
-    
-                            //활성화된 정보를 갱신
-                            localStorage.setItem('noAuthAddrs', JSON.stringify(noAuthAddrs));
-    
-                            //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
-                            const temp = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                            setDeliveryList(temp);
-                            const near_store = await noAuthGetNearStore(lat, lng, addr1);
-                            initStore(addr1, addr2, lat, lng, post_num,near_store.data.query);
-    
-    
-                        }
-                    },
-                );
-            },
-            [callDeliveryList,dispatch, openMessage, user_token],
-        );
+                            callDeliveryList();
+                        } catch (e) {}
+                    } else {
+                        //로컬 스토리지에 있는 아이템을 들고온다.
+                        //선택한 주소지가 있다는 것은 로컬스토리지에 아이템이 있다고 판단하고 조건을 뺀다.
+                        const noAuthAddrs = JSON.parse(
+                            localStorage.getItem('noAuthAddrs'),
+                        );
+
+                        //모든 활성화를 0으로 초기화
+                        noAuthAddrs.map((item) => (item.active = 0));
+
+                        //선택한 주소를 활성화
+                        noAuthAddrs[delivery_id].active = 1;
+
+                        //활성화된 스토리지의 주소를 제일 위로 올린다.
+                        let tmp = noAuthAddrs[delivery_id];
+                        noAuthAddrs.splice(delivery_id, 1);
+                        noAuthAddrs.unshift(tmp);
+
+                        //활성화된 정보를 갱신
+                        localStorage.setItem(
+                            'noAuthAddrs',
+                            JSON.stringify(noAuthAddrs),
+                        );
+
+                        //갱신한 뒤 상태 업데이트 및 리덕스 업데이트
+                        const temp = JSON.parse(
+                            localStorage.getItem('noAuthAddrs'),
+                        );
+                        setDeliveryList(temp);
+                        const near_store = await noAuthGetNearStore(
+                            lat,
+                            lng,
+                            addr1,
+                        );
+                        initStore(
+                            addr1,
+                            addr2,
+                            lat,
+                            lng,
+                            post_num,
+                            near_store.data.query,
+                        );
+                    }
+                },
+            );
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [callDeliveryList, dispatch, openMessage, user_token],
+    );
 
 
         
     //최근 주소지에 추가
     const onClickDeliveryAddrInsert = async () => {
-        console.log("ㅎㅇ");
         if (selectAddr === '') {
             openMessage(
                 false,
@@ -302,13 +321,13 @@ const AddressContainer = () => {
             openMessage(
                 false,
                 '상세 주소를 입력해주세요',
-                '상세주소가 입력되지 않았습니다.',
+                '상세 주소가 입력되지 않았습니다.',
             );
         } else {
             openMessage(
                 true,
                 '이 주소로 배달지를 설정하시겠습니까?',
-                '',
+                '선택하신 주소지에서 가장 가까운 지점으로 연결됩니다.',
                 async () => {
                     if (user_token) {
                         try {
@@ -340,6 +359,8 @@ const AddressContainer = () => {
 
                                             callDeliveryList();
                                             setOpen(false);
+                                          setSearchAddr('');
+
                                         } else {
                                             openMessage(
                                                 false,
@@ -436,6 +457,8 @@ const AddressContainer = () => {
                                         initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
                                         setDeliveryList(test2);
                                         setOpen(false);
+                                          setSearchAddr('');
+
                                     }
 
 
@@ -453,6 +476,7 @@ const AddressContainer = () => {
                             }
                         });
                     }
+
                 },
             );
         }
@@ -462,7 +486,6 @@ const AddressContainer = () => {
 
         //최근 주소지에 추가
         const onClickMapInsertAddr = async (jibun,detail,lat,lng) => {
-            console.log("ㅎㅇ");
             if (jibun === '') {
                 openMessage(
                     false,
@@ -608,29 +631,28 @@ const AddressContainer = () => {
     },[open])
     return (
         <>
-
             {loading ? (
                 <Loading open={true} />
             ) : (
                 <>
                     <div className={styles['container']}>
                         <div className={cx('title', 'pd-box')}>
-                            배달 받으실 장소를 입력하세요
+                            배달 받으실 장소를 입력하세요.
                         </div>
                         <div className={cx('addr-input', 'pd-box')}>
                             <input
                                 className={cx('input-box', 'pd-box')}
-                                // placeholder="예) 아주나무동12-3 또는 아주나무 아파트"
+                                placeholder="예) 샌달동 12-3 또는 샌달 아파트"
                                 value={searchAddr}
                                 onChange={onChangeSearchAddr}
                                 onKeyPress={handleKeyPress}
                             />
-                            <div
+                            <IconButton
                                 className={cx('search-btn')}
                                 onClick={handleClickOpen}
                             >
                                 <BsSearch />
-                            </div>
+                            </IconButton>
                         </div>
                         <div className={styles['pd-box']}>
                             <ButtonBase
@@ -644,15 +666,18 @@ const AddressContainer = () => {
                             최근 배달 주소
                         </div>
                         <div className={cx('addr-list', 'pd-box')}>
-                            {deliveryList.length!==0 ? 
-                             <DeliveryItemList 
-                             user_token={user_token}
-                             addrs={deliveryList} 
-                             onClick={onClickDeliveyAddr}
-                              onRemove ={onRemoveAddr}/> 
-                            :
-                            <Message msg={"최근 주소지가 없습니다."}></Message>    
-                        }
+                            {deliveryList.length !== 0 ? (
+                                <DeliveryItemList
+                                    user_token={user_token}
+                                    addrs={deliveryList}
+                                    onClick={onClickDeliveyAddr}
+                                    onRemove={onRemoveAddr}
+                                />
+                            ) : (
+                                <Message
+                                    msg={'최근 주소지가 없습니다.'}
+                                />
+                            )}
                         </div>
                     </div>
                     <AddressModal
@@ -667,7 +692,7 @@ const AddressContainer = () => {
                         selectAddr={selectAddr}
                         detailAddr={detailAddr}
                         onChangeDetail={onChangeDetailAddr}
-                        onClick= { onClickDeliveryAddrInsert}
+                        onClick={onClickDeliveryAddrInsert}
                     />
                     <MapModal
                         open={mapOpen}

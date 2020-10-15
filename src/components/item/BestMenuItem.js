@@ -3,28 +3,27 @@ import {useHistory} from 'react-router-dom';
 import { Paths } from 'paths';
 import styles from './BestMenu.module.scss';
 import { ButtonBase } from '@material-ui/core';
-import { numberFormat } from '../../lib/formatter';
-import MenuItemImage1 from 'components/svg/menu/menuitem1.png';
+import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
+import Noimage from '../svg/noimage.png';
 
 
 //홈 메뉴 아이템 컴포넌트
 const BestMenuItem = (props) => {
-
     const history = useHistory();
     // item_id 로 경로 줘야함
     return (
-            <li className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
-                <ButtonBase className={styles['btn-base']}>
-                    <MenuImg src={MenuItemImage1} />
-                </ButtonBase>
+            <ButtonBase component='li' className={styles['menu-item']} onClick={() => history.push(`${Paths.ajoonamu.product}?item_id=${props.item_id}`)}>
+                <div className={styles['btn-base']}>
+                    <MenuImg src={props.item_img} />
+                </div>
                 <div className={styles['pd-box']}>
                     <div className={styles['menu-info']}>
                         <MenuTitle menuTitle={props.item_name} />
                         <MenuPrice menuPrice={props.item_price} />
                     </div>
                 </div>
-            </li>
-        // </MenuDetilLink>
+            </ButtonBase>
     );
 };
 
@@ -32,7 +31,7 @@ const BestMenuItem = (props) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <img className={styles.img} src={src} alt="메뉴이미지"></img>
+            <ErrorCoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} />
         </div>
     );
 }
@@ -49,8 +48,8 @@ function MenuTitle({ menuTitle }) {
 //홈 메뉴 가격 컴포넌트
 function MenuPrice({ menuPrice }) {
     return (
-        <div className={styles['menu-price']}>{numberFormat(menuPrice)} 원</div>
+        <div className={styles['menu-price']}>{numberFormat(menuPrice)}원</div>
     );
 }
 
-export default BestMenuItem;
+export default React.memo(BestMenuItem);

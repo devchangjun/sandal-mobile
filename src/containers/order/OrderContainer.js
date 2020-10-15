@@ -1,29 +1,45 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+
+//styles
 import classNames from 'classnames/bind';
-import produce from 'immer';
-import { Paths } from 'paths';
+import styles from './Order.module.scss';
+
+//lib
+import $script from 'scriptjs';
+import { numberFormat } from '../../lib/formatter';
+
+//componenst
 import { ButtonBase } from '@material-ui/core';
-import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
+//modal
 import PointModal from '../../components/modal/PointModal';
 import CouponModal from '../../components/modal/CouponModal';
 import PaymentModal from '../../components/modal/PaymentModal';
+
+//components
 import OrderCheck from 'components/svg/order/OrderCheck';
-import styles from './Order.module.scss';
+import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
+import Loading from '../../components/asset/Loading';
 import Back from 'components/svg/header/Back';
-import { getOrderCoupons } from '../../api/coupon/coupon';
-import { getCartList } from '../../api/cart/cart';
-import { numberFormat } from '../../lib/formatter';
+import DatePicker from '../../components/asset/DatePicker';
+
+//hooks
+import { useModal } from '../../hooks/useModal';
 import { useStore } from '../../hooks/useStore';
-import $script from 'scriptjs';
+
+import { PROTOCOL_ENV } from '../../paths';
+
+//api
 import { user_order} from '../../api/order/order';
 import { noAuth_order} from '../../api/noAuth/order';
 import { noAuthGetCartList } from '../../api/noAuth/cart';
-import SquareCheckBox from '../../components/checkbox/SquareCheckBox';
-import Loading from '../../components/asset/Loading';
-import { onlyNumberListener } from '../../lib/formatChecker';
+import { getOrderCoupons } from '../../api/coupon/coupon';
+import { getCartList } from '../../api/cart/cart';
+import { isCellPhoneForm } from '../../lib/formatChecker';
+import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
+import Toast from '../../components/message/Toast';
+import AuthTimer from '../../components/sign/AuthTimer';
 
 const cx = classNames.bind(styles);
 
@@ -38,24 +54,26 @@ const initPayment = [
         payment: '휴대폰 결제',
     },
     {
-        payment: '페이플 카드결제',
+        payment: '페이플 카드 결제',
     },
 ];
+const AUTH_NUMBER_LENGTH = 6;
 
 const OrderContainer = () => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
-    const history = useHistory();
 
     const { user } = useSelector((state) => state.auth);
-    const { addr1, addr2, lat, lng,post_num } = useSelector((state) => state.address);
+    const { addr1, addr2, lat, lng, post_num } = useSelector(
+        (state) => state.address,
+    );
     const user_token = useStore(false);
-    const [noAuthName , setNoAuthName] = useState('');
+    const [noAuthName, setNoAuthName] = useState('');
     const [loading, setLoading] = useState(false);
     const [pointOpen, setPointOpen] = useState(false);
     const [couponOpen, setCouponOpen] = useState(false);
     const [paymentOpen, setPaymentOpen] = useState(false);
     const [couponList, setCouponList] = useState([]);
-    const [payment, setPayment] = useState('페이플 카드결제');
+    const [payment, setPayment] = useState('페이플 카드 결제');
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
     const [toggle, setToggle] = useState(false);
     const [dlvCost, setDlvCost] = useState(0); // 배달비
@@ -71,14 +89,77 @@ const OrderContainer = () => {
     const [date, setDate] = useState(new Date());
     const [hours, setHours] = useState('09');
     const [minite, setMinite] = useState('00');
-    const [hp , setHp ] = useState('');
-    const [authNumber, setAuthNumber] =useState('');
 
-    const onChangeHp = (e) =>setHp(e.target.value);
-    const onChangeAuth =(e) =>setAuthNumber(e.target.value);
 
-    const onChangeName= (e) => setNoAuthName(e.target.value);
+    const [hp, setHp] = useState('');
+    const [authNumber, setAuthNumber] = useState('');
+    const [toast, setToast] = useState(false);
+    const [success, setSuccess] = useState(false);
 
+    const [toastMessage, setToastMessage] = useState('');
+    const [start_timer, setStartTimer] = useState(false);
+
+    const openModal = useModal();
+
+    const onChangeHp = (e) => setHp(e.target.value);
+    const onChangeAuth = (e) => setAuthNumber(e.target.value);
+    const onClickCompareAuth = useCallback(async () => {
+        if (authNumber.length === AUTH_NUMBER_LENGTH) {
+            try {
+                const res = await requestPostMobileAuthCheck(hp, authNumber);
+                if (res.data.msg === '성공!') {
+                    openModal('성공적으로 인증되었습니다!', '절차를 계속 진행해 주세요.');
+                    setSuccess(true);
+                    setStartTimer(false);
+                } else {
+                    setToast(true);
+                    setToastMessage('인증번호가 틀렸습니다!');
+                    setTimeout(() => {
+                        setToast(false);
+                    }, 3000);
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
+            setAuthNumber('');
+        }
+    }, [authNumber, hp, openModal, setSuccess]);
+
+    //인증번호 발송 버튼
+    const onClickSendAuth = async () => {
+        if (isCellPhoneForm(hp)) {
+            try {
+                const res = await requestPostMobileAuth(hp);
+                if (res.data.msg === '실패!') {
+                    setToast(true);
+                    setToastMessage('SMS not enough point. please charge.');
+                    setTimeout(() => {
+                        setToast(false);
+                    }, 3000);
+                } else {
+                    setStartTimer(true);
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+                }
+            } catch (e) {
+                openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
+            }
+        } else {
+            setToast(true);
+            setToastMessage('휴대폰 번호 형식에 맞지 않습니다!');
+            setTimeout(() => {
+                setToast(false);
+            }, 3000);
+        }
+    };
+    const onClickReSendAuth = () => {
+        openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
+            setStartTimer(false);
+            onClickSendAuth();
+        }, ()=>{}, true);
+    };
+
+
+    const onChangeName = (e) => setNoAuthName(e.target.value);
     const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
@@ -101,14 +182,12 @@ const OrderContainer = () => {
         setCpPrice(cp_price);
         setCpId(cp_id);
         setCouponList(cp_list);
-        console.log(cp_id);
     };
 
     const getUserCoupons = async () => {
         if (user_token) {
             try {
                 const res = await getOrderCoupons(user_token);
-                console.log(res);
                 setCouponList(res);
             } catch (e) {
                 console.error(e);
@@ -118,7 +197,6 @@ const OrderContainer = () => {
 
     //총 주문금액 구하기 (장바구니 조회해서 가져옴);
     const getTotalPrice = useCallback(async () => {
-        console.log('gd');
         setLoading(true);
         if (user_token) {
             try {
@@ -154,19 +232,15 @@ const OrderContainer = () => {
         } else {
             try {
                 if (addr1) {
-                    console.log('여긴 들어오냐');
-                    console.log(addr1);
                     const cart_id = JSON.parse(
                         localStorage.getItem('noAuthCartId'),
                     );
-                    console.log('비회원장바구니');
                     const res = await noAuthGetCartList(
                         cart_id,
                         lat,
                         lng,
                         addr1,
                     );
-                    console.log(res);
                     const { query } = res.data;
                     let len = Object.keys(query).length;
                     let price = 0;
@@ -212,19 +286,16 @@ const OrderContainer = () => {
         //회원 주문
         // setLoading(true);
         if (user_token) {
-            console.log('회원주문 시작');
-            console.log(cp_id);
             const res = await user_order(
                 user_token,
                 'reserve',
                 orderMemo,
                 dlvMemo,
-                '2020-10-07 12:23:34', //delivery_req_time
+                delivery_req_time,
                 cp_id,
                 point_price,
                 
             );
-            console.log(res);
             order_id.current = res.data.query;
 
             //장바구니 삭제
@@ -244,9 +315,8 @@ const OrderContainer = () => {
                 'reserve',
                 orderMemo,
                 dlvMemo,
-                '2020-10-07 12:23:34', //delivery_req_time
+                delivery_req_time
             );
-            console.log(res);
             order_id.current = res.data.query;
             //장바구니 삭제
         }
@@ -265,7 +335,7 @@ const OrderContainer = () => {
             let buyer_name = user ? user.name : noAuthName; //고객 이름
             let buyer_hp = `${hp}`; //고객 번호
             let buyer_email = user && user.email; //고객 이메일
-            let buy_goods = '테스트'; //구매하는 물건 이름
+            let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
             let buy_total = Number(
                 parseInt(totalPrice) +
                     parseInt(dlvCost) -
@@ -319,15 +389,13 @@ const OrderContainer = () => {
              */
             obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
             obj.PCD_RST_URL =
-                'http://devapi.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
+                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
             obj.payple_auth_file =
-                'http://devapi.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
+                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
             obj.callbackFunction = getResult;
 
-            // PaypleCpayAuthCheck(obj);
+            PaypleCpayAuthCheck(obj);
         });
-
-        // const res  = auth_test();
     };
 
     useEffect(() => {
@@ -351,7 +419,6 @@ const OrderContainer = () => {
         getTotalPrice();
     }, [getTotalPrice]);
     useEffect(() => {
-        console.log('gd');
         localStorage.setItem(
             'requestMemo',
             JSON.stringify({
@@ -370,54 +437,108 @@ const OrderContainer = () => {
                 <div className={styles['table']}>
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
-                            {user ? <div className={styles['user-name']}> {user.name}</div> : 
-                               <input
-                               type="text"
-                                value={noAuthName}
-                                onChange={onChangeName}
-                               className={cx('input', 'normal')}
-                               placeholder="이름을 입력하세요."
-                           /> 
-                            }
+                            {user ? (
+                                <div className={styles['user-name']}>
+                                    {' '}
+                                    {user.name}
+                                </div>
+                            ) : (
+                                <input
+                                    type="text"
+                                    value={noAuthName}
+                                    onChange={onChangeName}
+                                    className={cx('input', 'normal')}
+                                    placeholder="이름을 입력하세요."
+                                />
+                            )}
                         </div>
                     </div>
                     <div className={cx('text-info', 'address')}>
                         <div className={styles['info']}>{addr1}</div>
-                        <div className={styles['info']}>{addr2}</div>
+                        <div style={{ color: '#555', fontSize: '14px', marginTop: '8px' }} className={styles['info']} >
+                            {addr2}
+                        </div>
                     </div>
 
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
                             <input
-                                type="text"
-                                placeholder="핸드폰번호"
+                                type="number"
+                                placeholder="휴대폰 번호"
                                 value={hp}
-                                onKeyDown={onlyNumberListener}
                                 onChange={onChangeHp}
+                                disabled={success}
                                 className={cx('input', 'auth')}
                             />
-                            <ButtonBase className={styles['auth-btn']}>
-                                인증번호 발송
+                            <ButtonBase
+                                onClick={start_timer ? onClickReSendAuth : onClickSendAuth}
+                                disabled={success}
+                                className={styles['auth-btn']}>
+                                {success ? "인증 완료" : start_timer ? "인증번호 재발송" : "인증번호 발송" }
                             </ButtonBase>
                         </div>
                     </div>
-                    <div className={cx('text-info')}>
+                    <div className={cx('text-info', 'auth-area', { auth_open: start_timer })}>
                         <div className={cx('info', 'row')}>
                             <input
-                                type="text"
+                                type="number"
                                 placeholder="인증번호"
-                                onKeyDown={onlyNumberListener}
                                 onChange={onChangeAuth}
+                                disabled={!start_timer}
                                 value={authNumber}
                                 className={cx('input', 'auth')}
                             />
-                            <ButtonBase className={styles['auth-btn']}>
+                            <div className={styles['timer']}>
+                                <AuthTimer start={start_timer} setStart={setStartTimer} />
+                            </div>
+                            <ButtonBase
+                                disabled={!start_timer}
+                                onClick={onClickCompareAuth}
+                                className={styles['auth-btn']}>
                                 인증하기
                             </ButtonBase>
                         </div>
                     </div>
+                    <Toast on={toast} msg={toastMessage} />
                 </div>
+                <div className={cx('title', 'pd-box')}>배달 요청 시간</div>
+                <div className={cx('date-picker', 'pd-box')}>
+                    <div className={styles['date']}>
+                        <DatePicker date={date} setDate={setDate} />
+                    </div>
+                    <div className={styles['time']}>
+                        <div className={styles['second']}>
+                            <select
+                                name="hours"
+                                onChange={e => setHours(e.target.value)}
+                            >
+                                {[...new Array(22).keys()]
+                                    .splice(9, 13)
+                                    .map((item) => (
+                                        <option value={item} key={item}>
+                                            {(item >= 12 ? '오후 ' : '오전 ') +
+                                                (item > 12 ? item - 12 : item) +
+                                                '시'}
+                                        </option>
+                                    ))}
+                            </select>
+                        </div>
 
+                        <div className={styles['second']}>
+                            <select
+                                name="minute"
+                                onChange={e => setMinite(e.target.value)}
+                            >
+                                <option value="00">00분</option>
+                                <option value="10">10분</option>
+                                <option value="20">20분</option>
+                                <option value="30">30분</option>
+                                <option value="40">40분</option>
+                                <option value="50">50분</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div className={cx('title', 'pd-box')}>요청사항</div>
                 <div className={cx('table', 'pd-box')}>
                     <div className={styles['input-save']}>
@@ -486,7 +607,7 @@ const OrderContainer = () => {
                             >
                                 <div className={styles['label']}>할인 쿠폰</div>
                                 <div className={styles['info']}>
-                                    {couponList.length}개보유
+                                    {couponList.length}개 보유
                                     <Back
                                         rotate="180deg"
                                         strokeWidth={1.5}
@@ -531,7 +652,7 @@ const OrderContainer = () => {
                                     <div className={cx('cost')}>
                                         {numberFormat(
                                             parseInt(totalPrice) +
-                                                parseInt(dlvCost),
+                                                parseInt(dlvCost) -parseInt(point_price) - parseInt(cp_price),
                                         )}
                                         원
                                     </div>
@@ -608,7 +729,6 @@ const OrderContainer = () => {
                     </div>
                 </div>
             </div>
-            {/* <Button title={`${numberFormat( parseInt(totalPrice))}원 결제`} toggle={toggle} onClick={onClickOrder}/> */}
             <Button
                 title={`${numberFormat(
                     parseInt(totalPrice) +
@@ -616,7 +736,7 @@ const OrderContainer = () => {
                         parseInt(point_price) -
                         parseInt(cp_price),
                 )}원 결제`}
-                toggle={toggle}
+                toggle={(user || noAuthName.length !== 0) && toggle && success}
                 onClick={onClickOrder}
             />
             <PointModal
@@ -627,6 +747,7 @@ const OrderContainer = () => {
                 point_price={point_price}
             />
             <CouponModal
+                item_price ={totalPrice}
                 open={couponOpen}
                 handleClose={onClickCouponClose}
                 list={couponList}

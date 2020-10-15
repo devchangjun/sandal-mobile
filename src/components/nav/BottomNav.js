@@ -75,19 +75,19 @@ const BottomNav = (props) => {
     const {location} = props;
 
     const onUpdateTab = useCallback(() => {
-        console.log(location.pathname);
-        if(location.pathname==='/' || location.pathname==='/shop'){
+        if (location.pathname === '/' || location.pathname === '/shop') {
             dispatchTab({ type: 'HOME' });
-        }
-        else if(location.pathname==='/coupon'){
-            dispatchTab({type:'COUPON'})
-        }
-        else if(location.pathname==='/mypage' || location.pathname==='/account' || location.pathname.indexOf('support') !==-1 || location.pathname.indexOf('event')!==-1){
-            dispatchTab({type:'MYPAGE'})
-        }
-        else if(location.pathname==='/order_list'){
-            dispatchTab({type:'ORDER'})
-
+        } else if (location.pathname === '/coupon') {
+            dispatchTab({ type: 'COUPON' });
+        } else if (
+            location.pathname === '/mypage' ||
+            location.pathname === '/account' ||
+            location.pathname.indexOf('support') !== -1 ||
+            location.pathname.indexOf('event') !== -1
+        ) {
+            dispatchTab({ type: 'MYPAGE' });
+        } else if (location.pathname === '/order_list') {
+            dispatchTab({ type: 'ORDER' });
         }
     }, [props]);
 
@@ -105,9 +105,7 @@ const BottomNav = (props) => {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleChange = () => {
-        // console.log('체인지');
-    };
+    const handleChange = () => {};
     const onClickHome = () => {
         history.push(Paths.index);
     };
@@ -158,7 +156,7 @@ const BottomNav = (props) => {
                                 </div>
                             </div>
                             <Link to={`${Paths.ajoonamu.shop}?menu=0`} className={styles["menu-item"]} onClick={handleClose}>예약주문</Link>
-                            <Link to={`${Paths.ajoonamu.shop}?menu=1`}className={styles["menu-item"]} onClick={handleClose}>택배배송</Link>
+                            <Link to={`${Paths.ajoonamu.breakfast}?menu=0`}className={styles["menu-item"]} onClick={handleClose}>기업조식</Link>
                         </div>
                         <IconButton className={styles['nav-item']} onClick={onClickOrderList}>
                             <div className={styles['icon']}>

@@ -7,14 +7,24 @@
         margin-top: 16px;
         .input-box {
             width: 100%;
-            height: 56px;
+            min-height: 56px;
             padding: 20px 24px; /* 여백으로 높이 설정 */
             border: 1px solid #ebebeb;
             border-radius: 10px; /* iOS 둥근모서리 제거 */
+            background-color: #fff;
             font-size: 14px;
             color: #999;
             font-weight: 500;
+            text-align: left;
 
+            .file-button {
+                width: 100%;
+                color: #dbdbdb;
+            }
+            .file-list {
+                width: 100%;
+                line-height: 1.5;
+            }
             &.textarea-box {
                 min-height: 186px;
                 resize: none;
@@ -22,6 +32,9 @@
             &::placeholder {
                 color: #dbdbdb;
             }
+        }
+        .input-file {
+            display: none;
         }
     }
     .submit-area {

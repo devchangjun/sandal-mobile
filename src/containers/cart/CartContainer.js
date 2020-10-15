@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
-import TitleBar from 'components/titlebar/TitleBar';
 import CartItemList from 'components/cart/CartItemList';
 import Button from 'components/button/Button';
 import produce from 'immer';
@@ -25,11 +24,10 @@ const cx = classNames.bind(styles);
 const CartContainer = () => {
 
     const history = useHistory();
-    const { addr1, addr2,lat,lng } = useSelector((state) => state.address);
+    const { addr1, lat, lng } = useSelector(state => state.address);
     const openModal = useModal();
 
     const [open, setOpen] = useState(false); //모달창 오픈
-    const [allChecked, setAllChecked] = useState(false); //전체선택
     const [estm, setEstm] = useState(false); //견적서 발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
@@ -56,20 +54,18 @@ const CartContainer = () => {
     }, [cartList]);
     const handleDelete = useCallback(cart_id => {
    
-        openModal('이 상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
+        openModal('상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
             if (user_token) {
                 try {
-                    const res = await deleteCartItem(user_token, cart_id);
-                    console.log(res);
-
+                    await deleteCartItem(user_token, cart_id);
                 }
                 catch (e) {
-
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
                 }
             }
             else {
                 try {
-                    const res = await noAuthRemoveCartItem(cart_id);
+                    await noAuthRemoveCartItem(cart_id);
                     const cart_ids = JSON.parse(
                         localStorage.getItem('noAuthCartId'),
                     );
@@ -87,14 +83,12 @@ const CartContainer = () => {
                         ),
                     );
                 } catch (e) {
-
+                    openModal('상품을 삭제하는 데에 실패하였습니다!', '잠시 후 다시 시도해 주세요.');
                 }
             }
-        setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
-        },true);
-               
-   
-    }, [user_token]);
+            setCartList(list => list.filter(({ item }) => cart_id.indexOf(item.cart_id) === -1))
+        }, () => {},true);
+    }, [openModal, user_token]);
 
     const handleOpen = useCallback(() => setOpen(true), []);
     const handleClose = useCallback(() => setOpen(false), []);
@@ -107,7 +101,6 @@ const CartContainer = () => {
         //유저 정보가 있을때
         if (user_token) {
             setLoading(true);
-            console.log('장바구니 들고오기');
             try {
                 const res = await getCartList(user_token);
                 if (res.data.msg === '선택된 배달받을 주소지가 없습니다.') {
@@ -122,51 +115,46 @@ const CartContainer = () => {
                         list[i] = query[i];
                         list[i].checked = false;
                     }
-                    console.log(list);
                     setCost(query.delivery_cost);
                     setCartList(list);
                 }
-            } catch (e) {
-
-            }
+            } catch (e) {}
             setLoading(false);
         } else {
             setLoading(true);
-     
+
             // 로컬스토리지 정보를 정확히 로드하기 위해 0.5초뒤 시작.
-            setTimeout( async() => {
+            setTimeout(async () => {
                 setLoading(true);
                 if (addr1) {
-                     try {
-                         const cart_id = JSON.parse(
-                             localStorage.getItem('noAuthCartId'),
-                         );
-                         const res = await noAuthGetCartList(
-                             cart_id,
-                             lat,
-                             lng,
-                             addr1,
-                         );
-                         const { query } = res.data;
-                         let len = Object.keys(query).length;
-                         let list = [];
-                         for (let i = 0; i < len - 1; i++) {
-                             list[i] = query[i];
-                             list[i].checked = false;
-                         }
-                         setCost(query.delivery_cost);
-                         setCartList(list);
-                     } catch (e) {
-
-                     }
-                     setLoading(false);
-                }
-                else {
+                    try {
+                        const cart_id = JSON.parse(
+                            localStorage.getItem('noAuthCartId'),
+                        );
+                        const res = await noAuthGetCartList(
+                            cart_id,
+                            lat,
+                            lng,
+                            addr1,
+                        );
+                        const { query } = res.data;
+                        let len = Object.keys(query).length;
+                        let list = [];
+                        for (let i = 0; i < len - 1; i++) {
+                            list[i] = query[i];
+                            list[i].checked = false;
+                        }
+                        setCost(query.delivery_cost);
+                        setCartList(list);
+                    } catch (e) {}
+                    setLoading(false);
+                } else {
                     setLoading(false);
                 }
             }, 500);
         }
-    }, [user_token, addr1, lat,lng,history]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user_token, addr1, lat, lng, history]);
 
     const onChangeTotalPrice = useCallback(() => {
 
@@ -217,7 +205,7 @@ const CartContainer = () => {
             try {
                 for (let i = 0; i < cartList.length; i++) {
                     const { item } = cartList[i];
-                    const res = await noAuthUpdateCartQunaity(
+                    await noAuthUpdateCartQunaity(
                         item.cart_id,
                         item.item_quanity,
                     );
@@ -239,7 +227,6 @@ const CartContainer = () => {
                 </div>
                 <div className={styles['cart-list']}>
                     <CartItemList
-                        allChecked={allChecked}
                         carts={cartList}
                         handleCheckChild={handleCheckChild}
                         handleIncrement={handleIncrement}
@@ -296,7 +283,7 @@ const CartContainer = () => {
                     isEsit={estm}
                 />
             </>
-        ), [allChecked, cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
+        ), [cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
     );
 
         //마운트 될때만 함수 호출.

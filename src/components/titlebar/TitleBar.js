@@ -1,18 +1,20 @@
 import React from 'react';
+import classnames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
 import styles from './TitleBar.module.scss';
-import Back from 'components/svg/header/Back';
+import Back from 'components/svg/header/goBack';
 import { IconButton } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
+const cn = classnames.bind(styles);
 
+const TitleBar = ({ title, children, isHome }) => {
+    const { header } = useSelector(state => state.scroll);
 
-// 메인 로고 이미지
-
-const TitleBar = ({ title, sub, alt, onClick, children, isHome }) => {
     return (
         <>
             {title &&
-                <div className={styles['title-bar']}>
+                <div className={cn('title-bar', { not_view: header })}>
                     <div className={styles['item']}>
                         <BackButton isHome={isHome} />
                         <Title title={title} />
@@ -32,11 +34,11 @@ const Title = ({ title }) => {
     );
 };
 
-const BackButton = ({isHome}) => {
+const BackButton = ({ isHome }) => {
     const history = useHistory();
-    const onClickBack = () =>{
+    const onClickBack = () => {
         isHome ? history.push('/') : history.goBack();
-    } 
+    };
     return (
         <div className={styles['back']}>
             <div className={styles['pd-box']}>
@@ -54,7 +56,7 @@ const BackButton = ({isHome}) => {
 TitleBar.defaultProps = {
     sub: false,
     isHome: false,
-    onClick: () => console.warn('null'),
+    onClick: () => {},
 };
 
 export default TitleBar;

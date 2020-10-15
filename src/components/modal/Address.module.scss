@@ -1,27 +1,24 @@
 @import '../../styles/Root.scss';
 
-.title{
+.title {
     font-size: 16px;
-    color:#333;
+    color: #333;
     font-weight: bold;
     padding: $padding-all;
 }
 
-.modal-input-box{
-    // border: 1px solid red;
-    select{
-        width: 100%; height:56px;
-        padding: .8em .5em; /* 여백으로 높이 설정 */
+.modal-input-box {
+    select {
+        width: 100%;
+        height: 56px;
+        padding: 0.8em 0.5em; /* 여백으로 높이 설정 */
         border: 1px solid #999;
         border-radius: 10px; /* iOS 둥근모서리 제거 */
-        // -webkit-appearance: none; /* 네이티브 외형 감추기 */
-        // -moz-appearance: none;
-        // appearance: none;
-    
     }
-    input{
-        width: 100%; height:56px;
-        padding: .8em .5em; /* 여백으로 높이 설정 */
+    input {
+        width: 100%;
+        height: 56px;
+        padding: 0.8em 0.5em; /* 여백으로 높이 설정 */
         border: 1px solid #999;
         border-radius: 10px; /* iOS 둥근모서리 제거 */
         box-sizing: border-box;
@@ -29,18 +26,17 @@
     }
 }
 
-.box{
+.box {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-top :20px;
-    .title{
+    margin-top: 20px;
+    .title {
         font-size: 20px;
-
     }
-    .btn{
+    .btn {
         display: flex;
-  
+
         justify-content: center;
         align-items: center;
         border: 1px solid black;
@@ -51,25 +47,22 @@
     }
 }
 
-
-
-
-.container{
+.container {
     display: flex;
     flex-direction: column;
-
-    .modal-input-box{
+    word-break: keep-all;
+    .modal-input-box {
         width: 100%;
         margin: 10px 0;
         position: relative;
-        input{
+        input {
             width: 100%;
-            border:1px solid #dbdbdb;
+            border: 1px solid #dbdbdb;
         }
-        .search-btn{
+        .search-btn {
             position: absolute;
             width: 50px;
-            
+
             top: 2px;
             right: 5px;
             height: 50px;
@@ -80,55 +73,53 @@
             }
         }
     }
-    .result{
+    .result {
         width: 100%;
         font-size: 14px;
-        padding-left: 5px;;
+        padding-left: 5px;
     }
 
-    .addrs-list{
+    .addrs-list {
         width: auto;
         margin: 10px 0;
-    }   
-    .select-addr{
+    }
+    .select-addr {
         width: 100%;
         display: flex;
         align-items: center;
-        // border:1px solid red;
-        font-size: $font-size;
+        font-size: $font-size + 2;
         padding: 15px 5px;
+        line-height: 1.5;
     }
 }
 
-.modal-input{
-    
-    border : 1px solid #dbdbdb;
+.modal-input {
+    border: 1px solid #dbdbdb;
     box-sizing: border-box;
     outline: none;
 
-    padding-left:5px;
-    &.md-top{
-        margin-bottom:24px;
+    padding-left: 5px;
+    &.md-top {
+        margin-bottom: 24px;
         width: 100%;
         height: 50px;
     }
 }
 
-
-.search-btn{
+.search-btn {
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 20%;
-    height:auto;
+    height: auto;
     z-index: 10;
-    background-color:#fff;
+    background-color: #fff;
     border: 0px solid red;
 }
 
-.empty{
+.empty {
     border: 0px solid red;
     width: 50px;
-    height: 50px;;
+    height: 50px;
 }

@@ -6,15 +6,15 @@ export const noAuthAddCart = async (
     item_options,
     item_quanity,
     lat,
-    lng
+    lng,
 ) => {
     const req = Paths.api + 'noauth/cart';
     const form_data = {
         item_id: item_id,
         item_option_id: item_options,
         item_quanity: item_quanity,
-        lat:lat,
-        lng:lng
+        lat: lat,
+        lng: lng,
     };
     axios.defaults.headers.post['Context-Type'] = 'application/json';
 
@@ -34,8 +34,6 @@ export const noAuthGetCartList = async (cart_id, lat, lng, addr1) => {
         },
     });
 
-
-    console.log(res);
     return res;
 };
 

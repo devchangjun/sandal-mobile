@@ -2,7 +2,6 @@
 
 .container {
     @include wireframe(40px);
-
     .title {
         font-size: 18px;
         font-weight: bold;
@@ -20,15 +19,16 @@
         }
         .search-btn {
             cursor: pointer;
-            width: 24px;
-            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px; height: 32px;
             position: absolute;
-            right: 40px;
-            top: 50%;
+            right: 40px; top: 50%;
             transform: translateY(-50%);
             svg {
-                width: 24px;
-                height: 24px;
+                display: block;
+                width: 24px; height: 24px;
                 fill: $main-color;
             }
         }

@@ -2,98 +2,158 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import TitleBar from 'components/titlebar/TitleBar';
+
+//styles
 import classNames from 'classnames/bind';
-import BottomNav from 'components/nav/BottomNav';
-import { localLogout, requestAgreeChange } from '../../api/auth/auth';
-import { logout } from '../../store/auth/auth';
-import {update_user_info} from '../../store/auth/auth';
 import styles from './Account.module.scss';
-import Profile from 'components/svg/sign/profile.png';
-import { stringToTel } from '../../lib/formatter';
-import {useStore} from '../../hooks/useStore';
+//components
+
+import Button from '@material-ui/core/Button';
+import DropoutModal from '../../components/modal/DropoutModal';
+import ProfileModal from '../../components/modal/ProfileModal';
+//lib
+import { DBImageFormat, stringToTel } from '../../lib/formatter';
 import Back from '../../components/svg/header/Back';
-import {useInit} from '../../hooks/useStore';
-import {noAuthGetNearStore} from '../../api/noAuth/store';
+
+//hooks
+import { useInit } from '../../hooks/useStore';
+import { useStore } from '../../hooks/useStore';
+
+//api
+import { noAuthGetNearStore } from '../../api/noAuth/store';
+import { localLogout, requestAgreeChange, updateProfileImage } from '../../api/auth/auth';
+
+//store
+import { get_user_info, logout } from '../../store/auth/auth';
+import { update_user_info } from '../../store/auth/auth';
+import { useModal } from '../../hooks/useModal';
+import ProfileCoverImage from '../../components/asset/ProfileCoverImage';
 
 const cn = classNames.bind(styles);
 
 const AccountContainer = () => {    
+
+    const [open, setOpen] = useState(false);
+    
+    const [profileOpen, setProfileOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const initStore = useInit();
-    const { user } = useSelector((state) => state.auth);
-    const user_token = sessionStorage.getItem("access_token");
+    const { user } = useSelector(state => state.auth);
+    const user_token = useStore();
     const dispatch = useDispatch();
     const history = useHistory();
-    const onClickUpdateName =()=> history.push(Paths.ajoonamu.update_name);
-    const onClickUpdatePhone =()=>history.push(Paths.ajoonamu.update_phone);
-    const onClickUpdatePassword =()=> history.push(Paths.ajoonamu.update_password);
+    const openModal = useModal();
+    const onClickUpdateName = () => history.push(Paths.ajoonamu.update_name);
+    const onClickUpdatePhone = () => history.push(Paths.ajoonamu.update_phone);
+    const onClickUpdatePassword = () => history.push(Paths.ajoonamu.update_password);
     
-    const onClickLogout = useCallback(async () => {
-        try{
-            const res = await localLogout(user_token);
-            sessionStorage.removeItem('access_token');
-            if (res.message === '로그아웃에 성공하셨습니다.') {
-                dispatch(logout());
-                initStore();
-
-                const noAuthAddrs = JSON.parse(localStorage.getItem('noAuthAddrs'));
-                if(noAuthAddrs){
-                    const index = noAuthAddrs.findIndex((item) =>item.active===1);
-                    if(index!==-1){
-                        const {addr1, addr2,lat,lng,post_num} = noAuthAddrs[index];
-                        const near_store = await noAuthGetNearStore(lat,lng,addr1);
-                        initStore(addr1,addr2,lat,lng,post_num,near_store.data.query );
-                    }
+    const onChangeFiles = useCallback(async (e) => {
+        if (e.target.files.length) {
+            try {
+                const res = await updateProfileImage(user_token, e.target.files[0]);
+                if (res.data.msg === "성공") {
+                    openModal('프로필 이미지를 변경하였습니다!');
+                    dispatch(get_user_info(user_token));
+                } else {
+                    openModal('프로필 이미지 변경에 실패하였습니다!', '나중에 다시 시도해 주세요.');
                 }
-                history.replace(Paths.index);
-
-
+            } catch (e) {
+                openModal('서버에 오류가 발생하였습니다!', '나중에 다시 시도해 주세요.');
             }
         }
-        catch(e){
-            console.error(e);
-        }
-    },[dispatch,history,user_token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, user_token]);
 
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+    const onClickLogout = useCallback(async () => {
+        openModal('정말 로그아웃 하시겠습니까?', '', async () => {
+            try {
+                const res = await localLogout(user_token);
+                localStorage.removeItem('access_token');
+                if (res.message === '로그아웃에 성공하셨습니다.') {
+                    dispatch(logout());
+                    initStore();
+                    const noAuthAddrs = JSON.parse(
+                        localStorage.getItem('noAuthAddrs'),
+                    );
+                    if (noAuthAddrs) {
+                        const index = noAuthAddrs.findIndex(
+                            (item) => item.active === 1,
+                        );
+                        if (index !== -1) {
+                            const {
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                            } = noAuthAddrs[index];
+                            const near_store = await noAuthGetNearStore(
+                                lat,
+                                lng,
+                                addr1,
+                            );
+                            initStore(
+                                addr1,
+                                addr2,
+                                lat,
+                                lng,
+                                post_num,
+                                near_store.data.query,
+                            );
+                        }
+                    }
+                    history.replace(Paths.index);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }, () => {}, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, history, initStore, user_token]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const render = () => (
         <>
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
-                    <div className={cn('profile')}>
-                        <img
-                            className={styles['profile-img']}
-                            src={Profile}
-                            alt={'프로필 이미지'}
-                        />
-                        <div className={styles['change']}>변경</div>
+                    <div className={cn('profile')} onClick={() => setProfileOpen(true)}>
+                        <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} alt="" />
+                        <label htmlFor="change_profile" onClick={e => e.stopPropagation()} className={styles['change']}>변경</label>
+                        <input type="file" id="change_profile" className={styles['change-profile']} onChange={onChangeFiles} accept="image/gif, image/jpeg, image/png, image/svg" />
                     </div>
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
-                    <Item text={'핸드폰번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
+                    <Item text={'휴대폰 번호'} value={user && user.hp && stringToTel(user.hp)}  onClick={onClickUpdatePhone}/>
                     <Item text={'이메일'} value={user && user.email} />
-                    <Item text={'비밀번호 변경'}  onClick={onClickUpdatePassword}/>
+                    <Item text={'비밀번호 변경'} onClick={onClickUpdatePassword}/>
                 </div>
 
                 <MarketingAgree
                     agreeMail={user.agree_mail}
                     agreeSMS={user.agree_sms}
                 />
-
-                <div className={styles['logout']} onClick={onClickLogout}>
-                    <Button className={styles['logout-btn']}>
+                <div className={styles['logout']} >
+                    <Button className={styles['logout-btn']} onClick={onClickLogout}>
                         <div className={styles['pd-btn']}>로그아웃</div>
                     </Button>
                 </div>
+                <div className={styles['drop-out']}>
+                    <div className={styles['text']} onClick={handleOpen}>
+                        회원탈퇴
+                    </div>
+                    <p>회원탈퇴 신청화면으로 이동합니다.</p>
+                </div>
             </div>
+            <ProfileModal open={profileOpen} src={DBImageFormat(user && user.profile_img)} handleClose={() => setProfileOpen(false)} />
+            <DropoutModal open={open} handleClose={handleClose}/>
         </>
     );
-    return <>{user === null ? history.replace(Paths.index) : render()}</>;
+    return <>{user === null ? ()=>{} : render()}</>;
 };
 
 const MarketingAgree = ({ agreeMail, agreeSMS }) => {
@@ -107,8 +167,7 @@ const MarketingAgree = ({ agreeMail, agreeSMS }) => {
             수신 동의 변경하기.
             type과 value로 값 설정.
         */
-        const res = await requestAgreeChange(user_token, type, value);
-        console.log(res);
+        await requestAgreeChange(user_token, type, value);
     }, [user_token]);
 
     const changeMail = useCallback(() => {
@@ -159,18 +218,16 @@ const AgreeToggle = ({ name, checked, onToggle }) => {
     );
 };
 
-function Item({ text, value,onClick }) {
-    return (
-        <Button className={styles['pd-box']} onClick={onClick}>
-            <div className={styles['item']}>
-                <div className={styles['text']}>{text}</div>
-                {value &&
-                <div className={styles['value']}>
-                    {value}<Back rotate="180deg" width={18} height={18} />
-                </div>}
+const Item = ({ text, value, onClick }) => (
+    <Button className={styles['pd-box']} onClick={onClick}>
+        <div className={styles['item']}>
+            <div className={styles['text']}>{text}</div>
+            <div className={styles['value']}>
+                {value}
+                {onClick &&  <Back rotate="180deg" width={18} height={18} />}
             </div>
-        </Button>
-    );
-}
+        </div>
+    </Button>
+);
 
 export default AccountContainer;

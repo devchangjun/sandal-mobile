@@ -1,24 +1,26 @@
 @import '../../styles/Root.scss';
-.container{
+.container {
     @include wireframe(0);
 }
-.menu-img{
+.menu-img {
     width: 100%;
     max-width: $max-width;
     margin: 0 auto;
     position: relative;
-    img{
-        @include animation(0.5s,fadeIn);
+    img {
+        @include animation(0.5s, fadeIn);
         width: 100%;
+        height: 368px;
     }
-    .back{
+    .back {
         z-index: 100;
-        position: absolute;
-        top:24px;
-        left: 24px;
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        left: 12px;
     }
 }
-.detail-view{
+.detail-view {
     max-width: $max-width;
     min-width: $min-width;
     border: 0px solid black;
@@ -27,52 +29,56 @@
     display: flex;
     flex-direction: column;
 
-    .menu-info{
+    .menu-info {
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding : $padding-all;
-        .menu-name{
-            font-size:18px;
-            color:#333;
-            margin:7px 0;
+        padding: $padding-all;
+        .menu-name {
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+            margin: 7px 0;
         }
-        .menu-explan{
-            font-size:14px;
-            color:#777;
+        .menu-explan {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #777;
         }
-        .item-additional-list{
+        .item-additional-list {
             height: 150px;
             max-height: 200px;
             font-size: 14px;
         }
-        .cost-count{
+        .cost-count {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 24px 0;
-            .cost{
+            .cost {
                 font-size: 20px;
                 font-weight: bold;
             }
         }
     }
-    .title{
-        font-size:16px;
+    .title {
+        font-size: 16px;
         padding: 10px 24px;
-        background-color:#F9F9F9;
-        font-weight:500;
+        color: #333;
+        background-color: #f9f9f9;
+        font-weight: 500;
     }
 }
 
-.pd-box{
+.pd-box {
     padding: $padding-side;
 }
 
-@include keyframe(fadeIn){
-    from{
+@include keyframe(fadeIn) {
+    from {
         filter: blur(50px);
     }
-    to{
+    to {
         filter: blur(0);
     }
 }

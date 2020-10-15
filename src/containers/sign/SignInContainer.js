@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
-import { Paths } from 'paths';
+import { Paths, PROTOCOL_ENV } from 'paths';
 // styles
 import styles from './Sign.module.scss';
 import classNames from 'classnames/bind';
-import styled from 'styled-components';
 
 //components
 import SignNormalInput from 'components/sign/SignNormalInput';
@@ -13,9 +12,6 @@ import {
     NaverLogo,
     FacebookLogo,
 } from '../../components/svg/sign/social';
-import KakaoLogin from 'react-kakao-login';
-import DatePicker from '../../components/asset/DatePicker';
-
 //lib
 import { isEmailForm } from '../../lib/formatChecker';
 
@@ -29,31 +25,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
 import { localLogin } from '../../api/auth/auth';
+import { reqNoticeList } from '../../api/notice';
+import { getMobileOperatingSystem } from '../../api/OS/os';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
-
+import { get_notice, read_check } from '../../store/notice/notice';
 const cx = classNames.bind(styles);
 
-const KakaoButton = styled(KakaoLogin)`
-    /* display: inline-block;
-  padding: 0;
-  width: auto;
-  height: 49px;
-  line-height: 49px;
-  color: #3C1E1E;
-  background-color: #FFEB00;
-  border: 1px solid red;
-  border-radius: 3px;
-  font-size: 16px;
-  text-align: center;
- background-image : url('../../components/svg/sign/social/kakao.png') no-repeat;; */
-    border: none;
-    background-color: transparent;
-`;
-
-const logo =
-    'http://www.agenciasampling.com.br/asampling/assets/img/sample/shortcode/logo/1.png';
 
 const initialUserState = {
     email: '',
@@ -85,7 +64,6 @@ const SignInContainer = () => {
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
     const { email, password } = user;
     const [toggle, setToggle] = useState(false);
-    const { succeed } = useSelector((state) => state.auth);
 
     const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
@@ -97,6 +75,18 @@ const SignInContainer = () => {
             password: e.target.value,
         });
     };
+    const GetNotification = async (token) => {
+
+        try {
+            const res = await reqNoticeList(token);
+            // setList(res.notification);
+            const index = res.notification.findIndex((item) =>!item.not_read_datetime);
+            dispatch(read_check(index===-1));
+            dispatch(get_notice(res.notification));
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const onClickSignup = useCallback(() => {
         history.push(Paths.ajoonamu.signup);
@@ -105,6 +95,15 @@ const SignInContainer = () => {
     const onClickRecovery = useCallback(() => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
+
+    const LoginOs =()=>{
+        const login_os = getMobileOperatingSystem();
+        if(login_os ==='Android'){
+            if (typeof window.myJs !=='undefined') {
+                window.myJs.requsetToken();
+            }
+        }
+    }
 
     const onClickLogin = useCallback(async () => {
         if (!isEmailForm(email)) {
@@ -141,15 +140,12 @@ const SignInContainer = () => {
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
+                        LoginOs();
+                        // window.myJS.requestToken();
                         //토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
-                        const active_addr = await getActiveAddr(
-                            res.data.access_token,
-                        );
-                        sessionStorage.setItem(
-                            'access_token',
-                            res.data.access_token,
-                        );
+                        const active_addr = await getActiveAddr(res.data.access_token);
+                        localStorage.setItem('access_token', res.data.access_token);
                         if (active_addr) {
                             const {
                                 lat,
@@ -174,6 +170,7 @@ const SignInContainer = () => {
                         } else {
                             initStore();
                         }
+                        GetNotification(res.data.access_token);
                         history.replace('/');
                     }
                 } else {
@@ -187,19 +184,37 @@ const SignInContainer = () => {
                 history.replace('/');
             }
         }
-    }, [history, dispatch, email, password, openModal]);
-    const onClickKakaoLogin = async (res) => {
-        console.log(res);
-        const token = res.response.access_token;
-        localStorage.setItem('social', 'kakao');
-        localStorage.setItem('access_token', token);
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [email, openModal, password, dispatch, history, initStore]);
+
+
+
+    const kakaoLoginClickHandler =()=>{
+        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
+    }
+
+    const naverLoginClickHandler =()=>{
+        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
+    }
 
     useEffect(() => {
         const btnToggle =
             email.length !== 0 && password.length !== 0 ? true : false;
         setToggle(btnToggle);
     }, [email, password]);
+
+    useEffect(() => {
+        const kepressEvent = e => {
+            if (e.key === 'Enter') {
+                onClickLogin();
+            }
+        };
+        document.addEventListener('keypress', kepressEvent, true);
+        return () => {
+            document.removeEventListener('keypress', kepressEvent, true);
+        }
+    }, [onClickLogin]);
+
 
     return (
         <>
@@ -254,17 +269,10 @@ const SignInContainer = () => {
                         </div>
                         <div className={styles['social']}>
                             <div className={styles['sns']}>
-                                <img src={NaverLogo} alt="naver"></img>
+                                <img src={NaverLogo} alt="naver" onClick={naverLoginClickHandler}></img>
                             </div>
                             <div className={styles['sns']}>
-                                <KakaoButton
-                                    jsKey={'122df6d8b0bf2538b90ad7183a949975'}
-                                    buttonText="kakao"
-                                    getProfile={true}
-                                    onSuccess={onClickKakaoLogin}
-                                >
-                                <img src={KakaoLogo} alt="kakao"></img>
-                                </KakaoButton>
+                               <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>    
                             </div>
                             <div className={styles['sns']}>
                                 <img src={FacebookLogo} alt="facebook"></img>

@@ -15,27 +15,37 @@ import styles from './Modal.module.scss';
 
 const useStyles = makeStyles((theme) => ({
     backdrop: {
-        zIndex: 2500
+        zIndex: 2500,
     },
 }));
 
 const cn = classnames.bind(styles);
 
-export default ({ confirm, title, text, handleClick = () => {}, open }) => {
-    const state = useSelector(state => state.modal);
+export default ({
+    confirm,
+    title,
+    text,
+    handleClick = () => {},
+    handleClose = () => {},
+    open,
+}) => {
+    const state = useSelector((state) => state.modal);
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const confirmButton = useRef(null);
 
-    const onClose = useCallback(() => dispatch(modalClose()), [dispatch]);
+    const onClose = useCallback(() => {
+        handleClose();
+        dispatch(modalClose());
+    }, [dispatch, handleClose]);
     const onClick = useCallback(() => {
         handleClick();
         onClose();
     }, [handleClick, onClose]);
 
     useEffect(() => {
-        const keydownEvent = e => {
+        const keydownEvent = (e) => {
             if (e.key === 'Escape') {
                 onClose();
             }
@@ -52,20 +62,31 @@ export default ({ confirm, title, text, handleClick = () => {}, open }) => {
 
     return (
         <>
-            <div className={cn('modal', { confirm,  open })}>
+            <div className={cn('modal', { confirm, open })}>
                 <div className={styles['area']}>
                     <div className={cn('content')}>
-                        <h3 className={styles['title']}>{title}</h3>
-                        <p className={styles['text']}>{text}</p>
+                        <h3 className={styles['title']}>
+                            {title.split('\n').map((line, index) =>
+                                <span key={index}>{line}<br /></span>
+                            )}
+                        </h3>
+                        {text !== '' && <p className={styles['text']}>{text}</p>}
                     </div>
                     <div className={styles['bottom']}>
-                        {confirm &&
-                            <ButtonBase className={cn('button')} onClick={onClose}>
+                        {confirm && (
+                            <ButtonBase
+                                className={cn('button')}
+                                onClick={onClose}
+                            >
                                 아니오
                             </ButtonBase>
-                        }
-                        <ButtonBase ref={confirmButton} className={cn('button', 'active')} onClick={onClick}>
-                            {confirm ? "예" : "확인"}
+                        )}
+                        <ButtonBase
+                            ref={confirmButton}
+                            className={cn('button', 'active')}
+                            onClick={onClick}
+                        >
+                            {confirm ? '예' : '확인'}
                         </ButtonBase>
                     </div>
                 </div>

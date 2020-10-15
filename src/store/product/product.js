@@ -10,17 +10,9 @@ export const get_menulist = createAction(GET_MENULIST);
 export const add_menuitem = createAction(ADD_MENUITEM);
 
 const initState = {
-    // categorys: [
-    //     {
-    //         ca_id: 0,
-    //         ca_name: '추천메뉴',
-    //         ca_order: 0,
-    //         ca_use: 1,
-    //     },
-    // ],
+
     categorys:[],
     items: null,
-    name: 'test',
 };
 
 const product = handleActions(

@@ -3,28 +3,13 @@ import { useHistory } from 'react-router-dom';
 import styles from './TabMenu.module.scss';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+import cn from 'classnames/bind';
+const cx = cn.bind(styles);
 
-const useStyles = makeStyles((theme) => ({
-    tabs: {
-        width: '100%',
-        maxWidth: '768px',
-        minHeight: '40px',
-        margin: '0 auto',
-        top: '40px',
-        left: 0,
-        right: 0,
-        backgroundColor: '#fff',
-        position: 'fixed',
-        zIndex: 99,
-        paddingLeft:"24px",
-        paddingRight:"24px",
-    },
-}));
-
-const TabMenu = ({ tabs, index, onChange,isPush }) => {
-    const classes = useStyles();
+const TabMenu = ({ tabs, index, onChange, isPush, center }) => {
     const history = useHistory();
+    const { header } = useSelector((state) => state.scroll);
 
     const onClickTab = (url) => {
         if (url !== undefined) {
@@ -36,7 +21,7 @@ const TabMenu = ({ tabs, index, onChange,isPush }) => {
         <Tab
             label={tab.name}
             key={tab.name}
-            className={styles['tab-item']}
+            className={cx('tab-item', { center: center })}
             onClick={() => onClickTab(tab.url)}
         />
     ));
@@ -45,14 +30,20 @@ const TabMenu = ({ tabs, index, onChange,isPush }) => {
         <Tabs
             value={index}
             onChange={onChange}
+            textColor="primary"
             TabIndicatorProps={{
                 style: {
-                    backgroundColor: '#000',
-                    height:'4px',
-                    borderRadius:'100px'
+                    backgroundColor: '#007246',
+                    height: '2px',
+                    borderRadius: '100px',
+                    color: 'red',
                 },
             }}
-            className={classes.tabs}
+            className={styles['tabs']}
+            style={{
+                top: header ? '0px' : '40px',
+                boxShadow: header ? '0px 3px 20px rgba(0,0,0,0.1)' : '',
+            }}
         >
             {tabList}
         </Tabs>
@@ -60,10 +51,11 @@ const TabMenu = ({ tabs, index, onChange,isPush }) => {
 };
 
 TabMenu.defaultProps = {
+    center: true,
     tabs: null,
     index: 0,
-    isPush : false,
-    onChange: () => console.warn(null),
+    isPush: false,
+    onChange: () => {},
 };
 
 export default TabMenu;

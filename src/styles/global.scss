@@ -1,6 +1,6 @@
 html body {
     .MuiIconButton-label {
-        display: inline;
+        flex-direction: column;
     }
     .MuiIconButton-root {
         padding: 0;
@@ -14,4 +14,10 @@ html body {
         font-size: inherit;
         border-radius: 0;
     }
+}
+
+.swiper-slide {
+    max-height: 100vh;
+    overflow-y: scroll;
+    height: 100vh;
 }

@@ -1,8 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styles from './EventContent.module.scss';
+import ErrorCoverImage from '../asset/ErrorCoverImage';
 
-const ImageBox = styled.img`
-    width: 100%;
-`;
-
-export default ({ image }) => image ? <ImageBox className={""} src={image} alt="event_image" /> : null;
+export default ({ image }) => image ? <ErrorCoverImage className={styles['image']} src={image} alt="event_image" /> : null;

@@ -6,7 +6,6 @@ const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: 9999,
         color: '#fff',
-        // color: '#007246'
     },
 }));
 

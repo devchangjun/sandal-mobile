@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import { Paths } from 'paths';
+import { useHistory } from 'react-router-dom';
 import styles from './HomeSlick.module.scss';
 import Slider from 'react-slick';
 
@@ -6,9 +8,11 @@ import { useModal } from '../../../hooks/useModal';
 import { requestBannerList } from '../../../api/event/banner';
 import { Link } from 'react-router-dom';
 import { DBImageFormat } from '../../../lib/formatter';
+import ErrorCoverImage from '../../../components/asset/ErrorCoverImage';
 
 const HomeSlick = () => {
     const openModal = useModal();
+    const history = useHistory();
     
     const [state, dispatch] = useReducer((state, action) => ({ ...state, ...action }), {
         oldSlide: 0, activeSlide: 1, end: 0
@@ -20,7 +24,6 @@ const HomeSlick = () => {
     const getBannerList = useCallback(async () => {
         try {
             const res = await requestBannerList();
-            console.log(res);
             if (res.data.msg === '성공') {
                 setList(res.data.query);
                 dispatch({ end: res.data.query.length });
@@ -50,7 +53,6 @@ const HomeSlick = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-
         appendDots: (dots) => <ul>{dots}</ul>,
         beforeChange: (current, next) => dispatch({ oldSlide: current, activeSlide: next + 1 }),
     };
@@ -61,12 +63,12 @@ const HomeSlick = () => {
                 {list.map(item => (
                     <Link key={item.id} to={item.bn_url}>
                         <div className={styles['item']}>
-                            <img src={DBImageFormat(item.bn_img_mobile)[0]} alt="mainBanner" />
+                            <ErrorCoverImage src={DBImageFormat(item.bn_img_mobile)[0]} alt="mainBanner" />
                         </div>
                     </Link>
                 ))}
             </Slider>
-            <div className={styles['count']}>
+            <div className={styles['count']} onClick={()=>history.push(Paths.ajoonamu.event)}>
                 <span>{state.activeSlide}</span>
                 <span>{state.end}</span>
             </div>

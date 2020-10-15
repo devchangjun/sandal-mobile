@@ -86,6 +86,13 @@
         align-items: center;
         color: #333;
         font-size: $font-size + 4;
+        
+    }
+    .version {
+        white-space: nowrap;
+        color: #777;
+        font-size: 14px;
+        font-weight: normal;
     }
 }
 .logout {
@@ -95,7 +102,6 @@
     justify-content: center;
     align-items: center;
     padding: 0 24px;
-    margin-bottom:70px;
     .logout-btn {
         width: 100%;
         height: 56px;

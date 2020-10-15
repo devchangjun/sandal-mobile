@@ -22,7 +22,7 @@ $border-radius: 10px;
     min-height: 100vh;
     margin: 0 auto;
     padding-top: $padding;
-    padding-bottom: 73px;
+    padding-bottom: 60px;
 }
 
 @mixin animation($delay, $name) {
@@ -39,4 +39,14 @@ $border-radius: 10px;
     display: flex;
     justify-content: $justify-content;
     align-items: center;
+}
+
+@mixin swiper($height){
+    height: calc(100vh -#{$height});
+    max-height:  calc(100vh - #{$height}); 
+}
+@mixin swiper-slide($height){
+    height: calc(100vh - #{$height});
+    max-height:  calc(100vh - #{$height}); 
+    padding-bottom:70px;
 }

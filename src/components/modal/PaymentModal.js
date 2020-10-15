@@ -25,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white',
         color: 'black',
         boxShadow: 'none',
+        borderBottom: 'solid 1px #aaa',
         fontSize: 10,
     },
     title: {
         textAlign: 'center',
         width: '100%',
-        fontSize: 18,
+        fontSize: 16,
     },
     toolbar: {
         display: 'flex',
@@ -49,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
     },
     close: {
         position: 'absolute',
-        left: 24,
+        width: '40px', height: '40px',
+        left: 14,
     },
 }));
 
@@ -61,9 +63,7 @@ const FullScreenDialog = (props) => {
     const classes = useStyles();
     const [payment, setPayment] = React.useState(props.payment);
 
-    const onClickPayment = (value) => {
-        setPayment(value);
-    };
+    const onClickPayment = value => setPayment(value);
     const onClickClose = () => {
         setPayment(props.payment);
         props.handleClose();
@@ -79,23 +79,21 @@ const FullScreenDialog = (props) => {
     ));
 
     return (
-        <div>
-            <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
-                <AppBar className={classes.appBar}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton className={classes.close} color="inherit" onClick={onClickClose} aria-label="close">
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h6" className={classes.title}>
-                            결제 방법 선택
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <div className={styles['title']}>결제 방법을 선택해주세요.</div>
-                <div className={styles['container']}>{list}</div>
-                <FixButton title={'확인'} onClick={() => props.onClick(payment)} toggle={true}/>
-            </Dialog>
-        </div>
+        <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
+            <AppBar className={classes.appBar}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton className={classes.close} color="inherit" onClick={onClickClose} aria-label="close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
+                        결제 방법 선택
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <div className={styles['title']}>결제 방법을 선택해주세요.</div>
+            <div className={styles['container']}>{list}</div>
+            <FixButton title={'확인'} onClick={() => props.onClick(payment)} toggle={true} />
+        </Dialog>
     );
 };
 

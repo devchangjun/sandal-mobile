@@ -11,8 +11,8 @@ import Button from 'components/button/Button';
 import CloseButton from 'components/svg/account/Close';
 
 //hooks
-import { useStore } from '../../hooks/useStore';
 import { useModal } from '../../hooks/useModal';
+import { useStore } from '../../hooks/useStore';
 
 
 const UpdateNameContainer=()=>{

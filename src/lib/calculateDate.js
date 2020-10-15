@@ -11,3 +11,14 @@ export const calculateDate = (date, term, type) => {
             return cal_date;
     }
 }
+
+export const calculateDay =(date) =>{
+    var newArr = date.split(' ');
+
+    const week = new Array('(일)','(월)','(화)','(수)','(목)','(금)','(토)');
+    const cal_date = new Date(date);
+    const day = week[cal_date.getDay()];
+    const str = newArr.join(` ${day} `);
+
+    return str;
+}

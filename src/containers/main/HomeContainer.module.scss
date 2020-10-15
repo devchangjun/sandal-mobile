@@ -1,17 +1,13 @@
-@import '../../../styles/Root.scss';
+@import '../../styles/Root.scss';
 
 .container {
     @include wireframe($pd-top);
+    height: 100vh;
+    overflow: hidden;
     .swiper{
         @include swiper($pd-top);
-        &.sub{
-            .swiper-slide{
-                overflow-y: scroll;
-            }
-        }
         .swiper-slide{
              @include swiper-slide($pd-top);
-             overflow: hidden;
         }   
     }
 
@@ -22,12 +18,11 @@
         font-weight: bold;
         padding: 0 24px;
         margin-top:24px;
-        // &.sub{
-        //     margin-top : 84px;
-        // }
+  
     }
 
     .carousel {
+        min-height: 200px;
         border: 0px solid black;
         display: flex;
         justify-content: center;
@@ -59,14 +54,11 @@
 
 
 .categorys{
-    // position: sticky;
-    // top:0px;
-    // left:0;
-    // z-index: 3000;
-    // &.sub{
-    //     border:1px solid red;
-    //     top:60px;
-    // }
+    position: sticky;
+    top:0px;
+    left:0;
+    z-index: 3000;
+
     padding: 15px 0;
     padding-left: 15px;
     background-color: #fff;

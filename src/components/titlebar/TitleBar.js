@@ -29,7 +29,7 @@ const TitleBar = ({ title, children, isHome }) => {
 const Title = ({ title }) => {
     return (
         <div className={styles['title']}>
-            <span>{title}</span>
+            {title}
         </div>
     );
 };

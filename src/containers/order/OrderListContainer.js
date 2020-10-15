@@ -5,7 +5,7 @@ import { Paths } from 'paths';
 import TitleBar from 'components/titlebar/TitleBar';
 import TabMenu from 'components/tab/TabMenu';
 import OrderItemList from '../../components/order/OrderItemList';
-import BottomModal from 'components/nav/BottomModal';
+import BottomModal from '../../components/nav/BottomModal';
 import date from 'components/svg/title-bar/date.svg';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
@@ -72,7 +72,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                 const reserve = orders.filter(
                     (item) => item.info.order_type === 'reserve',
                 );
-                setReserveList(reserve);
+                setReserveList(orders);
                 setSuccess(true);
             } catch (e) {
                 setSuccess(false);

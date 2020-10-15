@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 //styles
 import classNames from 'classnames/bind';
@@ -28,7 +29,10 @@ import DatePicker from '../../components/asset/DatePicker';
 import { useModal } from '../../hooks/useModal';
 import { useStore } from '../../hooks/useStore';
 
-import { PROTOCOL_ENV } from '../../paths';
+//lib
+import {Paths, PROTOCOL_ENV } from '../../paths';
+import { calculateDate } from '../../lib/calculateDate';
+
 
 //api
 import { user_order} from '../../api/order/order';
@@ -66,6 +70,8 @@ const OrderContainer = () => {
     const { addr1, addr2, lat, lng, post_num } = useSelector(
         (state) => state.address,
     );
+    const history = useHistory();
+    const {company} = useSelector(state => state.company);
     const user_token = useStore(false);
     const [noAuthName, setNoAuthName] = useState('');
     const [loading, setLoading] = useState(false);
@@ -86,10 +92,13 @@ const OrderContainer = () => {
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState(null); //쿠폰 번호
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(calculateDate(new Date(), -2, 'DATE'));
     const [hours, setHours] = useState('09');
     const [minite, setMinite] = useState('00');
 
+    const [startDate, setStartDate] = useState(
+        calculateDate(new Date(), -2, 'DATE'),
+    );
 
     const [hp, setHp] = useState('');
     const [authNumber, setAuthNumber] = useState('');
@@ -397,6 +406,14 @@ const OrderContainer = () => {
             PaypleCpayAuthCheck(obj);
         });
     };
+    useEffect(()=>{
+        if(company && totalPrice){
+            if(company.minimum_order > totalPrice){
+                history.replace(Paths.index);
+                openModal('잘못된 접근입니다.');
+            }
+        }
+    },[company,totalPrice])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -431,7 +448,6 @@ const OrderContainer = () => {
     return (
         <>
             <Loading open={loading} />
-
             <div className={styles['order']}>
                 <div className={cx('title', 'pd-box')}>배달정보</div>
                 <div className={styles['table']}>
@@ -504,7 +520,11 @@ const OrderContainer = () => {
                 <div className={cx('title', 'pd-box')}>배달 요청 시간</div>
                 <div className={cx('date-picker', 'pd-box')}>
                     <div className={styles['date']}>
-                        <DatePicker date={date} setDate={setDate} />
+                        <DatePicker
+                         minDate={ calculateDate(new Date(), -2, 'DATE')}
+                         date={date} 
+                         setDate={setDate} 
+                         />
                     </div>
                     <div className={styles['time']}>
                         <div className={styles['second']}>

@@ -33,6 +33,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const [loading, setLoading] = useState(false);
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
+    const [od_status ,setOdStatus] = useState(false);
 
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);
@@ -43,6 +44,7 @@ const OrderDetailContainer = ({ order_id }) => {
             } else {
                 res = await noAuthOrderView(order_id);
             }
+            console.log(res);
             const { orders, payinfo } = res;
             if (orders === undefined) {
                 openModal(
@@ -52,7 +54,9 @@ const OrderDetailContainer = ({ order_id }) => {
                 );
                 setSuccess(false);
             } else {
+                console.log(res);
                 setOrders(orders);
+                setOdStatus(orders.info[0].od_status === 'order_cancel');
                 setPayinfo(payinfo);
                 setSuccess(true);
             }
@@ -89,9 +93,11 @@ const OrderDetailContainer = ({ order_id }) => {
                         -1
                     ) {
                         openModal('이미 취소된 거래건 입니다.');
+                        setOdStatus(true);
+
                     } else {
                         openModal('정상적으로 취소되었습니다.');
-                        history.replace('/');
+                        setOdStatus(true);
                     }
                 } catch (e) {}
                 setLoading(false);
@@ -130,25 +136,25 @@ const OrderDetailContainer = ({ order_id }) => {
                                     <div>배달 정보</div>
                                     <div className={styles['order-type']}>
                                         {order &&
-                                        order.info.order_type === 'reserve'
+                                        order.info[0].order_type === 'reserve'
                                             ? '예약주문'
                                             : '배달주문'}
                                     </div>
                                 </div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={order && order.info.s_name}
+                                        value1={order && order.info[0].s_name}
                                         value2={
                                             order &&
                                             `${order.s_addr1} ${order.s_addr2}`
                                         }
                                         value3={
                                             order &&
-                                            stringToTel(order.info.s_hp)
+                                            stringToTel(order.info[0].s_hp)
                                         }
                                         value4={`배달요청시간 : ${
                                             order &&
-                                            order.info.delivery_req_time
+                                            order.info[0].delivery_req_time
                                         }`}
                                     />
                                 </div>
@@ -156,10 +162,10 @@ const OrderDetailContainer = ({ order_id }) => {
                                 <div className={styles['title']}>주문정보</div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={order && order.info.s_name}
+                                        value1={order && order.info[0].s_name}
                                         value2={
                                             order &&
-                                            stringToTel(order.info.s_hp)
+                                            stringToTel(order.info[0].s_hp)
                                         }
                                         value3={user && user.email}
                                     />
@@ -203,32 +209,22 @@ const OrderDetailContainer = ({ order_id }) => {
                                     />
                                     <PaymentInfo
                                         text={'입금자명'}
-                                        value={order && order.info.s_name}
+                                        value={order && order.info[0].s_name}
                                     />
                                 </div>
                                 <div className={styles['button-box']}>
                                     <ButtonBase
                                         className={cx('cancle-btn', {
-                                            status:
-                                                order &&
-                                                order.info.od_status ===
-                                                    'order_cancel',
+                                            status: od_status
                                         })}
-                                        disabled={
-                                            order &&
-                                            order.info.od_status ===
-                                                'order_cancel'
-                                        }
+                                        disabled={od_status}
                                         onClick={
                                             order &&
-                                            order.info.od_status !==
-                                                'order_cancel'
-                                                ? userOrderCancle
-                                                : () => {}
+                                            od_status ? ()=>{} :userOrderCancle
                                         }
                                     >
                                         {order &&
-                                        order.info.od_status === 'order_cancel'
+                                        od_status
                                             ? '주문취소완료'
                                             : '주문취소'}
                                     </ButtonBase>

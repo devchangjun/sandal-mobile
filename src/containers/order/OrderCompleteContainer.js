@@ -132,7 +132,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                             <div className={styles['order-list']}>
                                 <div className={styles['title']}>주문상품</div>
                                 <div className={styles['list']}>
-                                    <DetailOrderItemList items={orders.items} />
+                                    <DetailOrderItemList info={orders.info} items={orders.items} />
                                 </div>
                                 <div className={cx('title', 'between')}>
                                     <div>배달 정보</div>

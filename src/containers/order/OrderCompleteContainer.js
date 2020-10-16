@@ -27,7 +27,7 @@ import { numberFormat, stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
 
-const OrderCompleteContainer = ({ order_number }) => {
+const OrderCompleteContainer = ({ order_number, message }) => {
     const user_token = useStore(false);
     const { user } = useSelector((state) => state.auth);
     const openModal = useModal();

@@ -31,7 +31,7 @@ const DetailContainer = ({ item_id }) => {
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
     const [option_total, setOptionTotal] = useState(0);
-    const { company } = useSelector(state => state.company);
+    // const { company } = useSelector(state => state.company);
 
     //옵션 아이템 선택
     const setOptionItem = useCallback(() => {
@@ -54,8 +54,12 @@ const DetailContainer = ({ item_id }) => {
 
         try {
             const res = await getMenuInfo(item_id);
-            setMenu(res);
-            console.log(res);
+            if (res.item) {
+                setMenu(res);
+            } else {
+                openModal('없거나 삭제된 상품입니다.', '상품 번호를 다시 한 번 확인해 주세요.');
+                history.push(Paths.index);
+            }
         } catch (e) {}
 
         setLoading(false);

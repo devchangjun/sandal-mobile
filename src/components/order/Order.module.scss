@@ -50,15 +50,23 @@ html {
                         position: relative;
                         span {
                             padding-right: 10px;
-                            &::after {
+                            color: transparent;
+                            &::before {
                                 content: '';
                                 width: 60px;
                                 display: block;
                                 position: absolute;
-                                margin-top: -10px;
+                                margin-top: 10px;
                                 border-radius: 10px;
-                                z-index: -100;
+                                z-index: 0;
                                 border-bottom: 11px solid #fcd700;
+                            }
+                            &::after {
+                                color: #222;
+                                font-size: 16px;
+                                content: '결제금액';
+                                position: absolute;
+                                top: 0; left: 0;;
                             }
                         }
                     }

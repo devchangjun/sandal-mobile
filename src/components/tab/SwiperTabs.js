@@ -16,7 +16,7 @@ const SwiperTab = ({ idx, categorys, onChange }) => {
                 <SwipeableTabs
                     noFirstLeftPadding={false}
                     noLastRightPadding={false}
-                    fitItems={false}
+                    fitItems={ !(categorys.length > 5 )}
                     alignCenter={true}
                     borderWidthRatio={1}
                     activeItemIndex={idx}

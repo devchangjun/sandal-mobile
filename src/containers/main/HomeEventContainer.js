@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import styles from './HomeEvent.module.scss';
 import SwiperCore, { Autoplay } from 'swiper';
-import {Swiper ,SwiperSlide } from 'swiper/react';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 //hooks
 import { useModal } from '../../hooks/useModal';
@@ -23,14 +22,16 @@ const HomeSlick = () => {
     const openModal = useModal();
     const history = useHistory();
 
-    const [index ,setIndex] = useState(0);
-    
-    const [state, dispatch] = useReducer((state, action) => ({ ...state, ...action }), {
-        oldSlide: 0, activeSlide: 1, end: 0
-    })
+    const [state, dispatch] = useReducer(
+        (state, action) => ({ ...state, ...action }),
+        {
+            oldSlide: 0,
+            activeSlide: 1,
+            end: 0,
+        },
+    );
 
     const [list, setList] = useState([]);
-
 
     const getBannerList = useCallback(async () => {
         try {
@@ -57,42 +58,53 @@ const HomeSlick = () => {
     }, [getBannerList]);
 
     const calcualteIndex = (index, length) => {
-
-
-        return (index % length) === 0 ? length : index % length;
-    } 
-
-
+        return index % length === 0 ? length : index % length;
+    };
 
     return (
         <div className={styles['container']}>
-            {list.length!==0 &&
-            <Swiper
-                initialSlide={0}
-                autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: true,
-                }}
-                slidesPerView={1}
-                loop
-                loopedSlides={1}
-                className={styles['event-swiper']}
-                onSlideChange={(swiper) => {
-                    dispatch({ oldSlide: calcualteIndex(swiper.previousIndex, list.length), activeSlide: calcualteIndex(swiper.activeIndex, list.length)});
-                }}
-            >
-              
-                {list.map((item) =>(
-                    <SwiperSlide key={item.id} className={styles['event-slide']}  isD>
-                         <Link to={item.bn_url}> 
-                        <div className={styles['item']}>
-                            <ErrorCoverImage src={DBImageFormat(item.bn_img_mobile)[0]} alt="mainBanner" />
-                        </div>
-                    </Link>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-            }
+            {list.length !== 0 && (
+                <Swiper
+                    initialSlide={0}
+                    autoplay={{
+                        delay: 2500,
+                        disableOnInteraction: true,
+                    }}
+                    slidesPerView={1}
+                    loop
+                    loopedSlides={1}
+                    className={styles['event-swiper']}
+                    onSlideChange={(swiper) => {
+                        dispatch({
+                            oldSlide: calcualteIndex(
+                                swiper.previousIndex,
+                                list.length,
+                            ),
+                            activeSlide: calcualteIndex(
+                                swiper.activeIndex,
+                                list.length,
+                            ),
+                        });
+                    }}
+                >
+                    {list.map((item) => (
+                        <SwiperSlide
+                            key={item.id}
+                            className={styles['event-slide']}
+                            isD
+                        >
+                            <Link to={item.bn_url}>
+                                <div className={styles['item']}>
+                                    <ErrorCoverImage
+                                        src={DBImageFormat(item.bn_img_mobile)[0]}
+                                        alt="mainBanner"
+                                    />
+                                </div>
+                            </Link>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            )}
 
             <div
                 className={styles['count']}

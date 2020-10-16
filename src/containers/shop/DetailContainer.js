@@ -199,9 +199,7 @@ const DetailContainer = ({ item_id }) => {
                                 </div>
                                 <div className={styles['cost-count']}>
                                     <div className={styles['cost']}>
-                                        {menu &&
-                                            numberFormat(menu.item.item_price)}
-                                        원
+                                        {menu && numberFormat(menu.item.item_price)}원
                                     </div>
                                     <div className={styles['count']}>
                                         <Counter
@@ -212,17 +210,18 @@ const DetailContainer = ({ item_id }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={cx('title')}>추가 선택</div>
-                            <div className={styles['menu-info']}>
-                                <div className={styles['item-text']}>
-                                    {menu && menu.options && (
+                            {menu && menu.options && menu.options.length !== 0 &&
+                            <>
+                                <div className={cx('title')}>추가 선택</div>
+                                <div className={styles['menu-info']}>
+                                    <div className={styles['item-text']}>
                                         <AdditionalList
                                             itemList={menu && menu.options}
                                             onClickAddItem={onClickOptionItem}
-                                        />
-                                    )}
+                                        />    
+                                    </div>
                                 </div>
-                            </div>
+                            </>}
                             <div className={styles['content']}>
                                 <div className={styles['text-area']}>
                                     <h3 className={styles['item_name']}>
@@ -236,13 +235,13 @@ const DetailContainer = ({ item_id }) => {
                                     </p>
                                 </div>
                                 <div className={styles['image-area']}>
-                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_top)[0]} alt="상단 랜딩 이미지" />}
+                                    {/* {company && <ErrorCoverImage src={DBImageFormat(company.item_content_top)[0]} alt="상단 랜딩 이미지" />} */}
                                     {menu &&
                                     menu.item &&
                                     menu.item.item_content !== '[]' &&
                                     DBImageFormat(menu.item.item_content).map(image =>
                                     <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
-                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_bot)[0]} alt="하단 랜딩 이미지" />}
+                                    {/* {company && <ErrorCoverImage src={DBImageFormat(company.item_content_bot)[0]} alt="하단 랜딩 이미지" />} */}
                                 </div>
                             </div>
                         </div>

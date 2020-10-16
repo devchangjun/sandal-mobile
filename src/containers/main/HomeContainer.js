@@ -10,7 +10,7 @@ import styles from './HomeContainer.module.scss';
 import BestMenuItemList from 'components/item/BestMenuItemList';
 import MainEventSlide from './HomeEventContainer';
 import TabMenu from '../../components/tab/TabMenu';
-import BannerImg from 'components/svg/banner/subBanner1.png';
+import BannerImg from 'components/svg/banner/lineBanner.png';
 import Loading from 'components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
 import cn from 'classnames/bind';

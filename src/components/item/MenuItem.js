@@ -17,7 +17,7 @@ const MenuItem = (props) => {
             <div className={cx('menu-info', 'pd-box')}>
                 <div className={styles['menu-name']}>{props.item_name}</div>
                 <div className={styles['menu-price']}>
-                    {numberFormat(props.item_price)}원~
+                    {numberFormat(props.item_price)}원 ~
                 </div>
             </div>
         </ButtonBase>

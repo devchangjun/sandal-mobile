@@ -4,9 +4,10 @@
     box-sizing: border-box;
     font-family: '애플 SD 산돌고딕 Neo', 'Apple SD Gothic Neo', 나눔고딕,
         'NanumGothic', '맑은 고딕', 'Malgun Gothic', Ngothic, sans-serif;
-
+    letter-spacing: -0.05em;
     -webkit-tap-highlight-color: transparent;
 }
+
 a {
     text-decoration: none;
     color: inherit;

@@ -90,7 +90,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
     return (
         <>
             <SignAuthInput
-                inputType={'text'}
+                inputType={'tel'}
                 onClick={success ? () => {} : toggle ? onClickReSendAuth : onClickSendAuth}
                 toggle={toggle}
                 initValue={userPhone}
@@ -104,7 +104,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
             />
             <div className={cx('auth-btn', { not_view: !toggle })}>
                 <SignNormalInput
-                    inputType={'text'}
+                    inputType={'number'}
                     initValue={userAuth}
                     onChange={onChangeAuth}
                 />

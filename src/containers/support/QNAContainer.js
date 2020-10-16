@@ -216,14 +216,14 @@ const QNAContainer = ({ tab = 'send', query }) => {
             <TabMenu tabs={tabInit} index={index} onChange={onChangeTabIndex} />
             <div className={cn('container', { list: tab === 'list' })}>
                 <Swiper
-               className={styles['swiper']}
-               initialSlide={index}
-               slidesPerView={1}
-               onSlideChange={(swiper) => {
-                   onChangeSwiperIndex(swiper.activeIndex);
-               }}
-               autoHeight={true}
-               onSwiper={(swiper) => (SWIPER.current = swiper)}
+                    className={styles['swiper']}
+                    initialSlide={index}
+                    slidesPerView={1}
+                    onSlideChange={(swiper) => {
+                        onChangeSwiperIndex(swiper.activeIndex);
+                    }}
+                    autoHeight={true}
+                    onSwiper={(swiper) => (SWIPER.current = swiper)}
                 >
                     <SwiperSlide className={styles['swiper-slide']}>
                         <QNASend

@@ -479,7 +479,7 @@ const OrderContainer = () => {
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
                             <input
-                                type="number"
+                                type="tel"
                                 placeholder="휴대폰 번호"
                                 value={hp}
                                 onChange={onChangeHp}

@@ -185,6 +185,7 @@ const EstmModal = (props) => {
                         name="receiver"
                         className={styles['modal-input']}
                         onChange={onStateChange}
+                        type="text"
                     />
                 </div>
             </DialogContent>
@@ -195,6 +196,7 @@ const EstmModal = (props) => {
                         name="receiver_email"
                         className={styles['modal-input']}
                         onChange={onStateChange}
+                        type="email"
                     />
                 </div>
             </DialogContent>

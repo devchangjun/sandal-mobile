@@ -113,11 +113,11 @@ $menu-items: 2;
                     height: 24px;
                     transition: transform
                         cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
-                    transform: scale(1, 1) translate3d(0, 0, 0);
+                    transform: scale(1) translate3d(0, 0, 0);
                     cursor: pointer;
-                    &:hover {
-                        transform: scale(1.2, 1.2) translate3d(0, 0, 0);
-                    }
+                    // &:hover {
+                    //     transform: scale(1.2, 1.2) translate3d(0, 0, 0);
+                    // }
                     .menu {
                         position: absolute;
                         transition: transform

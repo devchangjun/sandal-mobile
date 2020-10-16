@@ -25,7 +25,7 @@ const CartContainer = () => {
 
     const history = useHistory();
     const { addr1, lat, lng } = useSelector(state => state.address);
-    const {company} = useSelector(state => state.company);
+    const { company } = useSelector((state) => state.company);
     const openModal = useModal();
 
     const [open, setOpen] = useState(false); //모달창 오픈

@@ -93,7 +93,7 @@ html {
             bottom: 108px;
             right: 24px;
             z-index: 999;
-            width: 64px;height: 64px;
+            width: 64px; height: 64px;
             border-radius: 100px;
             background-color: #fff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -101,6 +101,9 @@ html {
             transform: scale(0) rotate(359deg);
             &.render {
                 transform: scale(1) rotate(0deg);
+            }
+            img {
+                width: 40px; height: 40px;
             }
         }
     }

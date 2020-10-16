@@ -4,8 +4,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {useHistory} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useInit } from '../../hooks/useStore';
-import { useStore } from '../../hooks/useStore';
+import { useInit, useStore } from '../../hooks/useStore';
 
 //style
 import styles from './Address.module.scss';
@@ -34,13 +33,12 @@ import { noAuthGetNearStore } from '../../api/noAuth/store';
 
 //store
 import { modalOpen } from '../../store/modal';
+import { Paths } from '../../paths';
 
 
 const cx = classNames.bind(styles);
 
-const AddressContainer = () => {
-
-
+const AddressContainer = ({ modal }) => {
     const history = useHistory();
     const user_token = useStore(false);
     const modalDispatch = useDispatch();
@@ -62,10 +60,13 @@ const AddressContainer = () => {
     const [position, setPosition] = useState({
         lat: 0, lng: 0
     });
-    const [open, setOpen] = useState(false);
-    const [mapOpen, setMapOpen] = useState(false);
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
+
+
+    const onCloseModal = () => history.goBack();
+    const onOpenModalSearch = () => history.push(Paths.ajoonamu.address + '/search');
+    const onOpenModalMap = () => history.pushh(Paths.ajoonamu.address + '/map');
 
     const onMovePrevUrl =()=>{
         const url = JSON.parse(sessionStorage.getItem('url'));
@@ -118,7 +119,8 @@ const AddressContainer = () => {
 
     //지도 닫기
     const onClickMapClose = useCallback(() => {
-        setMapOpen(false);
+        onCloseModal();
+
         setDetailAddr('');
         setPosition({ lat: null, lng: null });
     }, []);
@@ -133,7 +135,7 @@ const AddressContainer = () => {
                 const lng = p.coords.longitude;
                 const newState = { lat: lat, lng: lng };
                 setPosition(newState);
-                setMapOpen(true);
+                onOpenModalMap();
             } catch (e) {
                 if (e.code === 3) {
                     openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
@@ -152,14 +154,14 @@ const AddressContainer = () => {
             alert('검색어를 입력해주세요.');
             return;
         } else {
-            setOpen(true);
+            onOpenModalSearch();
             onChangeSearch();
         }
     };
 
     //검색창 닫기
     const handleClose = () => {
-        setOpen(false);
+        onCloseModal();
         setDetailAddr('');
         setSelectAddr('');
     };
@@ -369,12 +371,11 @@ const AddressContainer = () => {
                                         if (res.data.msg === '성공') {
                                             const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
                                         
-                                             initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
+                                            initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
 
                                             // callDeliveryList();
-                                            setOpen(false);
-                                          setSearchAddr('');
-                                          onMovePrevUrl();
+                                            onMovePrevUrl();
+                                            setSearchAddr('');
 
 
                                         } else {
@@ -477,7 +478,6 @@ const AddressContainer = () => {
                                     
                                         initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
                                         setDeliveryList(test2);
-                                        setOpen(false);
                                         setSearchAddr('');
                                         onMovePrevUrl();
                                     }
@@ -552,7 +552,6 @@ const AddressContainer = () => {
                                             near_store.data.query,
                                         );
                                         // callDeliveryList();
-                                        setMapOpen(false);
                                         onMovePrevUrl();
 
                                     } else {
@@ -636,12 +635,9 @@ const AddressContainer = () => {
                                     );
                                     initStore(jibun, detail, lat, lng, 0,near_store.data.query);
                                     setDeliveryList(test2);
-                                    setMapOpen(false);
                                     history.goBack();
-
                                 }
                             }
-
                             catch(e){
                                 
                             }
@@ -657,10 +653,10 @@ const AddressContainer = () => {
         callDeliveryList();
     }, [callDeliveryList]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setSelectAddr('');
         setDetailAddr('');
-    },[open])
+    }, [modal]);
     return (
         <>
             {loading ? (
@@ -713,7 +709,7 @@ const AddressContainer = () => {
                         </div>
                     </div>
                     <AddressModal
-                        open={open}
+                        open={modal === 'search'}
                         handleClose={handleClose}
                         searchAddr={searchAddr}
                         onChangeAddr={onChangeSearchAddr}
@@ -727,7 +723,7 @@ const AddressContainer = () => {
                         onClick={onClickDeliveryAddrInsert}
                     />
                     <MapModal
-                        open={mapOpen}
+                        open={modal === 'map'}
                         position={position}
                         onClick={onClickMapInsertAddr}
                         handleClose={onClickMapClose}

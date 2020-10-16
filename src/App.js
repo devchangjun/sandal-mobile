@@ -216,35 +216,35 @@ const App = () => {
         <div className="App">
             <TitleBar title={getTitle()} />
             <Switch>
-                <Route exact={true} path={Paths.index} component={Home}></Route>
-                <Route path={Paths.ajoonamu.signin} component={Signin}></Route>
-                <Route path={Paths.ajoonamu.signup} component={SignUp}></Route>
-                <Route path={Paths.ajoonamu.complete + '/:email'} component={SignupComplete}></Route>
-                <Route path={Paths.ajoonamu.recovery} component={Recovery}></Route>
-                <Route path={Paths.ajoonamu.recovery_id} component={RecoveryId}></Route>
-                <Route path={Paths.ajoonamu.recovery_pw} component={RecoveryPw}></Route>
-                <Route path={Paths.ajoonamu.account} component={Account}></Route>
-                <Route path={Paths.ajoonamu.address} component={Address} ></Route>
-                <Route path={Paths.ajoonamu.mypage} component={MyPage} ></Route>
-                <Route path={Paths.ajoonamu.product} exact component={DetailMenu}></Route>
-                <Route path={Paths.ajoonamu.shop} component={Reserve}></Route>
-                <Route path={Paths.ajoonamu.breakfast} component={Breakfast}></Route>
-                <Route path={Paths.ajoonamu.cart} component={Cart}></Route>
-                <Route path={Paths.ajoonamu.order} component={Order}></Route>
-                <Route path={Paths.ajoonamu.order_list} component={OrderList}></Route>
-                <Route path={Paths.ajoonamu.order_complete} component={OrderComplete}></Route>
-                <Route path={Paths.ajoonamu.order_detail} component={OrderDetail}></Route>
-                <Route path={Paths.ajoonamu.coupon} component={Coupon}></Route>
-                <Route path={Paths.ajoonamu.find_email} component={FindEmail}></Route>
-                <Route path={Paths.ajoonamu.find_password} component={FindPassword}></Route>
-                <Route path={`${Paths.ajoonamu.event}/:post?`} component={Event}></Route>
-                <Route path={Paths.ajoonamu.notice} component={Notice}></Route>
-                <Route path={`${Paths.ajoonamu.support}/:tab?`} component={Support}></Route>
-                <Route path={Paths.ajoonamu.update_name} component={UpdateName}></Route>
-                <Route path={Paths.ajoonamu.update_password} component={UpdatePassword}></Route>
-                <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone}></Route>
-                <Route path={Paths.ajoonamu.tos} component={Tos}></Route>
-                <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}></Route>
+                <Route exact={true} path={Paths.index} component={Home} />
+                <Route path={Paths.ajoonamu.signin} component={Signin} />
+                <Route path={Paths.ajoonamu.signup + '/:modal?'} component={SignUp} />
+                <Route path={Paths.ajoonamu.complete + '/:email'} component={SignupComplete} />
+                <Route path={Paths.ajoonamu.recovery} component={Recovery} />
+                <Route path={Paths.ajoonamu.recovery_id} component={RecoveryId} />
+                <Route path={Paths.ajoonamu.recovery_pw} component={RecoveryPw} />
+                <Route path={Paths.ajoonamu.account + '/:modal?'} component={Account} />
+                <Route path={Paths.ajoonamu.address + '/:modal?'} component={Address} />
+                <Route path={Paths.ajoonamu.mypage} component={MyPage} />
+                <Route path={Paths.ajoonamu.product} exact component={DetailMenu} />
+                <Route path={Paths.ajoonamu.shop + '/:modal?'} component={Reserve} />
+                <Route path={Paths.ajoonamu.breakfast} component={Breakfast} />
+                <Route path={Paths.ajoonamu.cart + '/:modal?'} component={Cart} />
+                <Route path={Paths.ajoonamu.order + '/:modal?'} component={Order} />
+                <Route path={Paths.ajoonamu.order_list} component={OrderList} />
+                <Route path={Paths.ajoonamu.order_complete + '/:modal?'} component={OrderComplete} />
+                <Route path={Paths.ajoonamu.order_detail} component={OrderDetail} />
+                <Route path={Paths.ajoonamu.coupon} component={Coupon} />
+                <Route path={Paths.ajoonamu.find_email} component={FindEmail} />
+                <Route path={Paths.ajoonamu.find_password} component={FindPassword} />
+                <Route path={`${Paths.ajoonamu.event}/:post?`} component={Event} />
+                <Route path={Paths.ajoonamu.notice} component={Notice} />
+                <Route path={`${Paths.ajoonamu.support}/:tab?`} component={Support} />
+                <Route path={Paths.ajoonamu.update_name} component={UpdateName} />
+                <Route path={Paths.ajoonamu.update_password} component={UpdatePassword} />
+                <Route path={Paths.ajoonamu.update_phone} component={UpdatePhone} />
+                <Route path={Paths.ajoonamu.tos} component={Tos}/>
+                <Route path={`${Paths.ajoonamu.oauth}/:type`} component={OAuth}/>
                 <Route component={ErrorPage}/>
             </Switch>
             <ModalContainer />

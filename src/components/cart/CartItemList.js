@@ -7,6 +7,7 @@ const CartItemList = (props) => {
             id={index}
             key={cart.item.cart_id}
             {...cart}
+            handleChange={props.handleChange}
             handleCheckChild={props.handleCheckChild}
             handleIncrement={props.handleIncrement}
             handleDecrement={props.handleDecrement}

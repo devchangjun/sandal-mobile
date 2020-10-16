@@ -1,6 +1,8 @@
 import React from 'react';
 import OrderContainer from 'containers/order/OrderContainer';
 
-export default function Order() {
-    return <OrderContainer />;
+const Order = ({ match }) => {
+    return <OrderContainer modal={match.params.modal} />;
 }
+
+export default Order;

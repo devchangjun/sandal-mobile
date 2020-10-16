@@ -42,13 +42,16 @@ export const useUrl = () => {
     const [prev, setPrev] = useState('');
 
     useEffect(() => {
-        setCurrent(location.pathname);
-        setPrev(current);
-        const obj = {
-            current: location.pathname,
-            prev: current,
-        };
-        sessionStorage.setItem('url', JSON.stringify(obj));
+        if (location.pathname !== Paths.ajoonamu.address) {
+            // 주소지의 경우 원래 자리로 가야하기 때문에 예외처리
+            setCurrent(location.pathname);
+            setPrev(current);
+            const obj = {
+                current: location.pathname,
+                prev: current,
+            };
+            sessionStorage.setItem('url', JSON.stringify(obj));
+        }
     }, [location.pathname]);
 
     return { prev, current };

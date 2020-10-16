@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 //styles
 import classNames from 'classnames/bind';
@@ -30,13 +30,13 @@ import { useModal } from '../../hooks/useModal';
 import { useStore } from '../../hooks/useStore';
 
 //lib
-import {Paths, PROTOCOL_ENV } from '../../paths';
+import { Paths, PROTOCOL_ENV } from '../../paths';
 import { calculateDate } from '../../lib/calculateDate';
 
 
 //api
-import { user_order} from '../../api/order/order';
-import { noAuth_order} from '../../api/noAuth/order';
+import { user_order } from '../../api/order/order';
+import { noAuth_order } from '../../api/noAuth/order';
 import { noAuthGetCartList } from '../../api/noAuth/cart';
 import { getOrderCoupons } from '../../api/coupon/coupon';
 import { getCartList } from '../../api/cart/cart';
@@ -63,7 +63,7 @@ const initPayment = [
 ];
 const AUTH_NUMBER_LENGTH = 6;
 
-const OrderContainer = () => {
+const OrderContainer = ({ modal }) => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
 
     const { user } = useSelector((state) => state.auth);
@@ -71,13 +71,10 @@ const OrderContainer = () => {
         (state) => state.address,
     );
     const history = useHistory();
-    const {company} = useSelector(state => state.company);
+    const { company } = useSelector(state => state.company);
     const user_token = useStore(false);
     const [noAuthName, setNoAuthName] = useState('');
     const [loading, setLoading] = useState(false);
-    const [pointOpen, setPointOpen] = useState(false);
-    const [couponOpen, setCouponOpen] = useState(false);
-    const [paymentOpen, setPaymentOpen] = useState(false);
     const [couponList, setCouponList] = useState([]);
     const [payment, setPayment] = useState('페이플 카드 결제');
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
@@ -95,10 +92,6 @@ const OrderContainer = () => {
     const [date, setDate] = useState(calculateDate(new Date(), -2, 'DATE'));
     const [hours, setHours] = useState('09');
     const [minite, setMinite] = useState('00');
-
-    const [startDate, setStartDate] = useState(
-        calculateDate(new Date(), -2, 'DATE'),
-    );
 
     const [hp, setHp] = useState('');
     const [authNumber, setAuthNumber] = useState('');
@@ -173,18 +166,18 @@ const OrderContainer = () => {
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
     const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
-    const onClickPointOpen = () => setPointOpen(true);
-    const onClickPointClose = () => setPointOpen(false);
-    const onClickCouponOpen = () => setCouponOpen(true);
-    const onClickCouponClose = () => setCouponOpen(false);
-    const onClickPaymentOpen = () => setPaymentOpen(true);
-    const onClcikPaymentClose = () => setPaymentOpen(false);
+
+    const onOpenModalPoint = () => history.push(Paths.ajoonamu.order + '/point');
+    const onOpenModalCoupon = () => history.push(Paths.ajoonamu.order + '/coupon');
+    const onOpenModalPayment = () => history.push(Paths.ajoonamu.order + '/payment');
+    const onCloseModal = () => history.goBack();
 
     const onClickToggle = () => setToggle(!toggle);
 
     const onClickPayment = (payment) => {
         setPayment(payment);
-        setPaymentOpen(false);
+        // setPaymentOpen(false);
+        onCloseModal();
         sessionStorage.setItem('payment', payment);
     };
     const onClickCouponSelect = (cp_price, cp_id, cp_list) => {
@@ -618,7 +611,7 @@ const OrderContainer = () => {
                     <div className={cx('value', 'pd-none')}>
                         <ButtonBase
                             className={styles['payment']}
-                            onClick={onClickPaymentOpen}
+                            onClick={onOpenModalPayment}
                         >
                             {payment}
                         </ButtonBase>
@@ -632,7 +625,7 @@ const OrderContainer = () => {
                         <ButtonBase className={cx('box', 'pd-box')}>
                             <div
                                 className={cx('box', 'pd-box')}
-                                onClick={onClickCouponOpen}
+                                onClick={onOpenModalCoupon}
                             >
                                 <div className={styles['label']}>할인 쿠폰</div>
                                 <div className={styles['info']}>
@@ -650,7 +643,7 @@ const OrderContainer = () => {
                         <ButtonBase className={cx('box', 'pd-box')}>
                             <div
                                 className={cx('box', 'pd-box')}
-                                onClick={onClickPointOpen}
+                                onClick={onOpenModalPoint}
                             >
                                 <div className={styles['label']}>
                                     포인트 사용
@@ -769,22 +762,22 @@ const OrderContainer = () => {
                 onClick={onClickOrder}
             />
             <PointModal
-                open={pointOpen}
-                handleClose={onClickPointClose}
+                open={modal === 'point'}
+                handleClose={onCloseModal}
                 user_point={user && user.point}
                 onChange={setPointPrice}
                 point_price={point_price}
             />
             <CouponModal
                 item_price ={totalPrice}
-                open={couponOpen}
-                handleClose={onClickCouponClose}
+                open={modal === 'coupon'}
+                handleClose={onCloseModal}
                 list={couponList}
                 onClick={onClickCouponSelect}
             />
             <PaymentModal
-                open={paymentOpen}
-                handleClose={onClcikPaymentClose}
+                open={modal === 'payment'}
+                handleClose={onCloseModal}
                 payments={initPayment}
                 payment={payment}
                 onClick={onClickPayment}

@@ -112,7 +112,6 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
         if (viewId !== -1) {
             openModal('해당 문의를 수정하시겠습니까?', '', () => {
                 window.location = Paths.ajoonamu.support + '/qna/send?id=' + viewId;
-                handleClose();
             }, () => {}, true);
         }
     }, [viewId, openModal, history, handleClose]);
@@ -124,7 +123,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
     return (
         <Dialog
             fullScreen
-            open={viewId !== -1}
+            open={viewId !== undefined}
             onClose={handleClose}
             TransitionComponent={Transition}
         >

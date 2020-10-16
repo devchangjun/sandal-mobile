@@ -1,4 +1,4 @@
-import React ,{useState, useCallback}from 'react';
+import React ,{useState, useCallback, useEffect}from 'react';
 import FixButton from 'components/button/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -86,6 +86,10 @@ const FullScreenDialog = (props) => {
         }
     }, [desireQuan]);
 
+    const onQuanChange = useCallback(e => {
+        setDesireQuan(stringNumberToInt(e.target.value));
+    }, [desireQuan])
+
     const onClickOk = () => {
         props.onCustomOrder(budget,desireQuan);
         setOrderType('reserve');
@@ -98,6 +102,12 @@ const FullScreenDialog = (props) => {
         setDesireQuan(1);
         props.handleClose();
     }
+
+    useEffect(() => {
+        if (desireQuan < 1) {
+            setDesireQuan(1);
+        }
+    }, [desireQuan]);
 
     return (
         <Dialog
@@ -156,9 +166,8 @@ const FullScreenDialog = (props) => {
                     >
                         <img src={Minus} alt="minus" />
                     </IconButton>
-                    <div className={styles['value']}>
-                        {desireQuan}
-                    </div>
+                    <input className={styles['value']} onChange={onQuanChange} value={numberFormat(desireQuan)} /> 
+                    
                     <IconButton
                         style={{ right: 0 }}
                         className={styles['box']}

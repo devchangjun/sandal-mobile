@@ -96,7 +96,7 @@ const checkReducer = (state, action) => {
     };
 };
 
-const SignUpContainer = () => {
+const SignUpContainer = ({ modal }) => {
     const openModal = useModal();
     const history = useHistory();
     const [user, dispatchUser] = useReducer(userReducer, initialUserState);
@@ -246,6 +246,7 @@ const SignUpContainer = () => {
                     onChangeCheck1={onChangeCheck1}
                     onChangeCheck2={onChangeCheck2}
                     onChangeCheck3={onChangeCheck3}
+                    modal={modal}
                 />
             </div>
             <Button title={"가입 완료"} onClick={onClickSignUp} toggle={toggle} ></Button>
@@ -254,7 +255,11 @@ const SignUpContainer = () => {
 };
 
 const AcceptContainer = (props) => {
-    const [title, setTitle] = useState('');
+    const history = useHistory();
+
+    const onOpenPolicyModal = () => history.push(Paths.ajoonamu.signup + '/policy');
+    const onOpenTermModal = () => history.push(Paths.ajoonamu.signup + '/term');
+    const onCloseModal = () => history.goBack();
 
     return (
         <div className={cx('agree')}>
@@ -274,14 +279,14 @@ const AcceptContainer = (props) => {
                         text={'개인정보처리방침 필수 동의'}
                         check={props.check1}
                         onChange={props.onChangeCheck1}
-                        onClick={() => setTitle('개인정보처리방침')}
+                        onClick={onOpenPolicyModal}
                     />
                     <CheckBox
                         id={'check2'}
                         text={'이용약관 필수 동의'}
                         check={props.check2}
                         onChange={props.onChangeCheck2}
-                        onClick={() => setTitle('이용약관')}
+                        onClick={onOpenTermModal}
                     />
                     <CheckBox
                         id={'check3'}
@@ -300,7 +305,7 @@ const AcceptContainer = (props) => {
                     </div>
                 </div>
             </div>
-            <AgreeModal title={title} handleClose={() => setTitle('')} />
+            <AgreeModal title={props.modal} handleClose={onCloseModal} />
         </div>
     );
 };

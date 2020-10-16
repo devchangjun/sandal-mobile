@@ -32,12 +32,9 @@ import {
 const OFFSET = 8;
 const LIMIT = 8;
 
-
 const BreakfastContainer = ({ menu }) => {
-
-
     const SWIPER = useRef(null);
-    const SWIPER_SLIDE =useRef(null);
+    const SWIPER_SLIDE = useRef(null);
     const { categorys, items } = useSelector((state) => state.breakfast);
 
     const dispatch = useDispatch();
@@ -259,7 +256,6 @@ const BreakfastContainer = ({ menu }) => {
                             {items && renderSwiperItem()}
                         </Swiper>
                     </div>
-                    <CartLink />
                 </>
             )}
         </>

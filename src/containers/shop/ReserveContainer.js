@@ -46,7 +46,7 @@ const cx = cn.bind(styles);
 const OFFSET = 10;
 const LIMIT = 10;
 
-const ReserveContainer = ({ menu }) => {
+const ReserveContainer = ({ menu, modal, query }) => {
     const SWIPER = useRef(null);
     const SWIPER_SLIDE = useRef(null);
     const openModal = useModal();
@@ -61,7 +61,6 @@ const ReserveContainer = ({ menu }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('추천메뉴');
     const [tabIndex, setTabIndex] = useState(menu);
@@ -74,8 +73,8 @@ const ReserveContainer = ({ menu }) => {
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(OFFSET);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const onOpenModal = () => history.push(Paths.ajoonamu.shop + '/prefer' + query);
+    const onCloseModal = () => history.goBack();
 
     const onChangeType = (type) => dispatch(set_type(type));
 
@@ -189,7 +188,7 @@ const ReserveContainer = ({ menu }) => {
 
     //맞춤 주문 설정
     const onClickCustomOrder = async (budget, desireQuan) => {
-        setOpen(false);
+        onCloseModal();
         setLoading(true);
         try {
             const res = await getPreferMenuList(
@@ -372,7 +371,7 @@ const ReserveContainer = ({ menu }) => {
                                             type={type}
                                             search={search}
                                             onClick={onClickMenuItem}
-                                            handleOpen={handleOpen}
+                                            handleOpen={onOpenModal}
                                             onChange={onChangeType}
                                             init={onClickInit}
                                         />
@@ -381,8 +380,8 @@ const ReserveContainer = ({ menu }) => {
                                 </Swiper>
                             </div>
                             <PreferModal
-                                open={open}
-                                handleClose={handleClose}
+                                open={modal === 'prefer'}
+                                handleClose={onCloseModal}
                                 onCustomOrder={onClickCustomOrder}
                             />
                             <CartLink />

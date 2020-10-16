@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 
 import FixButton from 'components/button/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import { getAgreeTerm } from '../../api/agree/agree';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
     appBar: {
@@ -40,8 +40,8 @@ const useStyles = makeStyles(() => ({
         flex: '0 0 auto',
     },
     pre: {
+        padding: '24px 16px',
         overflow: 'auto',
-        whiteSpace: 'pre-wrap',
         fontSize: '14px',
         lineHeight: '1.5'
     },
@@ -61,23 +61,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const FullScreenDialog = ({ title, handleClose }) => {
     const classes = useStyles();
-    const [content, setContent] = useState('');
-
-    const getContent = useCallback(async () => {
-        if (title !== '') {
-            const res = await getAgreeTerm();
-            setContent(res);
-        }
-    }, [title]);
-
-    useEffect(() => {
-        getContent()
-    }, [getContent])
+    const { company } = useSelector(state => state.company);
+    console.log(company);
 
     return (
         <Dialog
             fullScreen
-            open={title !== ''}
+            open={title}
             onClose={handleClose}
             TransitionComponent={Transition}
         >
@@ -92,14 +82,12 @@ const FullScreenDialog = ({ title, handleClose }) => {
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        {title}
+                        {title === 'policy' ? '개인정보처리방침' : '이용약관'}
                     </Typography>
                 </Toolbar>
             </AppBar>
             <DialogContent className={classes.content}>
-                <pre className={classes.pre}>
-                    {content}
-                </pre>
+                <div className={classes.pre} dangerouslySetInnerHTML={{ __html: company && (title === 'policy' ? company.private_policy_user : company.use_terms_user) }} />
             </DialogContent>
             <FixButton title={'확인'} onClick={handleClose} toggle={true} />
         </Dialog>

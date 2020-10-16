@@ -28,22 +28,21 @@ import { get_user_info, logout } from '../../store/auth/auth';
 import { update_user_info } from '../../store/auth/auth';
 import { useModal } from '../../hooks/useModal';
 import ProfileCoverImage from '../../components/asset/ProfileCoverImage';
+import { ButtonBase } from '@material-ui/core';
 
 const cn = classNames.bind(styles);
 
-const AccountContainer = () => {    
+const AccountContainer = ({ modal }) => {    
 
-    const [open, setOpen] = useState(false);
-    
-    const [profileOpen, setProfileOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const initStore = useInit();
     const { user } = useSelector(state => state.auth);
     const user_token = useStore();
     const dispatch = useDispatch();
     const history = useHistory();
     const openModal = useModal();
+    const onOpenDropoutModal = () => history.push(Paths.ajoonamu.account + '/dropout');
+    const onOpenProfileModal = () => history.push(Paths.ajoonamu.account + '/profile');
+    const onCloseModal = () => history.goBack();
     const onClickUpdateName = () => history.push(Paths.ajoonamu.update_name);
     const onClickUpdatePhone = () => history.push(Paths.ajoonamu.update_phone);
     const onClickUpdatePassword = () => history.push(Paths.ajoonamu.update_password);
@@ -120,11 +119,12 @@ const AccountContainer = () => {
         <>
             <div className={styles['container']}>
                 <div className={styles['user-info']}>
-                    <div className={cn('profile')} onClick={() => setProfileOpen(true)}>
+                    <div className={cn('profile')} onClick={onOpenProfileModal}>
                         <ProfileCoverImage src={DBImageFormat(user && user.profile_img)} alt="" />
-                        <label htmlFor="change_profile" onClick={e => e.stopPropagation()} className={styles['change']}>변경</label>
-                        <input type="file" id="change_profile" className={styles['change-profile']} onChange={onChangeFiles} accept="image/gif, image/jpeg, image/png, image/svg" />
                     </div>
+                    
+                        <ButtonBase component="label" htmlFor="change_profile" onClick={e => e.stopPropagation()} className={styles['change']}>변경</ButtonBase>
+                        <input type="file" id="change_profile" className={styles['change-profile']} onChange={onChangeFiles} accept="image/gif, image/jpeg, image/png, image/svg" />
                 </div>
                 <div className={styles['tab']}>
                     <Item text={'이름'} value={user && user.name} onClick={onClickUpdateName}/>
@@ -143,14 +143,14 @@ const AccountContainer = () => {
                     </Button>
                 </div>
                 <div className={styles['drop-out']}>
-                    <div className={styles['text']} onClick={handleOpen}>
+                    <div className={styles['text']} onClick={onOpenDropoutModal}>
                         회원탈퇴
                     </div>
                     <p>회원탈퇴 신청화면으로 이동합니다.</p>
                 </div>
             </div>
-            <ProfileModal open={profileOpen} src={DBImageFormat(user && user.profile_img)} handleClose={() => setProfileOpen(false)} />
-            <DropoutModal open={open} handleClose={handleClose}/>
+            <ProfileModal open={modal === 'profile'} src={DBImageFormat(user && user.profile_img)} handleClose={onCloseModal} />
+            <DropoutModal open={modal === 'dropout'} handleClose={onCloseModal}/>
         </>
     );
     return <>{user === null ? ()=>{} : render()}</>;

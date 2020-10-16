@@ -46,7 +46,8 @@ const CartItem = (props) => {
                             </div>
                             <div className={styles['count-price']}>
                                 <div className={styles['count']}>
-                                    <Counter value={item_quanity}  
+                                    <Counter value={item_quanity} 
+                                        onChange={e => props.handleChange(id, numberFormat(e.target.value))}
                                         onIncrement={()=>props.handleIncrement(id)}
                                         onDecrement ={()=>props.handleDecrement(id)}
                                     />

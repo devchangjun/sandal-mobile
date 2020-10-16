@@ -1,8 +1,8 @@
 import React from 'react';
 import AddressContainer from 'containers/address/AddressContainer';
 
-function Address() {
-    return <AddressContainer />;
+const Address = ({ match }) => {
+    return <AddressContainer modal={match.params.modal} />;
 }
 
 export default Address;

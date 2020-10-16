@@ -3,7 +3,8 @@ import { Paths } from "../paths";
 export function stringNumberToInt(strNumber) {
     // 구분자가 들어간 수치 데이터를 숫자로 변경
     if (strNumber !== undefined && strNumber !== null) {
-        return strNumber !== '' ? parseInt(strNumber.replace(/,/g, '')) : 0;
+        const result = strNumber !== '' ? parseInt(strNumber.replace(/,/g, '')) : 0;
+        return isNaN(result) ? 0 : result;
     }
     return 0;
 }

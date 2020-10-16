@@ -11,7 +11,7 @@ import Check from 'components/svg/sign/Check';
 
 import EstmModal from '../../components/modal/EstmModal';
 import Message from 'components/message/Message';
-import { numberFormat } from '../../lib/formatter';
+import { numberFormat, stringNumberToInt } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
 import {useStore} from '../../hooks/useStore';
@@ -21,14 +21,13 @@ import { noAuthGetCartList, noAuthRemoveCartItem,noAuthUpdateCartQunaity } from 
 
 const cx = classNames.bind(styles);
 
-const CartContainer = () => {
+const CartContainer = ({ modal }) => {
 
     const history = useHistory();
     const { addr1, lat, lng } = useSelector(state => state.address);
     const { company } = useSelector((state) => state.company);
     const openModal = useModal();
 
-    const [open, setOpen] = useState(false); //모달창 오픈
     const [estm, setEstm] = useState(false); //견적서 발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
@@ -53,6 +52,18 @@ const CartContainer = () => {
             }),
         );
     }, [cartList]);
+
+    const handleChange = useCallback((index, value) => {
+        setCartList(
+            produce(cartList, (draft) => {
+                draft[index].item.item_quanity = stringNumberToInt(value);
+                if (draft[index].item.item_quanity < 1) {
+                    draft[index].item.item_quanity = 1;
+                }
+            })
+        )
+    })
+
     const handleDelete = useCallback(cart_id => {
    
         openModal('상품을 삭제하시겠습니까?', '삭제를 원하시면 예를 눌러주세요.', async () => {
@@ -91,6 +102,9 @@ const CartContainer = () => {
         }, () => {},true);
     }, [openModal, user_token]);
 
+    const onOpenModal = () => history.push(Paths.ajoonamu.cart + '/estimate');
+    const onCloseModal = () => history.goBack();
+
     const handleOpen = useCallback(() => {
         if (total < company.minimum_order) {
             openModal(
@@ -100,10 +114,9 @@ const CartContainer = () => {
                 )}원입니다.`,
             );
         } else {
-            setOpen(true);
+            onOpenModal();
         }
     }, [total, company]);
-    const handleClose = useCallback(() => setOpen(false), []);
 
     const onChangeEstm = useCallback(e => setEstm(true), []);
     const onChangeNotEstm = useCallback(e => setEstm(false), []);
@@ -250,6 +263,7 @@ const CartContainer = () => {
                     <CartItemList
                         carts={cartList}
                         handleCheckChild={handleCheckChild}
+                        handleChange={handleChange}
                         handleIncrement={handleIncrement}
                         handleDecrement={handleDecrement}
                         handleDelete={handleDelete}
@@ -293,19 +307,19 @@ const CartContainer = () => {
                 </div>
                 <Button
                     title={`${numberFormat(parseInt(total)+ parseInt(delivery_cost))}원 주문하기`}
-                    onClick={estm ? handleOpen : onClickOrder}
+                    onClick={estm ? onOpenModal : onClickOrder}
                     toggle={true}
                 ></Button>
 
                 <EstmModal
                     cartList={cartList}
-                    open={open}
+                    open={modal === 'estimate'}
                     dlvCost={delivery_cost}
-                    handleClose={handleClose}
+                    handleClose={onCloseModal}
                     onClick={onClickOrder}
                 />
             </>
-        ), [cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],
+        ), [cartList, delivery_cost, estm, handleCheckChild, onCloseModal, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, modal, total],
     );
 
         //마운트 될때만 함수 호출.

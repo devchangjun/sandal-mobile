@@ -6,6 +6,7 @@
     .user-info {
         width: 100%;
         height: 120px;
+        position: relative;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
@@ -21,26 +22,22 @@
             overflow: hidden;
             width: 72px; height: 72px;
             transition: all .15s ease-in-out;
-            .change {
-                background-color: black;
-                opacity: 0.3;
-                color: white;
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 1px 0;
-                height: auto;
-            }
-            .change-profile {
-                display: none;
-            }
             &:hover {
                 box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
                 transform: scale(1.1);
             }
+        }
+        
+        .change {
+            background-color: black;
+            opacity: 0.3;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 80px; height: 20px;
+        }
+        .change-profile {
+            display: none;
         }
         .info {
             width: 100%;

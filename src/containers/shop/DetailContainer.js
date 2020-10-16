@@ -7,7 +7,7 @@ import Button from 'components/button/Button';
 import AdditionalList from 'components/item/AdditionalList';
 import Counter from 'components/counter/Counter';
 import classNames from 'classnames/bind';
-import { DBImageFormat, numberFormat } from '../../lib/formatter';
+import { DBImageFormat, numberFormat, stringNumberToInt } from '../../lib/formatter';
 import Loading from '../../components/asset/Loading';
 import { getMenuInfo } from '../../api/menu/menu';
 import { addCartItem } from '../../api/cart/cart';
@@ -33,7 +33,7 @@ const DetailContainer = ({ item_id }) => {
     const [option_total, setOptionTotal] = useState(0);
     // const { company } = useSelector(state => state.company);
 
-    //옵션 아이템 선택
+    // 옵션 아이템 선택
     const setOptionItem = useCallback(() => {
         const add_option = menu.options
             .filter((option) => option.check)
@@ -42,16 +42,16 @@ const DetailContainer = ({ item_id }) => {
     }, [menu]);
 
     const onDecrement = useCallback(() => {
-        if (quanity > 1) setQuanity(quanity - 1);
+        const q = parseInt(quanity);
+        if (q > 1) setQuanity(q - 1);
     }, [quanity]);
 
     const onIncrement = useCallback(() => {
-        setQuanity(quanity + 1);
+        setQuanity(parseInt(quanity) + 1);
     }, [quanity]);
 
     const getMenu = async () => {
         setLoading(true);
-
         try {
             const res = await getMenuInfo(item_id);
             if (res.item) {
@@ -61,7 +61,6 @@ const DetailContainer = ({ item_id }) => {
                 history.push(Paths.index);
             }
         } catch (e) {}
-
         setLoading(false);
     };
 
@@ -163,9 +162,21 @@ const DetailContainer = ({ item_id }) => {
                 alert('Error!');
             }
         }
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, item_id, options, quanity, user_token, addr1, lat, lng]);
 
+    const onCounterKeyDown = useCallback(e => {
+        if (e.key === 'Enter') {
+           onClickCart(); 
+        }
+    }, []);
+    
+    useEffect(() => {
+        if (quanity < 1) {
+            setQuanity(1);
+        }
+    }, [quanity]);
     useEffect(()=>{
         getMenu();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -208,6 +219,8 @@ const DetailContainer = ({ item_id }) => {
                                     <div className={styles['count']}>
                                         <Counter
                                             value={quanity}
+                                            onChange={e => setQuanity(stringNumberToInt(e.target.value))}
+                                            onKeyDown={onCounterKeyDown}
                                             onDecrement={onDecrement}
                                             onIncrement={onIncrement}
                                         />

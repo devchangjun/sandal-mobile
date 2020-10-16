@@ -27,12 +27,12 @@ import { numberFormat, stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
 
-const OrderCompleteContainer = ({ order_number }) => {
+const OrderCompleteContainer = ({ order_number, query, modal }) => {
     const user_token = useStore(false);
     const { user } = useSelector((state) => state.auth);
     const openModal = useModal();
     const history = useHistory();
-    const [phraseOpen, setPhraseOpen] = React.useState(false);
+    // const [phraseOpen, setPhraseOpen] = React.useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     // const [error, setError] = useState(false);
@@ -40,8 +40,11 @@ const OrderCompleteContainer = ({ order_number }) => {
     // const [payinfo, setPayInfo] = useState(null);
     // const [payple_info, setPaypleInfo] = useState(null);
 
-    const handlePhraseOpen = () => setPhraseOpen(true);
-    const handlePhrasetClose = () => setPhraseOpen(false);
+    // const handlePhraseOpen = () => setPhraseOpen(true);
+    // const handlePhrasetClose = () => setPhraseOpen(false);
+
+    const onOpenModal = () => history.push(Paths.ajoonamu.order_complete + '/phrase' + query);
+    const onCloseModal = () => history.goBack();
 
     const onClickHome = () => {
         history.push(Paths.index);
@@ -199,7 +202,7 @@ const OrderCompleteContainer = ({ order_number }) => {
                                 <div className={styles['button-box']}>
                                     <Button
                                         className={styles['btn']}
-                                        onClick={handlePhraseOpen}
+                                        onClick={onOpenModal}
                                     >
                                         문구 서비스 신청
                                     </Button>
@@ -212,8 +215,8 @@ const OrderCompleteContainer = ({ order_number }) => {
                                 </div>
                             </div>
                             <PhraseServiceModal
-                                open={phraseOpen}
-                                handleClose={handlePhrasetClose}
+                                open={modal === 'phrase'}
+                                handleClose={onCloseModal}
                                 order_number={order_number}
                                 token={user_token}
                             />

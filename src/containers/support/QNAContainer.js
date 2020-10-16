@@ -70,7 +70,6 @@ const QNAContainer = ({ tab = 'send', query }) => {
         email: '',
     });
     const [files, setFiles] = useState([]);
-    const [viewId, setViewId] = useState(-1);
 
     const onChangeTabIndex = (e, value) => {
         setIndex(value);
@@ -83,8 +82,8 @@ const QNAContainer = ({ tab = 'send', query }) => {
         history.replace(`${Paths.ajoonamu.support}/qna/${tab}`);
     };
 
-    const onClickDetailView = useCallback(id => setViewId(id), []);
-    const onCloseDetailView = useCallback(() => setViewId(-1), []);
+    const onOpenModalDetailView = id => history.push(Paths.ajoonamu.support + '/qna/' + tab + '?id=' + id);
+    const onCloseModalDetailView = () => history.goBack();
 
     const sendQNAUpdate = useCallback(async () => {
         if (isEmailForm(state.email)) {
@@ -239,12 +238,12 @@ const QNAContainer = ({ tab = 'send', query }) => {
                         <QNAList
                             listData={qnaList}
                             emptyMessage="등록된 1:1 문의가 없습니다."
-                            onClick={onClickDetailView}
+                            onClick={onOpenModalDetailView}
                         />
                     </SwiperSlide>
                 </Swiper>
             </div>
-            <QNADetailModal onRemove={onRemoveList} USER_TOKEN={user_token} viewId={viewId} handleClose={onCloseDetailView} />
+           {tab === 'list' && <QNADetailModal onRemove={onRemoveList} USER_TOKEN={user_token} viewId={query} handleClose={onCloseModalDetailView} />}
         </>
     );
 };

@@ -22,8 +22,8 @@
             max-width: $max-width;
             min-width: $min-width;
             color: black;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 17px;
+            font-weight: 500;
             padding: 0px 24px;
             box-sizing: border-box;
 
@@ -38,7 +38,7 @@
                 box-sizing: border-box;
             }
             .app-title-location {
-                font-weight: bold;
+                font-weight: 500;
             }
             .app-title-notification,
             .app-title-location-button {

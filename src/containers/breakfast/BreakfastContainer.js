@@ -13,7 +13,6 @@ import TitleBar from 'components/titlebar/TitleBar';
 import MenuItemList from 'components/item/MenuItemList';
 import Message from 'components/message/Message';
 import Loading from '../../components/asset/Loading';
-import CartLink from '../../components/cart/CartLink';
 import TabTests from '../../components/tab/SwiperTabs';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -157,12 +156,12 @@ const BreakfastContainer = ({ menu }) => {
                 {items[index].items.length !== 0 ? (
                     <MenuItemList
                         menuList={items[index].items}
-                        onClick={onClickMenuItem}
+                        // onClick={onClickMenuItem}
                     />
                 ) : (
                     <Message
                         msg={
-                            '배달 가능한 매장이 없거나 메뉴가 존재하지 않습니다.'
+                            '기업 조식 메뉴가 등록되지 않있습니다.'
                         }
                         src={true}
                         isButton={false}

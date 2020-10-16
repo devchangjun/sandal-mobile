@@ -6,6 +6,7 @@ import { ButtonBase } from '@material-ui/core';
 import { DBImageFormat, numberFormat } from '../../lib/formatter';
 import ErrorCoverImage from '../asset/ErrorCoverImage';
 import Noimage from '../svg/noimage.png';
+import CoverImage from '../asset/CoverImage';
 
 
 //홈 메뉴 아이템 컴포넌트
@@ -31,7 +32,8 @@ const BestMenuItem = (props) => {
 function MenuImg({ src }) {
     return (
         <div className={styles['menu-img']}>
-            <ErrorCoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} />
+            <CoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} />
+            {/* <ErrorCoverImage className={styles['img']} src={src !== "[]" ? DBImageFormat(src)[0] : Noimage} alt={"메뉴 이미지"} /> */}
         </div>
     );
 }

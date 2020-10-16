@@ -49,6 +49,9 @@ $value2: 10px;
                 font-size: 14px;
                 color: #444;
                 margin-top: 10px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
             .menu-text {
                 font-size: $font-size;

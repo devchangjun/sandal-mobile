@@ -20,6 +20,7 @@ input[type='checkbox'] {
     display: flex;
     align-items: center;
     width: 100%;
+    word-break: keep-all;
     font-size: 16px;
     color: #555;
 }
@@ -37,4 +38,5 @@ input[type='checkbox'] + label svg {
 
 .price {
     margin-left: 10px;
+    white-space: nowrap;
 }

@@ -137,14 +137,14 @@ const OrderListContainer = ({ tab = '0' }) => {
                     ) : (
                         <div className={styles['container']}>
                             <Swiper
-                            className={styles['swiper']}
-                            initialSlide={index}
-                            slidesPerView={1}
-                            onSlideChange={(swiper) => {
-                                onChangeSwiperIndex(swiper.activeIndex)
-                            }}
-                            autoHeight={true}
-                            onSwiper={(swiper) => SWIPER.current=swiper}
+                                className={styles['swiper']}
+                                initialSlide={index}
+                                slidesPerView={1}
+                                onSlideChange={(swiper) => {
+                                    onChangeSwiperIndex(swiper.activeIndex)
+                                }}
+                                autoHeight={true}
+                                onSwiper={(swiper) => SWIPER.current=swiper}
                             >
                        
                                 <SwiperSlide className={styles['swiper-slide']}>

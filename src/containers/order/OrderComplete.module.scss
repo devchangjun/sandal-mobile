@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
 .container {
-    @include wireframe(40px);
+    @include wireframe($pd-top40);
     padding-bottom: 0;
     .content {
         height: 600px;

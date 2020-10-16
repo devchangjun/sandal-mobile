@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 
 .container {
-    @include wireframe(40px);
+    @include wireframe($pd-top40);
     width: 100%;
     background-color: #f9f9f9;
     .bar {

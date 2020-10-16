@@ -5,7 +5,7 @@ import styles from './OrderComplete.module.scss';
 import cn from 'classnames/bind';
 
 //components
-import DetailOrderItemList from 'components/order/DetailOrderItemList';
+import DetailOrderItemList from '../../components/order/DetailOrderItemList';
 import Loading from '../../components/asset/Loading';
 import { ButtonBase } from '@material-ui/core';
 
@@ -44,7 +44,6 @@ const OrderDetailContainer = ({ order_id }) => {
             } else {
                 res = await noAuthOrderView(order_id);
             }
-            console.log(res);
             const { orders, payinfo } = res;
             if (orders === undefined) {
                 openModal(
@@ -54,7 +53,6 @@ const OrderDetailContainer = ({ order_id }) => {
                 );
                 setSuccess(false);
             } else {
-                console.log(res);
                 setOrders(orders);
                 setOdStatus(orders.info[0].od_status === 'order_cancel');
                 setPayinfo(payinfo);
@@ -129,6 +127,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                     {order && (
                                         <DetailOrderItemList
                                             items={order.items}
+                                            info={order.info}
                                         />
                                     )}
                                 </div>

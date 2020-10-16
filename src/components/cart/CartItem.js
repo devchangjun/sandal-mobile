@@ -29,6 +29,7 @@ const CartItem = (props) => {
                 <div className={styles['item-box']}>
                     <div className={styles['item']}>
                         <div className={styles['item-img']}>
+                            
                             <ErrorCoverImage className={styles['img']} src={item_img !== "[]" ? DBImageFormat(item_img)[0] : Noimage} alt={"메뉴 이미지"} />
                         </div>
                         <div className={styles['item-info']}>

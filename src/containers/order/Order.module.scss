@@ -1,7 +1,7 @@
 @import '../../styles/Root.scss';
 .order {
     width: 100%;
-    @include wireframe(40px);
+    @include wireframe($pd-top40);
     display: flex;
     flex-direction: column;
     font-size: 30px;

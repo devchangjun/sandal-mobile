@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router';
 import { Paths } from 'paths';
 import styles from './Cart.module.scss';
-import CartItemList from 'components/cart/CartItemList';
+import CartItemList from '../../components/cart/CartItemList';
 import Button from 'components/button/Button';
 import produce from 'immer';
 import classNames from 'classnames/bind';

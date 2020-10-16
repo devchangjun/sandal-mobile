@@ -6,9 +6,9 @@ html {
             width: 100%;
             box-sizing: border-box;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-            // box-shadow: 0 0 5px gray;
             border-radius: 10px;
             margin-top: 24px;
+            background-color: #fff;
             &:first-child {
                 margin-top: 0;
             }
@@ -28,6 +28,7 @@ html {
                     .list {
                         .menu-name {
                             margin: 5px 0;
+                            margin-bottom: 20px;
                             .name {
                                 font-size: 16px;
                                 font-weight: bold;

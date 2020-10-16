@@ -41,7 +41,7 @@ const TabMenu = ({ tabs, index, onChange, isPush, center }) => {
             }}
             className={styles['tabs']}
             style={{
-                top: header ? '0px' : '40px',
+                top: header ? '0px' : '48px',
                 boxShadow: header ? '0px 3px 20px rgba(0,0,0,0.1)' : '',
             }}
         >

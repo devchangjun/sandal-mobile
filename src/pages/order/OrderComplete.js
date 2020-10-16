@@ -8,7 +8,7 @@ export default function OrderComplete({ location }) {
         ignoreQueryPrefix: true,
     });
     const { order_number, message } = query;
-    if (message.indexOf('종료') !== -1) {
+    if (message.indexOf('결제를 종료하였습니다.') !== -1) {
         window.location = Paths.ajoonamu.order;
     }
     return <OrderCompleteContainer order_number={order_number} />;

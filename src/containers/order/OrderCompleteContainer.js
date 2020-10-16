@@ -27,7 +27,7 @@ import { numberFormat, stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
 
-const OrderCompleteContainer = ({ order_number, message }) => {
+const OrderCompleteContainer = ({ order_number }) => {
     const user_token = useStore(false);
     const { user } = useSelector((state) => state.auth);
     const openModal = useModal();
@@ -56,7 +56,6 @@ const OrderCompleteContainer = ({ order_number, message }) => {
             } else {
                 res = await noAuthOrderView(order_number);
             }
-            console.log(res);
 
             const { orders } = res;
             if (orders === undefined) {

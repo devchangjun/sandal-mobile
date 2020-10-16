@@ -19,7 +19,7 @@ import { isEmailForm } from '../../lib/formatChecker';
 import { useModal } from '../../hooks/useModal';
 import { useInit } from '../../hooks/useStore';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 ///api
 import { getActiveAddr } from '../../api/address/address';
@@ -221,7 +221,7 @@ const SignInContainer = () => {
             <div className={cx('container')}>
                 <div className={cx('content')}>
                     <SignNormalInput
-                        inputType={'text'}
+                        inputType={'email'}
                         initValue={user.email}
                         onChange={updateEmail}
                         placeholder={'이메일'}

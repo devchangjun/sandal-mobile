@@ -56,11 +56,13 @@ const RecoveryPwContainer = () => {
         <div className={styles['container']}>
             <div className={cx('content', 'pd-box')}>
                 <SignNormalInput
+                    inputType="text"
                     placeholder={'이름'}
                     initValue={name}
                     onChange={onChangeName}
                 />
                 <SignNormalInput
+                    inputType="email"
                     placeholder={'이메일'}
                     initValue={email}
                     onChange={onChangeEmail}

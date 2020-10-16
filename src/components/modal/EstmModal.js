@@ -198,15 +198,13 @@ const EstmModal = (props) => {
                     />
                 </div>
             </DialogContent>
-            {props.isEsit && (
-                <DialogContent
-                    className={`${classes.content} ${classes.estimate}`}
-                >
-                    <ButtonBase className={classes.estimatePreview}>
-                        <Estimate onDownload={onDownload} />
-                    </ButtonBase>
-                </DialogContent>
-            )}
+            <DialogContent
+                className={`${classes.content} ${classes.estimate}`}
+            >
+                <ButtonBase className={classes.estimatePreview}>
+                <Estimate onDownload={onDownload} products={props.cartList} dlvCost={props.dlvCost} />
+                </ButtonBase>
+            </DialogContent>
             <LinkButton
                 on={true}
                 onClose={props.onClick}

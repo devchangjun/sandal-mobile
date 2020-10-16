@@ -2,6 +2,8 @@
 
 .total {
     font-size: 14px;
+    white-space: nowrap;
+    line-height: 40px;
     .read-btn {
         color: #dbdbdb;
         &.available {

@@ -31,12 +31,15 @@ const DetailContainer = ({ item_id }) => {
     const [quanity, setQuanity] = useState(1);
     const [options, setOptions] = useState(null);
     const [option_total, setOptionTotal] = useState(0);
-    
+    const { company } = useSelector(state => state.company);
+
     //옵션 아이템 선택
-    const setOptionItem =useCallback(()=>{
-        const add_option = menu.options.filter(option => option.check).map((option =>option.option_id));
+    const setOptionItem = useCallback(() => {
+        const add_option = menu.options
+            .filter((option) => option.check)
+            .map((option) => option.option_id);
         setOptions(add_option);
-    },[menu]);
+    }, [menu]);
 
     const onDecrement = useCallback(() => {
         if (quanity > 1) setQuanity(quanity - 1);
@@ -52,6 +55,7 @@ const DetailContainer = ({ item_id }) => {
         try {
             const res = await getMenuInfo(item_id);
             setMenu(res);
+            console.log(res);
         } catch (e) {}
 
         setLoading(false);
@@ -217,6 +221,28 @@ const DetailContainer = ({ item_id }) => {
                                             onClickAddItem={onClickOptionItem}
                                         />
                                     )}
+                                </div>
+                            </div>
+                            <div className={styles['content']}>
+                                <div className={styles['text-area']}>
+                                    <h3 className={styles['item_name']}>
+                                        {menu && menu.item.item_name}
+                                    </h3>
+                                    <p className={styles['item_sub']}>
+                                        {menu && menu.item.item_sub}
+                                    </p>
+                                    <p className={styles['item_caution']}>
+                                        {menu && menu.item.item_caution}
+                                    </p>
+                                </div>
+                                <div className={styles['image-area']}>
+                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_top)[0]} alt="상단 랜딩 이미지" />}
+                                    {menu &&
+                                    menu.item &&
+                                    menu.item.item_content !== '[]' &&
+                                    DBImageFormat(menu.item.item_content).map(image =>
+                                    <ErrorCoverImage src={image} alt="상세 이미지" key={image} /> )}
+                                    {company && <ErrorCoverImage src={DBImageFormat(company.item_content_bot)[0]} alt="하단 랜딩 이미지" />}
                                 </div>
                             </div>
                         </div>

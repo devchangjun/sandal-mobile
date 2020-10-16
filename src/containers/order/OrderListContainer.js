@@ -40,6 +40,7 @@ const OrderListContainer = ({ tab = '0' }) => {
         calculateDate(new Date(), 7, 'DATE'),
     );
     const [endDate, setEndDate] = useState(new Date());
+    const [select, setSelect] = useState(0);
     const user_token = useStore();
     const history = useHistory();
     const SWIPER = useRef(null);
@@ -93,6 +94,26 @@ const OrderListContainer = ({ tab = '0' }) => {
         getOrderItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        switch (select) {
+            case 0:
+                setStartDate(calculateDate(endDate, 7, 'DATE'));
+                break;
+            case 1:
+                setStartDate(calculateDate(endDate, 1, 'MONTH'));
+                break;
+            case 2:
+                setStartDate(calculateDate(endDate, 3, 'MONTH'));
+                break;
+            case 3:
+                setStartDate(calculateDate(endDate, 6, 'MONTH'));
+                break;
+            default:
+                break;
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [select]);
 
     return (
         <>
@@ -169,6 +190,8 @@ const OrderListContainer = ({ tab = '0' }) => {
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
+                        select={select}
+                        setSelect={setSelect}
                         open={open}
                         handleClose={handleClose}
                         onClick={getOrderItems}

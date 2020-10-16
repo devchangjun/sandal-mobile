@@ -16,6 +16,10 @@
             border: 1px solid #dbdbdb;
             border-radius: 10px;
             padding: 10px;
+            transition: border .15s ease-in-out;
+            &:focus {
+                border-color: #007246;
+            }
         }
         .search-btn {
             cursor: pointer;

@@ -92,20 +92,17 @@ const CartContainer = () => {
     }, [openModal, user_token]);
 
     const handleOpen = useCallback(() => {
-        if(total < company.minimum_order){
+        if (total < company.minimum_order) {
             openModal(
                 '최소 주문 금액을 채워주세요.',
                 `최소 주문 금액은 ${numberFormat(
                     company.minimum_order,
                 )}원입니다.`,
             );
+        } else {
+            setOpen(true);
         }
-        else{
-            setOpen(true)
-
-        }
-    }
-    , [total,company]);
+    }, [total, company]);
     const handleClose = useCallback(() => setOpen(false), []);
 
     const onChangeEstm = useCallback(e => setEstm(true), []);
@@ -206,41 +203,41 @@ const CartContainer = () => {
     
     const onClickOrder = useCallback(async () => {
         setLoading(true);
-    
-            if (user_token) {
-                try {
-                    for (let i = 0; i < cartList.length; i++) {
-                        const { item } = cartList[i];
-                        const res = await updateCartQunaity(
-                            user_token,
-                            item.cart_id,
-                            item.item_quanity,
-                        );
-                    }
-                } catch (e) {}
-            } else {
-                try {
-                    for (let i = 0; i < cartList.length; i++) {
-                        const { item } = cartList[i];
-                        await noAuthUpdateCartQunaity(
-                            item.cart_id,
-                            item.item_quanity,
-                        );
-                    }
-                } catch (e) {}
-            }
-            if (company.minimum_order > total) {
-                openModal(
-                    '최소 주문 금액을 채워주세요.',
-                    `최소 주문 금액은 ${numberFormat(
-                        company.minimum_order,
-                    )}원입니다.`,
-                );
-            } else {
-                history.push(Paths.ajoonamu.order);
-            }
+
+        if (user_token) {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    const res = await updateCartQunaity(
+                        user_token,
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {}
+        } else {
+            try {
+                for (let i = 0; i < cartList.length; i++) {
+                    const { item } = cartList[i];
+                    await noAuthUpdateCartQunaity(
+                        item.cart_id,
+                        item.item_quanity,
+                    );
+                }
+            } catch (e) {}
+        }
+        if (company.minimum_order > total) {
+            openModal(
+                '최소 주문 금액을 채워주세요.',
+                `최소 주문 금액은 ${numberFormat(
+                    company.minimum_order,
+                )}원입니다.`,
+            );
+        } else {
+            history.push(Paths.ajoonamu.order);
+        }
         setLoading(false);
-    }, [user_token, cartList, history,total,company]);
+    }, [user_token, cartList, history, total, company]);
 
     const renderList = useCallback(() => (
             <>
@@ -299,13 +296,13 @@ const CartContainer = () => {
                     onClick={estm ? handleOpen : onClickOrder}
                     toggle={true}
                 ></Button>
+
                 <EstmModal
+                    cartList={cartList}
                     open={open}
+                    dlvCost={delivery_cost}
                     handleClose={handleClose}
-                    handleOpen={handleOpen}
-                    total={total}
                     onClick={onClickOrder}
-                    isEsit={estm}
                 />
             </>
         ), [cartList, delivery_cost, estm, handleCheckChild, handleClose, handleDecrement, handleDelete, handleIncrement, handleOpen, onChangeEstm, onChangeNotEstm, onClickOrder, open, total],

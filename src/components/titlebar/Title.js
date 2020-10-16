@@ -48,14 +48,13 @@ const Title = () => {
                             />
                         </div>
                     </div>
-                    <div
-                        className={styles['app-title-location']}
-                        onClick={onClickAddr}
-                    >
+                    <div className={styles['app-title-location']} onClick={onClickAddr}>
                         {addr1 ? addr1 : '배달지를 설정해주세요'}
                     </div>
                     <div className={styles['app-title-location-button']}>
-                        <img src={locationImage} alt="location" />
+                        <img src={locationImage} alt="location"
+                            onClick={onClickAddr}
+                        />
                     </div>
                 </div>
             </div>

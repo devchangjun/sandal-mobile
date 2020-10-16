@@ -342,7 +342,7 @@ const HomeLandingMenu = ({
     title,
 }) => {
     let len = categorys.length;
-    const view = len< 5 ? len-1 : 5;
+    const view = len < 5 ? len : 5;
     return (
         <>
             {categorys.length !== 0 && (

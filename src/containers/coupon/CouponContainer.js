@@ -24,6 +24,7 @@ import {
     getDownloadCpList,
     downloadCoupon,
     couponInput,
+    getUseCpList,
 } from '../../api/coupon/coupon';
 
 //hooks
@@ -68,7 +69,10 @@ const CouponConatiner = ({ tab = '0' }) => {
     const [cp_list, setCpList] = useState([]);
     const [user_input_cp, setUserInputCp] = useState('');
     const [down_cp_list, setDownCpList] = useState([]);
+    const [use_cp_list, setUseCpList] = useState([]);
     const [show, setShow] = useState(false);
+
+    const [select, setSelect] = useState(0);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -125,6 +129,19 @@ const CouponConatiner = ({ tab = '0' }) => {
         }
     };
 
+    const getUseCouponList = async () => {
+        setLoading(true);
+        if (user_token) {
+            try {
+                const res = await getUseCpList(user_token, startDate, endDate);
+                console.log(res);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        setLoading(false);
+    }
+
     const callCouponDownload = useCallback(
         async (cp) => {
             try {
@@ -177,6 +194,7 @@ const CouponConatiner = ({ tab = '0' }) => {
     useEffect(() => {
         getMyCouponList();
         getDownCouponList();
+        getUseCouponList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
@@ -192,6 +210,27 @@ const CouponConatiner = ({ tab = '0' }) => {
             window.removeEventListener('scroll', onScroll);
         };
     }, [index, onScroll]);
+
+
+    useEffect(() => {
+        switch (select) {
+            case 0:
+                setStartDate(calculateDate(endDate, 7, 'DATE'));
+                break;
+            case 1:
+                setStartDate(calculateDate(endDate, 1, 'MONTH'));
+                break;
+            case 2:
+                setStartDate(calculateDate(endDate, 3, 'MONTH'));
+                break;
+            case 3:
+                setStartDate(calculateDate(endDate, 6, 'MONTH'));
+                break;
+            default:
+                break;
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [select]);
 
     return (
         <>
@@ -260,16 +299,23 @@ const CouponConatiner = ({ tab = '0' }) => {
                                         </div>
                                     </SwiperSlide>
                                     <SwiperSlide className={styles['swiper-slide']}>
+                                        <div className={cx('use-history', 'pd-box')}>
+                                            <select value={select} onChange={e => setSelect(e.target.value) } className={styles['date-selector']}>
+                                                <option value={0}>최근 1주일</option>
+                                                <option value={1}>최근 1개월</option>
+                                                <option value={2}>최근 3개월</option>
+                                                <option value={3}>최근 6개월</option>
+                                            </select>
+                                            <IconButton
+                                                className={cx('date-button', { on: tab === '2' })}
+                                                onClick={handleOpen}
+                                            >
+                                                <img src={date} alt="date" />
+                                            </IconButton>
+                                        </div>
                                         <div className={cx('coupon-list', 'pd-box')}>
-                                            <div className={styles['use-history']}>
-                                                <IconButton
-                                                    className={cx('date-button', { on: tab === '2' })}
-                                                    onClick={handleOpen}
-                                                >
-                                                    <img src={date} alt="date" />
-                                                </IconButton>
-                                            </div>
-                                            <UseCouponItemList />
+                                            {use_cp_list.length !== 0 ? <UseCouponItemList />
+                                            : <Message msg="사용하신 쿠폰이 없습니다." />}
                                         </div>
                                     </SwiperSlide>
                                 </Swiper>
@@ -281,10 +327,12 @@ const CouponConatiner = ({ tab = '0' }) => {
                         setStartDate={setStartDate}
                         endDate={endDate}
                         setEndDate={setEndDate}
+                        select={select}
+                        setSelect={setSelect}
                         open={open}
                         handleClose={handleClose}
                         // onClick={getOrderItems}
-                        onClick={() => {}}
+                        onClick={getUseCouponList}
                     />
                 </>
             )}

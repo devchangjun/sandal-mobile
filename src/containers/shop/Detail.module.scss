@@ -67,6 +67,38 @@
         background-color: #f9f9f9;
         font-weight: 500;
     }
+
+    .content {
+        text-align: center;
+        padding: 36px 0;
+        word-break: keep-all;
+        border-top: solid 10px #f9f9f9;
+        .text-area {
+            padding: 0 36px;
+            line-height: 1.5;
+            .item_name {
+                font-size: 24px;
+                color: #222;
+            }
+            .item_sub {
+                margin-top: 20px;
+                color: #777;
+                font-size: 16px;
+            }
+            .item_caution {
+                margin-top: 15px;
+                color: #222;
+                font-size: 14px;
+            }
+        }
+        .image-area {
+            width: 100%;
+            margin-top: 50px;
+            img {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .pd-box {

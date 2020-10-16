@@ -34,7 +34,6 @@ import { noAuthGetNearStore } from '../../api/noAuth/store';
 
 //store
 import { modalOpen } from '../../store/modal';
-import { Paths } from '../../paths';
 
 
 const cx = classNames.bind(styles);

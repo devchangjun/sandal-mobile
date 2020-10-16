@@ -69,17 +69,19 @@ export const useDomScroll = ()=>{
 
 export const useRestore =()=>{
 
-    const restoreScroll =(dom) =>{
-            const scrollTop = sessionStorage.getItem('scroll_top');
-            const url = JSON.parse(sessionStorage.getItem('url'));
-            if (url) {
-                //이전 주소가 상품페이지라면 스크롤 유지
-                //여기 예외처리
-                if (url.prev === '/product') {
-                    dom.scrollTo(0,scrollTop);
+    const restoreScroll = (dom) => {
+        const scrollTop = sessionStorage.getItem('scroll_top');
+        const url = JSON.parse(sessionStorage.getItem('url'));
+        if (url) {
+            //이전 주소가 상품페이지라면 스크롤 유지
+            //여기 예외처리
+            if (url.prev === '/product') {
+                if (dom) {
+                    dom.scrollTo(0, scrollTop);
                 }
             }
-    }
+        }
+    };
     const restoreOffset =(setOffset)=>{
         const url = JSON.parse(sessionStorage.getItem('url'));
         if (url) {

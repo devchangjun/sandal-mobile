@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import FixButton from 'components/button/Button';
-import userEvent from '@testing-library/user-event';
 
 
 const cx = classNames.bind(styles);
@@ -60,17 +59,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const AddressModal = (props) => {
     const classes = useStyles();
     const inputRef = useRef(null);
-
-
     const {selectAddr ,detailAddr,addrs,searchAddr} = props;
 
-    
-    useEffect(()=>{
-        if(inputRef.current){
-        inputRef.current.focus();
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
         }
-     
-    },[selectAddr])
+    }, [selectAddr]);
+
     return (
         <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>
             <AppBar className={classes.appBar}>
@@ -103,7 +99,7 @@ const AddressModal = (props) => {
                     <div className={styles['select-addr']}>
                         {selectAddr ? selectAddr : ""}
                     </div>
-                    <input className={cx('modal-input','md-top')} type="text" value={detailAddr} placeholder="상세 주소를 입력하세요" onChange={props.onChangeDetail} ref={inputRef}></input>
+                    <input className={cx('modal-input','md-top')} type="text" value={detailAddr} placeholder="상세 주소를 입력하세요." onChange={props.onChangeDetail} ref={inputRef}></input>
             </div>
             </DialogContent>
             <FixButton title={"이 주소로 배달지 설정"} toggle={true} onClick={props.onClick}/>

@@ -66,11 +66,11 @@ const AddressContainer = ({ modal }) => {
 
     const onCloseModal = () => history.goBack();
     const onOpenModalSearch = () => history.push(Paths.ajoonamu.address + '/search');
-    const onOpenModalMap = () => history.pushh(Paths.ajoonamu.address + '/map');
+    const onOpenModalMap = () => history.push(Paths.ajoonamu.address + '/map');
 
-    const onMovePrevUrl =()=>{
+    const onMovePrevUrl = () => {
         const url = JSON.parse(sessionStorage.getItem('url'));
-        if(url){
+        if (url) {
             history.push(url.prev);
         }
     }
@@ -111,12 +111,6 @@ const AddressContainer = ({ modal }) => {
         setLoading(false);
     }, [user_token]);
 
-    //지도 열기
-    const onClickMapOpen = useCallback(() => {
-        getUserLocation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     //지도 닫기
     const onClickMapClose = useCallback(() => {
         onCloseModal();
@@ -124,28 +118,6 @@ const AddressContainer = ({ modal }) => {
         setDetailAddr('');
         setPosition({ lat: null, lng: null });
     }, []);
-
-    //현재 위치 받아오기
-    const getUserLocation = async () => {
-        if ('geolocation' in navigator) {
-            setLoading(true);
-            try {
-                const p = await getCoordinates();
-                const lat = p.coords.latitude;
-                const lng = p.coords.longitude;
-                const newState = { lat: lat, lng: lng };
-                setPosition(newState);
-                onOpenModalMap();
-            } catch (e) {
-                if (e.code === 3) {
-                    openMessage(false, "요청 시간이 초과되었습니다.", "네트워크 상태를 확인하신 후 다시 시도해 주세요.");    
-                } else {
-                    openMessage(false, "위치 정보 접근이 거부되었습니다.", "위치 정보 허용을 하신 후에 다시 시도해 주세요.");
-                }
-            }
-            setLoading(false);
-        }
-    };
 
 
     //검색창 열기
@@ -685,7 +657,7 @@ const AddressContainer = ({ modal }) => {
                         <div className={styles['pd-box']}>
                             <ButtonBase
                                 className={cx('location-btn')}
-                                onClick={onClickMapOpen}
+                                onClick={onOpenModalMap}
                             >
                                 현 위치로 주소 설정
                             </ButtonBase>

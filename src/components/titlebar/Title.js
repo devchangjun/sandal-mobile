@@ -23,12 +23,9 @@ const Title = () => {
         addr로 받아와 렌더.
         useSelect로 전역 state로 받아와도 됨
     */
-    const onClickAddr = () => {
-        history.push(Paths.ajoonamu.address);
-    };
-    const onClickNotice = () => {
-        history.push(Paths.ajoonamu.notice);
-    };
+    const onClickAddr = () => history.push(Paths.ajoonamu.address);
+    const onClickMap = () => history.push(Paths.ajoonamu.address + '/map');
+    const onClickNotice = () => history.push(Paths.ajoonamu.notice);
 
     return (
         <div className={cx('app-title', { not_view: header })}>
@@ -53,7 +50,7 @@ const Title = () => {
                     </div>
                     <div className={styles['app-title-location-button']}>
                         <img src={locationImage} alt="location"
-                            onClick={onClickAddr}
+                            onClick={onClickMap}
                         />
                     </div>
                 </div>

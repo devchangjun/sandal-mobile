@@ -61,6 +61,13 @@ const FullScreenDialog = (props) => {
         }
     };
 
+    useEffect(() => {
+        if (props.open) {
+            console.log('?');
+            resetLocation();
+        }
+    }, [props.open])
+
     const mapScript = () => {
         let container = document.getElementById('map');
         let options = {

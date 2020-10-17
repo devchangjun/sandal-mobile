@@ -10,6 +10,7 @@ import { DBImageFormat } from '../../lib/formatter';
 import { useModal } from '../../hooks/useModal';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../paths';
+import ErrorCoverImage from '../../components/asset/ErrorCoverImage';
 
 export default ({ id }) => {
     const openModal = useModal();
@@ -42,13 +43,19 @@ export default ({ id }) => {
         getEventPost(parseInt(id));
     }, [getEventPost, id]);
 
-    const { images_mobile, created_at, end_date, body, warn } = eventData;
+    const { images_mobile, created_at, end_date, body, warn, images_detail } = eventData;
     return (
         <>
             {!loading && (
                 <div className={styles['container']}>
                     <Loading open={loading} />
-                    <EventImage image={DBImageFormat(images_mobile)} />
+                    <EventImage image={DBImageFormat(images_mobile)[0]} />
+                    <div className={styles['event-detail']}>
+                    {images_detail &&
+                    images_detail !== '[]' &&
+                    DBImageFormat(images_detail).map(image_detail =>
+                    <ErrorCoverImage className={styles['detail-image']} src={image_detail} alt="상세 이미지" key={image_detail} />)}
+                    </div>
                     <EventCotent
                         created_at={created_at}
                         ended_at={end_date}

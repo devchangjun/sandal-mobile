@@ -56,6 +56,7 @@ const FullScreenDialog = (props) => {
                         '위치 정보 허용을 하신 후에 다시 시도해 주세요.',
                     );
                 }
+                handleClose();
             }
             setClick(false);
         }

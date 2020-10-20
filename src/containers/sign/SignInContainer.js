@@ -108,7 +108,11 @@ const SignInContainer = () => {
                         alert(e);
                     }
                 }
-                window.myJs.requsetToken();
+                try {
+                    window.myJs.requsetToken();
+                } catch (e) {
+                    alert(e);
+                }
             }
         }
     }

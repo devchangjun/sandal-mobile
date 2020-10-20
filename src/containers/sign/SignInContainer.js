@@ -105,13 +105,15 @@ const SignInContainer = () => {
                     alert('JWT_TOKENL ' + JWT_TOKEN);
                     try {
                         const res = await requestPOSTPushToken(JWT_TOKEN, token);
-                        alert(res);
+                        alert(JSON.stringify(res.data));
                     } catch (e) {
                         alert(e);
                     }
                 }
                 window.myJs.requestToken();
             }
+        } else if (login_os === 'iOS') {
+
         }
     }
 

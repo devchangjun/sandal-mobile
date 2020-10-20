@@ -101,7 +101,8 @@ const SignInContainer = () => {
         if (login_os === 'Android') {
             if (typeof window.myJs !== 'undefined') {
                 window.setToken = async (token) => {
-                    alert(token);
+                    alert('native_token: ' + token);
+                    alert('JWT_TOKENL ' + JWT_TOKEN);
                     try {
                         const res = await requestPOSTPushToken(JWT_TOKEN, token);
                         alert(res);

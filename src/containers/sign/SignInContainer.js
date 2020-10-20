@@ -103,6 +103,7 @@ const SignInContainer = () => {
                 window.setToken = async (token) => {
                     try {
                         const res = await requestPOSTPushToken(JWT_TOKEN, token);
+                        alert(token);
                         alert(res);
                     } catch (e) {
                         alert(e);

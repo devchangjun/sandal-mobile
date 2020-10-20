@@ -114,7 +114,7 @@ const SignInContainer = () => {
                 window.myJs.requestToken();
             }
         } else if (login_os === 'iOS') {
-            window.webkit.messageHandlers.requestToken.postMessage('push_token');
+            window.webkit.messageHandlers.requestToken.postMessage("");
         }
     }
 

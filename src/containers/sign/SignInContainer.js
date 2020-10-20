@@ -97,23 +97,24 @@ const SignInContainer = () => {
     }, [history]);
 
     const LoginOs = (JWT_TOKEN) => {
+        window.setToken = async (token) => {
+            try {
+                const res = await requestPOSTPushToken(JWT_TOKEN, token);
+                if (res.data.msg !== "success") {
+                    alert(res.data.msg);
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
         const login_os = getMobileOperatingSystem();
         if (login_os === 'Android') {
             if (typeof window.myJs !== 'undefined') {
-                window.setToken = async (token) => {
-                    alert('native_token: ' + token);
-                    alert('JWT_TOKENL ' + JWT_TOKEN);
-                    try {
-                        const res = await requestPOSTPushToken(JWT_TOKEN, token);
-                        alert(JSON.stringify(res.data));
-                    } catch (e) {
-                        alert(e);
-                    }
-                }
                 window.myJs.requestToken();
             }
         } else if (login_os === 'iOS') {
-
+            window.webkit.messageHandlers.requestToken.postMessage('push_token');
         }
     }
 

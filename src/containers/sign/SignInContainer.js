@@ -98,22 +98,18 @@ const SignInContainer = () => {
 
     const LoginOs = (JWT_TOKEN) => {
         const login_os = getMobileOperatingSystem();
-        if (login_os === 'Android'){
+        if (login_os === 'Android') {
             if (typeof window.myJs !== 'undefined') {
                 window.setToken = async (token) => {
+                    alert(token);
                     try {
                         const res = await requestPOSTPushToken(JWT_TOKEN, token);
-                        alert(token);
                         alert(res);
                     } catch (e) {
                         alert(e);
                     }
                 }
-                try {
-                    window.myJs.requestToken();
-                } catch (e) {
-                    alert(e);
-                }
+                window.myJs.requestToken();
             }
         }
     }

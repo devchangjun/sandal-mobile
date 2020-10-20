@@ -173,3 +173,12 @@ export const requestPutSecession = async (token, agree_secession) => {
     const res = await axios.put(req, { agree_secession });
     return res;
 }
+
+export const requestPOSTPushToken = async (JWT_TOKEN, native_token) => {
+    const req = Paths.api + 'user/pushToken';
+    axios.defaults.headers.common['Authorization'] = `Bearer ${JWT_TOKEN}`;
+    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
+    const res = await axios.post(req, { native_token });
+    return res;
+}

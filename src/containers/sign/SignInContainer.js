@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux';
 ///api
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
-import { localLogin } from '../../api/auth/auth';
+import { localLogin, requestPOSTPushToken } from '../../api/auth/auth';
 import { reqNoticeList } from '../../api/notice';
 import { getMobileOperatingSystem } from '../../api/OS/os';
 
@@ -96,10 +96,18 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
-    const LoginOs =()=>{
+    const LoginOs = (JWT_TOKEN) => {
         const login_os = getMobileOperatingSystem();
-        if(login_os ==='Android'){
-            if (typeof window.myJs !=='undefined') {
+        if (login_os === 'Android'){
+            if (typeof window.myJs !== 'undefined') {
+                window.setToken = async (token) => {
+                    try {
+                        const res = await requestPOSTPushToken(JWT_TOKEN, token);
+                        alert(res);
+                    } catch (e) {
+                        alert(e);
+                    }
+                }
                 window.myJs.requsetToken();
             }
         }
@@ -116,33 +124,21 @@ const SignInContainer = () => {
                 const res = await localLogin(email, password);
                 if (res.status === 200) {
                     // 회원가입 안되있는 이메일
-                    if (
-                        res.data.msg === '회원가입 되어있지 않은 이메일입니다.'
-                    ) {
-                        openModal(
-                            res.data.msg,
-                            '아이디를 다시 한 번 확인해 주세요.',
-                        );
+                    if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
                     }
                     // 비밀번호가 틀렸을 때
                     else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                        openModal(
-                            res.data.msg,
-                            '비밀번호를 다시 한 번 확인해 주세요.',
-                        );
+                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.');
                     }
                     // 탈퇴한 이메일일 때.
                     else if (res.data.msg === '탈퇴한 이메일입니다.') {
-                        openModal(
-                            res.data.msg,
-                            '아이디를 다시 한 번 확인해 주세요.',
-                        );
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.');
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
-                        LoginOs();
-                        // window.myJS.requestToken();
-                        //토큰 넘겨 유저정보 디스패치
+                        LoginOs(res.data.access_token);
+                        // 토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
                         const active_addr = await getActiveAddr(res.data.access_token);
                         localStorage.setItem('access_token', res.data.access_token);

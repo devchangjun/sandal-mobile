@@ -35,7 +35,6 @@ const bestmenu = handleActions(
             items: action.payload,
         }),
         [ADD_MENUITEM]: (state, action) => {
-            console.log(action);
             const { items } = state;
             const ca_id = action.payload.ca_id;
             const index = items.findIndex((item) => item.ca_id === ca_id);

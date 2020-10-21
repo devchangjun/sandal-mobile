@@ -3,9 +3,9 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/goBack';
 import LinkButtom from 'components/button/LinkButton';
-import MarkerImg from './MarkerImg.svg';
+import MarkerImg from './Marker.svg';
 import styles from './MapModal.module.scss';
-import logo from './location.png';
+import logo from './location.svg';
 import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api

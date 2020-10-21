@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Error.module.scss';
 import TitleBar from 'components/titlebar/TitleBar';
 import Button from 'components/button/Button';
-import ErrorImg from 'components/svg/error/error.png';
+import ErrorImg from 'components/svg/error/error.svg';
 import { useHistory } from 'react-router-dom';
 
 export default function ErrorContainer() {

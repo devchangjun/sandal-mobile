@@ -114,7 +114,11 @@ const SignInContainer = () => {
                 window.myJs.requestToken();
             }
         } else if (login_os === 'iOS') {
-            window.webkit.messageHandlers.requestToken.postMessage("");
+            if (typeof window.webkit !== 'undefined') {
+                if (typeof window.webkit.messageHandlers !== 'undefined') {
+                    window.webkit.messageHandlers.requestToken.postMessage("");
+                }
+            }
         }
     }
 
@@ -190,13 +194,20 @@ const SignInContainer = () => {
 
 
 
-    const kakaoLoginClickHandler =()=>{
-        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
-    }
+    const kakaoLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
+    };
 
-    const naverLoginClickHandler =()=>{
-        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
-    }
+    const naverLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
+    };
+
+    const facebookLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/facebook?device=mobile';
+    };
 
     useEffect(() => {
         const btnToggle =
@@ -276,7 +287,7 @@ const SignInContainer = () => {
                                <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>    
                             </div>
                             <div className={styles['sns']}>
-                                <img src={FacebookLogo} alt="facebook"></img>
+                                <img src={FacebookLogo} alt="facebook" onClick={facebookLoginClickHandler} /> 
                             </div>
                         </div>
                     </div>

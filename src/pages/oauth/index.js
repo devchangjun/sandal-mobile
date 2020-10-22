@@ -14,6 +14,8 @@ import { useModal } from '../../hooks/useModal';
 
 //store
 import { get_user_info } from '../../store/auth/auth';
+import { requestPOSTPushToken } from '../../api/auth/auth';
+import { getMobileOperatingSystem } from '../../api/OS/os';
 
 const OAuth = ({ match, location }) => {
     const history = useHistory();
@@ -25,6 +27,33 @@ const OAuth = ({ match, location }) => {
     const query = qs.parse(location.search, {
         ignoreQueryPrefix: true,
     });
+
+
+    const LoginOs = (JWT_TOKEN) => {
+        window.setToken = async (token) => {
+            try {
+                const res = await requestPOSTPushToken(JWT_TOKEN, token);
+                if (res.data.msg !== "success") {
+                    alert(res.data.msg);
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        const login_os = getMobileOperatingSystem();
+        if (login_os === 'Android') {
+            if (typeof window.myJs !== 'undefined') {
+                window.myJs.requestToken();
+            }
+        } else if (login_os === 'iOS') {
+            if (typeof window.webkit !== 'undefined') {
+                if (typeof window.webkit.messageHandlers !== 'undefined') {
+                    window.webkit.messageHandlers.requestToken.postMessage("");
+                }
+            }
+        }
+    }
 
     const GetInfo = async (access_token) => {
         if (access_token) {
@@ -45,6 +74,7 @@ const OAuth = ({ match, location }) => {
                 } else {
                     initStore();
                 }
+                LoginOs(access_token);
                 localStorage.setItem('access_token', access_token);
 
                 history.replace('/');

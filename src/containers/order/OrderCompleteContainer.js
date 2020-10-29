@@ -17,9 +17,8 @@ import { useStore } from '../../hooks/useStore';
 import { useSelector } from 'react-redux';
 
 // api
-import { order_cancle } from '../../api/order/order';
 import { getDetailOrderView } from '../../api/order/orderItem';
-import { noAuthOrderView, noAutuOrderCancle } from '../../api/noAuth/order';
+import { noAuthOrderView } from '../../api/noAuth/order';
 import Loading from '../../components/asset/Loading';
 
 //lib
@@ -59,7 +58,6 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             } else {
                 res = await noAuthOrderView(order_number);
             }
-
             const { orders } = res;
             if (orders === undefined) {
                 openModal(

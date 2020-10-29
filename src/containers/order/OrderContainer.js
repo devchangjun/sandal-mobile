@@ -66,10 +66,14 @@ const AUTH_NUMBER_LENGTH = 6;
 const OrderContainer = ({ modal }) => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
 
+    const phoneInputRef = useRef(null);
+    const authInputRef = useRef(null);
+
     const { user } = useSelector((state) => state.auth);
     const { addr1, addr2, lat, lng, post_num } = useSelector(
         (state) => state.address,
     );
+    const order_id = useRef(null);
     const history = useHistory();
     const { company } = useSelector(state => state.company);
     const user_token = useStore(false);
@@ -85,7 +89,6 @@ const OrderContainer = ({ modal }) => {
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState('없음'); //주문메모
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
-    const order_id = useRef(null);
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState(null); //쿠폰 번호
@@ -116,6 +119,7 @@ const OrderContainer = ({ modal }) => {
                 } else {
                     setToast(true);
                     setToastMessage('인증번호가 틀렸습니다!');
+                    authInputRef.current.focus();
                     setTimeout(() => {
                         setToast(false);
                     }, 3000);
@@ -140,7 +144,7 @@ const OrderContainer = ({ modal }) => {
                     }, 3000);
                 } else {
                     setStartTimer(true);
-                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!', () => authInputRef.current.focus());
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -148,6 +152,7 @@ const OrderContainer = ({ modal }) => {
         } else {
             setToast(true);
             setToastMessage('휴대폰 번호 형식에 맞지 않습니다!');
+            phoneInputRef.current.focus();
             setTimeout(() => {
                 setToast(false);
             }, 3000);
@@ -485,6 +490,16 @@ const OrderContainer = ({ modal }) => {
                                 placeholder="휴대폰 번호"
                                 value={hp}
                                 onChange={onChangeHp}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        if (start_timer) {
+                                            onClickReSendAuth();
+                                        } else {
+                                            onClickSendAuth();
+                                        }
+                                    }
+                                }}
+                                ref={phoneInputRef}
                                 disabled={success}
                                 className={cx('input', 'auth')}
                             />
@@ -502,6 +517,12 @@ const OrderContainer = ({ modal }) => {
                                 type="number"
                                 placeholder="인증번호"
                                 onChange={onChangeAuth}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        onClickCompareAuth();
+                                    }
+                                }}
+                                ref={authInputRef}
                                 disabled={!start_timer}
                                 value={authNumber}
                                 className={cx('input', 'auth')}

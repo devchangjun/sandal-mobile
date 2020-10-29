@@ -62,7 +62,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const FullScreenDialog = ({ title, handleClose }) => {
     const classes = useStyles();
     const { company } = useSelector(state => state.company);
-    console.log(company);
 
     return (
         <Dialog

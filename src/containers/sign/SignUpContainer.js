@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useReducer, useRef } from 'react';
 import classNames from 'classnames/bind';
 
 import { useHistory } from 'react-router-dom';
@@ -110,6 +110,7 @@ const SignUpContainer = ({ modal }) => {
     const { check1, check2, check3 } = check;
 
     const [overlap, setOverlap] = useState(false);
+    const passwordInputRef = useRef(null);
 
     const updateToggle = useCallback(() => {
         const checkbox = (check1 && check2);
@@ -205,7 +206,7 @@ const SignUpContainer = ({ modal }) => {
                 }
             }
         } else {
-            openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');   
+            openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');
         }
     }, [email, openModal, overlap]);
 
@@ -219,7 +220,7 @@ const SignUpContainer = ({ modal }) => {
                 openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
             }
         } else {
-            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
+            openModal("비밀번호 형식에 맞지 않습니다!", '8자 이상으로 문자, 숫자 및 특수문자가 모두 포함되어야 합니다.', () => passwordInputRef.current.focus());
         }
     }, [email, password, password_confirm, check3, openModal, history]);
 
@@ -246,7 +247,7 @@ const SignUpContainer = ({ modal }) => {
                     onChangeCheck1={onChangeCheck1}
                     onChangeCheck2={onChangeCheck2}
                     onChangeCheck3={onChangeCheck3}
-                    modal={modal}
+                    modal={modal ? modal : false}
                 />
             </div>
             <Button title={"가입 완료"} onClick={onClickSignUp} toggle={toggle} ></Button>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { requestPostMobileAuth, requestPostMobileAuthCheck } from '../../api/auth/auth';
 import { useModal } from '../../hooks/useModal';
@@ -18,6 +18,8 @@ const AUTH_NUMBER_LENGTH = 6;
 
 export default ({ userPhone, onChangePhone, success, setSuccess }) => {
 
+    const authInputRef = useRef(null);
+
     const [toggle, setToggle] = useState(false);
     const [toast, setToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
@@ -36,7 +38,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
                     setStartTimer(false);
                 } else {
                     setToast(true);
-                    setToastMessage('인증번호가 틀렸습니다!');
+                    setToastMessage('인증번호가 틀렸습니다!', () => authInputRef.current.focus());
                     setTimeout(() => {
                         setToast(false);
                     }, 3000);
@@ -62,7 +64,7 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
                 } else {
                     setToggle(true);
                     setStartTimer(true);
-                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!', () => authInputRef.current.focus());
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -77,10 +79,17 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
     };
 
     const onClickReSendAuth = () => {
-        openModal('인증번호를 재전송 하시겠습니까?', '인증번호는 6자리입니다.', () => {
-            setStartTimer(false);
-            onClickSendAuth();
-        },() =>{},true);
+        openModal(
+            '인증번호를 재전송 하시겠습니까?',
+            '인증번호는 6자리입니다.',
+            () => {
+                setStartTimer(false);
+                onClickSendAuth();
+                authInputRef.current.focus();
+            },
+            () => {},
+            true,
+        );
     };
 
     useEffect(() => {
@@ -107,6 +116,12 @@ export default ({ userPhone, onChangePhone, success, setSuccess }) => {
                     inputType={'number'}
                     initValue={userAuth}
                     onChange={onChangeAuth}
+                    reference={authInputRef}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            onClickCompareAuth();
+                        }
+                    }}
                 />
                 <div className={styles['timer']}>
                     {success ? <Check on={true}/>

@@ -33,8 +33,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const [loading, setLoading] = useState(false);
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
-    const [od_status ,setOdStatus] = useState(false);
-
+    const [od_status ,setOdStatus] = useState('order_apply');
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);
         try {
@@ -54,7 +53,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 setSuccess(false);
             } else {
                 setOrders(orders);
-                setOdStatus(orders.info[0].od_status === 'order_cancel');
+                setOdStatus(orders.info[0].od_status);
                 setPayinfo(payinfo);
                 setSuccess(true);
             }
@@ -91,16 +90,15 @@ const OrderDetailContainer = ({ order_id }) => {
                         -1
                     ) {
                         openModal('이미 취소된 거래건 입니다.');
-                        setOdStatus(true);
-
+                        setOdStatus('order_cancel');
                     } else {
                         openModal('정상적으로 취소되었습니다.');
-                        setOdStatus(true);
+                        setOdStatus('order_cancel');
                     }
                 } catch (e) {}
                 setLoading(false);
             },
-            ()=>{},
+            () => {},
             true,
         );
     };
@@ -214,18 +212,18 @@ const OrderDetailContainer = ({ order_id }) => {
                                 <div className={styles['button-box']}>
                                     <ButtonBase
                                         className={cx('cancle-btn', {
-                                            status: od_status
+                                            status: (od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
                                         })}
-                                        disabled={od_status}
-                                        onClick={
-                                            order &&
-                                            od_status ? ()=>{} :userOrderCancle
+                                        disabled={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')}
+                                        onClick={(od_status === 'order_cancel' || od_status === 'order_complete' || od_status === 'delivery_complete')
+                                            ? () => {}
+                                            : userOrderCancle
                                         }
                                     >
-                                        {order &&
-                                        od_status
-                                            ? '주문취소완료'
-                                            : '주문취소'}
+                                        {(od_status === 'order_cancel') ? '주문취소완료'
+                                        : (od_status === 'delivery_complete') ? '배달완료'
+                                        : (od_status === 'order_complete') ? '주문완료'
+                                        : '주문 취소'}
                                     </ButtonBase>
                                 </div>
                             </div>

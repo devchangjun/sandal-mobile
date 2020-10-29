@@ -3,7 +3,7 @@ import classnames from 'classnames/bind';
 import { makeStyles } from '@material-ui/core/styles';
 /* Library */
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { modalClose } from '../../store/modal';
 /* Redux */
 
@@ -29,7 +29,6 @@ export default ({
     handleClose = () => {},
     open,
 }) => {
-    const state = useSelector((state) => state.modal);
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -44,21 +43,21 @@ export default ({
         onClose();
     }, [handleClick, onClose]);
 
-    useEffect(() => {
-        const keydownEvent = (e) => {
-            if (e.key === 'Escape') {
+    const onKeyDown = useCallback(e => {
+        if (open) {
+            if (e.key === 'Enter') {
+                onClick();
+            } else if (e.key === 'Escape') {
                 onClose();
             }
-        };
-        document.addEventListener('keydown', keydownEvent, true);
-        return () => document.removeEventListener('keydown', keydownEvent, true);
-    }, [onClick, onClose]);
+            e.stopPropagation();
+        }
+    }, [onClick, onClose, open]);
 
     useEffect(() => {
-        if (state.open) {
-            confirmButton.current.focus();
-        }
-    }, [state]);
+        document.addEventListener('keydown', onKeyDown, true);
+        return () => document.removeEventListener('keydown', onKeyDown, true);
+    }, [onKeyDown]);
 
     return (
         <>

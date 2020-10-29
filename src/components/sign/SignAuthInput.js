@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './SignInput.module.scss';
 import classNames from 'classnames/bind';
 import { ButtonBase } from '@material-ui/core';
@@ -17,9 +17,10 @@ const SignAuthInput = ({
     success,
     input_disabled, button_disabled
 }) => {
+    const authInputRef = useRef(null);
     return (
         <div className={styles['sign-input']}>
-            <form>
+            <div>
                 <input
                     className={styles['auth']}
                     type={inputType}
@@ -28,8 +29,14 @@ const SignAuthInput = ({
                     onChange={onChange}
                     autoComplete="on"
                     disabled={input_disabled}
+                    ref={authInputRef}
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            onClick();
+                        }
+                    }}
                 />
-            </form>
+            </div>
             <ButtonBase
                 className={cx('auth-btn',
                     { toggle: toggle },

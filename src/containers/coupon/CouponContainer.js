@@ -134,7 +134,7 @@ const CouponConatiner = ({ tab = '0' }) => {
         if (user_token) {
             try {
                 const res = await getUseCpList(user_token, startDate, endDate);
-                console.log(res);
+                setUseCpList(res);
             } catch (e) {
                 console.log(e);
             }
@@ -167,6 +167,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                 );
             } catch (e) {}
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [user_token, down_cp_list, openModal, cp_list],
     );
 
@@ -314,7 +315,7 @@ const CouponConatiner = ({ tab = '0' }) => {
                                             </IconButton>
                                         </div>
                                         <div className={cx('coupon-list', 'pd-box')}>
-                                            {use_cp_list.length !== 0 ? <UseCouponItemList />
+                                            {use_cp_list.length !== 0 ? <UseCouponItemList cp_list={use_cp_list} />
                                             : <Message msg="사용하신 쿠폰이 없습니다." />}
                                         </div>
                                     </SwiperSlide>

@@ -18,8 +18,6 @@ import styles from './QNADetailModal.module.scss';
 import { useModal } from '../../hooks/useModal';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import { Paths } from '../../paths';
-import { useHistory } from 'react-router-dom';
-
 const cn = classnames.bind(styles);
 
 const useStyles = makeStyles(() => ({
@@ -65,7 +63,6 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
     const classes = useStyles();
 
     const openModal = useModal();
-    const history = useHistory();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({});
@@ -114,7 +111,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
                 window.location = Paths.ajoonamu.support + '/qna/send?id=' + viewId;
             }, () => {}, true);
         }
-    }, [viewId, openModal, history, handleClose]);
+    }, [viewId, openModal]);
 
     useEffect(() => {
         callGetDetail()

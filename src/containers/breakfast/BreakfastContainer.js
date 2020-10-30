@@ -156,7 +156,7 @@ const BreakfastContainer = ({ menu }) => {
                 {items[index].items.length !== 0 ? (
                     <MenuItemList
                         menuList={items[index].items}
-                        // onClick={onClickMenuItem}
+                        onClick={onClickMenuItem}
                     />
                 ) : (
                     <Message

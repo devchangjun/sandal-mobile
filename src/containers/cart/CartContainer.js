@@ -315,6 +315,7 @@ const CartContainer = ({ modal }) => {
                     cartList={cartList}
                     open={modal === 'estimate'}
                     dlvCost={delivery_cost}
+                    total={total}
                     handleClose={onCloseModal}
                     onClick={onClickOrder}
                 />

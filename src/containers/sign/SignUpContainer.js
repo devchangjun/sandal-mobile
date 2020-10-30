@@ -229,7 +229,7 @@ const SignUpContainer = ({ modal }) => {
             <div className={cx('container')}>
                 <div className={cx('content')}>
                     <SignAuthInput inputType={"email"} initValue={user.email} onChange={updateEmail} placeholder={"이메일"} buttonTitle={`중복검사 ${overlap ? "확인" : ""}`} onClick={onClickOverlapCheck} success={overlap}/>
-                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} />
+                    <SignNormalInput inputType={"password"} initValue={user.password} onChange={updatePassword} placeholder={"비밀번호"} reference={passwordInputRef} />
                     <SignNormalInput inputType={"password"} initValue={user.password_confirm} onChange={updateConfirm} placeholder={"비밀번호 확인"} />
                     <div className={cx('compare', { on: compare, not_view: user.password.length === 0 || user.password_confirm.length === 0 })}>
                         <label>{confirm()}</label>

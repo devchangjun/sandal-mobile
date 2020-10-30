@@ -24,6 +24,7 @@ import Loading from '../asset/Loading';
 import SDGothicNEO_R from './AppleSDGothicNeoR';
 import SDGothicNEO_B from './AppleSDGothicNeoB';
 import { useSelector } from 'react-redux';
+import { numberFormat } from '../../lib/formatter';
 
 
 const cx = classNames.bind(styles);
@@ -103,34 +104,45 @@ const EstmModal = (props) => {
 
     const onStateChange = useCallback(e => dispatch(e.target), []);
     const sendEstimate = useCallback(async () => {
-        if (estmFile) {
-            if (isEmailForm(state.receiver_email)) {
-                const token = localStorage.getItem('access_token');
-                setLoading(true);
-                try {
-                    const { receiver, receiver_email } = state;
-                    const res = await requestPostEstimate(token, {
-                        estm_email: receiver_email,
-                        estm_username: receiver,
-                        estm_file: estmFile,
-                    });
-                    if (res.data.msg === "성공") {
-                        openModal('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!');    
-                        props.onClick();
-                    } else {
-                        openModal('전송이 실패했습니다.', '다시 시도해 주세요.');
+        console.log(props.total);
+        if (props.total > company.minimum_order) {
+            
+            if (estmFile) {
+                if (isEmailForm(state.receiver_email)) {
+                    const token = localStorage.getItem('access_token');
+                    setLoading(true);
+                    try {
+                        const { receiver, receiver_email } = state;
+                        const res = await requestPostEstimate(token, {
+                            estm_email: receiver_email,
+                            estm_username: receiver,
+                            estm_file: estmFile,
+                        });
+                        if (res.data.msg === "성공") {
+                            openModal('성공적으로 전송되었습니다!', '이메일을 확인해 주세요!');    
+                            props.onClick();
+                        } else {
+                            openModal('전송이 실패했습니다.', '다시 시도해 주세요.');
+                        }
+                    } catch (e) {
+                        openModal('예기치 못한 에러가 발생했습니다!', '다시 시도해 주세요.');
                     }
-                } catch (e) {
-                    openModal('예기치 못한 에러가 발생했습니다!', '다시 시도해 주세요.');
+                    setLoading(false);
+                } else {
+                    openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');
                 }
-                setLoading(false);
             } else {
-                openModal('잘못된 이메일 형식입니다.', '이메일 형식을 확인해 주세요.');
+                openModal('미리보기 시도 후 전송하셔야 합니다.', '견적서를 한 번 확인 후에 시도해주세요.');
             }
         } else {
-            openModal('미리보기 시도 후 전송하셔야 합니다.', '견적서를 한 번 확인 후에 시도해주세요.');
+            openModal(
+                '최소 주문 금액을 채워주세요.',
+                `최소 주문 금액은 ${numberFormat(
+                    company.minimum_order,
+                )}원입니다.`,
+            );
         }
-    }, [estmFile, state, openModal, props]);
+    }, [props, company.minimum_order, estmFile, state, openModal]);
 
     const onDownload = () => {
         const doc = new jsPDF('p', 'mm');

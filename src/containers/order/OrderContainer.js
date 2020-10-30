@@ -346,7 +346,7 @@ const OrderContainer = ({ modal }) => {
             let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
             let payple_payer_id = '';
 
-            let buyer_no = ''; //고객 고유번호
+            let buyer_no = user ? user.id : null; //고객 고유번호
             let buyer_name = user ? user.name : noAuthName; //고객 이름
             let buyer_hp = `${hp}`; //고객 번호
             let buyer_email = user && user.email; //고객 이메일
@@ -785,6 +785,7 @@ const OrderContainer = ({ modal }) => {
             <PointModal
                 open={modal === 'point'}
                 handleClose={onCloseModal}
+                total_price = { parseInt(totalPrice)+ parseInt(dlvCost)-parseInt(cp_price)}
                 user_point={user && user.point}
                 onChange={setPointPrice}
                 point_price={point_price}
@@ -792,6 +793,7 @@ const OrderContainer = ({ modal }) => {
             <CouponModal
                 item_price ={totalPrice}
                 open={modal === 'coupon'}
+                total_price = { parseInt(totalPrice)+ parseInt(dlvCost)-parseInt(point_price)}
                 handleClose={onCloseModal}
                 list={couponList}
                 onClick={onClickCouponSelect}

@@ -112,6 +112,9 @@ const FullScreenDialog = (props) => {
         if(props.item_price <cp_minimum){
             openModal('사용하실 수 없는 쿠폰입니다.',`최소주문 금액이\n${numberFormat(cp_minimum)}원 이상일 때 사용가능한 쿠폰입니다. `);
         }
+        else if(props.total_price - cp_price < 10000){
+            openModal('주문 금액을 확인해주세요.','최소 결제 금액은 10,000원 이상부터 입니다.');
+        }
         else{
             props.handleClose();
             props.onClick(cp_price, cp_id, cp_list);

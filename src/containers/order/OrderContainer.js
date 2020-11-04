@@ -83,7 +83,8 @@ const OrderContainer = ({ modal }) => {
     const [payment, setPayment] = useState('페이플 카드 결제');
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
     const [toggle, setToggle] = useState(false);
-    const [dlvCost, setDlvCost] = useState(0); // 배달비
+    const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
+    const [dlvCost, setDlvCost] = useState(0); // 주문 수량에 따른 배달비
     const [dlvMemo, setDlvMemo] = useState('없음'); //배달메모
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
@@ -237,7 +238,7 @@ const OrderContainer = ({ modal }) => {
                         openModal('잘못된 접근입니다.');
                     }
                     setTotalPrice(price);
-                    setDlvCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                 }
             } catch (e) {}
         } else {
@@ -273,7 +274,7 @@ const OrderContainer = ({ modal }) => {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
                     } 
-                    setDlvCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                     setTotalPrice(price);
                 }
             } catch (e) {}
@@ -451,6 +452,13 @@ const OrderContainer = ({ modal }) => {
             }),
         );
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
+
+        
+    useEffect(()=>{
+        const cost = (totalPrice > 200000) ? 0 : default_cost;
+        setDlvCost(cost);
+    },[totalPrice,default_cost])
+    
 
     return (
         <>

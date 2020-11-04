@@ -31,7 +31,9 @@ const CartContainer = ({ modal }) => {
     const [estm, setEstm] = useState(false); //견적서 발송
     const [cartList, setCartList] = useState([]); //장바구니
     const [total, setTotal] = useState(0); //총 주문금액
-    const [delivery_cost, setCost] = useState(0); // 배달비
+    const [delivery_cost, setCost] = useState(0); // 주문 수량에 따른 배달비
+    const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
+
     const [loading, setLoading] = useState(false);
     const user_token = useStore(false);
 
@@ -143,7 +145,7 @@ const CartContainer = ({ modal }) => {
                         list[i] = query[i];
                         list[i].checked = false;
                     }
-                    setCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                     setCartList(list);
                 }
             } catch (e) {}
@@ -172,7 +174,7 @@ const CartContainer = ({ modal }) => {
                             list[i] = query[i];
                             list[i].checked = false;
                         }
-                        setCost(query.delivery_cost);
+                        setDefaultCost(query.delivery_cost);
                         setCartList(list);
                     } catch (e) {}
                     setLoading(false);
@@ -185,8 +187,6 @@ const CartContainer = ({ modal }) => {
     }, [user_token, addr1, lat, lng, history]);
 
     const onChangeTotalPrice = useCallback(() => {
-
-    
 
         let total = cartList.reduce((prev, { item }) => {
             const { item_price, item_quanity } = item;
@@ -329,6 +329,12 @@ const CartContainer = ({ modal }) => {
         }, [getCartListApi]);
     
         useEffect(onChangeTotalPrice, [onChangeTotalPrice]);
+
+        
+    useEffect(()=>{
+        const cost = (total>200000) ? 0 : default_cost;
+        setCost(cost);
+    },[total,default_cost])
     
 
     return (

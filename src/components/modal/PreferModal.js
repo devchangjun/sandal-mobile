@@ -64,8 +64,6 @@ const FullScreenDialog = (props) => {
     const [desireQuan, setDesireQuan] = useState(1); //희망수량
     const [orderType, setOrderType] = useState('reserve'); //사용자 선택 값 1.예약주문 2.배달주문
 
-    const onChangeOrderType = (e) => setOrderType(e.target.value);
-
     const onChangeBudget = (e) => {
         const value = stringNumberToInt(e.target.value);
         if (isNaN(value)) {
@@ -131,21 +129,7 @@ const FullScreenDialog = (props) => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <div className={styles['title']}>주문 종류</div>
-
-            <DialogContent className={classes.content}>
-                <div className={styles['modal-input-box']}>
-                    <form>
-                        <select
-                            value={orderType}
-                            onChange={onChangeOrderType}
-                        >
-                            <option value="reserve">예약주문</option>
-                            <option value="delivery">배달주문</option>
-                        </select>
-                    </form>
-                </div>
-            </DialogContent>
+         
             <div className={styles['title']}>전체 예산</div>
             <DialogContent className={classes.content}>
                 <div className={styles['modal-input-box']}>

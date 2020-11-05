@@ -14,6 +14,35 @@ import styles from './OrderReview.module.scss';
 
 const cn = classnames.bind(styles);
 
+
+const OrderReviewImageItem = ({ file, handleDeleteFile }) => {
+    const [imageFile, setImageFile] = useState(null);
+
+
+    useEffect(() => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            const base64 = reader.result;
+            if (base64) {
+                setImageFile(base64.toString());
+            }
+        }
+        reader.readAsDataURL(file);
+    }, [file]);
+
+    return (
+        <>{imageFile &&
+            <div className={styles['file-item']}>
+                <div className={styles['file-image']} style={{ backgroundImage: 'url(' + imageFile + ')' }} alt="" />
+                <IconButton className={styles['delete']} onClick={handleDeleteFile}>
+                    <Delete />
+                </IconButton>
+            </div>}
+        </>
+    );
+}
+
 const OrderReviewContainer = ({ review_id, order_id }) => {
 
     const user_token = useStore(true);
@@ -23,7 +52,6 @@ const OrderReviewContainer = ({ review_id, order_id }) => {
     const [loading, setLoading] = useState(false);
     const [content, setContent] = useState('');
     const [files, setFiles] = useState([]);
-    const [imageFiles, setImageFiles] = useState([]);
     const [rate, setRate] = useState(5.0);
 
 
@@ -32,18 +60,8 @@ const OrderReviewContainer = ({ review_id, order_id }) => {
     const onChangeFiles = useCallback(e => {
         const { files: f } = e.target;
         const fileArray = [];
-        const fileImageArray = [];
         for (let i = 0; i < f.length; i++) {
             fileArray.push(f[i]);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = reader.result;
-                if (base64) {
-                    fileImageArray.push(base64.toString());
-                }
-                setImageFiles(fileImageArray);
-            }
-            reader.readAsDataURL(f[i]);
         }
         setFiles(fileArray);
     }, []);
@@ -162,13 +180,8 @@ const OrderReviewContainer = ({ review_id, order_id }) => {
                         </ButtonBase>
                     </div>
                     <div className={styles['file-list']}>
-                        {imageFiles.map((imageFile, index) => (
-                            <div className={styles['file-item']} key={imageFile}>
-                                <div className={styles['file-image']} style={{ backgroundImage: 'url(' + imageFile + ')' }} alt="" />
-                                <IconButton className={styles['delete']} onClick={() => onDeleteFile(files[index].name)}>
-                                    <Delete />
-                                </IconButton>
-                            </div>
+                        {files.map(file => (
+                            <OrderReviewImageItem key={file.name} file={file} handleDeleteFile={() => onDeleteFile(file.name)} />
                         ))}
                     </div>
                     <div className={styles['button-area']}>

@@ -1,4 +1,4 @@
-export const PROTOCOL_ENV = 'http://dev'
+export const PROTOCOL_ENV = 'https://'
 
 export const Paths = {
     index: '/',
@@ -25,6 +25,7 @@ export const Paths = {
         order_list: '/order_list',
         order_detail:'/order_detail',
         order_complete :'/order_complete',
+        order_review: '/order_review',
         coupon: '/coupon',
         support: '/support',
         notice: '/notice',

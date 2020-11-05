@@ -1,0 +1,10 @@
+@import '../../styles/Root.scss';
+
+.container {
+    @include wireframe($pd-top);
+    height: 100vh;
+    overflow: hidden;
+    .table {
+        padding: 24px;
+    }
+}

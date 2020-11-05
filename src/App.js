@@ -32,6 +32,7 @@ import { get_user_info } from './store/auth/auth';
 import { get_notice, read_check } from './store/notice/notice';
 import { scrollClose, scrollOpen } from './store/scroll';
 import { get_company_info } from './store/company';
+import OrderReview from './pages/order/OrderReview';
 
 let preventY = 0;
 
@@ -135,6 +136,8 @@ const App = () => {
             return '장바구니';
         } else if (pathname === '/order_complete') {
             return '주문완료';
+        }  else if (pathname === '/order_review') {
+            return '리뷰작성';
         } else if (pathname === '/order_detail') {
             return '주문 상세보기';
         } else if (pathname.indexOf('qna') !== -1) {
@@ -234,6 +237,7 @@ const App = () => {
                 <Route path={Paths.ajoonamu.order_list} component={OrderList} />
                 <Route path={Paths.ajoonamu.order_complete + '/:modal?'} component={OrderComplete} />
                 <Route path={Paths.ajoonamu.order_detail} component={OrderDetail} />
+                <Route path={Paths.ajoonamu.order_review} component={OrderReview} />
                 <Route path={Paths.ajoonamu.coupon} component={Coupon} />
                 <Route path={Paths.ajoonamu.find_email} component={FindEmail} />
                 <Route path={Paths.ajoonamu.find_password} component={FindPassword} />

@@ -455,9 +455,11 @@ const OrderContainer = ({ modal }) => {
 
         
     useEffect(()=>{
-        const cost = (totalPrice > company.free_cost_order) ? 0 : default_cost;
-        setDlvCost(cost);
-    },[totalPrice,default_cost,company])
+        if (company) {
+            const cost = (totalPrice > company.free_cost_order) ? 0 : default_cost;
+            setDlvCost(cost);
+        }
+    }, [totalPrice, default_cost, company]);
     
 
     return (
@@ -563,8 +565,7 @@ const OrderContainer = ({ modal }) => {
                                 name="hours"
                                 onChange={e => setHours(e.target.value)}
                             >
-                                {[...new Array(22).keys()]
-                                    .splice(9, 13)
+                                {[...new Array(24).keys()]
                                     .map((item) => (
                                         <option value={item} key={item}>
                                             {(item >= 12 ? '오후 ' : '오전 ') +

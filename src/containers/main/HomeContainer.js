@@ -40,6 +40,9 @@ import {
 
 //hooks
 import { useDomScroll, useRestore } from '../../hooks/useScroll';
+import ReviewListView from '../../components/review/ReviewListView';
+import { requestGetReviewList } from '../../api/review/review';
+import ReviewModal from '../../components/modal/ReviewModal';
 
 const cx = cn.bind(styles);
 const OFFSET = 8;
@@ -57,8 +60,9 @@ const tabInit = [
     },
 ];
 
-const HomeContainer = () => {
+const HomeContainer = ({ review_id }) => {
     // useScroll();
+    const history = useHistory();
     const SWIPER = useRef(null);
     const SUB_TAB = useRef(null);
     const SWIPER_SLIDE = useRef(null);
@@ -81,14 +85,14 @@ const HomeContainer = () => {
     const { isScrollEnd, onScroll } = useDomScroll(); //스크롤 끝 판단.
     const [isPaging, setIsPaging] = useState(false); //페이징중인지
     const [offset, setOffset] = useState(OFFSET);
+    const [reviewList, setReviewList] = useState([]);
 
     const onChangePostIndex = useCallback(
         (value) => {
-
-            if(index===0){
+            if (index === 0) {
                 dispatch(onChangeBestIndex(value));
             }
-            else if(index===1){
+            else if (index === 1) {
                 dispatch(onChangeBreakIndex(value));
             }
         },
@@ -218,7 +222,18 @@ const HomeContainer = () => {
         } catch (e) {}
     }, [offset, break_cate, break_post_index, dispatch]);
 
-
+    const getReviewList = useCallback(async () => {
+        try {
+            const res = await requestGetReviewList();
+            if (res.data.msg === '성공') {
+                setReviewList(res.data.query.reviews);
+            } else {
+                // 실패했을 때
+            }
+        } catch (e) {
+            // 오류났을 때
+        }
+    }, []);
 
     useEffect(() => {
         const tab = parseInt(sessionStorage.getItem('home_tab'));
@@ -244,6 +259,9 @@ const HomeContainer = () => {
         callBreakMenuListApi();
     }, [callBreakMenuListApi]);
 
+    useEffect(() => {
+        getReviewList();
+    }, [getReviewList]);
 
 
     //로딩 완료 되었을 때 스크롤 위치로 이동.
@@ -254,18 +272,23 @@ const HomeContainer = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const onOpenReview = useCallback(id => {
+        history.push(Paths.index + '?review_id=' + id);
+    }, [])
+    const onCloseReview = useCallback(() => history.goBack(), []);
+
 
     useEffect(() => {
-        if (isScrollEnd && !isPaging)  {
-            if(index===0){
+        if (isScrollEnd && !isPaging) {
+            if (index === 0) {
                 callPageNationMain();
             }
-            else if(index===1){
+            else if (index === 1) {
                 callPageNationBreak();
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isScrollEnd,index]);
+    }, [isScrollEnd, index]);
 
     return (
         <>
@@ -301,6 +324,7 @@ const HomeContainer = () => {
                                     onScroll={onScroll}
                                 >
                                     <MainEventContainer />
+                                    <ReviewListView reviewList={reviewList} onClick={onOpenReview} />
                                     <HomeLandingMenu
                                         index={index}
                                         categorys={best_cate}
@@ -309,6 +333,7 @@ const HomeContainer = () => {
                                         onChange={onChangePostIndex}
                                         title={'베스트 메뉴'}
                                     />
+                                    <ReviewModal open={review_id} review_id={review_id} handleClose={onCloseReview} />
                                 </SwiperSlide>
 
                                 <SwiperSlide

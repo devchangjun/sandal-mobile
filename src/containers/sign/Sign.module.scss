@@ -51,6 +51,9 @@
             width: 100%;
             display: flex;
             justify-content: center;
+            img {
+                width: 150px;
+            }
         }
         .msg{
             margin-top: 48px;

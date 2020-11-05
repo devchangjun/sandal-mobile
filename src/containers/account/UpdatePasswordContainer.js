@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './UpdateInfo.module.scss';
 import Button from 'components/button/Button';
@@ -23,6 +23,9 @@ const UpdatePasswordContainer = () => {
     const onChangeNewPasswordConfirm = (e) =>
         setNewPasswordConfirm(e.target.value);
     const user_token = useStore();
+
+    const passwordInputRef = useRef(null);
+    const newPasswordInputRef = useRef(null);
 
     //패스워드 매칭 체크
     const matchPassword = useCallback(() => {
@@ -69,13 +72,11 @@ const UpdatePasswordContainer = () => {
                 openModal(
                     '기존 비밀번호가 틀렸습니다',
                     '기존 비밀번호를 다시 한 번 확인해 주세요.',
+                    () => passwordInputRef.current.focus()
                 );
             }
         } else {
-            openModal(
-                '형식에 맞지 않는 비밀번호입니다.',
-                '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.',
-            );
+            openModal("비밀번호 형식에 맞지 않습니다!", '8자 이상으로 문자, 숫자 및 특수문자가 모두 포함되어야 합니다.', () => newPasswordInputRef.current.focus());
         }
     };
 
@@ -94,6 +95,7 @@ const UpdatePasswordContainer = () => {
                                 initValue={password}
                                 onChange={onChangePassword}
                                 placeholder={'현재 비밀번호'}
+                                reference={passwordInputRef}
                             />
                         </div>
                         <div>
@@ -102,6 +104,7 @@ const UpdatePasswordContainer = () => {
                                 initValue={new_password}
                                 onChange={onChangeNewPassword}
                                 placeholder={'변경할 비밀번호'}
+                                reference={newPasswordInputRef}
                             />
                             <SignNormalInput
                                 inputType={'password'}

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Paths } from 'paths';
 import { useHistory } from 'react-router-dom';
 import styles from './Find.module.scss';
@@ -19,6 +19,8 @@ const FindPasswordContainer = () => {
     const [password, setPassword] = useState('');
     const [password_confirm, setPasswordConfirm] = useState('');
     const [compare, setCompare] = useState(false);
+
+    const passwordInputRef = useRef(null);
 
     const onChangePassword = (e) => {
         setPassword(e.target.value);
@@ -68,7 +70,7 @@ const FindPasswordContainer = () => {
                 openModal('서버에 오류가 발생했습니다.', '잠시 후 다시 시도해 주세요.');
             }
         } else {
-            openModal('형식에 맞지 않는 비밀번호입니다.', '8 ~ 10자 영문/숫자 조합으로 만들어 주세요.');
+            openModal("비밀번호 형식에 맞지 않습니다!", '8자 이상으로 문자, 숫자 및 특수문자가 모두 포함되어야 합니다.', () => passwordInputRef.current.focus());
         }
     };
 
@@ -107,6 +109,7 @@ const FindPasswordContainer = () => {
                             initValue={password}
                             onChange={onChangePassword}
                             placeholder={'비밀번호'}
+                            reference={passwordInputRef}
                         />
                         <SignNormalInput
                             inputType={'password'}

@@ -66,10 +66,14 @@ const AUTH_NUMBER_LENGTH = 6;
 const OrderContainer = ({ modal }) => {
     // 포인트모달, 결제방식 모달 때 사용할 것.
 
+    const phoneInputRef = useRef(null);
+    const authInputRef = useRef(null);
+
     const { user } = useSelector((state) => state.auth);
     const { addr1, addr2, lat, lng, post_num } = useSelector(
         (state) => state.address,
     );
+    const order_id = useRef(null);
     const history = useHistory();
     const { company } = useSelector(state => state.company);
     const user_token = useStore(false);
@@ -79,13 +83,13 @@ const OrderContainer = ({ modal }) => {
     const [payment, setPayment] = useState('페이플 카드 결제');
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
     const [toggle, setToggle] = useState(false);
-    const [dlvCost, setDlvCost] = useState(0); // 배달비
+    const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
+    const [dlvCost, setDlvCost] = useState(0); // 주문 수량에 따른 배달비
     const [dlvMemo, setDlvMemo] = useState('없음'); //배달메모
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState('없음'); //주문메모
     const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
-    const order_id = useRef(null);
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState(null); //쿠폰 번호
@@ -116,6 +120,7 @@ const OrderContainer = ({ modal }) => {
                 } else {
                     setToast(true);
                     setToastMessage('인증번호가 틀렸습니다!');
+                    authInputRef.current.focus();
                     setTimeout(() => {
                         setToast(false);
                     }, 3000);
@@ -140,7 +145,7 @@ const OrderContainer = ({ modal }) => {
                     }, 3000);
                 } else {
                     setStartTimer(true);
-                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!');
+                    openModal('인증번호가 성공적으로 발송되었습니다!', '인증번호를 확인 후 입력해 주세요!', () => authInputRef.current.focus());
                 }
             } catch (e) {
                 openModal('잘못된 접근입니다.', '잠시 후 재시도 해주세요.');
@@ -148,6 +153,7 @@ const OrderContainer = ({ modal }) => {
         } else {
             setToast(true);
             setToastMessage('휴대폰 번호 형식에 맞지 않습니다!');
+            phoneInputRef.current.focus();
             setTimeout(() => {
                 setToast(false);
             }, 3000);
@@ -232,7 +238,7 @@ const OrderContainer = ({ modal }) => {
                         openModal('잘못된 접근입니다.');
                     }
                     setTotalPrice(price);
-                    setDlvCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                 }
             } catch (e) {}
         } else {
@@ -268,7 +274,7 @@ const OrderContainer = ({ modal }) => {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
                     } 
-                    setDlvCost(query.delivery_cost);
+                    setDefaultCost(query.delivery_cost);
                     setTotalPrice(price);
                 }
             } catch (e) {}
@@ -341,7 +347,7 @@ const OrderContainer = ({ modal }) => {
             let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
             let payple_payer_id = '';
 
-            let buyer_no = ''; //고객 고유번호
+            let buyer_no = user ? user.id : null; //고객 고유번호
             let buyer_name = user ? user.name : noAuthName; //고객 이름
             let buyer_hp = `${hp}`; //고객 번호
             let buyer_email = user && user.email; //고객 이메일
@@ -447,6 +453,13 @@ const OrderContainer = ({ modal }) => {
         );
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
 
+        
+    useEffect(()=>{
+        const cost = (totalPrice > company.free_cost_order) ? 0 : default_cost;
+        setDlvCost(cost);
+    },[totalPrice,default_cost,company])
+    
+
     return (
         <>
             <Loading open={loading} />
@@ -485,6 +498,16 @@ const OrderContainer = ({ modal }) => {
                                 placeholder="휴대폰 번호"
                                 value={hp}
                                 onChange={onChangeHp}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        if (start_timer) {
+                                            onClickReSendAuth();
+                                        } else {
+                                            onClickSendAuth();
+                                        }
+                                    }
+                                }}
+                                ref={phoneInputRef}
                                 disabled={success}
                                 className={cx('input', 'auth')}
                             />
@@ -502,6 +525,12 @@ const OrderContainer = ({ modal }) => {
                                 type="number"
                                 placeholder="인증번호"
                                 onChange={onChangeAuth}
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        onClickCompareAuth();
+                                    }
+                                }}
+                                ref={authInputRef}
                                 disabled={!start_timer}
                                 value={authNumber}
                                 className={cx('input', 'auth')}
@@ -764,6 +793,7 @@ const OrderContainer = ({ modal }) => {
             <PointModal
                 open={modal === 'point'}
                 handleClose={onCloseModal}
+                total_price = { parseInt(totalPrice)+ parseInt(dlvCost)-parseInt(cp_price)}
                 user_point={user && user.point}
                 onChange={setPointPrice}
                 point_price={point_price}
@@ -771,6 +801,7 @@ const OrderContainer = ({ modal }) => {
             <CouponModal
                 item_price ={totalPrice}
                 open={modal === 'coupon'}
+                total_price = { parseInt(totalPrice)+ parseInt(dlvCost)-parseInt(point_price)}
                 handleClose={onCloseModal}
                 list={couponList}
                 onClick={onClickCouponSelect}

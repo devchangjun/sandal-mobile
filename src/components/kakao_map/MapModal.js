@@ -3,9 +3,9 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/goBack';
 import LinkButtom from 'components/button/LinkButton';
-import MarkerImg from './MarkerImg.svg';
+import MarkerImg from './Marker.svg';
 import styles from './MapModal.module.scss';
-import logo from './location.png';
+import logo from './location.svg';
 import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
@@ -51,6 +51,7 @@ const FullScreenDialog = (props) => {
                         '네트워크 상태를 확인하신 후 다시 시도해 주세요.',
                     );
                 } else {
+                    alert(e.message);
                     openModal(
                         '위치 정보 접근이 거부되었습니다.',
                         '위치 정보 허용을 하신 후에 다시 시도해 주세요.',

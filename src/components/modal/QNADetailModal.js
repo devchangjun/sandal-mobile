@@ -19,7 +19,6 @@ import { useModal } from '../../hooks/useModal';
 import { dateToYYYYMMDD } from '../../lib/formatter';
 import { Paths } from '../../paths';
 import { useHistory } from 'react-router-dom';
-
 const cn = classnames.bind(styles);
 
 const useStyles = makeStyles(() => ({
@@ -64,8 +63,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
     const classes = useStyles();
 
-    const openModal = useModal();
     const history = useHistory();
+
+    const openModal = useModal();
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({});
@@ -96,7 +96,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
                     if (res.data.msg === '성공') {
                         openModal('성공적으로 문의를 삭제하였습니다!', '');
                         onRemove(viewId);
-                        handleClose();
+                        history.replace(Paths.ajoonamu.mypage);
                     } else {
                         openModal('삭제를 실패했습니다.', '다시 시도해주세요.');
                     }
@@ -106,7 +106,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
                 setLoading(false);
             }, () => {}, true);
         }
-    }, [USER_TOKEN, handleClose, onRemove, openModal, viewId]);
+    }, [USER_TOKEN, onRemove, openModal, viewId, history]);
 
     const onClickUpdateForm = useCallback(() => {
         if (viewId !== -1) {
@@ -114,7 +114,7 @@ const FullScreenDialog = ({ USER_TOKEN, viewId, handleClose, onRemove }) => {
                 window.location = Paths.ajoonamu.support + '/qna/send?id=' + viewId;
             }, () => {}, true);
         }
-    }, [viewId, openModal, history, handleClose]);
+    }, [viewId, openModal]);
 
     useEffect(() => {
         callGetDetail()

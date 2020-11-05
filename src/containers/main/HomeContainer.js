@@ -53,7 +53,7 @@ const tabInit = [
     {
         // url: '/',
         // url: `${Paths.ajoonamu.shop}?menu=1`,
-        name: '기업조식',
+        name: '정기배송',
     },
 ];
 
@@ -261,7 +261,7 @@ const HomeContainer = () => {
                 callPageNationMain();
             }
             else if(index===1){
-
+                callPageNationBreak();
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -322,7 +322,7 @@ const HomeContainer = () => {
                                         list={break_menu}
                                         post_index={break_post_index}
                                         onChange={onChangePostIndex}
-                                        title={'기업조식'}
+                                        title={'정기배송'}
                                     />
                                 </SwiperSlide>
                             </Swiper>

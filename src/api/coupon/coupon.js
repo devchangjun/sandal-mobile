@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { dateToYYYYMMDDHHMMSS } from '../../lib/formatter';
 import { Paths } from '../../paths';
 
 export const getMyCoupons = async (token) => {
@@ -47,8 +48,8 @@ export const getUseCpList = async (token, start_date, end_date) => {
             Authorization: `Bearer ${token}`,
         },
         params: {
-            start_date,
-            end_date
+            start_date: dateToYYYYMMDDHHMMSS(start_date),
+            end_date: dateToYYYYMMDDHHMMSS(end_date)
         }
     };
     const result = await axios.get(req, config);

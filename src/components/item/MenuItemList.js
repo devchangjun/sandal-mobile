@@ -3,8 +3,6 @@ import styles from './MenuItem.module.scss';
 import MenuItem from './MenuItem';
 
 const MenuItemList = ({ menuList, onClick }) => {
-
-
     const rowRenderer = menuList.map((menu) => {
         return (
             <MenuItem

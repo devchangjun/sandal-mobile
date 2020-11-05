@@ -191,7 +191,10 @@ export default ({ open, handleClose, order_number, token }) => {
                 if (res.data.msg === '성공') {
                     openModal('문구서비스가 신청되었습니다!', '고객님이 원하시는 문구를 작성해 드리겠습니다.');
                     handleClose();
-                } else {
+                } else if (res.data.msg === '이미 해당 주문번호에 대한 스티커가 존재') {
+                    openModal('문구 스티커는 한 번만 신청할 수 있습니다.');
+                }
+                else {
                     openModal('예기치 못한 에러가 발생했습니다!', '다시 시도해 주세요.');
                 }
             } catch (e) {

@@ -36,7 +36,7 @@ const AccountContainer = ({ modal }) => {
 
     const initStore = useInit();
     const { user } = useSelector(state => state.auth);
-    const user_token = useStore();
+    const user_token = useStore(false);
     const dispatch = useDispatch();
     const history = useHistory();
     const openModal = useModal();

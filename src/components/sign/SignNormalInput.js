@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import styles from './SignInput.module.scss';
 
 //인증 버튼을 포함하지 않을 input
@@ -8,15 +8,9 @@ const SignNormalInput = ({
     onChange,
     initValue,
     placeholder,
-    focus,
+    reference,
+    onKeyDown
 }) => {
-    const dom = useRef(null);
-
-    useEffect(() => {
-        if (focus) {
-            dom.current.focus();
-        }
-    }, [focus]);
 
     return (
         <div className={styles['sign-input']}>
@@ -26,7 +20,8 @@ const SignNormalInput = ({
                 type={inputType}
                 value={initValue}
                 onChange={onChange}
-                ref={dom}
+                ref={reference}
+                onKeyDown={onKeyDown}
                 autoComplete="on"
             />
         </div>

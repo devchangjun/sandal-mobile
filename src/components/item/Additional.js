@@ -14,7 +14,7 @@ const Additional = (props) => {
                 htmlFor="test"
             >
                 <Select check={props.check} />
-                {props.option_name} 추가 <span className={styles['price']}>({props.option_price >= 0 && '+'} {numberFormat(props.option_price)}원)</span>
+                {props.option_name} <span className={styles['price']}>({props.option_price >= 0 && '+'} {numberFormat(props.option_price)}원)</span>
             </label>
         </div>
     );

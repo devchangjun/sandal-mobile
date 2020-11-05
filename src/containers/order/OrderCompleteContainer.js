@@ -17,9 +17,8 @@ import { useStore } from '../../hooks/useStore';
 import { useSelector } from 'react-redux';
 
 // api
-import { order_cancle } from '../../api/order/order';
 import { getDetailOrderView } from '../../api/order/orderItem';
-import { noAuthOrderView, noAutuOrderCancle } from '../../api/noAuth/order';
+import { noAuthOrderView } from '../../api/noAuth/order';
 import Loading from '../../components/asset/Loading';
 
 //lib
@@ -59,9 +58,8 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             } else {
                 res = await noAuthOrderView(order_number);
             }
-
             const { orders } = res;
-            if (orders === undefined) {
+            if (orders === undefined || orders === null) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',
                     '주문번호를 확인해주세요',
@@ -71,6 +69,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             } else {
                 setOrders(orders);
                 setSuccess(true);
+                openModal("문구 서비스를 신청하시겠습니까?", "", onOpenModal);
             }
         } catch (e) {
             openModal(
@@ -80,6 +79,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             );
         }
         setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, openModal, order_number, user_token]);
 
     useEffect(() => {

@@ -74,6 +74,12 @@ const FullScreenDialog = (props) => {
         if (props.user_point < point_price) {
             openModal('보유하신 포인트보다 많습니다.', '포인트를 확인해주세요');
         }
+        else if(point_price> props.total_price){
+            openModal('주문 금액을 확인해주세요.','최소 결제 금액은 10,000원 이상부터 입니다.');
+        }
+        else if(props.total_price -point_price <10000){
+            openModal('주문 금액을 확인해주세요.','최소 결제 금액은 10,000원 이상부터 입니다.');
+        }
         else {
             if(point_price===0){
                 props.onChange(0);

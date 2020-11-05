@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useReducer } from 'react';
+import React, { useState, useEffect, useCallback, useReducer, useRef } from 'react';
 import { Paths, PROTOCOL_ENV } from 'paths';
 // styles
 import styles from './Sign.module.scss';
@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux';
 ///api
 import { getActiveAddr } from '../../api/address/address';
 import { getNearStore } from '../../api/store/store';
-import { localLogin } from '../../api/auth/auth';
+import { localLogin, requestPOSTPushToken } from '../../api/auth/auth';
 import { reqNoticeList } from '../../api/notice';
 import { getMobileOperatingSystem } from '../../api/OS/os';
 
@@ -65,6 +65,10 @@ const SignInContainer = () => {
     const { email, password } = user;
     const [toggle, setToggle] = useState(false);
 
+    const emailInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
+
+
     const updateEmail = (e) => {
         dispatchUser({ type: 'UPDATE_USER_EMAIL', email: e.target.value });
     };
@@ -80,8 +84,10 @@ const SignInContainer = () => {
         try {
             const res = await reqNoticeList(token);
             // setList(res.notification);
-            const index = res.notification.findIndex((item) =>!item.not_read_datetime);
-            dispatch(read_check(index===-1));
+            const index = res.notification.findIndex(
+                (item) => !item.not_read_datetime,
+            );
+            dispatch(read_check(index === -1));
             dispatch(get_notice(res.notification));
         } catch (e) {
             console.error(e);
@@ -96,11 +102,28 @@ const SignInContainer = () => {
         history.push(Paths.ajoonamu.recovery);
     }, [history]);
 
-    const LoginOs =()=>{
+    const LoginOs = (JWT_TOKEN) => {
+        window.setToken = async (token) => {
+            try {
+                const res = await requestPOSTPushToken(JWT_TOKEN, token);
+                if (res.data.msg !== "success") {
+                    alert(res.data.msg);
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
         const login_os = getMobileOperatingSystem();
-        if(login_os ==='Android'){
-            if (typeof window.myJs !=='undefined') {
-                window.myJs.requsetToken();
+        if (login_os === 'Android') {
+            if (typeof window.myJs !== 'undefined') {
+                window.myJs.requestToken();
+            }
+        } else if (login_os === 'iOS') {
+            if (typeof window.webkit !== 'undefined') {
+                if (typeof window.webkit.messageHandlers !== 'undefined') {
+                    window.webkit.messageHandlers.requestToken.postMessage("");
+                }
             }
         }
     }
@@ -110,39 +133,28 @@ const SignInContainer = () => {
             openModal(
                 '이메일이 형식에 맞지 않습니다!',
                 '확인 후 다시 작성해 주세요.',
+                () => emailInputRef.current.focus()
             );
         } else {
             try {
                 const res = await localLogin(email, password);
                 if (res.status === 200) {
                     // 회원가입 안되있는 이메일
-                    if (
-                        res.data.msg === '회원가입 되어있지 않은 이메일입니다.'
-                    ) {
-                        openModal(
-                            res.data.msg,
-                            '아이디를 다시 한 번 확인해 주세요.',
-                        );
+                    if (res.data.msg === '회원가입 되어있지 않은 이메일입니다.') {
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.', () => emailInputRef.current.focus());
                     }
                     // 비밀번호가 틀렸을 때
                     else if (res.data.msg === '비밀번호가 틀렸습니다.') {
-                        openModal(
-                            res.data.msg,
-                            '비밀번호를 다시 한 번 확인해 주세요.',
-                        );
+                        openModal(res.data.msg, '비밀번호를 다시 한 번 확인해 주세요.', () => passwordInputRef.current.focus());
                     }
                     // 탈퇴한 이메일일 때.
                     else if (res.data.msg === '탈퇴한 이메일입니다.') {
-                        openModal(
-                            res.data.msg,
-                            '아이디를 다시 한 번 확인해 주세요.',
-                        );
+                        openModal(res.data.msg, '아이디를 다시 한 번 확인해 주세요.', () => emailInputRef.current.focus());
                     }
                     // 로그인 성공 했을 때.
                     else if (res.data.access_token) {
-                        LoginOs();
-                        // window.myJS.requestToken();
-                        //토큰 넘겨 유저정보 디스패치
+                        LoginOs(res.data.access_token);
+                        // 토큰 넘겨 유저정보 디스패치
                         dispatch(get_user_info(res.data.access_token));
                         const active_addr = await getActiveAddr(res.data.access_token);
                         localStorage.setItem('access_token', res.data.access_token);
@@ -177,6 +189,7 @@ const SignInContainer = () => {
                     openModal(
                         '로그인에 실패하였습니다.',
                         '이메일 혹은 패스워드를 확인해주세요.',
+                        () => emailInputRef.current.focus()
                     );
                 }
             } catch (e) {
@@ -189,13 +202,20 @@ const SignInContainer = () => {
 
 
 
-    const kakaoLoginClickHandler =()=>{
-        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
-    }
+    const kakaoLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/kakao?device=mobile';
+    };
 
-    const naverLoginClickHandler =()=>{
-        window.location=PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
-    }
+    const naverLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/naver?device=mobile';
+    };
+
+    const facebookLoginClickHandler = () => {
+        window.location =
+            PROTOCOL_ENV + 'api.ajoonamu.com/api/user/facebook?device=mobile';
+    };
 
     useEffect(() => {
         const btnToggle =
@@ -203,17 +223,11 @@ const SignInContainer = () => {
         setToggle(btnToggle);
     }, [email, password]);
 
-    useEffect(() => {
-        const kepressEvent = e => {
-            if (e.key === 'Enter') {
-                onClickLogin();
-            }
-        };
-        document.addEventListener('keypress', kepressEvent, true);
-        return () => {
-            document.removeEventListener('keypress', kepressEvent, true);
+    const kepressEvent = e => {
+        if (e.key === 'Enter') {
+            onClickLogin();
         }
-    }, [onClickLogin]);
+    };
 
 
     return (
@@ -225,13 +239,16 @@ const SignInContainer = () => {
                         initValue={user.email}
                         onChange={updateEmail}
                         placeholder={'이메일'}
-                        focus={true}
+                        reference={emailInputRef}
+                        onKeyDown={kepressEvent}
                     />
                     <SignNormalInput
                         inputType={'password'}
                         initValue={user.password}
                         onChange={updatePassword}
+                        reference={passwordInputRef}
                         placeholder={'비밀번호'}
+                        onKeyDown={kepressEvent}
                     />
                     <div className={styles['login-btn']}>
                         <LinkButton
@@ -275,7 +292,7 @@ const SignInContainer = () => {
                                <img src={KakaoLogo} alt="kakao" onClick={kakaoLoginClickHandler}></img>    
                             </div>
                             <div className={styles['sns']}>
-                                <img src={FacebookLogo} alt="facebook"></img>
+                                <img src={FacebookLogo} alt="facebook" onClick={facebookLoginClickHandler} /> 
                             </div>
                         </div>
                     </div>

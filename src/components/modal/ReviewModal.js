@@ -69,8 +69,8 @@ const ReviewModal = ({ open, review_id, handleClose }) => {
 
     useEffect(() => {
         getReviewContent();
+        setViewMode(false);
     }, [getReviewContent]);
-
 
     return (
         <Dialog

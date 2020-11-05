@@ -24,7 +24,7 @@ const arrowStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '64px', height: '64px',
+    width: '48px', height: '48px',
     padding: '0',
     top: '40%',
     borderRadius: '50%',
@@ -151,7 +151,7 @@ const PrevArrow = ({ style, onClick }) => (
         }}
         onClick={onClick}
     >
-        <img style={{ }} src={Prev} alt="prev" />
+        <img style={{ width: '24px', height: '48px' }} src={Prev} alt="prev" />
     </IconButton>
 );
 
@@ -164,7 +164,7 @@ const NextArrow = ({ style, onClick }) => (
         }}
         onClick={onClick}
     >
-        <img style={{ }} src={Next} alt="next" />
+        <img style={{ width: '24px', height: '48px' }} src={Next} alt="next" />
     </IconButton>
 );
 

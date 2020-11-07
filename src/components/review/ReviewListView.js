@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Review.module.scss';
-import SwiperCore, { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import ReviewItem from './ReviewItem';
 
@@ -14,7 +13,10 @@ export default ({ reviewList, onClick }) => (
                     delay: 3000,
                     disableOnInteraction: true,
                 }}
+                loop
+                loopedSlides={2}
                 freeMode
+                slidesPerView={2}
             >
                 {reviewList.map(
                     ({

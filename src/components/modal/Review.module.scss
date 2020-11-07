@@ -115,6 +115,9 @@
                 span, img {
                     vertical-align: middle;
                 }
+                span {
+                    word-break: keep-all;
+                }
                 img {
                     margin-left: 20px;
                 }

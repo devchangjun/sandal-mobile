@@ -5,6 +5,8 @@
     padding-left: 24px;
     padding-top: 28px;
     padding-bottom: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
     .title {
         font-size: 18px;
         font-weight: bold;
@@ -15,7 +17,7 @@
 
 .review-list {
     box-sizing: border-box;
-    width: 100%;
+    width: 150%;
     white-space: nowrap;
     overflow-x: auto;
     &::after {
@@ -33,6 +35,7 @@
     border-radius: 10px;
     overflow: hidden;
     border: solid 1px #dbdbdb;
+    background-color: #fff;
     width: 240px;
     display: inline-block;
     cursor: pointer;

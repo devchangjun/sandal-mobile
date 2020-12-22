@@ -1,4 +1,4 @@
-export const PROTOCOL_ENV = 'http://dev'
+export const PROTOCOL_ENV = 'https://'
 
 export const Paths = {
     index: '/',

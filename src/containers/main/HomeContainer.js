@@ -374,7 +374,8 @@ const HomeLandingMenu = ({
                 <Swiper
                     spaceBetween={15}
                     nested={true}
-                    slidesPerView={view}
+                    freeMode
+                    slidesPerView={1}
                     className={cx('categorys')}
                 >
                     <>

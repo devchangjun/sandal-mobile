@@ -636,7 +636,7 @@ const OrderContainer = ({ modal }) => {
                         ></input>
                     </div>
                 </div>
-                <div className={cx('title', 'pd-box')}>결제방법</div>
+                {/* <div className={cx('title', 'pd-box')}>결제방법</div>
                 <div className={cx('table', 'mg-none')}>
                     <div className={cx('value', 'pd-none')}>
                         <ButtonBase
@@ -649,7 +649,7 @@ const OrderContainer = ({ modal }) => {
                             다른결제를 원하시면 눌러서 변경해주세요.
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {user_token && (
                     <div className={styles['order-info']}>
                         <ButtonBase className={cx('box', 'pd-box')}>

@@ -62,19 +62,21 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             if (orders === undefined || orders === null) {
                 openModal(
                     '주문번호가 존재하지 않습니다.',
-                    '주문번호를 확인해주세요',
+                    '주문번호를 확인해주세요.',
+                    () => history.replace('/'),
                     () => history.replace('/'),
                 );
                 setSuccess(false);
             } else {
                 setOrders(orders);
                 setSuccess(true);
-                openModal("문구 서비스를 신청하시겠습니까?", "", onOpenModal);
+                openModal("문구 서비스를 신청하시겠습니까?", "", onOpenModal, () => {}, true);
             }
         } catch (e) {
             openModal(
                 '주문번호가 존재하지 않습니다.',
-                '주문번호를 확인해주세요',
+                '주문번호를 확인해주세요.',
+                () => history.replace('/'),
                 () => history.replace('/'),
             );
         }

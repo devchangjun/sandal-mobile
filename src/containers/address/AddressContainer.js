@@ -63,7 +63,7 @@ const AddressContainer = ({ modal }) => {
     const [post_num, setPostNum] = useState('');
 
 
-    const onCloseModal = () => history.replace(Paths.ajoonamu.index);
+    const onCloseModal = () => history.replace(Paths.index);
     const onOpenModalSearch = () => history.push(Paths.ajoonamu.address + '/search');
     const onOpenModalMap = () => history.push(Paths.ajoonamu.address + '/map');
 

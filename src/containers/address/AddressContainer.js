@@ -63,7 +63,7 @@ const AddressContainer = ({ modal }) => {
     const [post_num, setPostNum] = useState('');
 
 
-    const onCloseModal = () => history.goBack();
+    const onCloseModal = () => history.replace(Paths.ajoonamu.index);
     const onOpenModalSearch = () => history.push(Paths.ajoonamu.address + '/search');
     const onOpenModalMap = () => history.push(Paths.ajoonamu.address + '/map');
 
@@ -606,7 +606,7 @@ const AddressContainer = ({ modal }) => {
                                     );
                                     initStore(jibun, detail, lat, lng, 0,near_store.data.query);
                                     setDeliveryList(test2);
-                                    history.goBack();
+                                    history.replace(Paths.index);
                                 }
                             }
                             catch(e){

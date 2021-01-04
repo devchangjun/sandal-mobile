@@ -48,7 +48,6 @@ const FullScreenDialog = (props) => {
         setPosition(newState)
     }
     useEffect(() => {
-        console.log(open);
         if(open){
             callGetLocation();
         }

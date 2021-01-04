@@ -66,8 +66,9 @@ const HomeSlick = () => {
             {list.length !== 0 && (
                 <Swiper
                     initialSlide={0}
+                    speed={3000}
                     autoplay={{
-                        delay: 2500,
+                        delay: 4000,
                         disableOnInteraction: true,
                     }}
                     slidesPerView={1}

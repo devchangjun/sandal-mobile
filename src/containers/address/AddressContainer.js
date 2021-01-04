@@ -68,10 +68,11 @@ const AddressContainer = ({ modal }) => {
     const onOpenModalMap = () => history.push(Paths.ajoonamu.address + '/map');
 
     const onMovePrevUrl = () => {
-        const url = JSON.parse(sessionStorage.getItem('url'));
-        if (url) {
-            history.push(url.prev);
-        }
+        history.replace(Paths.index);
+        // const url = JSON.parse(sessionStorage.getItem('url'));
+        // if (url) {
+        //     history.push(url.prev);
+        // }
     }
 
     //검색 아이템 클릭

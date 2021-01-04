@@ -1,5 +1,6 @@
 /*global kakao*/
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState ,useCallback} from 'react';
+import {useHistory} from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Back from 'components/svg/header/goBack';
 import LinkButtom from 'components/button/LinkButton';
@@ -17,24 +18,58 @@ const cx = classNames.bind(styles);
 const FullScreenDialog = (props) => {
     const openModal = useModal();
 
+    const history = useHistory();
+    const {open} = props;
     const [jibun, setJibun] = React.useState('');
     const [road, setRoad] = React.useState('');
     const [detail, setDetail] = React.useState('');
     const [click, setClick] = React.useState(false);
 
     const onChangeDetail = (e) => setDetail(e.target.value);
-    const { lat, lng } = props.position;
+    const [position , setPosition] = useState({lat:0,lng:0});
+    // const { lat, lng } = props.position;
     const MapLevel = useRef(5);
+    const kakao_map = useRef(null); //카카오 맵
+    const user_marker  = useRef(null);
+    const marker_arr = useRef([]);
 
     const handleClose = () => {
         setJibun('');
         setRoad('');
         props.handleClose();
     };
+    const callGetLocation = async()=>{
+        const p = await getCoordinates();
+        const lat = p.coords.latitude;
+        const lng = p.coords.longitude;
+        const newState={
+            lat,lng
+        }
+        setPosition(newState)
+    }
+    useEffect(() => {
+        console.log(open);
+        if(open){
+            callGetLocation();
+        }
+    }, [open]);
     useEffect(() => {
         mapScript();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lat, lng, click]);
+    }, []);
+    useEffect(()=>{
+        if(position.lat!==0 && position.lng!==0){
+            renderMarker();
+            setCoordinates();
+        }
+     
+    },[position])
+
+
+    const setCoordinates = useCallback(() => {
+        const moveLatLon = new kakao.maps.LatLng(position.lat, position.lng);
+        kakao_map.current.setCenter(moveLatLon);
+    },[position])
+
 
     const resetLocation = async () => {
         if ('geolocation' in navigator) {
@@ -43,7 +78,13 @@ const FullScreenDialog = (props) => {
                 const p = await getCoordinates();
                 const lat = p.coords.latitude;
                 const lng = p.coords.longitude;
-                props.onClickPosition(lat, lng);
+                const newState ={lat,lng};
+                setPosition(newState);
+                if (marker_arr.current.length !== 0) {
+                    marker_arr.current.map((marker) => marker.setMap(null));
+                    marker_arr.current = [];
+                }
+                // props.onClickPosition(lat, lng);
             } catch (e) {
                 if (e.code === 3) {
                     openModal(
@@ -63,22 +104,16 @@ const FullScreenDialog = (props) => {
         }
     };
 
-    useEffect(() => {
-        if (props.open) {
-            resetLocation();
-        }
-    }, [props.open])
+    // useEffect(() => {
+    //     if (props.open) {
+    //         resetLocation();
+    //     }
+    // }, [props.open])
 
-    const mapScript = () => {
-        let container = document.getElementById('map');
-        let options = {
-            center: new kakao.maps.LatLng(lat, lng),
-            level: MapLevel.current,
-        };
-        const map = new kakao.maps.Map(container, options);
 
-        const geocoder = new kakao.maps.services.Geocoder();
+    const renderMarker =()=>{
 
+        const {lat,lng} = position;
         var imageSrc = MarkerImg,
             imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
             imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
@@ -89,16 +124,35 @@ const FullScreenDialog = (props) => {
             imageSize,
             imageOption,
         );
-        // markerPosition = new kakao.maps.LatLng(37.54699, 127.09598); // 현재 위치 중심으로 마커포지션을 설정.
-
+        const markerPosition = new kakao.maps.LatLng(lat, lng);
         // 마커 정보를 가지고 뷰에 띄울 마커 생성
         const marker = new kakao.maps.Marker({
-            position: map.getCenter(),
+            position:markerPosition,
             image: markerImage,
         });
 
-        // const infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
-        marker.setMap(map);
+        marker.setMap(kakao_map.current);
+        user_marker.current=marker;
+        marker_arr.current.push(marker);
+    }
+
+    const mapScript = () => {
+        const {lat,lng} = position;
+        let container = document.getElementById('map');
+
+        const init_position = {
+            lat: 35.8360328674316,
+            lng: 128.5743408203125,
+        };
+        let options = {
+            center: new kakao.maps.LatLng(init_position.lat, init_position.lng),
+            level: MapLevel.current,
+        };
+        const map = new kakao.maps.Map(container, options);
+        kakao_map.current=map;
+
+        const geocoder = new kakao.maps.services.Geocoder();
+
 
         firstSetting(lng, lat, function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
@@ -119,10 +173,10 @@ const FullScreenDialog = (props) => {
                 if (status === kakao.maps.services.Status.OK) {
                     var latlng = mouseEvent.latLng;
 
-                    props.onClickPosition(latlng.getLat(), latlng.getLng());
+                    // props.onClickPosition(latlng.getLat(), latlng.getLng());
                     // 마커를 클릭한 위치에 표시합니다
-                    marker.setPosition(latlng);
-                    marker.setMap(map);
+                    user_marker.current.setPosition(latlng);
+                    user_marker.current.setMap(map);
                     setJibun(result[0].address.address_name);
 
                     if (!!result[0].road_address) {
@@ -137,7 +191,6 @@ const FullScreenDialog = (props) => {
                 }
             });
         });
-
         // 지도가 확대 또는 축소되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
         kakao.maps.event.addListener(map, 'zoom_changed', function () {
             // 지도의 현재 레벨을 얻어옵니다
@@ -152,37 +205,6 @@ const FullScreenDialog = (props) => {
         function firstSetting(lng, lat, callback) {
             geocoder.coord2Address(lng, lat, callback);
         }
-
-        // 나중에 가게 정보 받아올때 띄워야 할 마커
-        // markerdata.forEach((el) => {
-        //     const marker = new kakao.maps.Marker({
-        //         map: map,
-        //         position: new kakao.maps.LatLng(el.lat, el.lng),
-        //         title: el.title,
-        //         clickable: true,
-        //         image : markerImage
-        //     })
-        //     const hstyle = {
-        //         color: "black",
-        //         backgroundColor: "blue",
-        //         fontFamily: "Arial"
-        //     }
-
-        //     var iwContent = '<div class="customoverlay" >Hello Wozzzrld!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        //         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-        //     // 인포윈도우를 생성합니다
-        //     var infowindow = new kakao.maps.InfoWindow({
-        //         content: iwContent,
-        //         removable: iwRemoveable
-        //     });
-
-        //     // 마커에 클릭이벤트를 등록합니다
-        //     kakao.maps.event.addListener(marker, 'click', function () {
-        //         // 마커 위에 인포윈도우를 표시합니다
-        //         infowindow.open(map, marker);
-        //     });
-        // });
     };
 
     return (
@@ -196,7 +218,11 @@ const FullScreenDialog = (props) => {
             </div>
             <IconButton
                 className={cx('back', { on: props.open })}
-                onClick={handleClose}
+                onClick={()=>{
+                    setJibun('');
+                    setRoad('');
+                    history.goBack();
+                }}
             >
                 <Back />
             </IconButton>
@@ -207,7 +233,7 @@ const FullScreenDialog = (props) => {
                 road={road}
                 detailAddr={detail}
                 onChange={onChangeDetail}
-                onClick={() => props.onClick(jibun, detail, lat, lng)}
+                onClick={() => props.onClick(jibun, detail, position.lat, position.lng)}
             />
         </div>
     );

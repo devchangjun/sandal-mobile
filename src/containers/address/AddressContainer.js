@@ -56,9 +56,9 @@ const AddressContainer = ({ modal }) => {
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [searchList, setSearchList] = useState([]); // 검색 리스트
-    const [position, setPosition] = useState({
-        lat: 0, lng: 0
-    });
+    // const [position, setPosition] = useState({
+    //     lat: 0, lng: 0
+    // });
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
 
@@ -115,7 +115,7 @@ const AddressContainer = ({ modal }) => {
         onCloseModal();
 
         setDetailAddr('');
-        setPosition({ lat: null, lng: null });
+        // setPosition({ lat: null, lng: null });
     }, []);
 
 
@@ -145,9 +145,9 @@ const AddressContainer = ({ modal }) => {
     };
 
     // 좌표 변경
-    const onClickPosition = useCallback((lat, lng) => {
-        setPosition({ lat: lat, lng: lng });
-    }, []);
+    // const onClickPosition = useCallback((lat, lng) => {
+    //     setPosition({ lat: lat, lng: lng });
+    // }, []);
 
     //검색 하기
     const onChangeSearch = async () => {
@@ -695,10 +695,10 @@ const AddressContainer = ({ modal }) => {
                     />
                     <MapModal
                         open={modal === 'map'}
-                        position={position}
+                        // position={position}
                         onClick={onClickMapInsertAddr}
                         handleClose={onClickMapClose}
-                        onClickPosition={onClickPosition}
+                        // onClickPosition={onClickPosition}
                     />
                 </>
             )}

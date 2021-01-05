@@ -50,6 +50,7 @@ const OrderItem = (props) => {
                         </div>
                         <div className={styles['button-area']}>
                             <ButtonBase disabled className={cn('button', 'order-type', info[0].od_status)}>
+                                {info[0].od_status === "deposit_wait" && '입금대기'}
                                 {info[0].od_status === "order_cancel" && '주문취소'}
                                 {info[0].od_status === "order_apply" && '입금확인'}
                                 {info[0].od_status === "shipping" && '배송중'}

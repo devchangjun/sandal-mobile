@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import classNames from 'classnames/bind';
 
 import FixButton from 'components/button/Button';
@@ -77,6 +77,10 @@ const FullScreenDialog = (props) => {
             onClick={onClickPayment}
         />
     ));
+
+    useEffect(()=>{
+        setPayment(props.payment);
+    },[props])
 
     return (
         <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition}>

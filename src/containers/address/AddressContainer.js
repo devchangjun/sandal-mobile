@@ -56,22 +56,23 @@ const AddressContainer = ({ modal }) => {
     const [selectAddr, setSelectAddr] = useState(''); //선택
     const [detailAddr, setDetailAddr] = useState(''); //상세주소
     const [searchList, setSearchList] = useState([]); // 검색 리스트
-    const [position, setPosition] = useState({
-        lat: 0, lng: 0
-    });
+    // const [position, setPosition] = useState({
+    //     lat: 0, lng: 0
+    // });
     const [deliveryList, setDeliveryList] = useState([]);
     const [post_num, setPostNum] = useState('');
 
 
-    const onCloseModal = () => history.goBack();
+    const onCloseModal = () => history.replace(Paths.index);
     const onOpenModalSearch = () => history.push(Paths.ajoonamu.address + '/search');
     const onOpenModalMap = () => history.push(Paths.ajoonamu.address + '/map');
 
     const onMovePrevUrl = () => {
-        const url = JSON.parse(sessionStorage.getItem('url'));
-        if (url) {
-            history.push(url.prev);
-        }
+        history.replace(Paths.index);
+        // const url = JSON.parse(sessionStorage.getItem('url'));
+        // if (url) {
+        //     history.push(url.prev);
+        // }
     }
 
     //검색 아이템 클릭
@@ -115,7 +116,7 @@ const AddressContainer = ({ modal }) => {
         onCloseModal();
 
         setDetailAddr('');
-        setPosition({ lat: null, lng: null });
+        // setPosition({ lat: null, lng: null });
     }, []);
 
 
@@ -145,9 +146,9 @@ const AddressContainer = ({ modal }) => {
     };
 
     // 좌표 변경
-    const onClickPosition = useCallback((lat, lng) => {
-        setPosition({ lat: lat, lng: lng });
-    }, []);
+    // const onClickPosition = useCallback((lat, lng) => {
+    //     setPosition({ lat: lat, lng: lng });
+    // }, []);
 
     //검색 하기
     const onChangeSearch = async () => {
@@ -606,7 +607,7 @@ const AddressContainer = ({ modal }) => {
                                     );
                                     initStore(jibun, detail, lat, lng, 0,near_store.data.query);
                                     setDeliveryList(test2);
-                                    history.goBack();
+                                    history.replace(Paths.index);
                                 }
                             }
                             catch(e){
@@ -695,10 +696,10 @@ const AddressContainer = ({ modal }) => {
                     />
                     <MapModal
                         open={modal === 'map'}
-                        position={position}
+                        // position={position}
                         onClick={onClickMapInsertAddr}
                         handleClose={onClickMapClose}
-                        onClickPosition={onClickPosition}
+                        // onClickPosition={onClickPosition}
                     />
                 </>
             )}

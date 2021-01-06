@@ -28,17 +28,23 @@
             font-size: 0.8rem;
             text-align: center;
             word-break: keep-all;
-            .bank-box {
-                display: flex;
-                padding: 5px 0;
-                .bank-name {
-                    color: #444;
-                }
-                .bank-value {
-                    color: #777777;
-                    padding-left: 10px;
+            .bank-info{
+                padding: 15px 0;
+                .bank-box {
+                    display: flex;
+                    padding: 5px 0;
+                    .bank-name {
+                        text-align: left;
+                        min-width: 50px;
+                        color: #444;
+                    }
+                    .bank-value {
+                        color: #777777;
+                        padding-left: 10px;
+                    }
                 }
             }
+
             .no-auth{
                 color: #333;
                 font-size:0.7rem;

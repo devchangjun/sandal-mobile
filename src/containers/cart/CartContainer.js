@@ -332,8 +332,10 @@ const CartContainer = ({ modal }) => {
 
         
     useEffect(()=>{
-        const cost = (total>company.free_cost_order) ? 0 : default_cost;
-        setCost(cost);
+        if(company){
+            const cost = (total>company.free_cost_order) ? 0 : default_cost;
+            setCost(cost);
+        }
     },[total,default_cost,company])
     
 

@@ -73,6 +73,7 @@ const OrderListContainer = ({ tab = '0' }) => {
                 const reserve = orders.filter(
                     (item) => item.info.order_type === 'reserve',
                 );
+
                 setReserveList(orders);
                 setSuccess(true);
             } catch (e) {
@@ -96,22 +97,22 @@ const OrderListContainer = ({ tab = '0' }) => {
     }, []);
 
     useEffect(() => {
-        switch (select) {
-            case 0:
-                setStartDate(calculateDate(endDate, 7, 'DATE'));
-                break;
-            case 1:
-                setStartDate(calculateDate(endDate, 1, 'MONTH'));
-                break;
-            case 2:
-                setStartDate(calculateDate(endDate, 3, 'MONTH'));
-                break;
-            case 3:
-                setStartDate(calculateDate(endDate, 6, 'MONTH'));
-                break;
-            default:
-                break;
-        }
+        // switch (select) {
+        //     case 0:
+        //         setStartDate(calculateDate(endDate, 7, 'DATE'));
+        //         break;
+        //     case 1:
+        //         setStartDate(calculateDate(endDate, 1, 'MONTH'));
+        //         break;
+        //     case 2:
+        //         setStartDate(calculateDate(endDate, 3, 'MONTH'));
+        //         break;
+        //     case 3:
+        //         setStartDate(calculateDate(endDate, 6, 'MONTH'));
+        //         break;
+        //     default:
+        //         break;
+        // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [select]);
 

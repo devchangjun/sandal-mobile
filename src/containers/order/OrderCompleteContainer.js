@@ -25,6 +25,8 @@ import Loading from '../../components/asset/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
+const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const pay_type = ['card', 'transfer', 'meet', 'bank'];
 
 const OrderCompleteContainer = ({ order_number, query, modal }) => {
     const user_token = useStore(false);
@@ -36,17 +38,34 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
     const [success, setSuccess] = useState(false);
     // const [error, setError] = useState(false);
     const [orders, setOrders] = useState(null);
+    const [type, setType] = useState(null);
     // const [payinfo, setPayInfo] = useState(null);
     // const [payple_info, setPaypleInfo] = useState(null);
 
     // const handlePhraseOpen = () => setPhraseOpen(true);
     // const handlePhrasetClose = () => setPhraseOpen(false);
 
-    const onOpenModal = () => history.push(Paths.ajoonamu.order_complete + '/phrase' + query);
+    const onOpenModal = () =>
+        history.push(Paths.ajoonamu.order_complete + '/phrase' + query);
     const onCloseModal = () => history.goBack();
 
     const onClickHome = () => {
         history.push(Paths.index);
+    };
+
+    const getPaymentType = (type) => {
+        switch (type) {
+            case pay_type[0]:
+                return payments[0];
+            case pay_type[1]:
+                return payments[1];
+            case pay_type[2]:
+                return payments[2];
+            case pay_type[3]:
+                return payments[3];
+            default:
+                return payments[0];
+        }
     };
 
     const getOrderInfo = useCallback(async () => {
@@ -70,7 +89,14 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             } else {
                 setOrders(orders);
                 setSuccess(true);
-                openModal("문구 서비스를 신청하시겠습니까?", "", onOpenModal, () => {}, true);
+                setType(getPaymentType(orders.settle_case));
+                openModal(
+                    '문구 서비스를 신청하시겠습니까?',
+                    '',
+                    onOpenModal,
+                    () => {},
+                    true,
+                );
             }
         } catch (e) {
             openModal(
@@ -81,7 +107,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             );
         }
         setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history, openModal, order_number, user_token]);
 
     useEffect(() => {
@@ -91,6 +117,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             getOrderInfo();
         }
     }, [order_number, getOrderInfo, history]);
+
 
     return (
         <>
@@ -109,35 +136,48 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                 </div>
                                 <div className={styles['msg']}>
                                     {orders.info[0].s_name}님, 저희 샌달
-                                    딜리버리 서비스를 <br/>이용해주셔서 감사합니다.<br/><br/>
-
-                                    <div className={styles['no-auth']}>
-                                    (비회원 주문시 주문내역 확인이
-                                    어려울 수 있습니다.)
-                                    </div>
+                                    딜리버리 서비스를 <br />
+                                    이용해주셔서 감사합니다.
+                                    <br />
+                                    {type===payments[3] && 
+                                               <div className={styles['bank-info']}>
                                 
-                                    {/* <div className={styles['bank-box']}>
-                                        <div className={styles['bank-name']}>
-                                            입금은행
-                                        </div>
-                                        <div className={styles['bank-value']}>
-                                            국민은행 12345-67-89000 아주나무
-                                        </div>
+                                               <div className={styles['bank-box']}>
+                                                   <div className={styles['bank-name']}>
+                                                       예금주
+                                                   </div>
+                                                   <div className={styles['bank-value']}>
+                                                       지혜림
+                                                   </div>
+                                               </div>
+                                               <div className={styles['bank-box']}>
+                                                   <div
+                                                       className={styles['bank-name']}
+                                                   >
+                                                       입금은행
+                                                   </div>
+                                                   <div
+                                                       className={styles['bank-value']}
+                                                   >
+                                                       농협 352-1039-8031-23
+                                                   </div>
+                                               </div>
+                                           </div>  
+                                    }
+                           
+                                    <div className={styles['no-auth']}>
+                                        (비회원 주문시 주문내역 확인이 어려울 수
+                                        있습니다.)
                                     </div>
-                                    <div className={styles['bank-box']}>
-                                        <div className={styles['bank-name']}>
-                                            가상계좌
-                                        </div>
-                                        <div className={styles['bank-value']}>
-                                            유효기간 2020/06/09 00:00:00
-                                        </div>
-                                    </div> */}
                                 </div>
                             </div>
                             <div className={styles['order-list']}>
                                 <div className={styles['title']}>주문상품</div>
                                 <div className={styles['list']}>
-                                    <DetailOrderItemList info={orders.info} items={orders.items} />
+                                    <DetailOrderItemList
+                                        info={orders.info}
+                                        items={orders.items}
+                                    />
                                 </div>
                                 <div className={cx('title', 'between')}>
                                     <div>배달 정보</div>
@@ -186,7 +226,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                     />
                                     <PaymentInfo
                                         text={'결제방식'}
-                                        value={'가상계좌 입금'}
+                                        value={type}
                                     />
                                     <PaymentInfo
                                         text={'결제금액'}

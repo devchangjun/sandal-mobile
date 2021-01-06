@@ -23,6 +23,9 @@ import { useModal } from '../../hooks/useModal';
 
 const cx = cn.bind(styles);
 
+const payments=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const pay_type = ['card','transfer','meet','bank'];
+
 const OrderDetailContainer = ({ order_id }) => {
     const openModal = useModal();
     const { user } = useSelector((state) => state.auth);
@@ -34,6 +37,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
     const [od_status ,setOdStatus] = useState('order_apply');
+    const [type ,setType] = useState(null);
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);
         try {
@@ -55,6 +59,7 @@ const OrderDetailContainer = ({ order_id }) => {
                 setOrders(orders);
                 setOdStatus(orders.info[0].od_status);
                 setPayinfo(payinfo);
+                setType(getPaymentType(orders.settle_case));
                 setSuccess(true);
             }
         } catch (e) {
@@ -68,6 +73,21 @@ const OrderDetailContainer = ({ order_id }) => {
         setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id, history, user_token]);
+
+    const getPaymentType = (type) => {
+        switch (type) {
+            case pay_type[0]:
+                return payments[0];
+            case pay_type[1]:
+                return payments[1];
+            case pay_type[2]:
+                return payments[2];
+            case pay_type[3]:
+                return payments[3];
+            default:
+                return payments[0];
+        }
+    };
 
     const userOrderCancle = async () => {
         openModal(
@@ -193,7 +213,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                     />
                                     <PaymentInfo
                                         text={'결제방식'}
-                                        value={payinfo && payinfo.pp_pg}
+                                        value={type}
                                     />
                                     <PaymentInfo
                                         text={'결제금액'}

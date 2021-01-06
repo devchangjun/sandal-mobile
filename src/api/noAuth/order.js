@@ -14,6 +14,7 @@ export const noAuth_order = async (
     order_memo,
     delivery_memo,
     delivery_req_time,
+    settle_case
 ) => {
     const req = Paths.api + 'noauth/order';
 
@@ -34,6 +35,7 @@ export const noAuth_order = async (
         delivery_memo,
         delivery_req_time,
         device: 'mobile',
+        settle_case
     };
     axios.defaults.headers.post['Context-Type'] = 'application/json';
     const res = await axios.post(req, form_data);

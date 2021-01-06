@@ -47,18 +47,20 @@ import AuthTimer from '../../components/sign/AuthTimer';
 
 const cx = classNames.bind(styles);
 
+const payments=['무통장 입금','가상계좌 결제','만나서 카드 결제','페이플 간편 결제'];
+
 const initPayment = [
     {
-        payment: '신용카드',
+        payment: payments[0],
     },
     {
-        payment: '가상계좌 결제',
+        payment: payments[1]
     },
     {
-        payment: '휴대폰 결제',
+        payment: payments[2]
     },
     {
-        payment: '페이플 카드 결제',
+        payment: payments[3]
     },
 ];
 const AUTH_NUMBER_LENGTH = 6;
@@ -80,7 +82,7 @@ const OrderContainer = ({ modal }) => {
     const [noAuthName, setNoAuthName] = useState('');
     const [loading, setLoading] = useState(false);
     const [couponList, setCouponList] = useState([]);
-    const [payment, setPayment] = useState('페이플 카드 결제');
+    const [payment, setPayment] = useState(payments[3]);
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
     const [toggle, setToggle] = useState(false);
     const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
@@ -182,7 +184,6 @@ const OrderContainer = ({ modal }) => {
 
     const onClickPayment = (payment) => {
         setPayment(payment);
-        // setPaymentOpen(false);
         onCloseModal();
         sessionStorage.setItem('payment', payment);
     };
@@ -298,11 +299,12 @@ const OrderContainer = ({ modal }) => {
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
         const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
 
-        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`
+        const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`;
+        let res =null;
         //회원 주문
         // setLoading(true);
         if (user_token) {
-            const res = await user_order(
+            res = await user_order(
                 user_token,
                 'reserve',
                 orderMemo,
@@ -313,13 +315,12 @@ const OrderContainer = ({ modal }) => {
                 
             );
             order_id.current = res.data.query;
-
             //장바구니 삭제
         }
         //비회원 주문
         else {
             const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
-            const res = await noAuth_order(
+            res = await noAuth_order(
                 cart_ids,
                 noAuthName,
                 hp,
@@ -336,7 +337,17 @@ const OrderContainer = ({ modal }) => {
             order_id.current = res.data.query;
             //장바구니 삭제
         }
+        console.log('결제방식' ,payment);
+        console.log(res);
 
+        //무통장 입금 or 만나서 카드결제
+        if(payment===payments[0] || payment===payments[2]){
+           // history.push(Paths.ajoonamu.order_complete +'?order_number='+res.data.query);
+        }
+
+        //간편 계좌결제 or 간편 카드결제
+        else{
+        //결제 스크립트
         $script(payple_url, () => {
             /*global PaypleCpayAuthCheck*/
             const getResult = function (res) {
@@ -373,16 +384,35 @@ const OrderContainer = ({ modal }) => {
 
             let obj = new Object();
 
-            //#########################################################################################################################################################################
             /*
              * DEFAULT SET 1
              */
             obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
             obj.PCD_PAY_TYPE = pay_type; // (필수) 결제 방법 (transfer | card)
             obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
+            obj.PCD_SIMPLE_FLAG = 'N';
+            if (simple_flag === 'Y' && payple_payer_id !== '') {
+                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
+                //-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//
+                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+            }
 
-            // 카드결제 시 필수
-            obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+            /*
+                DEFAUILT SET 2 결제수단에 따른 값 설정
+            */
+
+            //간편 카드결제'
+            if(payment===payments[3]){
+                // 카드결제 시 필수
+                obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
+                obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+            }
+            //간편 계좌결제
+            else if(payment ===payments[1]){
+                obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
+            }
+       
+            obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
 
             //## 2.2 간편결제 (재결제)
             obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
@@ -393,17 +423,10 @@ const OrderContainer = ({ modal }) => {
             obj.PCD_PAY_OID = order_num; // 주문번호 (미입력 시 임의 생성)
             obj.PCD_REGULER_FLAG = is_reguler; // (선택) 정기결제 여부 (Y|N)
             obj.PCD_TAXSAVE_FLAG = is_taxsave; // (선택) 현금영수증 발행 여부 (Y|N)
-            obj.PCD_SIMPLE_FLAG = 'N';
-            if (simple_flag === 'Y' && payple_payer_id !== '') {
-                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
-                //-- PCD_PAYER_ID 는 소스상에 표시하지 마시고 반드시 Server Side Script 를 이용하여 불러오시기 바랍니다. --//
-                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
-            }
-
+           
             /*
-             * DEFAULT SET 2
+             * DEFAULT SET 3
              */
-            obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
             obj.PCD_RST_URL =
                 PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
             obj.payple_auth_file =
@@ -412,6 +435,7 @@ const OrderContainer = ({ modal }) => {
 
             PaypleCpayAuthCheck(obj);
         });
+      }
     };
     useEffect(()=>{
         if(company && totalPrice){

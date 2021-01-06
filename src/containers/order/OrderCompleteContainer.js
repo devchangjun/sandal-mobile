@@ -77,6 +77,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
             } else {
                 res = await noAuthOrderView(order_number);
             }
+            console.log(res);
             const { orders } = res;
             if (orders === undefined || orders === null) {
                 openModal(

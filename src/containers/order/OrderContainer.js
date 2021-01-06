@@ -326,8 +326,9 @@ const OrderContainer = ({ modal }) => {
                 delivery_req_time,
                 cp_id,
                 point_price,
-                settle_case
-                
+                settle_case,
+                noAuthName,
+                hp
             );
             order_id.current = res.data.query;
             //장바구니 삭제
@@ -501,6 +502,12 @@ const OrderContainer = ({ modal }) => {
             setDlvCost(cost);
         }
     }, [totalPrice, default_cost, company]);
+
+    useEffect(()=>{
+        if(user){
+            setNoAuthName(user.name);
+        }
+    },[user])
     
 
     return (
@@ -511,20 +518,13 @@ const OrderContainer = ({ modal }) => {
                 <div className={styles['table']}>
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
-                            {user ? (
-                                <div className={styles['user-name']}>
-                                    {' '}
-                                    {user.name}
-                                </div>
-                            ) : (
                                 <input
                                     type="text"
                                     value={noAuthName}
                                     onChange={onChangeName}
                                     className={cx('input', 'normal')}
-                                    placeholder="이름을 입력하세요."
+                                    placeholder="배달 받으실 분의 이름을 입력하세요."
                                 />
-                            )}
                         </div>
                     </div>
                     <div className={cx('text-info', 'address')}>

@@ -9,7 +9,9 @@ export const user_order = async (
     delivery_req_time,
     cp_id,
     point_price = 0,
-    settle_case
+    settle_case,
+    s_name,
+    s_hp
 ) => {
     const req = Paths.api + 'user/order';
     let form_data;
@@ -25,7 +27,9 @@ export const user_order = async (
             delivery_req_time: delivery_req_time,
             point_price: point_price,
             device: 'mobile',
-            settle_case
+            settle_case,
+            s_name,
+            s_hp
         };
     } else {
         form_data = {
@@ -36,7 +40,9 @@ export const user_order = async (
             cp_id: cp_id,
             point_price: point_price,
             device: 'mobile',
-            settle_case
+            settle_case,
+            s_name,
+            s_hp
         };
     }
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

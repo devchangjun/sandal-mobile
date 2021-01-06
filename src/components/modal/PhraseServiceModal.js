@@ -141,7 +141,7 @@ const InputPreview = ({ template, logo, phrase }) => {
                     <div className={cn('circle', 'preview_in')}>
                         <div className={cn('box', 'image', state.image)}>
                             <img className={styles['logo']} src={preview ? preview : DefaultLogo} alt="미리보기 로고" />
-                            <p className={styles['name']}>아주나무 드림</p>
+                            <p className={styles['name']}>샌달 드림</p>
                         </div>
                         <div className={cn('box', 'text', state.text)}>
                             <p className={styles['phrase']}>{phrase}</p>

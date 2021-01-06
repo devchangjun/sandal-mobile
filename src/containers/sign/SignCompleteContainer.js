@@ -26,7 +26,7 @@ const SignCompleteContainer = ({ name }) => {
                 <div className={styles['msg']}> 
                 <div className={styles['text']}>축하합니다 {name}님!</div>
                     <div className={styles['sub-text']}>
-                    아주나무 딜리버리 회원가입이 완료 되었습니다.<br/>
+                    샌달 회원가입이 완료 되었습니다.<br/>
                     이메일 회원가입을 하신 회원님께서는 가입하신 이메일 주소로 지금 즉시 로그인이 가능합니다.</div>
                 </div>
                 <Button title={"로그인"} onClick={onClickLogin} toggle={true}></Button>

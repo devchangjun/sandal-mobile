@@ -121,7 +121,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                             입금은행
                                         </div>
                                         <div className={styles['bank-value']}>
-                                            국민은행 12345-67-89000 아주나무
+                                            국민은행 12345-67-89000 샌달
                                         </div>
                                     </div>
                                     <div className={styles['bank-box']}>

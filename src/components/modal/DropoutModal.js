@@ -95,7 +95,7 @@ const FullScreenDialog = (props) => {
                         if (res.data.msg) {
                             openModal(
                                 '정상적으로 회원탈퇴 되셨습니다!',
-                                '다음에도 저희 아주나무를 이용해 주시기 바랍니다.',
+                                '다음에도 저희 샌달을 이용해 주시기 바랍니다.',
                             );
                             history.push(Paths.ajoonamu.logout);
                             localStorage.removeItem('access_token');

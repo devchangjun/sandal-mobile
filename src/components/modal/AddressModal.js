@@ -86,7 +86,7 @@ const AddressModal = (props) => {
             <DialogContent className={classes.content}>
             <div className={styles['container']}>
                     <div className={styles['modal-input-box']}>
-                        <input className={styles['modal-input']} type="text" value={searchAddr} placeholder="예) 아주나무동12-3 또는 아주나무 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
+                        <input className={styles['modal-input']} type="text" value={searchAddr} placeholder="예) 샌달동12-3 또는 샌달 아파트" onChange={props.onChangeAddr} onKeyPress={props.handleKeyPress}></input>
                         <div className={styles['search-btn']} onClick={props.onSearch} ><BsSearch /></div>
                     </div>
                     <div className={styles['result']}>

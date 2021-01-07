@@ -213,7 +213,6 @@ const OrderContainer = ({ modal }) => {
         if (user_token) {
             try {
                 const res = await getCartList(user_token);
-                console.log(res);
                 if (res.data.msg === 'success') {
                     let price = 0;
                     const { query } = res.data;

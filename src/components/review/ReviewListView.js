@@ -9,14 +9,15 @@ export default ({ reviewList, onClick }) => (
         <p className={styles['title']}>포토리뷰</p>
         <div className={styles['review-list']}>
             <Swiper
+                speed={3000}
                 autoplay={{
-                    delay: 3000,
+                    delay: 4000,
                     disableOnInteraction: true,
                 }}
                 loop
-                loopedSlides={2}
-                freeMode
+                loopedSlides={1}
                 slidesPerView={1}
+                spaceBetween={20}
             >
                 {reviewList.map(
                     ({

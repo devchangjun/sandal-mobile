@@ -46,7 +46,7 @@ import ReviewModal from '../../components/modal/ReviewModal';
 
 const cx = cn.bind(styles);
 const OFFSET = 8;
-const LIMIT = 8;
+const LIMIT = 100;
 
 const tabInit = [
     {
@@ -278,17 +278,17 @@ const HomeContainer = ({ review_id }) => {
     const onCloseReview = useCallback(() => history.goBack(), []);
 
 
-    useEffect(() => {
-        if (isScrollEnd && !isPaging) {
-            if (index === 0) {
-                callPageNationMain();
-            }
-            else if (index === 1) {
-                callPageNationBreak();
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isScrollEnd, index]);
+    // useEffect(() => {
+    //     if (isScrollEnd && !isPaging) {
+    //         if (index === 0) {
+    //             callPageNationMain();
+    //         }
+    //         else if (index === 1) {
+    //             callPageNationBreak();
+    //         }
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [isScrollEnd, index]);
 
     return (
         <>

@@ -324,7 +324,6 @@ const HomeContainer = ({ review_id }) => {
                                     onScroll={onScroll}
                                 >
                                     <MainEventContainer />
-                                    <ReviewListView reviewList={reviewList} onClick={onOpenReview} />
                                     <HomeLandingMenu
                                         index={index}
                                         categorys={best_cate}
@@ -333,6 +332,7 @@ const HomeContainer = ({ review_id }) => {
                                         onChange={onChangePostIndex}
                                         title={'베스트 메뉴'}
                                     />
+                                    <ReviewListView reviewList={reviewList} onClick={onOpenReview} />
                                     <ReviewModal open={review_id} review_id={review_id} handleClose={onCloseReview} />
                                 </SwiperSlide>
 

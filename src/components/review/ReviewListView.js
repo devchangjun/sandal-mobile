@@ -16,7 +16,7 @@ export default ({ reviewList, onClick }) => (
                 loop
                 loopedSlides={2}
                 freeMode
-                slidesPerView={2}
+                slidesPerView={1}
             >
                 {reviewList.map(
                     ({

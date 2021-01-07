@@ -2,12 +2,12 @@
 
 .container {
     background-color: #F9F9F9;
-    padding-left: 24px;
     padding-top: 28px;
     padding-bottom: 40px;
     box-sizing: border-box;
     overflow: hidden;
     .title {
+        padding: 0 24px;
         font-size: 18px;
         font-weight: bold;
         color: #222;
@@ -17,9 +17,10 @@
 
 .review-list {
     box-sizing: border-box;
-    width: 150%;
+    width: 80%;
+    padding: 0 24px;
     white-space: nowrap;
-    overflow-x: auto;
+    overflow-x: visible;
     &::after {
         content: '';
         display: block;
@@ -27,6 +28,9 @@
         height: 0;
         overflow: hidden;
         clear: both;
+    }
+    :global(.swiper-container) {
+        overflow: visible;
     }
 }
 .review-item {

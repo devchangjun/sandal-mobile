@@ -38,7 +38,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
     const [od_status ,setOdStatus] = useState('order_apply');
-    const [payment_type ,setPaymentType] = useState(null);
+    const [payment_type ,setPaymentType] =  useState({kind:payments[0] ,settle_case:pay_type[0]});
     const [cancelAble , setCancelAble] = useState(false);
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);

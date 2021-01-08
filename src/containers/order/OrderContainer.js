@@ -366,8 +366,7 @@ const OrderContainer = ({ modal }) => {
         }
         
         if(res.data.state===1) {
-        // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
-        
+            // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금']
             //무통장 입금 or 만나서 카드결제
             if(payment===pay_arr[2] || payment===pay_arr[3]){
                 setLoading(true);

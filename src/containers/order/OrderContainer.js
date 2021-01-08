@@ -322,13 +322,13 @@ const OrderContainer = ({ modal }) => {
         //배달 요청시간 수정.
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
-        const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`;
+        const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
         const delivery_req_time = `${year}-${month}-${day} ${hours}:${minite}:00`;
         const settle_case = getPaymentType(payment);
+        let res =null;
         //회원 주문
-        // setLoading(true);
         if (user_token) {
-            const res = await user_order(
+            res = await user_order(
                 user_token,
                 'reserve',
                 orderMemo,
@@ -346,7 +346,7 @@ const OrderContainer = ({ modal }) => {
         //비회원 주문
         else {
             const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
-            const res = await noAuth_order(
+            res = await noAuth_order(
                 cart_ids,
                 noAuthName,
                 hp,
@@ -364,115 +364,123 @@ const OrderContainer = ({ modal }) => {
             order_id.current = res.data.query;
             //장바구니 삭제
         }
-       
+        
+        if(res.data.state===1) {
         // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
         
-        //무통장 입금 or 만나서 카드결제
-        if(payment===pay_arr[2] || payment===pay_arr[3]){
-            setLoading(true);
-            setTimeout(()=>{
-                setLoading(false);
-                history.push(Paths.ajoonamu.order_complete +'?order_number='+order_id.current);
-            },300)
-        }
+            //무통장 입금 or 만나서 카드결제
+            if(payment===pay_arr[2] || payment===pay_arr[3]){
+                setLoading(true);
+                setTimeout(()=>{
+                    setLoading(false);
+                    history.push(Paths.ajoonamu.order_complete +'?order_number='+order_id.current);
+                },300)
+            }
 
-        //간편 계좌결제 or 간편 카드결제
-        else{
-        //결제 스크립트
-        $script(payple_url, () => {
-            /*global PaypleCpayAuthCheck*/
-            const getResult = function (res) {
-                alert('callback : ' + res.PCD_PAY_MSG);
-            };
+            //간편 계좌결제 or 간편 카드결제
+            else{
+            //결제 스크립트
+            $script(payple_url, () => {
+                /*global PaypleCpayAuthCheck*/
+                const getResult = function (res) {
+                    alert('callback : ' + res.PCD_PAY_MSG);
+                };
 
-            let pay_type = 'card';
-            let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
-            let payple_payer_id = '';
+                let pay_type = 'card';
+                let pay_work = 'CERT'; //결제 타입 1. AUTH 계좌등록 2.CERT 가맹점 최종승인후 계좌등록 + 결제진행 3.PAY 가맹점 승인 없이 계좌등록 + 결제진행
+                let payple_payer_id = '';
 
-            let buyer_no = user ? user.id : null; //고객 고유번호
-            let buyer_name = noAuthName; //고객 이름
-            let buyer_hp = `${hp}`; //고객 번호
-            let buyer_email = user && user.email; //고객 이메일
-            let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
-            let buy_total = Number(
-                parseInt(totalPrice) +
-                    parseInt(dlvCost) -
-                    parseInt(cp_price) -
-                    parseInt(point_price),
-            ); //가격
-            let buy_taxtotal = 0;
-            let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
-            let order_num = order_id.current; //주문 번호
-            let is_reguler = 'N';
-            let is_taxsave = 'N';
-            let simple_flag = 'N';
-            let card_ver = '01';
+                let buyer_no = user ? user.id : null; //고객 고유번호
+                let buyer_name = noAuthName; //고객 이름
+                let buyer_hp = `${hp}`; //고객 번호
+                let buyer_email = user && user.email; //고객 이메일
+                let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
+                let buy_total = Number(
+                    parseInt(totalPrice) +
+                        parseInt(dlvCost) -
+                        parseInt(cp_price) -
+                        parseInt(point_price),
+                ); //가격
+                let buy_taxtotal = 0;
+                let buy_istax = ''; //과세설정 DEFAULT :Y  비과세 N
+                let order_num = order_id.current; //주문 번호
+                let is_reguler = 'N';
+                let is_taxsave = 'N';
+                let simple_flag = 'N';
+                let card_ver = '01';
 
-            let obj = new Object();
+                let obj = new Object();
 
-            /*
-             * DEFAULT SET 1
-             */
-            obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
-            obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
-            obj.PCD_SIMPLE_FLAG = 'N'; //간편 결제 여부
+                /*
+                * DEFAULT SET 1
+                */
+                obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
+                obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
+                obj.PCD_SIMPLE_FLAG = 'N'; //간편 결제 여부
 
-            //ID가 있으면 간편결제 시작
+                //ID가 있으면 간편결제 시작
 
-            // 카드 간편결제
-            if(payment===pay_arr[0]){
+                // 카드 간편결제
+                if(payment===pay_arr[0]){
 
-                if (PCD_PAYER_ID !== null) {
-                    payple_payer_id = PCD_PAYER_ID;
-                    simple_flag = 'Y';
+                    if (PCD_PAYER_ID !== null) {
+                        payple_payer_id = PCD_PAYER_ID;
+                        simple_flag = 'Y';
+                    }
+                    obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
+                    obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+
                 }
-                obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
-                obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
 
-            }
+                //계좌 간편결제
+                else if(payment===pay_arr[1]){
+                    
+                    if (PCD_PAYER_ID_TRANSFER !== null) {
+                        payple_payer_id = PCD_PAYER_ID_TRANSFER;
+                        simple_flag = 'Y';
+                    }
+                    obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
 
-            //계좌 간편결제
-            else if(payment===pay_arr[1]){
-                
-                if (PCD_PAYER_ID_TRANSFER !== null) {
-                    payple_payer_id = PCD_PAYER_ID_TRANSFER;
-                    simple_flag = 'Y';
                 }
-                obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
 
+                if (simple_flag === 'Y' && payple_payer_id !== '') {
+                    obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
+                    obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
+                }
+        
+
+                /*
+                    DEFAUILT SET 2 결제수단에 따른 값 설정
+                */
+                obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
+
+                //## 2.2 간편결제 (재결제)
+                obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
+                obj.PCD_PAY_GOODS = buy_goods; // (필수) 결제 상품
+                obj.PCD_PAY_TOTAL = buy_total; // (필수) 결제 금액
+                obj.PCD_PAY_TAXTOTAL = buy_taxtotal; // (선택) 부가세(복합과세인 경우 필수)
+                obj.PCD_PAY_ISTAX = buy_istax; // (선택) 과세여부 (과세: Y | 비과세(면세): N)
+                obj.PCD_PAY_OID = order_num; // 주문번호 (미입력 시 임의 생성)
+                obj.PCD_REGULER_FLAG = is_reguler; // (선택) 정기결제 여부 (Y|N)
+                obj.PCD_TAXSAVE_FLAG = is_taxsave; // (선택) 현금영수증 발행 여부 (Y|N)
+                /*
+                * DEFAULT SET 3
+                */
+                obj.PCD_RST_URL =
+                    PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
+                obj.payple_auth_file =
+                    PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
+                obj.callbackFunction = getResult;
+
+                PaypleCpayAuthCheck(obj);
+            });
             }
-
-            if (simple_flag === 'Y' && payple_payer_id !== '') {
-                obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
-                obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
-            }
-    
-
-            /*
-                DEFAUILT SET 2 결제수단에 따른 값 설정
-            */
-            obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
-
-            //## 2.2 간편결제 (재결제)
-            obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
-            obj.PCD_PAY_GOODS = buy_goods; // (필수) 결제 상품
-            obj.PCD_PAY_TOTAL = buy_total; // (필수) 결제 금액
-            obj.PCD_PAY_TAXTOTAL = buy_taxtotal; // (선택) 부가세(복합과세인 경우 필수)
-            obj.PCD_PAY_ISTAX = buy_istax; // (선택) 과세여부 (과세: Y | 비과세(면세): N)
-            obj.PCD_PAY_OID = order_num; // 주문번호 (미입력 시 임의 생성)
-            obj.PCD_REGULER_FLAG = is_reguler; // (선택) 정기결제 여부 (Y|N)
-            obj.PCD_TAXSAVE_FLAG = is_taxsave; // (선택) 현금영수증 발행 여부 (Y|N)
-            /*
-             * DEFAULT SET 3
-             */
-            obj.PCD_RST_URL =
-                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
-            obj.payple_auth_file =
-                PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/auth'; // (필수) 가맹점이 직접 생성한 인증파일
-            obj.callbackFunction = getResult;
-
-            PaypleCpayAuthCheck(obj);
-        });
+       }
+      else if(res.data.state===2){
+          openModal(res.data.msg);
+      }
+      else{
+         openModal('잘못된 접근입니다');
       }
     };
     useEffect(()=>{

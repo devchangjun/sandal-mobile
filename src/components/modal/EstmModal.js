@@ -104,7 +104,6 @@ const EstmModal = (props) => {
 
     const onStateChange = useCallback(e => dispatch(e.target), []);
     const sendEstimate = useCallback(async () => {
-        console.log(props.total);
         if (props.total > company.minimum_order) {
             
             if (estmFile) {

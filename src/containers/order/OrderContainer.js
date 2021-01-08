@@ -47,21 +47,21 @@ import AuthTimer from '../../components/sign/AuthTimer';
 
 const cx = classNames.bind(styles);
 
-const payments=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const pay_arr=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
 const pay_type = ['card','transfer','meet','bank'];
 
 const initPayment = [
     {
-        payment: payments[0],
+        payment: pay_arr[0],
     },
     {
-        payment: payments[1],
+        payment: pay_arr[1],
     },
     {
-        payment: payments[2],
+        payment: pay_arr[2],
     },
     {
-        payment: payments[3],
+        payment: pay_arr[3],
     },
 ];
 const AUTH_NUMBER_LENGTH = 6;
@@ -83,7 +83,7 @@ const OrderContainer = ({ modal }) => {
     const [noAuthName, setNoAuthName] = useState('');
     const [loading, setLoading] = useState(false);
     const [couponList, setCouponList] = useState([]);
-    const [payment, setPayment] = useState(payments[3]);
+    const [payment, setPayment] = useState(pay_arr[3]);
     const [totalPrice, setTotalPrice] = useState(0); //총 주문금액
     const [toggle, setToggle] = useState(false);
     const [default_cost ,setDefaultCost] =useState(0); //기존 배달비
@@ -92,7 +92,9 @@ const OrderContainer = ({ modal }) => {
     const [dlvMemoCheck, setDlvMemoCheck] = useState(false);
     const [orderMemoCheck, setOrderMemoCheck] = useState(false);
     const [orderMemo, setOrderMemo] = useState('없음'); //주문메모
-    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //결제방식
+    const [PCD_PAYER_ID, SET_PCD_PAYER_ID] = useState(null); //간편결제 ID
+    const [PCD_PAYER_ID_TRANSFER, SET_PCD_PAYER_ID_TRANSFER] = useState(null); //간편결제 ID
+
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState(null); //쿠폰 번호
@@ -215,7 +217,7 @@ const OrderContainer = ({ modal }) => {
                     let price = 0;
                     const { query } = res.data;
                     let len = Object.keys(query).length;
-                    for (let i = 0; i < len - 2; i++) {
+                    for (let i = 0; i < len - 3; i++) {
                         const { item, options } = query[i];
 
                         price +=
@@ -232,8 +234,16 @@ const OrderContainer = ({ modal }) => {
 
                     if (query.PCD_PAYER_ID === null) {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
-                    } else {
+                    } 
+                    else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
+                    }
+
+                    if (query.PCD_PAYER_ID_transfer === null) {
+                        SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer);
+                    } 
+                    else {
+                        SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer.pp_tno);
                     }
                     if (price === 0) {
                         history.replace(Paths.index);
@@ -293,13 +303,13 @@ const OrderContainer = ({ modal }) => {
     };
     const getPaymentType =(payment)=>{
         switch (payment) {
-            case payments[0]:
+            case pay_arr[0]:
                 return pay_type[0];
-            case payments[1]:
+            case pay_arr[1]:
                 return pay_type[1];
-            case payments[2]:
+            case pay_arr[2]:
                 return pay_type[2];
-            case payments[3]:
+            case pay_arr[3]:
                 return pay_type[3];
                 default :
                 return pay_type[0];
@@ -358,7 +368,7 @@ const OrderContainer = ({ modal }) => {
         // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
         
         //무통장 입금 or 만나서 카드결제
-        if(payment===payments[2] || payment===payments[3]){
+        if(payment===pay_arr[2] || payment===pay_arr[3]){
             setLoading(true);
             setTimeout(()=>{
                 setLoading(false);
@@ -380,7 +390,7 @@ const OrderContainer = ({ modal }) => {
             let payple_payer_id = '';
 
             let buyer_no = user ? user.id : null; //고객 고유번호
-            let buyer_name = user ? user.name : noAuthName; //고객 이름
+            let buyer_name = noAuthName; //고객 이름
             let buyer_hp = `${hp}`; //고객 번호
             let buyer_email = user && user.email; //고객 이메일
             let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
@@ -398,11 +408,6 @@ const OrderContainer = ({ modal }) => {
             let simple_flag = 'N';
             let card_ver = '01';
 
-            if (PCD_PAYER_ID !== null) {
-                payple_payer_id = PCD_PAYER_ID;
-                simple_flag = 'Y';
-            }
-
             let obj = new Object();
 
             /*
@@ -410,27 +415,42 @@ const OrderContainer = ({ modal }) => {
              */
             obj.PCD_CPAY_VER = '1.0.1'; // (필수) 결제창 버전 (Default : 1.0.0)
             obj.PCD_PAY_WORK = pay_work; // (필수) 결제요청 업무구분 (AUTH : 본인인증+계좌등록, CERT: 본인인증+계좌등록+결제요청등록(최종 결제승인요청 필요), PAY: 본인인증+계좌등록+결제완료)
-            obj.PCD_SIMPLE_FLAG = 'N';
+            obj.PCD_SIMPLE_FLAG = 'N'; //간편 결제 여부
+
+            //ID가 있으면 간편결제 시작
+
+            // 카드 간편결제
+            if(payment===pay_arr[0]){
+
+                if (PCD_PAYER_ID !== null) {
+                    payple_payer_id = PCD_PAYER_ID;
+                    simple_flag = 'Y';
+                }
+                obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
+                obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
+
+            }
+
+            //계좌 간편결제
+            else if(payment===pay_arr[1]){
+                
+                if (PCD_PAYER_ID_TRANSFER !== null) {
+                    payple_payer_id = PCD_PAYER_ID_TRANSFER;
+                    simple_flag = 'Y';
+                }
+                obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
+
+            }
+
             if (simple_flag === 'Y' && payple_payer_id !== '') {
                 obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
                 obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
             }
+    
 
             /*
                 DEFAUILT SET 2 결제수단에 따른 값 설정
             */
-
-            //간편 카드결제'
-            if(payment===payments[0]){
-                // 카드결제 시 필수
-                obj.PCD_PAY_TYPE = 'card'; // (필수) 결제 방법 (transfer | card)
-                obj.PCD_CARD_VER = card_ver; // DEFAULT: 01 (01: 정기결제 플렛폼, 02: 일반결제 플렛폼)
-            }
-            //간편 계좌결제
-            else if(payment ===payments[1]){
-                obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
-            }
-       
             obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
 
             //## 2.2 간편결제 (재결제)

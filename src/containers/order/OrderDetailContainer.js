@@ -38,7 +38,7 @@ const OrderDetailContainer = ({ order_id }) => {
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
     const [od_status ,setOdStatus] = useState('order_apply');
-    const [type ,setType] = useState(null);
+    const [payment_type ,setPaymentType] =  useState({kind:payments[0] ,settle_case:pay_type[0]});
     const [cancelAble , setCancelAble] = useState(false);
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);
@@ -58,12 +58,11 @@ const OrderDetailContainer = ({ order_id }) => {
                 );
                 setSuccess(false);
             } else {
-                console.log(orders);
                 setOrders(orders);
                 setOdStatus(orders.info[0].od_status);
                 setCancelAble(calculateDaySection(orders.info[0].delivery_req_time,new Date()));
                 setPayinfo(payinfo);
-                setType(getPaymentType(orders.settle_case));
+                setPaymentType(getPaymentType(orders.settle_case));
                 setSuccess(true);
             }
         } catch (e) {
@@ -78,18 +77,18 @@ const OrderDetailContainer = ({ order_id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id, history, user_token]);
 
-    const getPaymentType = (type) => {
-        switch (type) {
+    const getPaymentType = (settle_case) => {
+        switch (settle_case) {
             case pay_type[0]:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
             case pay_type[1]:
-                return payments[1];
+                return {kind: payments[1] , settle_case};
             case pay_type[2]:
-                return payments[2];
+                return {kind: payments[2] , settle_case};
             case pay_type[3]:
-                return payments[3];
+                return {kind: payments[3] , settle_case};
             default:
-                return payments[0];
+                return {kind: payments[0] , settle_case};
         }
     };
 
@@ -102,11 +101,12 @@ const OrderDetailContainer = ({ order_id }) => {
                 try {
                     let res = null;
                     if (user_token) {
-                        res = await order_cancle(user_token, order_id);
+                        res = await order_cancle(user_token, order_id,payment_type.settle_case);
                     } else {
                         res = await noAutuOrderCancle(
                             order_id,
                             order.info[0].s_hp,
+                            payment_type.settle_case
                         );
                     }
                     if (
@@ -115,7 +115,10 @@ const OrderDetailContainer = ({ order_id }) => {
                     ) {
                         openModal('이미 취소된 거래건 입니다.');
                         setOdStatus('order_cancel');
-                    } else {
+                    }else if(res.data.msg.indexOf('잘못된')!==-1){
+                        openModal('주문 취소중 오류가 발생했습니다.');
+                    } 
+                    else {
                         openModal('정상적으로 취소되었습니다.');
                         setOdStatus('order_cancel');
                     }
@@ -217,7 +220,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                     />
                                     <PaymentInfo
                                         text={'결제방식'}
-                                        value={type}
+                                        value={payment_type.kind}
                                     />
                                     <PaymentInfo
                                         text={'결제금액'}

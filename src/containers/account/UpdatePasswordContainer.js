@@ -55,7 +55,6 @@ const UpdatePasswordContainer = () => {
                     new_password,
                     new_password_confirm,
                 );
-                console.log(res);
                 if (res.data.msg === '성공') {
                     openModal(
                         '성공적으로 변경되었습니다!',

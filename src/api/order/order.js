@@ -51,11 +51,12 @@ export const user_order = async (
     return res;
 };
 
-export const order_cancle = async (token, order_id) => {
+export const order_cancle = async (token, order_id,settle_case) => {
     const req = Paths.api + 'user/order/cancel';
 
     const form_data = {
         order_id: order_id,
+        settle_case : settle_case
     };
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     axios.defaults.headers.post['Context-Type'] = 'application/json';

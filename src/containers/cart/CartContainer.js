@@ -141,7 +141,7 @@ const CartContainer = ({ modal }) => {
                     const { query } = res.data;
                     let len = Object.keys(query).length;
                     let list = [];
-                    for (let i = 0; i < len - 2; i++) {
+                    for (let i = 0; i < len - 3; i++) {
                         list[i] = query[i];
                         list[i].checked = false;
                     }

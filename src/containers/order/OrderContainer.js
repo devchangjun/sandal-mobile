@@ -341,7 +341,6 @@ const OrderContainer = ({ modal }) => {
                 hp
             );
             order_id.current = res.data.query;
-            //장바구니 삭제
         }
         //비회원 주문
         else {
@@ -362,9 +361,7 @@ const OrderContainer = ({ modal }) => {
                 settle_case
             );
             order_id.current = res.data.query;
-            //장바구니 삭제
         }
-        
         if(res.data.state===1) {
             // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금']
             //무통장 입금 or 만나서 카드결제

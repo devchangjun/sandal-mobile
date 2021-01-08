@@ -43,13 +43,12 @@ export default ({ id }) => {
         getEventPost(parseInt(id));
     }, [getEventPost, id]);
 
-    const { images_mobile, created_at, end_date, body, warn, images_detail } = eventData;
+    const { created_at, end_date, body, warn, images_detail } = eventData;
     return (
         <>
             {!loading && (
                 <div className={styles['container']}>
                     <Loading open={loading} />
-                    <EventImage image={DBImageFormat(images_mobile)[0]} />
                     <div className={styles['event-detail']}>
                     {images_detail &&
                     images_detail !== '[]' &&

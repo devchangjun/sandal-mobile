@@ -205,6 +205,9 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                         )}
                                         value3={user && user.email}
                                     />
+                                    {orders && orders.info[0].cancel_reason && <p className={styles['reject-reason']}>
+                                        거절 사유: {orders.info[0].cancel_reason}
+                                    </p>}
                                 </div>
                                 <div className={styles['title']}>매장정보</div>
                                 <div className={styles['list']}>
@@ -222,7 +225,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                     />
                                     <PaymentInfo
                                         text={'주문일시'}
-                                        value={orders.receipt_time}
+                                        value={orders && (orders.receipt_time ? orders.receipt_time : '미완료 결제')}
                                     />
                                     <PaymentInfo
                                         text={'결제방식'}

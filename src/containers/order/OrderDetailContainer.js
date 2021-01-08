@@ -193,6 +193,9 @@ const OrderDetailContainer = ({ order_id }) => {
                                         }
                                         value3={user && user.email}
                                     />
+                                    {order && order.info[0].cancel_reason && <p className={styles['reject-reason']}>
+                                        거절 사유: {order.info[0].cancel_reason}
+                                    </p>}
                                 </div>
                                 <div className={styles['title']}>매장정보</div>
                                 <div className={styles['list']}>
@@ -216,7 +219,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                     />
                                     <PaymentInfo
                                         text={'주문일시'}
-                                        value={order && order.receipt_time}
+                                        value={order && (order.receipt_time ? order.receipt_time : '미완료 결제')}
                                     />
                                     <PaymentInfo
                                         text={'결제방식'}
@@ -248,7 +251,7 @@ const OrderDetailContainer = ({ order_id }) => {
                                             : userOrderCancle
                                         }
                                     >
-                                        {(od_status === 'order_cancel') ? '주문취소완료'
+                                        {(od_status === 'order_cancel') ? (order.info[0].cancel_reason === null ? '주문 취소 완료' : '주문 거절')
                                         : (od_status === 'delivery_complete') ? '배달완료'
                                         : (od_status === 'order_complete') ? '주문완료'
                                         : (cancelAble ? '주문 취소' :'주문 취소불가')}

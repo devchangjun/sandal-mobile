@@ -94,6 +94,15 @@ const HomeSlick = () => {
                             className={styles['event-slide']}
                             isD
                         >
+                            {item.bn_url.indexOf('http://') !== -1 || item.bn_url.indexOf('https://') !== -1 ?
+                            <a href={item.bn_url}>
+                                <div className={styles['item']}>
+                                    <ErrorCoverImage
+                                        src={DBImageFormat(item.bn_img_mobile)[0]}
+                                        alt="mainBanner"
+                                    />
+                                </div>
+                            </a> :
                             <Link to={item.bn_url}>
                                 <div className={styles['item']}>
                                     <ErrorCoverImage
@@ -101,7 +110,7 @@ const HomeSlick = () => {
                                         alt="mainBanner"
                                     />
                                 </div>
-                            </Link>
+                            </Link>}
                         </SwiperSlide>
                     ))}
                 </Swiper>

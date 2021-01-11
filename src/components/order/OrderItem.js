@@ -30,7 +30,7 @@ const OrderItem = (props) => {
             <div className={styles['item']}>
                 <div className={styles['menu']} onClick={props.onClick}>
                     <div className={styles['pd-box']}>
-                        <div className={styles['date']}>{ receipt_time ? calculateDay(receipt_time): '주문시간이 없습니다'}</div>
+                        <div className={styles['date']}>{ receipt_time ? calculateDay(receipt_time): '샌달 배달 접수'}</div>
                         <div className={styles['list']}>
                             <OrderMenuItemList items={items} />
                         </div>

@@ -31,6 +31,7 @@ const pay_type = ['card', 'transfer', 'meet', 'bank'];
 const OrderCompleteContainer = ({ order_number, query, modal }) => {
     const user_token = useStore(false);
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
     const openModal = useModal();
     const history = useHistory();
     // const [phraseOpen, setPhraseOpen] = React.useState(false);
@@ -139,32 +140,42 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                     딜리버리 서비스를 <br />
                                     이용해주셔서 감사합니다.
                                     <br />
-                                    {type===payments[3] && 
-                                               <div className={styles['bank-info']}>
-                                
-                                               <div className={styles['bank-box']}>
-                                                   <div className={styles['bank-name']}>
-                                                       예금주
-                                                   </div>
-                                                   <div className={styles['bank-value']}>
-                                                       지혜림
-                                                   </div>
-                                               </div>
-                                               <div className={styles['bank-box']}>
-                                                   <div
-                                                       className={styles['bank-name']}
-                                                   >
-                                                       입금은행
-                                                   </div>
-                                                   <div
-                                                       className={styles['bank-value']}
-                                                   >
-                                                       농협 352-1039-8031-23
-                                                   </div>
-                                               </div>
-                                           </div>  
+                                    {type === payments[3] && 
+                                        <div className={styles['bank-info']}>
+                                            <div className={styles['bank-box']}>
+                                                <div className={styles['bank-name']}>
+                                                    예금주명
+                                                </div>
+                                                <div className={styles['bank-value']}>
+                                                    {company && company.company_bankuser}
+                                                </div>
+                                            </div>
+                                            <div className={styles['bank-box']}>
+                                                <div
+                                                    className={styles['bank-name']}
+                                                >
+                                                    입금은행
+                                                </div>
+                                                <div
+                                                    className={styles['bank-value']}
+                                                >
+                                                    {company && company.company_bankname}
+                                                </div>
+                                            </div>
+                                            <div className={styles['bank-box']}>
+                                                <div
+                                                    className={styles['bank-name']}
+                                                >
+                                                    입금계좌
+                                                </div>
+                                                <div
+                                                    className={styles['bank-value']}
+                                                >
+                                                    {company && company.company_banknum}
+                                                </div>
+                                            </div>
+                                        </div>  
                                     }
-                           
                                     <div className={styles['no-auth']}>
                                         (비회원 주문시 주문내역 확인이 어려울 수
                                         있습니다.)

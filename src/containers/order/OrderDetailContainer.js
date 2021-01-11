@@ -30,6 +30,7 @@ const pay_type = ['card','transfer','meet','bank'];
 const OrderDetailContainer = ({ order_id }) => {
     const openModal = useModal();
     const { user } = useSelector((state) => state.auth);
+    const company = useSelector(state => state.company.company);
     const user_token = useStore(false);
     const history = useHistory();
     const [success, setSuccess] = useState(false);
@@ -38,7 +39,10 @@ const OrderDetailContainer = ({ order_id }) => {
     const [order, setOrders] = useState(null);
     const [payinfo, setPayinfo] = useState([]);
     const [od_status ,setOdStatus] = useState('order_apply');
-    const [payment_type ,setPaymentType] =  useState({kind:payments[0] ,settle_case:pay_type[0]});
+    const [payment_type, setPaymentType] = useState({
+        kind: payments[0],
+        settle_case: pay_type[0],
+    });
     const [cancelAble , setCancelAble] = useState(false);
     const getOrderItemInfo = useCallback(async () => {
         setLoading(true);
@@ -225,6 +229,22 @@ const OrderDetailContainer = ({ order_id }) => {
                                         text={'결제방식'}
                                         value={payment_type.kind}
                                     />
+                                    {order && order.settle_case === 'bank' && // od_status !== 'order_cancel' &&
+                                    <>
+                                        <PaymentInfo
+                                            text="예금주명"
+                                            value={company && company.company_bankuser}
+                                        />
+                                        <PaymentInfo
+                                            text="입금은행"
+                                            value={company && company.company_bankname}
+                                        />
+                                        <PaymentInfo
+                                            text="입금계좌"
+                                            value={company && company.company_banknum}
+                                        />
+                                    </>
+                                    }
                                     <PaymentInfo
                                         text={'결제금액'}
                                         value={

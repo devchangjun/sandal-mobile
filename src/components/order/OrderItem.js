@@ -6,6 +6,7 @@ import { ButtonBase } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { calculateDay } from '../../lib/calculateDate';
 import { Paths } from '../../paths';
+import { useSelector } from 'react-redux';
 
 const cn = classnames.bind(styles);
 
@@ -24,13 +25,15 @@ const OrderItem = (props) => {
         info,
     } = props;
     const history = useHistory();
-
+    const company = useSelector(state => state.company.company);    
+    
     return (
         <div className={styles['order-item']}>
             <div className={styles['item']}>
                 <div className={styles['menu']} onClick={props.onClick}>
                     <div className={styles['pd-box']}>
-                        <div className={styles['date']}>{ receipt_time ? calculateDay(receipt_time): '샌달 배달 접수'}</div>
+                        <div className={styles['date']}>{ receipt_time ? calculateDay(receipt_time) :
+                        (info[0].settle_case === 'meet' ? '배송 접수' : company && `${company.company_bankname} ${company.company_banknum} ${company.company_bankuser}`)}</div>
                         <div className={styles['list']}>
                             <OrderMenuItemList items={items} />
                         </div>

@@ -10,11 +10,10 @@ export const getMyCoupons = async (token) => {
             Authorization: `Bearer ${token}`,
         },
     };
-
-    axios.defaults.baseURL=req;
     const result = await axios.get(req, config);
     return result.data.query;
 };
+
 export const getOrderCoupons = async (token) => {
     const req = Paths.api + 'user/coupon/list_order';
     const config = {
@@ -26,6 +25,7 @@ export const getOrderCoupons = async (token) => {
     const result = await axios.get(req, config);
     return result.data.query;
 };
+
 export const getDownloadCpList = async (token) => {
     const req = Paths.api + 'user/coupon/list_zone';
     const config = {
@@ -34,10 +34,10 @@ export const getDownloadCpList = async (token) => {
             Authorization: `Bearer ${token}`,
         },
     };
-    axios.defaults.baseURL=req;
     const result = await axios.get(req, config);
     return result.data.query;
 };
+
 export const getUseCpList = async (token, start_date, end_date) => {
     const req = Paths.api + 'user/coupon/list_use';
 
@@ -62,13 +62,14 @@ export const downloadCoupon = async (token, cz_id) => {
     const form_data = {
         cz_id: cz_id,
     };
-    
+    const config={
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
 
-    axios.defaults.baseURL=req;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-
-    const res = await axios.post(req, form_data);
+    const res = await axios.post(req, form_data,config);
     return res;
 };
 
@@ -77,10 +78,14 @@ export const couponInput = async (token, cp_id) => {
     const form_data = {
         cp_id: cp_id,
     };
-    axios.defaults.baseURL=req;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const config={
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    }
 
-    const res = await axios.put(req, form_data);
+
+    const res = await axios.put(req, form_data,config);
     return res;
 };

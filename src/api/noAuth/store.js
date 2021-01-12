@@ -3,7 +3,6 @@ import { Paths } from '../../paths';
 
 export const noAuthGetNearStore = async (lat, lng, addr1) => {
     const req = Paths.api + 'user/shop/near';
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
     const config = {
         params: {
@@ -11,6 +10,9 @@ export const noAuthGetNearStore = async (lat, lng, addr1) => {
             lng,
             addr1,
         },
+        headers:{
+            'Content-Type' :'application/json'
+        }
     };
 
     const res = await axios.get(req, config);

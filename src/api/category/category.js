@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Paths } from '../../paths';
-
 export const getCategory = async () => {
     const req = Paths.api + 'user/category/list';
     const config = {

@@ -25,23 +25,29 @@ export const addCartItem = async (
         item_option_id: item_options,
         item_quanity: item_quanity,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-
-    const res = await axios.post(req, form_data);
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+    const res = await axios.post(req, form_data,config);
     return res;
 };
-
 export const deleteCartItem = async (token, cart_id) => {
     const req = Paths.api + 'user/cart/delete';
     const form_data = { cart_id };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+
     const res = await axios.delete(req, {
-        data: form_data
+        data: form_data,
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
     });
     return res;
 }
+
 
 export const updateCartQunaity = async(token ,cart_id,item_quanity)=>{
     
@@ -50,9 +56,13 @@ export const updateCartQunaity = async(token ,cart_id,item_quanity)=>{
         cart_id,
         item_quanity,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-    const res = await axios.put(req, form_data);
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+    const res = await axios.put(req, form_data,config);
     return res;
 }

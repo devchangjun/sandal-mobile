@@ -4,6 +4,9 @@ import { Paths } from '../../paths';
 export const requestEventPost = async (id) => {
     const req = Paths.api + 'user/event/show';
     const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
         params: {
             event_id: id
         }
@@ -12,8 +15,16 @@ export const requestEventPost = async (id) => {
     return res;
 }
 
-export const requestEventList = async () => {
+export const requestEventList = async (offset=0,limit=1000) => {
     const req = `${Paths.api}user/event/list`;
-    const res = await axios.get(req);
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        params: {
+            offset, limit
+        }
+    };
+    const res = await axios.get(req,config);
     return res;
 };

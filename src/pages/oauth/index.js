@@ -62,7 +62,7 @@ const OAuth = ({ match, location }) => {
                 const res = await getActiveAddr(access_token);
                 if (res) {
                     const { lat, lng, addr1, addr2, post_num } = res;
-                    const near_store = await getNearStore(lat, lng, addr1);
+                    const near_store = await getNearStore(access_token,lat, lng, addr1);
                     initStore(
                         addr1,
                         addr2,

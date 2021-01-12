@@ -10,7 +10,7 @@ import logo from './location.svg';
 import { ButtonBase, IconButton } from '@material-ui/core';
 
 //api
-import { getCoordinates } from '../../api/address/address';
+import { getCoordinates ,requsetGetAreaInfo} from '../../api/address/address';
 import { useModal } from '../../hooks/useModal';
 
 const cx = classNames.bind(styles);
@@ -45,11 +45,21 @@ const FullScreenDialog = (props) => {
         const newState={
             lat,lng
         }
+
+        const res= await requsetGetAreaInfo(lat,lng);
+        setJibun(res.data.documents[0].address.address_name);
+        setRoad(res.data.documents[0].road_address.address_name);
+
         setPosition(newState)
+
     }
     useEffect(() => {
         if(open){
             callGetLocation();
+        }
+        if (marker_arr.current.length !== 0) {
+            marker_arr.current.map((marker) => marker.setMap(null));
+            marker_arr.current = [];
         }
     }, [open]);
     useEffect(() => {
@@ -78,11 +88,15 @@ const FullScreenDialog = (props) => {
                 const lat = p.coords.latitude;
                 const lng = p.coords.longitude;
                 const newState ={lat,lng};
-                setPosition(newState);
+                const res= await requsetGetAreaInfo(lat,lng);
+                setJibun(res.data.documents[0].address.address_name);
+                setRoad(res.data.documents[0].road_address.address_name);
                 if (marker_arr.current.length !== 0) {
                     marker_arr.current.map((marker) => marker.setMap(null));
                     marker_arr.current = [];
+
                 }
+                setPosition(newState);
                 // props.onClickPosition(lat, lng);
             } catch (e) {
                 if (e.code === 3) {
@@ -103,11 +117,7 @@ const FullScreenDialog = (props) => {
         }
     };
 
-    // useEffect(() => {
-    //     if (props.open) {
-    //         resetLocation();
-    //     }
-    // }, [props.open])
+
 
 
     const renderMarker =()=>{

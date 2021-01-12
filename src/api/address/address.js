@@ -12,13 +12,17 @@ const OPTIONS = {
 
 export const getDeliveryList = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
-    axios.defaults.baseURL = req;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
-    const res = await axios.get();
-    return res;
-}
 
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+
+    const res = await axios.get(req,config);
+    return res;
+};
 export function getCoordinates() {
     return new Promise(function (resolve, reject) {
         navigator.geolocation.getCurrentPosition(resolve, reject, OPTIONS);
@@ -28,7 +32,7 @@ export function getCoordinates() {
 
 export const insertAddress = async (
     token,
-    post_num=null,
+    post_num,
     addr1,
     addr2,
     extra,
@@ -38,16 +42,20 @@ export const insertAddress = async (
     const req = Paths.api + `user/delivery`;
 
     const form_data = {
-        post_num:post_num,
+        post_num: post_num,
         addr1: addr1,
         addr2: addr2,
         extra: 0,
         lat: lat,
         lng: lng,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.post(req, form_data);
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+    const res = await axios.post(req,form_data,config);
     return res;
 };
 
@@ -57,20 +65,29 @@ export const selectAddress = async (token, delivery_id) => {
     const form_data = {
         delivery_id: delivery_id,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
 
-    const res = await axios.put(req, form_data);
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+    const res = await axios.put(req, form_data,config);
     return res;
 };
 
 
 export const getActiveAddr = async (token) => {
     const req = `${Paths.api}user/delivery/list`;
-    axios.defaults.baseURL = req;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
-    const res = await axios.get();
+
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
+
+    const res = await axios.get(req,config);
 
     const { query } = res.data;
     let len = Object.keys(query).length;
@@ -86,35 +103,59 @@ export const getActiveAddr = async (token) => {
 
 
 export const deleteAddr = async (token, delivery_id) => {
+
     const req = Paths.api + 'user/delivery/delete';
     const form_data = { delivery_id };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const config ={
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
+    }
     const res = await axios.delete(req, {
         data: form_data,
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
     });
     return res;
 };
 
+export const searchAddress = async (searchAddr) => {
 
-export const searchAddress = (searchAddr) => {
-    return fetch(
-        `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${searchAddr}&resultType=json`,
-    )
-        .then(res => res.json())
-        .then(json => json.results.juso)
-        .catch(err => {});
+    const req = URL;
+    const config ={
+        params:{
+            confmKey : KEY,
+            currentPage:1,
+            countPerPage:10,
+            keyword:searchAddr,
+            resultType:'json'
+        },
+        headers:{
+           Accept: "application/json, text/plain, */*",
+        }
+    }
+
+    const res = await axios.get(req,config);
+
+    return res.data.results.juso;
+
 };
 
 
-export const getPostNum = (addr1) => {
-    return fetch(
-        `${URL}?confmKey=${KEY}&currentPage=1&countPerPage=10&keyword=${addr1}&resultType=json`,
-    )
-        .then(res => res.json())
-        .then(json => json.results.juso)
-        .catch(err => {});
+
+export const requsetGetAreaInfo = async (lat, lng) => {
+    const URL = 'https://dapi.kakao.com/v2/local/geo/coord2address.json';
+    const response = await axios.get(URL, {
+        headers: {
+            Authorization: `KakaoAK 273633787faa10f532cc43b5ab3ab407`,
+        },
+        params: {
+            y: lat,
+            x: lng,
+        },
+    });
+    return response;
 };
-
-
-

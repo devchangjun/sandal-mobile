@@ -226,6 +226,7 @@ const AddressContainer = ({ modal }) => {
                             // const res = await selectAddress(user_token, delivery_id);
                             await selectAddress(user_token, delivery_id);
                             const near_store = await getNearStore(
+                                user_token,
                                 lat,
                                 lng,
                                 addr1,
@@ -341,7 +342,7 @@ const AddressContainer = ({ modal }) => {
                                             temp_lng,
                                         );
                                         if (res.data.msg === '성공') {
-                                            const near_store = await getNearStore(temp_lat, temp_lng, selectAddr);
+                                            const near_store = await getNearStore(user_token,temp_lat, temp_lng, selectAddr);
                                         
                                             initStore(selectAddr, detailAddr, temp_lat, temp_lng, post_num,near_store.data.query);
 
@@ -510,6 +511,7 @@ const AddressContainer = ({ modal }) => {
                                     );
                                     if (res.data.msg === '성공') {
                                         const near_store = await getNearStore(
+                                            user_token,
                                             lat,
                                             lng,
                                             jibun,

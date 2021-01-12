@@ -167,6 +167,7 @@ const SignInContainer = () => {
                                 post_num,
                             } = active_addr;
                             const near_store = await getNearStore(
+                                res.data.access_token,
                                 lat,
                                 lng,
                                 addr1,

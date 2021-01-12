@@ -7,7 +7,7 @@ export const noAuth_order = async (
     s_hp,
     post_num,
     addr1,
-    addr2 = '',
+    addr2,
     lat,
     lng,
     order_type = 'reserve',
@@ -16,10 +16,9 @@ export const noAuth_order = async (
     delivery_req_time,
     settle_case
 ) => {
+    order_memo = order_memo ? order_memo : "없음";
+    delivery_memo = delivery_memo ? delivery_memo : "없음";
     const req = Paths.api + 'noauth/order';
-
-    order_memo = order_memo ? order_memo :'없음';
-    delivery_memo = delivery_memo  ? delivery_memo : '없음';
 
     const form_data = {
         cart_ids,
@@ -37,17 +36,23 @@ export const noAuth_order = async (
         device: 'mobile',
         settle_case
     };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.post(req, form_data);
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+     
+        },
+    };
+    const res = await axios.post(req, form_data,config);
     return res;
 };
 
+
 export const noAuthOrderView = async (order_id) => {
     const req = Paths.api + `noauth/order/view?order_id=${order_id}`;
-    axios.defaults.baseURL = req;
-    const res = await axios.get();
+    const res = await axios.get(req);
     return res.data.query;
 };
+
 export const noAutuOrderCancle = async (order_id, s_hp) => {
     const req = Paths.api + 'noauth/order/cancel';
 
@@ -55,7 +60,14 @@ export const noAutuOrderCancle = async (order_id, s_hp) => {
         order_id: order_id,
         s_hp: s_hp,
     };
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-    const res = await axios.put(req, form_data);
+
+    const config = {
+        headers: {
+            'content-type': 'application/json',
+     
+        },
+    };
+
+    const res = await axios.put(req, form_data,config);
     return res;
 };

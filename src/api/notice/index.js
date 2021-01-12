@@ -18,31 +18,41 @@ export const reqNoticeRead = async (token, not_id) => {
     const form_data = {
         not_id: not_id,
     };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
-
-    const res = await axios.put(req, form_data);
+    const config={
+        hedaers:{
+            'Content-Type' : 'application/json',
+            'Authorization':  `Bearer ${token}`
+        }
+    }
+    const res = await axios.put(req, form_data,config);
     return res;
 };
 
 export const reqNoticeReadAll = async (token) => {
     const req = Paths.api + 'user/notification/read_all';
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
+    const config={
+        hedaers:{
+            'Content-Type' : 'application/json',
+            'Authorization':  `Bearer ${token}`
+        }
+    }
 
-    const res = await axios.put(req);
+
+    const res = await axios.put(req,config);
     return res;
 };
 
 export const reqNoticeDelete = async (token, not_id) => {
     const req = Paths.api + 'user/notification/delete';
     const form_data = { not_id };
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.defaults.headers.post['Context-Type'] = 'application/json';
 
     const res = await axios.delete(req, {
         data: form_data,
+        headers:{
+            'Authorization' : `Bearer ${token}`,
+            'Content-Type' :'application/json',
+        }
     });
 
     return res;

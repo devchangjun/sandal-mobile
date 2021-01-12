@@ -13,7 +13,6 @@ export const getPreferMenuList = async (
     shop_id,
 ) => {
     const req = Paths.api + `user/item/prefer`;
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
     const config = {
         params: {
@@ -27,14 +26,19 @@ export const getPreferMenuList = async (
             addr1,
             shop_id,
         },
+        headers:{
+            'Content-Type': 'application/json'
+        }
     };
     const result = await axios.get(req, config);
     return result.data.query;
 };
 
+
+
 export const getMenuList = async (ca_id, offset = 0, limit = 8, shop_id) => {
     const req = Paths.api + 'user/item/list';
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
+ 
 
     const config = {
         params: {
@@ -43,16 +47,22 @@ export const getMenuList = async (ca_id, offset = 0, limit = 8, shop_id) => {
             offset,
             shop_id,
         },
+        headers:{
+            'Content-Type': 'application/json'
+        }
     };
+
     const result = await axios.get(req, config);
     return result;
 };
 
 export const getMainMenuList = async (ca_id = 1, offset = 0, limit = 8) => {
     const req = Paths.api + 'user/item/main';
-    axios.defaults.headers.get['Context-Type'] = 'application/json';
 
     const config = {
+        headers:{
+            'Content-Type': 'application/json'
+        },
         params: {
             ca_id,
             limit,
@@ -60,6 +70,7 @@ export const getMainMenuList = async (ca_id = 1, offset = 0, limit = 8) => {
         },
     };
     const result = await axios.get(req, config);
+    console.log(result);
     return result;
 };
 

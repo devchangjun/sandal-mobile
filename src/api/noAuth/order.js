@@ -39,7 +39,6 @@ export const noAuth_order = async (
     const config = {
         headers: {
             'content-type': 'application/json',
-     
         },
     };
     const res = await axios.post(req, form_data,config);

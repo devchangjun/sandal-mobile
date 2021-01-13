@@ -319,7 +319,6 @@ const OrderContainer = ({ modal }) => {
     const onClickOrder = async () => {
         const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
 
-        //배달 요청시간 수정.
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;
         const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
@@ -387,9 +386,9 @@ const OrderContainer = ({ modal }) => {
                 let payple_payer_id = '';
 
                 let buyer_no = user ? user.id : null; //고객 고유번호
-                let buyer_name = noAuthName; //고객 이름
-                let buyer_hp = `${hp}`; //고객 번호
-                let buyer_email = user && user.email; //고객 이메일
+             //   let buyer_name = noAuthName; //고객 이름
+             //   let buyer_hp = `${hp}`; //고객 번호
+              //  let buyer_email = user && user.email; //고객 이메일
                 let buy_goods = '(주)샌달 상품 결제'; //구매하는 물건 이름
                 let buy_total = Number(
                     parseInt(totalPrice) +
@@ -436,7 +435,6 @@ const OrderContainer = ({ modal }) => {
                         simple_flag = 'Y';
                     }
                     obj.PCD_PAY_TYPE = 'transfer'; // (필수) 결제 방법 (transfer | card)
-
                 }
 
                 if (simple_flag === 'Y' && payple_payer_id !== '') {
@@ -448,7 +446,6 @@ const OrderContainer = ({ modal }) => {
                 /*
                     DEFAUILT SET 2 결제수단에 따른 값 설정
                 */
-                obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
 
                 //## 2.2 간편결제 (재결제)
                 obj.PCD_PAYER_NO = buyer_no; // (선택) 가맹점 회원 고유번호 (결과전송 시 입력값 그대로 RETURN)
@@ -462,6 +459,8 @@ const OrderContainer = ({ modal }) => {
                 /*
                 * DEFAULT SET 3
                 */
+
+               obj.PCD_PAYER_AUTHTYPE = 'pwd'; // (선택) [간편결제/정기결제] 본인인증 방식
                 obj.PCD_RST_URL =
                     PROTOCOL_ENV + 'api.ajoonamu.com/api/user/payple/order_mobile'; // (필수) 결제(요청)결과 RETURN URL
                 obj.payple_auth_file =

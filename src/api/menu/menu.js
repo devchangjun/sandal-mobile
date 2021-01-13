@@ -70,7 +70,6 @@ export const getMainMenuList = async (ca_id = 1, offset = 0, limit = 8) => {
         },
     };
     const result = await axios.get(req, config);
-    console.log(result);
     return result;
 };
 

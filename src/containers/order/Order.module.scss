@@ -21,6 +21,9 @@
         flex-direction: column;
         padding: 26px 24px;
         font-size: $font-size;
+        .receiver-box {
+            padding-bottom: 24px;
+        }
         .text-info {
             position: relative;
             display: flex;

@@ -80,7 +80,7 @@ const OrderContainer = ({ modal }) => {
     const history = useHistory();
     const { company } = useSelector(state => state.company);
     const user_token = useStore(false);
-    const [noAuthName, setNoAuthName] = useState('');
+    const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [couponList, setCouponList] = useState([]);
     const [payment, setPayment] = useState(pay_arr[3]);
@@ -106,6 +106,10 @@ const OrderContainer = ({ modal }) => {
     const [authNumber, setAuthNumber] = useState('');
     const [toast, setToast] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    const [sameOrderReceiver, setSameOrderReceiver] = useState(true);
+    const [receiverName, setReceiverName] = useState('');
+    const [receiverPhone, setReceiverPhone] = useState('');
 
     const [toastMessage, setToastMessage] = useState('');
     const [start_timer, setStartTimer] = useState(false);
@@ -172,7 +176,7 @@ const OrderContainer = ({ modal }) => {
     };
 
 
-    const onChangeName = (e) => setNoAuthName(e.target.value);
+    const onChangeName = (e) => setName(e.target.value);
     const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
     const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
@@ -336,8 +340,8 @@ const OrderContainer = ({ modal }) => {
                 cp_id,
                 point_price,
                 settle_case,
-                noAuthName,
-                hp
+                name, hp,
+                receiverName, receiverPhone
             );
             order_id.current = res.data.query;
         }
@@ -346,7 +350,7 @@ const OrderContainer = ({ modal }) => {
             const cart_ids = JSON.parse(localStorage.getItem('noAuthCartId'));
             res = await noAuth_order(
                 cart_ids,
-                noAuthName,
+                name,
                 hp,
                 post_num,
                 addr1,
@@ -357,7 +361,8 @@ const OrderContainer = ({ modal }) => {
                 orderMemo,
                 dlvMemo,
                 delivery_req_time,
-                settle_case
+                settle_case,
+                receiverName, receiverPhone
             );
             order_id.current = res.data.query;
         }
@@ -478,15 +483,15 @@ const OrderContainer = ({ modal }) => {
          openModal('잘못된 접근입니다');
       }
     };
-    useEffect(()=>{
-        if(company && totalPrice){
-            if(company.minimum_order > totalPrice){
+    useEffect(() => {
+        if (company && totalPrice) {
+            if (company.minimum_order > totalPrice) {
                 history.replace(Paths.index);
                 openModal('잘못된 접근입니다.');
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[company, totalPrice])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [company, totalPrice])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -526,11 +531,18 @@ const OrderContainer = ({ modal }) => {
         }
     }, [totalPrice, default_cost, company]);
 
-    useEffect(()=>{
-        if(user){
-            setNoAuthName(user.name);
+    useEffect(() => {
+        if (user) {
+            setName(user.name);
         }
-    },[user])
+    }, [user])
+
+    useEffect(() => {
+        if (sameOrderReceiver) {
+            setReceiverName(name);
+            setReceiverPhone(hp);
+        }
+    }, [sameOrderReceiver, name, hp]);
     
 
     return (
@@ -541,13 +553,13 @@ const OrderContainer = ({ modal }) => {
                 <div className={styles['table']}>
                     <div className={cx('text-info')}>
                         <div className={cx('info', 'row')}>
-                                <input
-                                    type="text"
-                                    value={noAuthName}
-                                    onChange={onChangeName}
-                                    className={cx('input', 'normal')}
-                                    placeholder="배달 받으실 분의 이름을 입력하세요."
-                                />
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={onChangeName}
+                                className={cx('input', 'normal')}
+                                placeholder="주문 하시는 분의 이름을 입력하세요."
+                            />
                         </div>
                     </div>
                     <div className={cx('text-info', 'address')}>
@@ -610,6 +622,43 @@ const OrderContainer = ({ modal }) => {
                                 className={styles['auth-btn']}>
                                 인증하기
                             </ButtonBase>
+                        </div>
+                    </div>
+                    <Toast on={toast} msg={toastMessage} />
+                </div>
+                
+                <div className={cx('title', 'pd-box')}>수령인 정보</div>
+                <div className={styles['table']}>
+                    <div className={styles['receiver-box']}>
+                        <SquareCheckBox
+                            id={'order'}
+                            text={'주문자와 동일'}
+                            check={sameOrderReceiver}
+                            onChange={() => setSameOrderReceiver(!sameOrderReceiver)}
+                        />
+                    </div>
+                    <div className={cx('text-info')}>
+                        <div className={cx('info', 'row')}>
+                            <input
+                                type="text"
+                                value={receiverName}
+                                onChange={(e) => setReceiverName(e.target.value)}
+                                className={cx('input', 'normal')}
+                                placeholder="배달 받으실 분의 이름을 입력하세요."
+                                readOnly={sameOrderReceiver}
+                            />
+                        </div>
+                    </div>
+                    <div className={cx('text-info')}>
+                        <div className={cx('info', 'row')}>
+                            <input
+                                type="tel"
+                                placeholder="휴대폰 번호"
+                                value={receiverPhone}
+                                onChange={e => setReceiverPhone(e.target.value)}
+                                readOnly={sameOrderReceiver}
+                                className={cx('input', 'auth')}
+                            />
                         </div>
                     </div>
                     <Toast on={toast} msg={toastMessage} />
@@ -852,7 +901,7 @@ const OrderContainer = ({ modal }) => {
                         parseInt(point_price) -
                         parseInt(cp_price),
                 )}원 결제`}
-                toggle={(user || noAuthName.length !== 0) && toggle && success}
+                toggle={(user || name.length !== 0) && toggle && success}
                 onClick={onClickOrder}
             />
             <PointModal

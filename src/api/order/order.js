@@ -10,8 +10,8 @@ export const user_order = async (
     cp_id,
     point_price = 0,
     settle_case,
-    s_name,
-    s_hp
+    s_name, s_hp,
+    r_name, r_hp
 ) => {
     const req = Paths.api + 'user/order';
     let form_data;
@@ -28,8 +28,8 @@ export const user_order = async (
             point_price: point_price,
             device: 'mobile',
             settle_case,
-            s_name,
-            s_hp
+            s_name, s_hp,
+            r_name, r_hp
         };
     } else {
         form_data = {
@@ -41,8 +41,8 @@ export const user_order = async (
             point_price: point_price,
             device: 'mobile',
             settle_case,
-            s_name,
-            s_hp
+            s_name, s_hp,
+            r_name, r_hp
         };
     }
     const config = {

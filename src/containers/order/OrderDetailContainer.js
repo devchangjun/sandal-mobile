@@ -171,14 +171,14 @@ const OrderDetailContainer = ({ order_id }) => {
                                 </div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={order && order.info[0].s_name}
+                                        value1={order && order.info[0].r_name}
                                         value2={
                                             order &&
                                             `${order.s_addr1} ${order.s_addr2}`
                                         }
                                         value3={
                                             order &&
-                                            stringToTel(order.info[0].s_hp)
+                                            stringToTel(order.info[0].r_hp)
                                         }
                                         value4={`배달요청시간 : ${
                                             order &&

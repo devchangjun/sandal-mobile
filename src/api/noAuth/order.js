@@ -14,7 +14,8 @@ export const noAuth_order = async (
     order_memo,
     delivery_memo,
     delivery_req_time,
-    settle_case
+    settle_case,
+    r_name, r_hp
 ) => {
     order_memo = order_memo ? order_memo : "없음";
     delivery_memo = delivery_memo ? delivery_memo : "없음";
@@ -34,7 +35,8 @@ export const noAuth_order = async (
         delivery_memo,
         delivery_req_time,
         device: 'mobile',
-        settle_case
+        settle_case,
+        r_name, r_hp
     };
     const config = {
         headers: {

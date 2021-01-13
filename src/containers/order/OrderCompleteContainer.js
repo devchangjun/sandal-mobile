@@ -119,7 +119,6 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
         }
     }, [order_number, getOrderInfo, history]);
 
-
     return (
         <>
             {loading ? (
@@ -200,10 +199,10 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                 </div>
                                 <div className={styles['list']}>
                                     <UserInfo
-                                        value1={orders.info[0].s_name}
+                                        value1={orders.info[0].r_name}
                                         value2={`${orders.s_addr1} ${orders.s_addr2}`}
                                         value3={stringToTel(
-                                            orders.info[0].s_hp,
+                                            orders.info[0].r_hp,
                                         )}
                                     />
                                 </div>

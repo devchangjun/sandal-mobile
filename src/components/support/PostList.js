@@ -33,7 +33,7 @@ const PostItem = ({ postData }) => {
                 <p className={styles['created-at']}>일시: {dateToYYYYMMDD(created_at)}</p>
                 <div className={styles['thanks']}>
                     <p>감사합니다.</p>
-                    <p>아주나무 드림</p>
+                    <p>샌달 드림</p>
                 </div>
             </div>
         </li>

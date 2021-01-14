@@ -95,6 +95,7 @@ const HomeSlick = () => {
                             isD
                         >
                             {item.bn_url.indexOf('http://') !== -1 || item.bn_url.indexOf('https://') !== -1 ?
+                            (item.bn_url.indexOf('ajoonamu.com') === -1 ?
                             <a href={item.bn_url}>
                                 <div className={styles['item']}>
                                     <ErrorCoverImage
@@ -103,6 +104,14 @@ const HomeSlick = () => {
                                     />
                                 </div>
                             </a> :
+                            <Link to={item.bn_url.split('ajoonamu.com')[1]}>
+                                <div className={styles['item']}>
+                                    <ErrorCoverImage
+                                        src={DBImageFormat(item.bn_img_mobile)[0]}
+                                        alt="mainBanner"
+                                    />
+                                </div>
+                            </Link>) :
                             <Link to={item.bn_url}>
                                 <div className={styles['item']}>
                                     <ErrorCoverImage

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import './styles/global.scss';
-import { Paths} from 'paths';
+import { Paths } from 'paths';
 import {
     Signin, SignUp, SignupComplete, Recovery, RecoveryId, RecoveryPw, MyPage,
     FindEmail, FindPassword, Home, Account, Address, Reserve, Breakfast,DetailMenu,
@@ -21,7 +21,7 @@ import BottomNav from './components/nav/BottomNav';
 import { noAuthGetNearStore } from './api/noAuth/store';
 import { getActiveAddr } from './api/address/address';
 import { getNearStore } from './api/store/store';
-import { reqNoticeList} from './api/notice';
+import { reqNoticeList } from './api/notice';
 
 //hooks
 import { useInit } from './hooks/useStore';
@@ -30,11 +30,9 @@ import { useUrl } from './hooks/useStore';
 //store
 import { get_user_info } from './store/auth/auth';
 import { get_notice, read_check } from './store/notice/notice';
-import { scrollClose, scrollOpen } from './store/scroll';
 import { get_company_info } from './store/company';
 import OrderReview from './pages/order/OrderReview';
 
-let preventY = 0;
 
 const App = () => {
     useUrl();
@@ -193,9 +191,9 @@ const App = () => {
     }, []);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         getTitle();
-    },[getTitle])
+    }, [getTitle]);
 
     // const scrollEvent = useCallback(() => {
     //     const { scrollY } = window;

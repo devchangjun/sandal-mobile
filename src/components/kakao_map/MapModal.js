@@ -47,8 +47,18 @@ const FullScreenDialog = (props) => {
         }
 
         const res= await requsetGetAreaInfo(lat,lng);
-        setJibun(res.data.documents[0].address.address_name);
-        setRoad(res.data.documents[0].road_address.address_name);
+        if(res.data.documents[0].address){
+            setJibun(res.data.documents[0].address.address_name);
+        }
+        else{
+            setJibun('');
+        }
+        if(res.data.documents[0].road_address){
+            setRoad(res.data.documents[0].road_address.address_name);
+        }
+        else{
+            setRoad('');
+        }
 
         setPosition(newState)
 
@@ -89,8 +99,18 @@ const FullScreenDialog = (props) => {
                 const lng = p.coords.longitude;
                 const newState ={lat,lng};
                 const res= await requsetGetAreaInfo(lat,lng);
-                setJibun(res.data.documents[0].address.address_name);
-                setRoad(res.data.documents[0].road_address.address_name);
+                if(res.data.documents[0].address){
+                    setJibun(res.data.documents[0].address.address_name);
+                }
+                else{
+                    setJibun('');
+                }
+                if(res.data.documents[0].road_address){
+                    setRoad(res.data.documents[0].road_address.address_name);
+                }
+                else{
+                    setRoad('');
+                }
                 if (marker_arr.current.length !== 0) {
                     marker_arr.current.map((marker) => marker.setMap(null));
                     marker_arr.current = [];

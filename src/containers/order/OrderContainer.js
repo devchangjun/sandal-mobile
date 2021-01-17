@@ -177,8 +177,14 @@ const OrderContainer = ({ modal }) => {
 
 
     const onChangeName = (e) => setName(e.target.value);
-    const onChangeDlvCheck = (e) => setDlvMemoCheck(e.target.checked);
-    const onChangeOrderCheck = (e) => setOrderMemoCheck(e.target.checked);
+    const onChangeDlvCheck = (e) => {
+        console.log('배달요청사항', e.target.checked);
+        setDlvMemoCheck(e.target.checked);
+    }
+    const onChangeOrderCheck = (e) => {
+        console.log('주문요청사항', e.target.checked)
+        setOrderMemoCheck(e.target.checked);
+    }
     const onChangeDeleveryMemo = (e) => setDlvMemo(e.target.value);
     const onChangeOrderMemo = (e) => setOrderMemo(e.target.value);
 
@@ -712,7 +718,7 @@ const OrderContainer = ({ modal }) => {
                         </div>
                         <div className={styles['save']}>
                             <SquareCheckBox
-                                id={'order'}
+                                id={'od'}
                                 text={'자동저장'}
                                 check={orderMemoCheck}
                                 onChange={onChangeOrderCheck}

@@ -327,7 +327,7 @@ const OrderContainer = ({ modal }) => {
     }
 
     const onClickOrder = async () => {
-        const payple_url = 'https://testcpay.payple.kr/js/cpay.payple.1.0.1.js';
+        const payple_url = 'https://cpay.payple.kr/js/cpay.payple.1.0.1.js';
 
         const year = date.getFullYear();
         const month = date.getMonth()+1 > 9 ? date.getMonth()+1 : `0${date.getMonth()+1}`;

@@ -244,14 +244,14 @@ const OrderContainer = ({ modal }) => {
 
                     if (query.PCD_PAYER_ID === null) {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID);
-                    } 
+                    }
                     else {
                         SET_PCD_PAYER_ID(query.PCD_PAYER_ID.pp_tno);
                     }
 
                     if (query.PCD_PAYER_ID_transfer === null) {
                         SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer);
-                    } 
+                    }
                     else {
                         SET_PCD_PAYER_ID_TRANSFER(query.PCD_PAYER_ID_transfer.pp_tno);
                     }
@@ -295,7 +295,7 @@ const OrderContainer = ({ modal }) => {
                     if (price === 0) {
                         history.replace(Paths.index);
                         openModal('잘못된 접근입니다.');
-                    } 
+                    }
                     setDefaultCost(query.delivery_cost);
                     setTotalPrice(price);
                 }
@@ -373,7 +373,7 @@ const OrderContainer = ({ modal }) => {
             order_id.current = res.data.query;
         }
         if(res.data.state===1) {
-            // ['페이플 간편결제','계좌이체','만나서 결제','무통장 입금']
+            // ['신용카드결제','계좌이체','만나서 결제','무통장 입금']
             //무통장 입금 or 만나서 카드결제
             if(payment===pay_arr[2] || payment===pay_arr[3]){
                 setLoading(true);
@@ -440,7 +440,7 @@ const OrderContainer = ({ modal }) => {
 
                 //계좌 간편결제
                 else if(payment===pay_arr[1]){
-                    
+
                     if (PCD_PAYER_ID_TRANSFER !== null) {
                         payple_payer_id = PCD_PAYER_ID_TRANSFER;
                         simple_flag = 'Y';
@@ -452,7 +452,7 @@ const OrderContainer = ({ modal }) => {
                     obj.PCD_SIMPLE_FLAG = 'Y'; // 간편결제 여부 (Y|N)
                     obj.PCD_PAYER_ID = payple_payer_id; // 결제자 고유ID (본인인증 된 결제회원 고유 KEY)
                 }
-        
+
 
                 /*
                     DEFAUILT SET 2 결제수단에 따른 값 설정
@@ -529,7 +529,7 @@ const OrderContainer = ({ modal }) => {
         );
     }, [dlvMemoCheck, orderMemoCheck, dlvMemo, orderMemo]);
 
-        
+
     useEffect(()=>{
         if (company) {
             const cost = (totalPrice >= company.free_cost_order) ? 0 : default_cost;
@@ -549,7 +549,7 @@ const OrderContainer = ({ modal }) => {
             setReceiverPhone(hp);
         }
     }, [sameOrderReceiver, name, hp]);
-    
+
 
     return (
         <>
@@ -632,7 +632,7 @@ const OrderContainer = ({ modal }) => {
                     </div>
                     <Toast on={toast} msg={toastMessage} />
                 </div>
-                
+
                 <div className={cx('title', 'pd-box')}>수령인 정보</div>
                 <div className={styles['table']}>
                     <div className={styles['receiver-box']}>
@@ -674,8 +674,8 @@ const OrderContainer = ({ modal }) => {
                     <div className={styles['date']}>
                         <DatePicker
                          minDate={ calculateDate(new Date(), -2, 'DATE')}
-                         date={date} 
-                         setDate={setDate} 
+                         date={date}
+                         setDate={setDate}
                          />
                     </div>
                     <div className={styles['time']}>

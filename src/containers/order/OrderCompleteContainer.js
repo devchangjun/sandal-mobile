@@ -25,7 +25,7 @@ import Loading from '../../components/asset/Loading';
 import { numberFormat, stringToTel } from '../../lib/formatter';
 
 const cx = classNames.bind(styles);
-const payments = ['페이플 간편결제', '계좌이체', '만나서 결제', '무통장 입금'];
+const payments = ['신용카드결제', '계좌이체', '만나서 결제', '무통장 입금'];
 const pay_type = ['card', 'transfer', 'meet', 'bank'];
 
 const OrderCompleteContainer = ({ order_number, query, modal }) => {
@@ -139,7 +139,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                     딜리버리 서비스를 <br />
                                     이용해주셔서 감사합니다.
                                     <br />
-                                    {type === payments[3] && 
+                                    {type === payments[3] &&
                                         <div className={styles['bank-info']}>
                                             <div className={styles['bank-box']}>
                                                 <div className={styles['bank-name']}>
@@ -173,7 +173,7 @@ const OrderCompleteContainer = ({ order_number, query, modal }) => {
                                                     {company && company.company_banknum}
                                                 </div>
                                             </div>
-                                        </div>  
+                                        </div>
                                     }
                                     <div className={styles['no-auth']}>
                                         (비회원 주문시 주문내역 확인이 어려울 수

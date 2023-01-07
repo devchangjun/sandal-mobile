@@ -24,7 +24,7 @@ import { useModal } from '../../hooks/useModal';
 
 const cx = cn.bind(styles);
 
-const payments=['페이플 간편결제','계좌이체','만나서 결제','무통장 입금'];
+const payments=['신용카드결제','계좌이체','만나서 결제','무통장 입금'];
 const pay_type = ['card','transfer','meet','bank'];
 
 const OrderDetailContainer = ({ order_id }) => {
@@ -121,7 +121,7 @@ const OrderDetailContainer = ({ order_id }) => {
                         setOdStatus('order_cancel');
                     }else if(res.data.msg.indexOf('잘못된')!==-1){
                         openModal('주문 취소중 오류가 발생했습니다.');
-                    } 
+                    }
                     else {
                         openModal('정상적으로 취소되었습니다.');
                         setOdStatus('order_cancel');

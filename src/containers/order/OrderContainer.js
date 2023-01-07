@@ -673,7 +673,7 @@ const OrderContainer = ({ modal }) => {
                 <div className={cx('date-picker', 'pd-box')}>
                     <div className={styles['date']}>
                         <DatePicker
-                         minDate={ calculateDate(new Date(), -2, 'DATE')}
+                         minDate={ calculateDate(new Date(), -3, 'DATE')}
                          date={date}
                          setDate={setDate}
                          />

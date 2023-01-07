@@ -98,7 +98,7 @@ const OrderContainer = ({ modal }) => {
     const [point_price, setPointPrice] = useState(0); //포인트 할인
     const [cp_price, setCpPrice] = useState(0); //쿠폰할인
     const [cp_id, setCpId] = useState(null); //쿠폰 번호
-    const [date, setDate] = useState(calculateDate(new Date(), -2, 'DATE'));
+    const [date, setDate] = useState(calculateDate(new Date(), -3, 'DATE'));
     const [hours, setHours] = useState('09');
     const [minite, setMinite] = useState('00');
 
